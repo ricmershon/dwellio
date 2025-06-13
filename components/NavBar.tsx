@@ -60,14 +60,14 @@ const NavBar = () => {
                             className='flex flex-shrink-0 items-center' href='/' >
                             <HomeIcon className='h-10 w-auto text-blue-700 rounded-full p-[4px] bg-white' />
                             <span
-                                className="hidden md:block text-white text-2xl font-bold ml-2"
+                                className="hidden md:block text-xl text-white ml-2"
                             >
-                                Dwellio
+                                dwellio
                             </span>
                         </Link>
 
                         {/* Desktop menu left side */}
-                        <div className="hidden md:ml-6 md:block">
+                        <div className="hidden md:ml-8 md:block">
                             <div className="flex space-x-5">
                                 <Link
                                     href='/'
