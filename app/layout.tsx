@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
 
 import "@/app/globals.css";
 
@@ -18,7 +19,8 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
         <html lang="en">
             <body>
                 <NavBar />
-                {children}
+                    {children}
+                <Footer />
             </body>
         </html>
     );
