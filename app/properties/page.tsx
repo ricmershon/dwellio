@@ -7,7 +7,12 @@ export const metadata: Metadata = {
     title: 'Properties'
 }
 
-const PropertiesPage = () => {
+const PropertiesPage = async () => {
+    // Artificial delay for testing loading components.
+    console.log('Fetching data...')
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    console.log('Data received...')
+
     return (
         <main>
             <PropertiesList properties={properties} />
