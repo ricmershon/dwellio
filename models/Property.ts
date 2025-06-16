@@ -1,36 +1,40 @@
-import { Document, Schema, model, models } from 'mongoose';
+import { Document, Schema, Types, model, models } from 'mongoose';
 import { UserInterface } from './User';
 
 export interface PropertyInterface extends Document {
-    owner: UserInterface,
-    name: string,
-    type: string,
-    description?: string,
+    _id: Types.ObjectId;
+    owner: UserInterface;
+    name: string;
+    type: string;
+    description?: string;
     location: {
-        street: string,
-        city: string,
-        state: string,
+        street: string;
+        city: string;
+        state: string;
         zipcode: string
-    },
-    beds: number,
-    baths: number,
-    square_feet: number,
-    amenities?: Array<string>,
+    };
+    beds: number;
+    baths: number;
+    square_feet: number;
+    amenities?: Array<string>;
     rates: {
-        nightly?: number,
-        weekly?: number,
+        nightly?: number;
+        weekly?: number;
         monthly?: number
-    },
+    };
     seller_info: {
-        name: string,
-        email: string,
+        name: string;
+        email: string;
         phone: string
-    },
-    image: Array<string>,
-    is_featured: boolean
+    };
+    images: Array<string>;
+    is_featured: boolean;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 const PropertySchema = new Schema({
+    _id: Schema.Types.ObjectId,
     owner: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
     name: { type: String, required: true },
     type: { type: String, required: true },
@@ -55,7 +59,7 @@ const PropertySchema = new Schema({
         email: String,
         phone: String
     },
-    image: [{ type: String }],
+    images: [{ type: String }],
     is_featured: { type: Boolean, default: false }
 }, {
     timestamps: true

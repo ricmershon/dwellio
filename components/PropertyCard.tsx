@@ -8,9 +8,9 @@ import {
     FaMapMarkerAlt,
 } from 'react-icons/fa';
 
-import { Property } from '@/lib/definitions';
+import { PropertyInterface } from '@/models/Property';
 
-const PropertyCard = ({ property }: { property: Property }) => {
+const PropertyCard = ({ property }: { property: PropertyInterface }) => {
     const getRateDisplay = () => {
         const { rates } = property;
 
