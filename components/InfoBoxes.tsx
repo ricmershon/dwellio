@@ -1,4 +1,4 @@
-import InfoBox from "./InfoBox";
+import InfoBox from "@/components/InfoBox";
 
 const InfoBoxes = () => (
     <section>

@@ -1,11 +1,9 @@
-interface PropertyPageProps {
-    params: Promise<{ id: string }>,
-}
-
-const PropertyPage = async ( { params }: PropertyPageProps) => {
+const PropertyPage = async ( { params }: {params: Promise<{ id: string }>}) => {
     const { id } = await params;
     return (
-        <div>Property Page for {id}</div>
+        <main>
+            <div>Property Page for {id}</div>
+        </main>
     );
 }
  

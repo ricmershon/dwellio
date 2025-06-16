@@ -4,8 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { BellAlertIcon } from "@heroicons/react/24/outline";
-import { HomeIcon } from "@heroicons/react/24/solid";
+import { HiHome, HiOutlineBell } from "react-icons/hi2";
 import { FaGoogle } from 'react-icons/fa'
 
 import profileDefault from '@/assets/images/profile.png';
@@ -13,7 +12,7 @@ import profileDefault from '@/assets/images/profile.png';
 const NavBar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
 
     const pathname = usePathname();
 
@@ -58,7 +57,7 @@ const NavBar = () => {
                         {/* Logo */}
                         <Link
                             className='flex flex-shrink-0 items-center' href='/' >
-                            <HomeIcon className='h-10 w-auto text-blue-700 rounded-full p-[4px] bg-white' />
+                            <HiHome className='h-10 w-auto text-blue-700 rounded-full p-[4px] bg-white' />
                             <span
                                 className="hidden md:block text-xl text-white ml-2"
                             >
@@ -104,7 +103,7 @@ const NavBar = () => {
                         // Logged in
                         <div className="absolute inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0">
                             <Link className='relative group' href='/messages'>
-                                <BellAlertIcon className='relative h-8 w-8 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'/>
+                                <HiOutlineBell className='relative h-8 w-8 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'/>
                                 <span className="absolute top-0 right-0 inline-flex items-center justify-center h-[18px] w-[18px] text-[12px] leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full">
                                     1
                                 </span>
