@@ -7,7 +7,7 @@ const PropertyDetails = ({ property }: { property: PropertyInterface }) => {
     const { rates } = property;
     
     return (
-        <section>
+        <div>
             <div className="bg-white p-6 rounded-lg shadow-md text-center md:text-left">
 
                 {/* Property type, name and location */}
@@ -102,7 +102,7 @@ const PropertyDetails = ({ property }: { property: PropertyInterface }) => {
             <div className="bg-white p-6 rounded-lg shadow-md mt-6">
                 <div id="map"></div>
             </div>
-        </section>
+        </div>
     );
  }
 export default PropertyDetails;
