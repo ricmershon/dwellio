@@ -2,7 +2,6 @@ import connectDB from "@/config"
 import { Property, PropertyInterface } from "@/models/Property";
 
 export const fetchProperties = async (mostRecent: boolean) => {
-    
     try {
         // Artificial delay for testing loading components.
         // console.log('Fetching data...')
@@ -10,17 +9,33 @@ export const fetchProperties = async (mostRecent: boolean) => {
         // console.log('Data received...')
         
         await connectDB();
-
-        let data: Array<PropertyInterface> = [];
+        let properties: Array<PropertyInterface> = [];
 
         if (mostRecent) {
-            data = await Property.find().sort({ createdAt: -1 }).limit(3);
+            properties = await Property.find().sort({ createdAt: -1 }).limit(3);
         } else {
-            data = await Property.find();
+            properties = await Property.find();
         }
-        return data;
+        return properties;
     } catch (error) {
         console.error('Database Error: ', error);
         throw new Error('Failed to fetch property data.')
     }
+}
+
+export const fetchPropertyById = async (propertyId: string) => {
+    let property: PropertyInterface | null;
+    
+    try {
+        await connectDB();
+        property = await Property.findById(propertyId);
+        if (!property) {
+            console.log('>>> Property not found.')
+        }
+    } catch (error) {
+        console.error('Error finding property: ', error);
+        throw new Error("Error finding property");
+    }
+
+    return property;
 }
