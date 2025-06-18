@@ -1,7 +1,22 @@
 'use server';
 
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+
+import connectDB from "@/config";
+import { Property } from "@/app/models/Property";
+import { getSessionUser } from "@/app/utils/get-session-user";
+
 export const addProperty = async (formData: FormData) => {
+    await connectDB();
+
+    const sessionUser = await getSessionUser();
+    if (!sessionUser || !sessionUser.id) {
+        throw new Error('User ID is required')
+    }
+
     const propertyData = {
+        owner: sessionUser.id,
         type: formData.get('type'),
         name: formData.get('name'),
         description: formData.get('description'),
@@ -14,7 +29,7 @@ export const addProperty = async (formData: FormData) => {
         beds: formData.get('beds'),
         baths: formData.get('baths'),
         square_feet: formData.get('square_feet'),
-        amentities: formData.getAll('amenities'),
+        amenities: formData.getAll('amenities'),
         rates: {
             nightly: formData.get('rates.nightly'),
             weekly: formData.get('rates.weekly'),
@@ -29,4 +44,10 @@ export const addProperty = async (formData: FormData) => {
             .filter((image) => image.name !== '')
             .map((image) => image.name)
     }
+
+    const newProprety = new Property(propertyData);
+    await newProprety.save();
+
+    revalidatePath('/', 'layout');
+    redirect(`/properties/${newProprety._id}`);
 }
