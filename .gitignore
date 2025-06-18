@@ -41,3 +41,5 @@ yarn-error.log*
 next-env.d.ts
 
 _theme_files
+properties.json
+properties2.json

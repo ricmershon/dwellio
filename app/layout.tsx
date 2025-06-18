@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 
+import AuthProvider from "@/components/AuthProvider";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 
@@ -16,13 +17,15 @@ export const metadata: Metadata = {
 
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
     return (
-        <html lang="en">
-            <body>
-                <NavBar />
-                    {children}
-                <Footer />
-            </body>
-        </html>
+        <AuthProvider>
+            <html lang="en">
+                <body>
+                    <NavBar />
+                        {children}
+                    <Footer />
+                </body>
+            </html>
+        </AuthProvider>
     );
 }
 
