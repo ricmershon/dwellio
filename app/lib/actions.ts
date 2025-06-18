@@ -3,9 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import connectDB from "@/config";
-import { Property } from "@/app/models/Property";
+import connectDB from "@/app/config/database-config";
+import { Property } from "@/app/models/property-model";
 import { getSessionUser } from "@/app/utils/get-session-user";
+import { uploadImages } from "./cloudinary";
 
 export const addProperty = async (formData: FormData) => {
     await connectDB();
@@ -39,11 +40,11 @@ export const addProperty = async (formData: FormData) => {
             name: formData.get('seller_info.name'),
             email: formData.get('seller_info.email'),
             phone: formData.get('seller_info.phone'),            
-        },
-        images: (formData.getAll('images') as Array<File>)
-            .filter((image) => image.name !== '')
-            .map((image) => image.name)
+        }
     }
+
+    const propertyImages = await uploadImages((formData.getAll('images') as Array<File>));
+    Object.assign(propertyData, { images: propertyImages });
 
     const newProprety = new Property(propertyData);
     await newProprety.save();

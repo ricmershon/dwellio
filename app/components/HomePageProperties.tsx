@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-import { PropertyInterface } from '@/app/models/Property';
+import { PropertyInterface } from '@/app/models/property-model';
 import PropertiesList from './PropertiesList';
 import { fetchProperties } from '@/app/lib/data';
 

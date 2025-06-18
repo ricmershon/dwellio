@@ -1,4 +1,4 @@
-import { PropertyInterface } from "@/app/models/Property";
+import { PropertyInterface } from "@/app/models/property-model";
 import PropertyCard from "@/app/components/PropertyCard";
 
 const PropertiesList = ({ properties }: { properties: Array<PropertyInterface>}) => (

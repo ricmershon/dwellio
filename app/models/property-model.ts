@@ -1,5 +1,5 @@
 import { Document, Schema, model, models } from 'mongoose';
-import { UserInterface } from './User';
+import { UserInterface } from './user-model';
 
 export interface PropertyInterface extends Document {
     owner: UserInterface;
