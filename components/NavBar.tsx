@@ -16,10 +16,12 @@ import {
 } from "next-auth/react";
 import { BuiltInProviderType } from "next-auth/providers/index";
 
-import profileDefault from '@/assets/images/profile.png';
+import profileDefaultImage from '@/assets/images/profile.png';
 
 const NavBar = () => {
+    // Get session and user image
     const { data: session } = useSession();
+    const profileImage = session?.user?.image;
 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
@@ -146,9 +148,9 @@ const NavBar = () => {
                                     <span className="sr-only">Open user menu</span>
                                     <Image
                                         className="h-8 w-8 rounded-full"
-                                        height={32}
-                                        width={32}
-                                        src={profileDefault}
+                                        height={40}
+                                        width={40}
+                                        src={profileImage || profileDefaultImage}
                                         alt=""
                                     />
                                     </button>
