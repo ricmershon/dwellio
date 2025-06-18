@@ -40,6 +40,8 @@ const NavBar = () => {
         setAuthProviders();
     }, []);
 
+    console.log('^^^ PROVIDERS ^^^\n', providers)
+
     return (
         <nav className='bg-blue-700 border-b border-blue-500'>
             <div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
@@ -138,7 +140,7 @@ const NavBar = () => {
                                 <div>
                                     <button
                                         type="button"
-                                        className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+                                        className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 cursor-pointer"
                                         id="user-menu-button"
                                         aria-expanded="false"
                                         aria-haspopup="true"
@@ -185,10 +187,14 @@ const NavBar = () => {
                                             Saved Properties
                                         </Link>
                                         <button
-                                            className="block px-4 py-2 text-sm text-gray-700"
+                                            className="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
                                             role="menuitem"
                                             tabIndex={-1}
                                             id="user-menu-item-2"
+                                            onClick={() => {
+                                                setIsProfileDropdownOpen(false);
+                                                signOut();
+                                            }}
                                         >
                                             Sign Out
                                         </button>
@@ -203,7 +209,7 @@ const NavBar = () => {
                                 {providers && Object.values(providers).map((provider) => (
                                     <button
                                         key={provider.id}
-                                        className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-5"
+                                        className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-5 cursor-pointer"
                                         onClick={() => signIn(provider.id)}
                                     >
                                         <FaGoogle className='text-white mr-2' />
