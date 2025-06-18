@@ -1,6 +1,6 @@
 import { FaTimes, FaBed, FaBath, FaRulerCombined, FaCheck, FaMapMarkerAlt } from "react-icons/fa";
 
-import { PropertyInterface } from "@/models/Property";
+import { PropertyInterface } from "@/app/models/Property";
 
 const PropertyDetails = ({ property }: { property: PropertyInterface }) => {
     const { street, city, state, zipcode } = property.location;

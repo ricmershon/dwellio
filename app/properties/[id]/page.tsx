@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 
-import { fetchPropertyById } from "@/lib/data";
-import PropertyHeaderImage from "@/components/PropertyHeaderImage";
-import PropertyDetails from '@/components/PropertyDetails';
+import { fetchPropertyById } from "@/app/lib/data";
+import PropertyHeaderImage from "@/app/components/PropertyHeaderImage";
+import PropertyDetails from '@/app/components/PropertyDetails';
 
 const PropertyPage = async ( { params }: {params: Promise<{ id: string }>}) => {
     const { id } = await params;

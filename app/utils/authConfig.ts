@@ -2,7 +2,7 @@ import GoogleProvider from "next-auth/providers/google";
 import type { Profile } from 'next-auth';
 
 import connectDB from "@/config";
-import { User } from "@/models/User";
+import { User } from "@/app/models/User";
 
 interface DwellioSession {
     user?: {

@@ -1,3 +1,5 @@
+import { addProperty } from "@/app/lib/actions"
+
 interface Amenity {
     id: string,
     value: string
@@ -70,7 +72,7 @@ const Amenities: AmenitiesType = [
 
 const AddPropertyForm = () => {
     return (
-        <form>
+        <form action={addProperty}>
             <h2 className="text-3xl text-center font-semibold mb-6">
                 Add Property
             </h2>
@@ -273,30 +275,30 @@ const AddPropertyForm = () => {
             {/* Renter info */}
             <div className="mb-4">
                 <label
-                    htmlFor="renter_name"
+                    htmlFor="seller_name"
                     className="block text-gray-700 font-bold mb-2"
                 >
                     Renter Name
                 </label>
                 <input
                     type="text"
-                    id="renter_name"
-                    name="renter_info.name"
+                    id="seller_name"
+                    name="seller_info.name"
                     className="border rounded w-full py-2 px-3"
                     placeholder="Name"
                 />
             </div>
             <div className="mb-4">
                 <label
-                    htmlFor="renter_email"
+                    htmlFor="seller_email"
                     className="block text-gray-700 font-bold mb-2"
                 >
                     Renter Email
                 </label>
                 <input
                     type="email"
-                    id="renter_email"
-                    name="renter_info.email"
+                    id="seller_email"
+                    name="seller_info.email"
                     className="border rounded w-full py-2 px-3"
                     placeholder="Email address"
                     required
@@ -304,15 +306,15 @@ const AddPropertyForm = () => {
             </div>
             <div className="mb-4">
                 <label
-                    htmlFor="renter_phone"
+                    htmlFor="seller_phone"
                     className="block text-gray-700 font-bold mb-2"
                 >
                     Renter Phone
                 </label>
                 <input
                     type="tel"
-                    id="renter_phone"
-                    name="renter_info.phone"
+                    id="seller_phone"
+                    name="seller_info.phone"
                     className="border rounded w-full py-2 px-3"
                     placeholder="Phone"
                 />

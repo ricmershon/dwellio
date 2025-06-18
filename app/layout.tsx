@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
-import AuthProvider from "@/components/AuthProvider";
-import NavBar from "@/components/NavBar";
-import Footer from "@/components/Footer";
+import AuthProvider from "@/app/components/AuthProvider";
+import NavBar from "@/app/components/NavBar";
+import Footer from "@/app/components/Footer";
 
 import "@/app/globals.css";
 

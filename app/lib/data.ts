@@ -1,5 +1,5 @@
 import connectDB from "@/config"
-import { Property, PropertyInterface } from "@/models/Property";
+import { Property, PropertyInterface } from "@/app/models/Property";
 
 export const fetchProperties = async (mostRecent: boolean) => {
     try {

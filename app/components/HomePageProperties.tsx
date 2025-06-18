@@ -1,8 +1,8 @@
 import Link from 'next/link';
 
-import { PropertyInterface } from '@/models/Property';
+import { PropertyInterface } from '@/app/models/Property';
 import PropertiesList from './PropertiesList';
-import { fetchProperties } from '@/lib/data';
+import { fetchProperties } from '@/app/lib/data';
 
 const HomePageProperties = async () => {
     // Three most recent properties

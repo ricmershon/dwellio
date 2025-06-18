@@ -28,7 +28,7 @@ export interface PropertyInterface extends Document {
         phone: string
     };
     images: Array<string>;
-    is_featured: boolean;
+    is_featured?: boolean;
     createdAt: Date;
     updatedAt: Date;
 }
