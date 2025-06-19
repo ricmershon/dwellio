@@ -4,8 +4,9 @@ import { FaArrowLeft } from "react-icons/fa";
 import { fetchPropertyById } from "@/app/lib/data";
 import PropertyHeaderImage from "@/app/components/PropertyHeaderImage";
 import PropertyDetails from '@/app/components/PropertyDetails';
+import PropertyImages from "@/app/components/PropertyImages";
 
-const PropertyPage = async ( { params }: {params: Promise<{ id: string }>}) => {
+const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
     const property = await fetchPropertyById(id)!;
 
@@ -33,6 +34,9 @@ const PropertyPage = async ( { params }: {params: Promise<{ id: string }>}) => {
                     </div>
                 </div>
             </section>
+
+            {/* Property images */}
+            <PropertyImages images={property!.images} />
         </main>
     );
 }

@@ -1,74 +1,5 @@
 import { addProperty } from "@/app/lib/actions"
-
-interface Amenity {
-    id: string,
-    value: string
-}
-
-type AmenitiesType = Array<Amenity>
-
-const Amenities: AmenitiesType = [
-    {
-        id: 'wifi',
-        value: 'WiFi',
-    },
-    {
-        id: 'kitchen',
-        value: 'Full kitchen',
-    },
-    {
-        id: 'washer_dryer',
-        value: 'Washer & Dryer',
-    },
-    {
-        id: 'free_parking',
-        value: 'Free Parking',
-    },
-    {
-        id: 'pool',
-        value: 'Swimming Pool',
-    },
-    {
-        id: 'hot_tub',
-        value: 'Hot Tub',
-    },
-    {
-        id: '24_7_security',
-        value: '24/7 Security',
-    },
-    {
-        id: 'wheelchair_accessible',
-        value: 'Wheelchair Accessible',
-    },
-    {
-        id: 'elevator_access',
-        value: 'Elevator Access',
-    },
-    {
-        id: 'dishwasher',
-        value: 'Dishwasher',
-    },
-    {
-        id: 'gym_fitness_center',
-        value: 'Gym/Fitness Center',
-    },
-    {
-        id: 'air_conditioning',
-        value: 'Air Conditioning',
-    },
-    {
-        id: 'balcony_patio',
-        value: 'Balcony/Patio',
-    },
-    {
-        id: 'smart_tv',
-        value: 'Smart TV',
-    },
-    {
-        id: 'coffee_maker',
-        value: 'Coffee Maker',
-    },
-]
+import { Amenities } from "@/app/data/data";
 
 const AddPropertyForm = () => {
     return (
@@ -316,7 +247,8 @@ const AddPropertyForm = () => {
                     id="seller_phone"
                     name="seller_info.phone"
                     className="border rounded w-full py-2 px-3"
-                    placeholder="Phone"
+                    pattern='[0-9]{10}'
+                    placeholder="1234567890"
                 />
             </div>
 
@@ -339,7 +271,7 @@ const AddPropertyForm = () => {
             {/* Add property button */}
             <div>
                 <button
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline cursor-pointer"
                     type="submit"
                 >
                     Add Property
