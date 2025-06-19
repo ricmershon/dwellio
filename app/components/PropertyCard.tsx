@@ -8,7 +8,7 @@ import {
     FaMapMarkerAlt,
 } from 'react-icons/fa';
 
-import { PropertyInterface } from '@/models/Property';
+import { PropertyInterface } from '@/app/models/property-model';
 
 const PropertyCard = ({ property }: { property: PropertyInterface }) => {
     const getRateDisplay = () => {
@@ -26,7 +26,7 @@ const PropertyCard = ({ property }: { property: PropertyInterface }) => {
     return (
         <div className='rounded-xl shadow-md relative'>
             <Image
-                src={`/images/properties/${property.images[0]}`}
+                src={property.images[0]}
                 alt={property.name}
                 width='0'
                 height='0'

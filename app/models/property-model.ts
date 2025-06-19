@@ -1,8 +1,7 @@
-import { Document, Schema, Types, model, models } from 'mongoose';
-import { UserInterface } from './User';
+import { Document, Schema, model, models } from 'mongoose';
+import { UserInterface } from './user-model';
 
 export interface PropertyInterface extends Document {
-    _id: Types.ObjectId;
     owner: UserInterface;
     name: string;
     type: string;
@@ -28,13 +27,12 @@ export interface PropertyInterface extends Document {
         phone: string
     };
     images: Array<string>;
-    is_featured: boolean;
+    is_featured?: boolean;
     createdAt: Date;
     updatedAt: Date;
 }
 
 const PropertySchema = new Schema({
-    _id: Schema.Types.ObjectId,
     owner: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
     name: { type: String, required: true },
     type: { type: String, required: true },
