@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 import { deleteProperty } from "@/app/lib/actions";
 import { PropertyInterfaceWithId } from "@/app/models/property-model";
@@ -24,6 +25,8 @@ const ProfileProperties = (
             (property) => property._id.toString() !== propertyId
         );
         setProperties(updatedProperties);
+
+        toast.success('Property successfully deleted.')
     }
 
     return (
@@ -54,7 +57,7 @@ const ProfileProperties = (
                                 Edit
                             </Link>
                             <button
-                                className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600"
+                                className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600 cursor-pointer"
                                 type="button"
                                 onClick={() => handleDeleteProperty(propertyId)}
                             >
