@@ -1,12 +1,12 @@
 import Link from 'next/link';
 
-import { PropertyInterface } from '@/app/models/property-model';
+import { PropertyInterfaceWithId } from '@/app/models/property-model';
 import PropertiesList from './PropertiesList';
 import { fetchProperties } from '@/app/lib/data';
 
 const HomePageProperties = async () => {
     // Three most recent properties
-    const recentProperties: Array<PropertyInterface> = await fetchProperties(true);
+    const recentProperties: Array<PropertyInterfaceWithId> = await fetchProperties(true);
 
     return (
         <>

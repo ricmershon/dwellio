@@ -1,4 +1,4 @@
-import { Document, Schema, model, models } from 'mongoose';
+import { Document, Schema, Types, model, models } from 'mongoose';
 import { UserInterface } from './user-model';
 
 export interface PropertyInterface extends Document {
@@ -30,6 +30,10 @@ export interface PropertyInterface extends Document {
     is_featured?: boolean;
     createdAt: Date;
     updatedAt: Date;
+}
+
+export interface PropertyInterfaceWithId extends PropertyInterface {
+    _id: Types.ObjectId
 }
 
 const PropertySchema = new Schema({

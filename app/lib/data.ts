@@ -1,5 +1,6 @@
 import connectDB from "@/app/config/database-config"
-import { Property, PropertyInterface } from "@/app/models/property-model";
+import { Property, PropertyInterface, PropertyInterfaceWithId } from "@/app/models/property-model";
+import { HydratedDocument } from "mongoose";
 
 export const fetchProperties = async (mostRecent: boolean) => {
     try {
@@ -9,7 +10,7 @@ export const fetchProperties = async (mostRecent: boolean) => {
         // console.log('Data received...')
         
         await connectDB();
-        let properties: Array<PropertyInterface> = [];
+        let properties: Array<PropertyInterfaceWithId> = [];
 
         if (mostRecent) {
             properties = await Property.find().sort({ createdAt: -1 }).limit(3);
@@ -24,7 +25,7 @@ export const fetchProperties = async (mostRecent: boolean) => {
 }
 
 export const fetchPropertyById = async (propertyId: string) => {
-    let property: PropertyInterface | null;
+    let property: HydratedDocument<PropertyInterface> | null;
     
     try {
         await connectDB();
@@ -38,4 +39,21 @@ export const fetchPropertyById = async (propertyId: string) => {
     }
 
     return property;
+}
+
+export const fetchPropertiesByUserId = async (userId: string) => {
+    let properties: Array<PropertyInterfaceWithId> | null;
+
+    try {
+        await connectDB();
+        properties = await Property.find({ owner: userId });
+        if (!properties) {
+            console.log('>>> Property not found.')
+        }
+    } catch (error) {
+        console.error('Error finding properties: ', error);
+        throw new Error("Error finding properties");
+    }
+
+    return properties;
 }
