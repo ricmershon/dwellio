@@ -4,12 +4,27 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { PropertyInterfaceWithId } from "../models/property-model";
+import { deleteProperty } from "@/app/lib/actions";
+import { PropertyInterfaceWithId } from "@/app/models/property-model";
 
 const ProfileProperties = (
     { fetchProperties }: { fetchProperties: Array<PropertyInterfaceWithId> }
 ) => {
     const [properties, setProperties] = useState(fetchProperties);
+
+    const handleDeleteProperty = async (propertyId: string) => {
+        const confirmed = window.confirm('Are you sure you want to delete the property?');
+        if (!confirmed) {
+            return
+        }
+
+        await deleteProperty(propertyId);
+
+        const updatedProperties = properties.filter(
+            (property) => property._id.toString() !== propertyId
+        );
+        setProperties(updatedProperties);
+    }
 
     return (
         <>
@@ -41,6 +56,7 @@ const ProfileProperties = (
                             <button
                                 className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600"
                                 type="button"
+                                onClick={() => handleDeleteProperty(propertyId)}
                             >
                                 Delete
                             </button>

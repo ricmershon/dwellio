@@ -25,3 +25,5 @@ export const uploadImages = async (images: Array<File>) => {
     }
     return imageUrls;
 }
+
+export default cloudinary;

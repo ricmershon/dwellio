@@ -4,9 +4,9 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 import connectDB from "@/app/config/database-config";
-import { Property } from "@/app/models/property-model";
+import { Property, PropertyInterfaceWithId } from "@/app/models/property-model";
 import { getSessionUser } from "@/app/utils/get-session-user";
-import { uploadImages } from "./cloudinary";
+import cloudinary, { uploadImages } from "@/app/lib/cloudinary";
 
 export const addProperty = async (formData: FormData) => {
     await connectDB();
@@ -51,4 +51,38 @@ export const addProperty = async (formData: FormData) => {
 
     revalidatePath('/', 'layout');
     redirect(`/properties/${newProprety._id}`);
+}
+
+export const deleteProperty = async (propertyId: string) => {
+    const sessionUser = await getSessionUser();
+    if (!sessionUser || !sessionUser.id) {
+        throw new Error('User ID is required')
+    }
+
+    const property: PropertyInterfaceWithId | null= await Property.findById(propertyId);
+    if (!property) {
+        throw new Error('Property not found');
+    }
+
+    // Verify ownwership
+    if (property.owner.toString() !== sessionUser.id) {
+        throw new Error('Not authorized to delete property')
+    }
+
+    // Extract public ID from image URLs
+    const imagePublicIds = property.images.map((imageUrl) => {
+        const parts = imageUrl.split('/');
+            return parts.at(-1).split('.').at(0);
+    });
+
+    // Delete images from Cloudinary
+    if (imagePublicIds.length > 0) {
+        for (const imagePublicId of imagePublicIds) {
+            await cloudinary.uploader.destroy(`dwellio/${imagePublicId}`)
+        }
+    }
+
+    await property.deleteOne();
+
+    revalidatePath('/', 'layout')
 }

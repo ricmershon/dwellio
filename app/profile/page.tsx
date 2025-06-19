@@ -19,9 +19,7 @@ const ProfilePage = async () => {
      * object. Convert the Mongoose document to a plain object before passing to
      * client component.
      */
-    const plainProperties: Array<PropertyInterfaceWithId> | null = properties
-        ? JSON.parse(JSON.stringify(properties))
-        : null;
+    const plainProperties: Array<PropertyInterfaceWithId> = JSON.parse(JSON.stringify(properties));
         
     return (
         <main>
@@ -53,7 +51,7 @@ const ProfilePage = async () => {
 
                             <div className="md:w-3/4 md:pl-4">
                                 <h2 className="text-xl font-semibold mb-4">Your Listings</h2>
-                                {plainProperties && <ProfileProperties fetchProperties={plainProperties} />}
+                                {<ProfileProperties fetchProperties={plainProperties} />}
                             </div>
                         </div>
                     </div>
