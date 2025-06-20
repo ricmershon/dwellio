@@ -8,6 +8,7 @@ import { ActionState, PropertyInterfaceWithId } from "@/app/lib/definitions";
 import dbConnect from "@/app/config/database-config";
 import { getSessionUser } from "@/app/utils/get-session-user";
 import cloudinary, { uploadImages } from "@/app/lib/cloudinary";
+import { toActionState } from "@/app/utils/to-action-state";
 
 export const addProperty = async (formData: FormData) => {
     await dbConnect();
@@ -57,17 +58,17 @@ export const addProperty = async (formData: FormData) => {
 export const deleteProperty = async (propertyId: string) => {
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
-        return { message: 'User ID is required.', status: 'ERROR' }
+        return toActionState('User ID is required', 'ERROR');
     }
 
     const property: PropertyInterfaceWithId | null = await Property.findById(propertyId);
     if (!property) {
-        return { message: 'Property not found.', status: 'ERROR' }
+        return toActionState('Property not found.', 'ERROR');
     }
 
     // Verify ownwership
     if (property.owner.toString() !== sessionUser.id) {
-        return { message: 'Not authorized to delete property.', status: 'ERROR' }
+        return toActionState('Not authorized to delete peoperty.', 'ERROR');
     }
 
     // Extract public ID from image URLs
@@ -86,7 +87,7 @@ export const deleteProperty = async (propertyId: string) => {
     await property.deleteOne();
 
     revalidatePath('/profile');
-    return { message: 'Property successfully deleted.', status: 'SUCCESS' };
+    return toActionState('Property successfully deleted.', 'SUCCESS');
 }
 
 export const updateProperty = async (
@@ -94,17 +95,17 @@ export const updateProperty = async (
 ): Promise<ActionState> => {
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
-        return { message: 'User ID is required.', status: 'ERROR' }
+        return toActionState('User ID is required.', 'ERROR');
     }
 
     const property: PropertyInterfaceWithId | null = await Property.findById(propertyId);
     if (!property) {
-        return { message: 'Property not found.', status: 'ERROR' }
+        return toActionState('Property not found.', 'ERROR');
     }
 
     // Verify ownwership
     if (property.owner.toString() !== sessionUser.id) {
-        return { message: 'Not authorized to delete property.', status: 'ERROR' }
+        return toActionState('Not authorized to update property.', 'ERROR');
     }
 
     // Extract updated property data and update property

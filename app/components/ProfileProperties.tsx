@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { PropertyInterfaceWithId } from "@/app/lib/definitions";
-import DeletePropertyForm from "./DeletePropertyForm";
+import DeletePropertyForm from "@/app/components/DeletePropertyForm";
 
 const ProfileProperties = (
     { properties }: { properties: Array<PropertyInterfaceWithId> }
