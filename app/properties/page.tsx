@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 
-import { PropertyInterfaceWithId } from "@/app/models/property-model";
+import { PropertyInterfaceWithId } from "@/app/lib/definitions";
 import PropertiesList from "@/app/components/PropertiesList";
 import { fetchProperties } from "@/app/lib/data";
 

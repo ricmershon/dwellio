@@ -3,8 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
+import { Property } from "@/app/models/property-model";
+import { PropertyInterfaceWithId } from "@/app/lib/definitions";
 import connectDB from "@/app/config/database-config";
-import { Property, PropertyInterfaceWithId } from "@/app/models/property-model";
 import { getSessionUser } from "@/app/utils/get-session-user";
 import cloudinary, { uploadImages } from "@/app/lib/cloudinary";
 
@@ -56,23 +57,23 @@ export const addProperty = async (formData: FormData) => {
 export const deleteProperty = async (propertyId: string) => {
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
-        throw new Error('User ID is required')
+        return { message: 'User ID is required.', status: 'ERROR' }
     }
 
-    const property: PropertyInterfaceWithId | null= await Property.findById(propertyId);
+    const property: PropertyInterfaceWithId | null = await Property.findById(propertyId);
     if (!property) {
-        throw new Error('Property not found');
+        return { message: 'Property not found.', status: 'ERROR' }
     }
 
     // Verify ownwership
     if (property.owner.toString() !== sessionUser.id) {
-        throw new Error('Not authorized to delete property')
+        return { message: 'Not authorized to delete property.', status: 'ERROR' }
     }
 
     // Extract public ID from image URLs
     const imagePublicIds = property.images.map((imageUrl) => {
         const parts = imageUrl.split('/');
-            return parts.at(-1).split('.').at(0);
+        return parts.at(-1)!.split('.').at(0);
     });
 
     // Delete images from Cloudinary
@@ -84,5 +85,6 @@ export const deleteProperty = async (propertyId: string) => {
 
     await property.deleteOne();
 
-    revalidatePath('/', 'layout')
+    revalidatePath('/profile');
+    return { message: 'Property successfully deleted.', status: 'SUCCESS' };
 }

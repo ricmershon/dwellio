@@ -1,34 +1,12 @@
-'use client';
-
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { toast } from "react-toastify";
 
-import { deleteProperty } from "@/app/lib/actions";
-import { PropertyInterfaceWithId } from "@/app/models/property-model";
+import { PropertyInterfaceWithId } from "@/app/lib/definitions";
+import DeletePropertyForm from "./DeletePropertyForm";
 
 const ProfileProperties = (
-    { fetchProperties }: { fetchProperties: Array<PropertyInterfaceWithId> }
+    { properties }: { properties: Array<PropertyInterfaceWithId> }
 ) => {
-    const [properties, setProperties] = useState(fetchProperties);
-
-    const handleDeleteProperty = async (propertyId: string) => {
-        const confirmed = window.confirm('Are you sure you want to delete the property?');
-        if (!confirmed) {
-            return
-        }
-
-        await deleteProperty(propertyId);
-
-        const updatedProperties = properties.filter(
-            (property) => property._id.toString() !== propertyId
-        );
-        setProperties(updatedProperties);
-
-        toast.success('Property successfully deleted.')
-    }
-
     return (
         <>
             {properties.length !== 0 && properties.map((property) => {
@@ -56,13 +34,7 @@ const ProfileProperties = (
                             >
                                 Edit
                             </Link>
-                            <button
-                                className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600 cursor-pointer"
-                                type="button"
-                                onClick={() => handleDeleteProperty(propertyId)}
-                            >
-                                Delete
-                            </button>
+                            <DeletePropertyForm propertyId={propertyId} />
                         </div>
                     </div>
                 )

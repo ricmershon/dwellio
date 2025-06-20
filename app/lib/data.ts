@@ -1,5 +1,6 @@
 import connectDB from "@/app/config/database-config"
-import { Property, PropertyInterface, PropertyInterfaceWithId } from "@/app/models/property-model";
+import { Property } from "@/app/models/property-model";
+import { PropertyInterface, PropertyInterfaceWithId } from "@/app/lib/definitions";
 import { HydratedDocument } from "mongoose";
 
 export const fetchProperties = async (mostRecent: boolean) => {

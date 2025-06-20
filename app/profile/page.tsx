@@ -4,7 +4,7 @@ import profileDefaultImage from '@/assets/images/profile.png';
 import { getSessionUser } from "@/app/utils/get-session-user";
 import { fetchPropertiesByUserId } from "@/app/lib/data";
 import ProfileProperties from "@/app/components/ProfileProperties";
-import { PropertyInterfaceWithId } from "@/app/models/property-model";
+import { PropertyInterfaceWithId } from "@/app/lib/definitions";
 
 const ProfilePage = async () => {
     const sessionUser = await getSessionUser();
@@ -51,7 +51,7 @@ const ProfilePage = async () => {
 
                             <div className="md:w-3/4 md:pl-4">
                                 <h2 className="text-xl font-semibold mb-4">Your Listings</h2>
-                                {<ProfileProperties fetchProperties={plainProperties} />}
+                                {<ProfileProperties properties={plainProperties} />}
                             </div>
                         </div>
                     </div>
