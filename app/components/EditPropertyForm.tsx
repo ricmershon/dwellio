@@ -1,17 +1,25 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+'use client';
+
+import { useActionState } from "react";
+
 import { Amenities } from "../data/data";
 
-import { PropertyInterfaceWithId } from "@/app/lib/definitions";
+import { ActionState, PropertyInterfaceWithId } from "@/app/lib/definitions";
+import { updateProperty } from "@/app/lib/actions";
 
 
 const EditPropertyForm = ({ property }: { property: PropertyInterfaceWithId}) => {
+    const initialState: ActionState = { message: null, status: null };
+    const updatePropertyById = updateProperty.bind(null, property._id.toString());
+    const [_state, formAction] = useActionState(updatePropertyById, initialState);
+
     const { street, city, state, zipcode } = property.location;
     const { weekly, monthly, nightly } = property.rates;
     const { name, email, phone } = property.seller_info;
 
-    console.log(property);
-
     return (
-        <form>
+        <form action={formAction}>
             <h2 className="text-3xl text-center font-semibold mb-6">
                 Edit Property
             </h2>

@@ -40,3 +40,8 @@ export interface UserInterface extends Document {
     image: string;
     bookmarks: Array<PropertyInterface>
 }
+
+export type ActionState = {
+    message?: string | null;
+    status?: 'SUCCESS' | 'ERROR' | null
+}
