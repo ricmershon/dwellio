@@ -1,4 +1,4 @@
-import connectDB from "@/app/config/database-config"
+import dbConnect from "@/app/config/database-config"
 import { Property } from "@/app/models/property-model";
 import { PropertyInterface, PropertyInterfaceWithId } from "@/app/lib/definitions";
 import { HydratedDocument } from "mongoose";
@@ -10,7 +10,7 @@ export const fetchProperties = async (mostRecent: boolean) => {
         // await new Promise((resolve) => setTimeout(resolve, 3000));
         // console.log('Data received...')
         
-        await connectDB();
+        await dbConnect();
         let properties: Array<PropertyInterfaceWithId> = [];
 
         if (mostRecent) {
@@ -29,7 +29,7 @@ export const fetchPropertyById = async (propertyId: string) => {
     let property: HydratedDocument<PropertyInterface> | null;
     
     try {
-        await connectDB();
+        await dbConnect();
         property = await Property.findById(propertyId);
         if (!property) {
             console.log('>>> Property not found.')
@@ -46,7 +46,7 @@ export const fetchPropertiesByUserId = async (userId: string) => {
     let properties: Array<PropertyInterfaceWithId> | null;
 
     try {
-        await connectDB();
+        await dbConnect();
         properties = await Property.find({ owner: userId });
         if (!properties) {
             console.log('>>> Property not found.')

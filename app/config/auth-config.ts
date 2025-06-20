@@ -1,7 +1,7 @@
 import GoogleProvider from "next-auth/providers/google";
 import type { Profile } from 'next-auth';
 
-import connectDB from "@/app/config/database-config";
+import dbConnect from "@/app/config/database-config";
 import { User } from "@/app/models/user-model";
 
 interface DwellioSession {
@@ -36,7 +36,7 @@ export const authConfig = {
         // Invoked on successful sign in
         async signIn({ profile }: { profile: GoogleProfile}) {
             // Connect to database
-            await connectDB();
+            await dbConnect();
             const user  = await User.findOne({ email: profile.email })
 
             // Check if user exists, if not create user

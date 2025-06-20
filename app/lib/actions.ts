@@ -5,12 +5,12 @@ import { redirect } from "next/navigation";
 
 import { Property } from "@/app/models/property-model";
 import { PropertyInterfaceWithId } from "@/app/lib/definitions";
-import connectDB from "@/app/config/database-config";
+import dbConnect from "@/app/config/database-config";
 import { getSessionUser } from "@/app/utils/get-session-user";
 import cloudinary, { uploadImages } from "@/app/lib/cloudinary";
 
 export const addProperty = async (formData: FormData) => {
-    await connectDB();
+    await dbConnect();
 
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {

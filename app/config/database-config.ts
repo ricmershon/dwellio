@@ -2,7 +2,8 @@ import mongoose from "mongoose";
 
 let connected = false;
 
-const connectDB = async () => {
+// TODO: Research better way to persist db connection
+const dbConnect = async () => {
     mongoose.set('strictQuery', true);
 
     // If database already connected then don't connect again
@@ -12,13 +13,7 @@ const connectDB = async () => {
     }
 
     try {
-        const database = `mongodb+srv://${
-            process.env.MONGODB_USER
-        }:${
-            process.env.MONGODB_PASSWORD
-        }@cluster1.xc2q6sx.mongodb.net/${
-            process.env.MONGODB_NAME
-        }?retryWrites=true&w=majority&appName=Cluster1`;
+        const database = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster1.xc2q6sx.mongodb.net/${process.env.MONGODB_NAME}?retryWrites=true&w=majority&appName=Cluster1`;
         
         await mongoose.connect(database)
         connected = true;
@@ -28,4 +23,4 @@ const connectDB = async () => {
     }
 }
 
-export default connectDB;
+export default dbConnect;
