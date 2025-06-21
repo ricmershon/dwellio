@@ -5,6 +5,9 @@ import { fetchPropertyById } from "@/app/lib/data";
 import PropertyHeaderImage from "@/app/components/PropertyHeaderImage";
 import PropertyDetails from '@/app/components/PropertyDetails';
 import PropertyImages from "@/app/components/PropertyImages";
+import BookmarkButton from "@/app/components/BookmarkButton";
+import ShareButtons from "@/app/components/ShareButtons";
+import PropertyContactForm from "@/app/components/PropertyContactForm";
 
 const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
@@ -31,6 +34,11 @@ const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) =>
                 <div className="container m-auto py-10 px-6">
                     <div className="grid grid-cols-1 md:grid-cols-70/30 w-full gap-6">
                         <PropertyDetails property={property!}/>
+                        <aside className="space-y-4">
+                            <BookmarkButton property={property} />
+                            <ShareButtons property={property} />
+                            <PropertyContactForm property={property} />
+                        </aside>
                     </div>
                 </div>
             </section>

@@ -9,7 +9,7 @@ import { ActionState, PropertyInterfaceWithId } from "@/app/lib/definitions";
 import { updateProperty } from "@/app/lib/actions";
 
 
-const EditPropertyForm = ({ property }: { property: PropertyInterfaceWithId}) => {
+const EditPropertyForm = ({ property }: { property: PropertyInterfaceWithId }) => {
     const initialState: ActionState = { message: null, status: null };
     const updatePropertyById = updateProperty.bind(null, property._id.toString());
     const [_state, formAction] = useActionState(updatePropertyById, initialState);
