@@ -5,8 +5,9 @@ import { PropertyInterfaceWithId } from "@/app/lib/definitions";
 const EditPropertyPage = async ( { params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
 
+    // TODO: use better procedure for serializing objects
     const property = (await fetchPropertyById(id) as PropertyInterfaceWithId);
-        const plainProperty: PropertyInterfaceWithId = JSON.parse(JSON.stringify(property));
+    const plainProperty: PropertyInterfaceWithId = JSON.parse(JSON.stringify(property));
 
     // Serialize?
 
