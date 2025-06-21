@@ -2,13 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { setDefaults, fromAddress, OutputFormat } from "react-geocode";
+import Map, { Marker } from "react-map-gl/mapbox";
+import Image from 'next/image';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 import { PropertyInterface } from "@/app/lib/definitions";
+import Spinner from "@/app/components/Spinner";
+import pin from '@/assets/images/pin.svg';
 
-// TODO: Use google maps
+// TODO: Use google maps?
 const PropertyMap = ({ property }: { property: PropertyInterface}) => {
-    const [latitude, setLatitude] = useState<number | null>(null);
-    const [longitude, setLongitude] = useState<number | null>(null);
+    const [latitude, setLatitude] = useState<number | undefined>(undefined);
+    const [longitude, setLongitude] = useState<number | undefined>(undefined);
     const [viewport, setViewport] = useState({
         latitude: 0,
         longitude: 0,
@@ -57,8 +62,33 @@ const PropertyMap = ({ property }: { property: PropertyInterface}) => {
         fetchCoordinates();
     }, [city, state, street, viewport, zipcode, latitude, longitude, ]);
 
+    if (geocodeError) {
+        return (
+            <div className="text xl">No location data found.</div>
+        )
+    }
     return (
-        <div>Property Map</div>
+        <>
+            {!loading ? (
+                <Map
+                    mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+                    mapLib={import('mapbox-gl')}
+                    initialViewState={{
+                        longitude: longitude,
+                        latitude: latitude,
+                        zoom: 15
+                    }}
+                    style={{ width: '100%', height: 500 }}
+                    mapStyle='mapbox://styles/mapbox/streets-v9'
+                >
+                    <Marker longitude={longitude!} latitude={latitude!} anchor="bottom">
+                        <Image src={pin} alt='location' width={40} height={40} />
+                    </Marker>
+                </Map>
+            ) : (
+                <Spinner />
+            )}
+        </>
     );
 }
  
