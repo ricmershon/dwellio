@@ -1,5 +1,5 @@
-import Property, { PropertyInterface, PropertyInterfaceWithId} from "@/app/models/property-model";
+import Property, { PropertyInterface } from "@/app/models/property-model";
 import User, { UserInterface} from "@/app/models/user-model";
 
 export { Property, User };
-export type { PropertyInterface, PropertyInterfaceWithId, UserInterface }
+export type { PropertyInterface, UserInterface }

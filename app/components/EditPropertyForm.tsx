@@ -6,11 +6,11 @@ import { useActionState } from "react";
 import { Amenities } from "../data/data";
 
 import { ActionState } from "@/app/lib/definitions";
-import type { PropertyInterfaceWithId } from "../models";
+import type { PropertyInterface } from "../models";
 import { updateProperty } from "@/app/lib/actions";
 
 
-const EditPropertyForm = ({ property }: { property: PropertyInterfaceWithId }) => {
+const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
     const initialState: ActionState = { message: null, status: null };
     const updatePropertyById = updateProperty.bind(null, property._id.toString());
     const [_state, formAction] = useActionState(updatePropertyById, initialState);

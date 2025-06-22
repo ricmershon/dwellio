@@ -4,7 +4,7 @@ import profileDefaultImage from '@/assets/images/profile.png';
 import { getSessionUser } from "@/app/utils/get-session-user";
 import { fetchPropertiesByUserId } from "@/app/lib/data";
 import ProfileProperties from "@/app/components/ProfileProperties";
-import { PropertyInterfaceWithId } from "@/app/models";
+import { PropertyInterface } from "@/app/models";
 
 const ProfilePage = async () => {
     const sessionUser = await getSessionUser();
@@ -19,7 +19,7 @@ const ProfilePage = async () => {
      * object. Convert the Mongoose document to a plain object before passing to
      * client component.
      */
-    const plainProperties: Array<PropertyInterfaceWithId> = JSON.parse(JSON.stringify(properties));
+    const plainProperties: Array<PropertyInterface> = JSON.parse(JSON.stringify(properties));
         
     return (
         <main>

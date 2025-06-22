@@ -1,7 +1,7 @@
-import { PropertyInterfaceWithId } from "@/app/models";
+import { PropertyInterface } from "@/app/models";
 import PropertyCard from "@/app/components/PropertyCard";
 
-const PropertiesList = ({ properties }: { properties: Array<PropertyInterfaceWithId>}) => (
+const PropertiesList = ({ properties }: { properties: Array<PropertyInterface>}) => (
     <section className='px-4 py-6'>
         <div className='container-xl lg:container m-auto px-4 py-6'>
             <h2 className="text-3xl font-bold text-blue-500 mb-6 text-center">

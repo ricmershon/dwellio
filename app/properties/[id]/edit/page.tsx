@@ -1,13 +1,13 @@
 import EditPropertyForm from "@/app/components/EditPropertyForm";
 import { fetchPropertyById } from "@/app/lib/data";
-import { PropertyInterfaceWithId } from "@/app/models";
+import { PropertyInterface } from "@/app/models";
 
 const EditPropertyPage = async ( { params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
 
     // TODO: use better procedure for serializing objects
-    const property = (await fetchPropertyById(id) as PropertyInterfaceWithId);
-    const plainProperty: PropertyInterfaceWithId = JSON.parse(JSON.stringify(property));
+    const property = (await fetchPropertyById(id) as PropertyInterface);
+    const plainProperty: PropertyInterface = JSON.parse(JSON.stringify(property));
 
     // Serialize?
 

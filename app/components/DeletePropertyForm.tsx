@@ -10,15 +10,15 @@ const DeletePropertyForm = ({ propertyId }: { propertyId: string }) => {
         const result = await deletePropertyById();
         if (result.message) {
             if (result.status === 'SUCCESS') {
-                toast.success(result.message);
+                toast.success(result.message, { position: 'bottom-right' });
             } else if (result.status === 'ERROR') {
-                toast.error(result.message);
+                toast.error(result.message, { position: 'bottom-right' });
             }
         }
     }
     
     return (
-        <form action={deletePropertyAction}>
+        <form action={deletePropertyAction} className="inline-block">
             <button
                 className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600 cursor-pointer"
                 type="submit"

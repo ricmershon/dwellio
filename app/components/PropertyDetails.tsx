@@ -1,13 +1,13 @@
 import { FaTimes, FaBed, FaBath, FaRulerCombined, FaCheck, FaMapMarkerAlt } from "react-icons/fa";
 
-import { PropertyInterface, PropertyInterfaceWithId } from "@/app/models";
+import { PropertyInterface } from "@/app/models";
 import PropertyMap from "./PropertyMap";
 
 const PropertyDetails = ({ property }: { property: PropertyInterface }) => {
     const { street, city, state, zipcode } = property.location;
     const { rates } = property;
 
-    const plainProperty: PropertyInterfaceWithId = JSON.parse(JSON.stringify(property));
+    const plainProperty: PropertyInterface = JSON.parse(JSON.stringify(property));
     
     return (
         <div>

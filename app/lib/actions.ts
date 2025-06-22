@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { Property, PropertyInterfaceWithId } from "@/app/models";
+import { Property, PropertyInterface } from "@/app/models";
 import { ActionState } from "@/app/lib/definitions";
 import dbConnect from "@/app/config/database-config";
 import { getSessionUser } from "@/app/utils/get-session-user";
@@ -56,12 +56,14 @@ export const addProperty = async (formData: FormData) => {
 }
 
 export const deleteProperty = async (propertyId: string) => {
+    await dbConnect();
+
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
         return toActionState('User ID is required', 'ERROR');
     }
 
-    const property: PropertyInterfaceWithId | null = await Property.findById(propertyId);
+    const property: PropertyInterface | null = await Property.findById(propertyId);
     if (!property) {
         return toActionState('Property not found.', 'ERROR');
     }
@@ -93,6 +95,7 @@ export const deleteProperty = async (propertyId: string) => {
 export const updateProperty = async (
     propertyId: string, _prevState: ActionState, formData: FormData
 ): Promise<ActionState> => {
+    await dbConnect();
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
         return toActionState('User ID is required.', 'ERROR');
