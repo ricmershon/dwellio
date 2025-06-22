@@ -11,7 +11,7 @@ const PropertiesList = ({ properties }: { properties: Array<PropertyInterface>})
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {properties.map((property) => (
                         <PropertyCard
-                            key={property._id.toString()}
+                            key={(property._id as string).toString()}
                             property={property}
                         />
                     ))}

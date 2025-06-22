@@ -5,13 +5,14 @@ import { fetchPropertyById } from "@/app/lib/data";
 import PropertyHeaderImage from "@/app/components/PropertyHeaderImage";
 import PropertyDetails from '@/app/components/PropertyDetails';
 import PropertyImages from "@/app/components/PropertyImages";
-import BookmarkButton from "@/app/components/BookmarkButton";
+import BookmarkPropertyButton from "@/app/components/BookmarkPropertyButton";
 import ShareButtons from "@/app/components/ShareButtons";
 import PropertyContactForm from "@/app/components/PropertyContactForm";
+import { Types } from "mongoose";
 
 const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
-    const property = await fetchPropertyById(id)!;
+    const property = await fetchPropertyById(id);
 
     return (
         <main>
@@ -35,7 +36,7 @@ const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) =>
                     <div className="grid grid-cols-1 md:grid-cols-70/30 w-full gap-6">
                         <PropertyDetails property={property!}/>
                         <aside className="space-y-4">
-                            <BookmarkButton property={property} />
+                            <BookmarkPropertyButton propertyId={(property!._id as Types.ObjectId).toString()} />
                             <ShareButtons property={property} />
                             <PropertyContactForm property={property} />
                         </aside>

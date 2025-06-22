@@ -1,24 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { PropertyInterfaceWithId } from "@/app/models";
-import DeletePropertyForm from "@/app/components/DeletePropertyForm";
+import { PropertyInterface } from "@/app/models";
+import DeletePropertyButton from "@/app/components/DeletePropertyButton";
 
 const ProfileProperties = (
-    { properties }: { properties: Array<PropertyInterfaceWithId> }
+    { properties }: { properties: Array<PropertyInterface> }
 ) => {
     return (
         <>
             {properties.length !== 0 && properties.map((property) => {
                 const { street, city, state } = property.location;
-                const propertyId = property._id.toString();
+                const propertyId = (property._id as string).toString();
                 return (
                     <div key={propertyId} className="mb-10">
                         <Link href={`/properties/${propertyId}`}>
                             <Image
                                 className="h-32 w-full rounded-md object-cover"
                                 src={property.images[0]}
-                                alt="Property 1"
+                                alt={propertyId}
                                 width={400}
                                 height={400}
                             />
@@ -34,7 +34,7 @@ const ProfileProperties = (
                             >
                                 Edit
                             </Link>
-                            <DeletePropertyForm propertyId={propertyId} />
+                            <DeletePropertyButton propertyId={propertyId} />
                         </div>
                     </div>
                 )

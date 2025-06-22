@@ -1,9 +1,7 @@
-import { Document, Schema, model, models } from 'mongoose';
-
-import { UserInterface } from './user-model';
+import { Document, Schema, Types, model, models } from 'mongoose';
 
 export interface PropertyInterface extends Document {
-    owner: UserInterface;
+    owner: Types.ObjectId;
     name: string;
     type: string;
     description?: string;

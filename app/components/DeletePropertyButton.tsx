@@ -1,9 +1,10 @@
 'use client';
 
-import { deleteProperty } from "@/app/lib/actions";
 import { toast } from "react-toastify";
 
-const DeletePropertyForm = ({ propertyId }: { propertyId: string }) => {
+import { deleteProperty } from "@/app/lib/actions";
+
+const DeletePropertyButton = ({ propertyId }: { propertyId: string }) => {
     const deletePropertyById = deleteProperty.bind(null, propertyId);
     
     const deletePropertyAction = async () => {
@@ -29,4 +30,4 @@ const DeletePropertyForm = ({ propertyId }: { propertyId: string }) => {
     );
 }
  
-export default DeletePropertyForm;
+export default DeletePropertyButton;
