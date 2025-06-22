@@ -5,7 +5,8 @@ import { useActionState } from "react";
 
 import { Amenities } from "../data/data";
 
-import { ActionState, PropertyInterfaceWithId } from "@/app/lib/definitions";
+import { ActionState } from "@/app/lib/definitions";
+import type { PropertyInterfaceWithId } from "../models";
 import { updateProperty } from "@/app/lib/actions";
 
 

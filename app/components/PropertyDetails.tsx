@@ -1,6 +1,6 @@
 import { FaTimes, FaBed, FaBath, FaRulerCombined, FaCheck, FaMapMarkerAlt } from "react-icons/fa";
 
-import { PropertyInterface, PropertyInterfaceWithId } from "@/app/lib/definitions";
+import { PropertyInterface, PropertyInterfaceWithId } from "@/app/models";
 import PropertyMap from "./PropertyMap";
 
 const PropertyDetails = ({ property }: { property: PropertyInterface }) => {

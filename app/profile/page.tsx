@@ -4,7 +4,7 @@ import profileDefaultImage from '@/assets/images/profile.png';
 import { getSessionUser } from "@/app/utils/get-session-user";
 import { fetchPropertiesByUserId } from "@/app/lib/data";
 import ProfileProperties from "@/app/components/ProfileProperties";
-import { PropertyInterfaceWithId } from "@/app/lib/definitions";
+import { PropertyInterfaceWithId } from "@/app/models";
 
 const ProfilePage = async () => {
     const sessionUser = await getSessionUser();

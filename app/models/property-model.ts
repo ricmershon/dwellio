@@ -1,6 +1,41 @@
-import { Schema, model, models } from 'mongoose';
+import { Document, Schema, Types, model, models } from 'mongoose';
 
-import { PropertyInterface } from '@/app/lib/definitions';
+import { UserInterface } from './user-model';
+
+export interface PropertyInterface extends Document {
+    owner: UserInterface;
+    name: string;
+    type: string;
+    description?: string;
+    location: {
+        street: string;
+        city: string;
+        state: string;
+        zipcode: string
+    };
+    beds: number;
+    baths: number;
+    square_feet: number;
+    amenities?: Array<string>;
+    rates: {
+        nightly?: number;
+        weekly?: number;
+        monthly?: number
+    };
+    seller_info: {
+        name: string;
+        email: string;
+        phone: string
+    };
+    images: Array<string>;
+    is_featured?: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface PropertyInterfaceWithId extends PropertyInterface {
+    _id: Types.ObjectId
+}
 
 const PropertySchema = new Schema({
     owner: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
@@ -33,6 +68,5 @@ const PropertySchema = new Schema({
     timestamps: true
 });
 
-// export const Property = models.Property || model('Property', PropertySchema);
-
-export const Property = models.Property || model<PropertyInterface>('Property', PropertySchema);
+const Property = models.Property || model<PropertyInterface>('Property', PropertySchema);
+export default Property;

@@ -1,6 +1,12 @@
-import { Schema, model, models } from 'mongoose';
+import { Document, Schema, model, models } from 'mongoose';
+import { PropertyInterface } from './property-model';
 
-import { UserInterface } from '@/app/lib/definitions';
+export interface UserInterface extends Document {
+    username: string;
+    email: string;
+    image: string;
+    bookmarks: Array<PropertyInterface>
+}
 
 const UserSchema = new Schema({
     username: { type: String, required: [true, 'Username is required'], unique: true },
@@ -15,6 +21,5 @@ const UserSchema = new Schema({
     timestamps: true
 });
 
-// export const User = models.User || model('User', userSchema);
-
-export const User = models.User || model<UserInterface>('User', UserSchema);
+const User = models.User || model<UserInterface>('User', UserSchema);
+export default User;

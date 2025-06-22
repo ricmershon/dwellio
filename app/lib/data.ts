@@ -1,6 +1,5 @@
 import dbConnect from "@/app/config/database-config"
-import { Property } from "@/app/models/property-model";
-import { PropertyInterface, PropertyInterfaceWithId } from "@/app/lib/definitions";
+import { Property, PropertyInterface } from "@/app/models";
 import { HydratedDocument } from "mongoose";
 
 export const fetchProperties = async (mostRecent: boolean) => {
@@ -11,7 +10,7 @@ export const fetchProperties = async (mostRecent: boolean) => {
         // console.log('Data received...')
         
         await dbConnect();
-        let properties: Array<PropertyInterfaceWithId> = [];
+        let properties;
 
         if (mostRecent) {
             properties = await Property.find().sort({ createdAt: -1 }).limit(3);
@@ -43,7 +42,7 @@ export const fetchPropertyById = async (propertyId: string) => {
 }
 
 export const fetchPropertiesByUserId = async (userId: string) => {
-    let properties: Array<PropertyInterfaceWithId> | null;
+    let properties;
 
     try {
         await dbConnect();

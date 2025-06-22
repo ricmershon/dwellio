@@ -6,7 +6,7 @@ import Map, { Marker } from "react-map-gl/mapbox";
 import Image from 'next/image';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-import { PropertyInterface } from "@/app/lib/definitions";
+import { PropertyInterface } from "@/app/models";
 import Spinner from "@/app/components/Spinner";
 import pin from '@/assets/images/pin.svg';
 

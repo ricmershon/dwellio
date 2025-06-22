@@ -3,8 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-import { Property } from "@/app/models/property-model";
-import { ActionState, PropertyInterfaceWithId } from "@/app/lib/definitions";
+import { Property, PropertyInterfaceWithId } from "@/app/models";
+import { ActionState } from "@/app/lib/definitions";
 import dbConnect from "@/app/config/database-config";
 import { getSessionUser } from "@/app/utils/get-session-user";
 import cloudinary, { uploadImages } from "@/app/lib/cloudinary";
@@ -98,7 +98,7 @@ export const updateProperty = async (
         return toActionState('User ID is required.', 'ERROR');
     }
 
-    const property: PropertyInterfaceWithId | null = await Property.findById(propertyId);
+    const property = await Property.findById(propertyId);
     if (!property) {
         return toActionState('Property not found.', 'ERROR');
     }

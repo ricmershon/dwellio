@@ -1,6 +1,6 @@
 import EditPropertyForm from "@/app/components/EditPropertyForm";
 import { fetchPropertyById } from "@/app/lib/data";
-import { PropertyInterfaceWithId } from "@/app/lib/definitions";
+import { PropertyInterfaceWithId } from "@/app/models";
 
 const EditPropertyPage = async ( { params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;

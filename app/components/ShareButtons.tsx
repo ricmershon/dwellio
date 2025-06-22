@@ -1,6 +1,6 @@
 import { FaShare } from "react-icons/fa";
 
-import { PropertyInterfaceWithId } from "@/app/lib/definitions";
+import { PropertyInterfaceWithId } from "@/app/models";
 
 const ShareButtons = ({ property }: { property: PropertyInterfaceWithId}) => {
     return (

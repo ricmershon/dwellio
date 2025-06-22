@@ -1,6 +1,6 @@
 import { FaPlane } from "react-icons/fa";
 
-import { PropertyInterfaceWithId } from "@/app/lib/definitions";
+import { PropertyInterfaceWithId } from "@/app/models";
 
 const PropertyContactForm = ({ property }: { property: PropertyInterfaceWithId}) => {
     return (

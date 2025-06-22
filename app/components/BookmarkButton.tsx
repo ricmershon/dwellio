@@ -1,6 +1,6 @@
 import { FaBookmark } from "react-icons/fa";
 
-import { PropertyInterfaceWithId } from "@/app/lib/definitions";
+import type { PropertyInterfaceWithId } from "@/app/models";
 
 const BookmarkButton = ({ property }: { property: PropertyInterfaceWithId}) => {
     return (
