@@ -25,7 +25,9 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                     <NavBar />
                         {children}
                     <Footer />
-                    <ToastContainer />
+                    <ToastContainer
+                        position='top-right'
+                    />
                 </body>
             </html>
         </AuthProvider>

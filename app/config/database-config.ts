@@ -19,7 +19,7 @@ const dbConnect = async () => {
         connected = true;
         console.log('>>> Connected to database:\n', database);
     } catch (error) {
-        console.log('>>> Error connecting to database:\n ', error);
+        throw new Error(`>>> Error connecting to database: ${error}`)
     }
 }
 

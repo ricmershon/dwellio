@@ -21,7 +21,7 @@ const PropertyMap = ({ property }: { property: PropertyInterface}) => {
         width: '100%',
         height: '500px'
     });
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const [geocodeError, setGeocodeError] = useState(false);
 
     setDefaults({
@@ -53,9 +53,9 @@ const PropertyMap = ({ property }: { property: PropertyInterface}) => {
                 })
             } catch (error) {
                 setGeocodeError(true);
-                console.log('Error fetching coordinates.', error);
+                console.error(`Error fetching coordinates: ${error}`);
             } finally {
-                setLoading(false);
+                setIsLoading(false);
             }
         }
 
@@ -67,9 +67,10 @@ const PropertyMap = ({ property }: { property: PropertyInterface}) => {
             <div className="text xl">No location data found.</div>
         )
     }
+
     return (
         <>
-            {!loading ? (
+            {!isLoading ? (
                 <Map
                     mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
                     mapLib={import('mapbox-gl')}

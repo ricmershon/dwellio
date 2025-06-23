@@ -9,7 +9,7 @@ import { PropertyInterface } from "@/app/models";
 const ProfilePage = async () => {
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
-        throw new Error('User ID is required')
+        throw new Error('User ID is required.')
     }
 
     const properties = await fetchPropertiesByUserId(sessionUser.id);

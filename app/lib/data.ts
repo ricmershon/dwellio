@@ -1,6 +1,7 @@
+import { HydratedDocument } from "mongoose";
+
 import dbConnect from "@/app/config/database-config"
 import { Property, PropertyInterface } from "@/app/models";
-import { HydratedDocument } from "mongoose";
 
 export const fetchProperties = async (mostRecent: boolean) => {
     try {
@@ -19,8 +20,7 @@ export const fetchProperties = async (mostRecent: boolean) => {
         }
         return properties;
     } catch (error) {
-        console.error('Database Error: ', error);
-        throw new Error('Failed to fetch property data.')
+        throw new Error(`Failed to fetch property data: ${error}`)
     }
 }
 
@@ -31,11 +31,10 @@ export const fetchPropertyById = async (propertyId: string) => {
         await dbConnect();
         property = await Property.findById(propertyId);
         if (!property) {
-            console.log('>>> Property not found.')
+            console.error('>>> Property not found.')
         }
     } catch (error) {
-        console.error('Error finding property: ', error);
-        throw new Error("Error finding property");
+        throw new Error(`Error finding property: ${error}`);
     }
 
     return property;
@@ -51,8 +50,7 @@ export const fetchPropertiesByUserId = async (userId: string) => {
             console.log('>>> Property not found.')
         }
     } catch (error) {
-        console.error('Error finding properties: ', error);
-        throw new Error("Error finding properties");
+        throw new Error(`Error finding properties: ${error}`);
     }
 
     return properties;
