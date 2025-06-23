@@ -1,7 +1,7 @@
 import { HydratedDocument } from "mongoose";
 
 import dbConnect from "@/app/config/database-config"
-import { Property, PropertyInterface } from "@/app/models";
+import { Property, PropertyInterface, User, UserInterface } from "@/app/models";
 
 export const fetchProperties = async (mostRecent: boolean) => {
     try {
@@ -54,4 +54,17 @@ export const fetchPropertiesByUserId = async (userId: string) => {
     }
 
     return properties;
+}
+
+export const getSavedProperties = async (userId: string) => {
+    let user: UserInterface;
+
+    try {
+        user = await User.findById(userId).populate('bookmarks');
+    } catch (error) {
+        throw new Error(`Error finding saved properties: ${error}`);
+    }
+
+    const bookmarks: Array<PropertyInterface> = user.bookmarks;
+    return bookmarks;
 }

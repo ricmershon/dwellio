@@ -1,10 +1,11 @@
 import { Document, Schema, Types, model, models } from 'mongoose';
+import { PropertyInterface } from './property-model';
 
 export interface UserInterface extends Document {
     username: string;
     email: string;
     image: string;
-    bookmarks: Array<Types.ObjectId>
+    bookmarks: Array<Types.ObjectId> & Array<PropertyInterface>
 }
 
 const UserSchema = new Schema({
