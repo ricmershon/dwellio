@@ -62,7 +62,7 @@ export const getSavedProperties = async (userId: string) => {
     try {
         user = await User.findById(userId).populate('bookmarks');
     } catch (error) {
-        throw new Error(`Error finding saved properties: ${error}`);
+        throw new Error(`Error finding bookmarked properties: ${error}`);
     }
 
     const bookmarks: Array<PropertyInterface> = user.bookmarks;

@@ -207,7 +207,7 @@ export const bookmarkProperty = async (propertyId: string) => {
         throw new Error(`Error updating user: ${error}`);
     }
 
-    revalidatePath('/properties/saved', 'page');
+    revalidatePath('/properties/bookmarked', 'page');
 
     return actionState;
 }

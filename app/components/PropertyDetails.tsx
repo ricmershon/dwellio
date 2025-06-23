@@ -3,9 +3,7 @@ import { FaTimes, FaBed, FaBath, FaRulerCombined, FaCheck, FaMapMarkerAlt } from
 import { PropertyInterface } from "@/app/models";
 // import PropertyMap from "./PropertyMap";
 
-const PropertyDetails = ({ propertyDoc }: { propertyDoc: PropertyInterface }) => {
-    const property: PropertyInterface = JSON.parse(JSON.stringify(propertyDoc));
-
+const PropertyDetails = ({ property }: { property: PropertyInterface }) => {
     const { street, city, state, zipcode } = property.location;
     const { rates } = property;
     
