@@ -5,13 +5,14 @@ import { useActionState } from "react";
 
 import { Amenities } from "../data/data";
 
-import { ActionState, PropertyInterfaceWithId } from "@/app/lib/definitions";
+import { ActionState } from "@/app/lib/definitions";
+import type { PropertyInterface } from "../models";
 import { updateProperty } from "@/app/lib/actions";
 
 
-const EditPropertyForm = ({ property }: { property: PropertyInterfaceWithId}) => {
-    const initialState: ActionState = { message: null, status: null };
-    const updatePropertyById = updateProperty.bind(null, property._id.toString());
+const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
+    const initialState: ActionState = {};
+    const updatePropertyById = updateProperty.bind(null, (property._id as string).toString());
     const [_state, formAction] = useActionState(updatePropertyById, initialState);
 
     const { street, city, state, zipcode } = property.location;

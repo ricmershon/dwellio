@@ -4,22 +4,15 @@ import profileDefaultImage from '@/assets/images/profile.png';
 import { getSessionUser } from "@/app/utils/get-session-user";
 import { fetchPropertiesByUserId } from "@/app/lib/data";
 import ProfileProperties from "@/app/components/ProfileProperties";
-import { PropertyInterfaceWithId } from "@/app/lib/definitions";
+import { PropertyInterface } from "@/app/models";
 
 const ProfilePage = async () => {
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
-        throw new Error('User ID is required')
+        throw new Error('User ID is required.')
     }
 
-    const properties = await fetchPropertiesByUserId(sessionUser.id);
-
-    /**
-     * An object passed from a server component to a client component must be a plain
-     * object. Convert the Mongoose document to a plain object before passing to
-     * client component.
-     */
-    const plainProperties: Array<PropertyInterfaceWithId> = JSON.parse(JSON.stringify(properties));
+    const properties: Array<PropertyInterface> = await fetchPropertiesByUserId(sessionUser.id);
         
     return (
         <main>
@@ -51,7 +44,7 @@ const ProfilePage = async () => {
 
                             <div className="md:w-3/4 md:pl-4">
                                 <h2 className="text-xl font-semibold mb-4">Your Listings</h2>
-                                {<ProfileProperties properties={plainProperties} />}
+                                {<ProfileProperties properties={properties} />}
                             </div>
                         </div>
                     </div>

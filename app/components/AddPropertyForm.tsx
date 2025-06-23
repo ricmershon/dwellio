@@ -1,9 +1,11 @@
-import { addProperty } from "@/app/lib/actions"
+import { createProperty } from "@/app/lib/actions"
 import { Amenities } from "@/app/data/data";
 
+// TODO: Fix select dropdown arrow position
+// TODO: Add autocomplete to address with 
 const AddPropertyForm = () => {
     return (
-        <form action={addProperty}>
+        <form action={createProperty}>
             <h2 className="text-3xl text-center font-semibold mb-6">
                 Add Property
             </h2>

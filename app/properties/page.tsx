@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 
-import { PropertyInterfaceWithId } from "@/app/lib/definitions";
+import { PropertyInterface } from "@/app/models";
 import PropertiesList from "@/app/components/PropertiesList";
 import { fetchProperties } from "@/app/lib/data";
 
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 const PropertiesPage = async () => {
-    const properties: Array<PropertyInterfaceWithId> = await fetchProperties(false);
+    const properties: Array<PropertyInterface> = await fetchProperties(false);
     
     return (
         <main>

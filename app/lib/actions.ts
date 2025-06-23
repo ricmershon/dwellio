@@ -2,20 +2,24 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { Types } from "mongoose";
 
-import { Property } from "@/app/models/property-model";
-import { ActionState, PropertyInterfaceWithId } from "@/app/lib/definitions";
 import dbConnect from "@/app/config/database-config";
+import type { ActionState } from "@/app/lib/definitions";
+import { Property, PropertyInterface, User, UserInterface } from "@/app/models";
 import { getSessionUser } from "@/app/utils/get-session-user";
 import cloudinary, { uploadImages } from "@/app/lib/cloudinary";
 import { toActionState } from "@/app/utils/to-action-state";
 
-export const addProperty = async (formData: FormData) => {
+// TODO: Add console logs to catch blocks
+
+// TODO: Add error handling
+export const createProperty = async (formData: FormData) => {
     await dbConnect();
 
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
-        throw new Error('User ID is required')
+        throw new Error('User ID is required.')
     }
 
     const propertyData = {
@@ -56,12 +60,14 @@ export const addProperty = async (formData: FormData) => {
 }
 
 export const deleteProperty = async (propertyId: string) => {
+    await dbConnect();
+
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
-        return toActionState('User ID is required', 'ERROR');
+        throw new Error('User ID is required.')
     }
 
-    const property: PropertyInterfaceWithId | null = await Property.findById(propertyId);
+    const property: PropertyInterface | null = await Property.findById(propertyId);
     if (!property) {
         return toActionState('Property not found.', 'ERROR');
     }
@@ -91,14 +97,18 @@ export const deleteProperty = async (propertyId: string) => {
 }
 
 export const updateProperty = async (
-    propertyId: string, _prevState: ActionState, formData: FormData
-): Promise<ActionState> => {
+    propertyId: string,
+    _prevState: ActionState,
+    formData: FormData
+) => {
+    await dbConnect();
+    
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
-        return toActionState('User ID is required.', 'ERROR');
+        throw new Error('User ID is required.')
     }
 
-    const property: PropertyInterfaceWithId | null = await Property.findById(propertyId);
+    const property: PropertyInterface | null = await Property.findById(propertyId);
     if (!property) {
         return toActionState('Property not found.', 'ERROR');
     }
@@ -140,4 +150,90 @@ export const updateProperty = async (
 
     revalidatePath('/', 'layout');
     redirect(`/properties/${propertyId}`);
+}
+
+export const bookmarkProperty = async (propertyId: string) => {
+    const propertyObjectId = new Types.ObjectId(propertyId);
+    
+    await dbConnect();
+
+    const sessionUser = await getSessionUser();
+    if (!sessionUser || !sessionUser.id) {
+        throw new Error('User ID is required.')
+    }
+
+    let user: UserInterface | null;
+    let actionState: ActionState;
+
+    try {
+        user = await User.findById(sessionUser.id);
+        if (!user) {
+            return toActionState('User not found.', 'ERROR');
+        } 
+    } catch (error) {
+        throw new Error(`Error finding user: ${error}`);
+    }
+
+    const isBookmarked = user.bookmarks.includes(propertyObjectId);
+
+    try {
+        let updatedUser;
+
+        if (isBookmarked) {
+            updatedUser = await User.updateOne(
+                { _id: user._id },
+                { $pull: { bookmarks: propertyId } }
+            );
+            actionState = {
+                message: 'Bookmark removed',
+                status: 'SUCCESS',
+                isBookmarked: false
+            }
+        } else {
+            updatedUser = await User.updateOne(
+                { _id: user._id },
+                { $push: { bookmarks: propertyId } }
+            );
+            actionState = {
+                message: 'Bookmark added',
+                status: 'SUCCESS',
+                isBookmarked: true
+            }
+        }
+        if (updatedUser.modifiedCount !== 1) {
+            return toActionState('Error updating user', 'ERROR');
+        }
+    } catch (error) {
+        throw new Error(`Error updating user: ${error}`);
+    }
+
+    revalidatePath('/properties/bookmarked', 'page');
+
+    return actionState;
+}
+
+export const getBookmarkStatus = async (propertyId: string) => {
+    const propertyObjectId = new Types.ObjectId(propertyId);
+    
+    await dbConnect();
+
+    const sessionUser = await getSessionUser();
+    if (!sessionUser || !sessionUser.id) {
+        throw new Error('User ID is required.')
+    }
+
+    let user: UserInterface | null;
+
+    try {
+        user = await User.findById(sessionUser.id);
+        if (!user) {
+            return toActionState('User not found.', 'ERROR');
+        } 
+    } catch (error) {
+        throw new Error(`Error finding user: ${error}`)
+    }
+
+    const isBookmarked = user.bookmarks.includes(propertyObjectId);
+
+    return toActionState('Successfully fetched bookmark status', 'SUCCESS', isBookmarked);
 }

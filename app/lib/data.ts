@@ -1,7 +1,7 @@
-import dbConnect from "@/app/config/database-config"
-import { Property } from "@/app/models/property-model";
-import { PropertyInterface, PropertyInterfaceWithId } from "@/app/lib/definitions";
 import { HydratedDocument } from "mongoose";
+
+import dbConnect from "@/app/config/database-config"
+import { Property, PropertyInterface, User, UserInterface } from "@/app/models";
 
 export const fetchProperties = async (mostRecent: boolean) => {
     try {
@@ -11,7 +11,7 @@ export const fetchProperties = async (mostRecent: boolean) => {
         // console.log('Data received...')
         
         await dbConnect();
-        let properties: Array<PropertyInterfaceWithId> = [];
+        let properties;
 
         if (mostRecent) {
             properties = await Property.find().sort({ createdAt: -1 }).limit(3);
@@ -20,8 +20,7 @@ export const fetchProperties = async (mostRecent: boolean) => {
         }
         return properties;
     } catch (error) {
-        console.error('Database Error: ', error);
-        throw new Error('Failed to fetch property data.')
+        throw new Error(`Failed to fetch property data: ${error}`)
     }
 }
 
@@ -32,18 +31,17 @@ export const fetchPropertyById = async (propertyId: string) => {
         await dbConnect();
         property = await Property.findById(propertyId);
         if (!property) {
-            console.log('>>> Property not found.')
+            console.error('>>> Property not found.')
         }
     } catch (error) {
-        console.error('Error finding property: ', error);
-        throw new Error("Error finding property");
+        throw new Error(`Error finding property: ${error}`);
     }
 
     return property;
 }
 
 export const fetchPropertiesByUserId = async (userId: string) => {
-    let properties: Array<PropertyInterfaceWithId> | null;
+    let properties: Array<PropertyInterface> | null;
 
     try {
         await dbConnect();
@@ -52,9 +50,21 @@ export const fetchPropertiesByUserId = async (userId: string) => {
             console.log('>>> Property not found.')
         }
     } catch (error) {
-        console.error('Error finding properties: ', error);
-        throw new Error("Error finding properties");
+        throw new Error(`Error finding properties: ${error}`);
     }
 
     return properties;
+}
+
+export const getSavedProperties = async (userId: string) => {
+    let user: UserInterface;
+
+    try {
+        user = await User.findById(userId).populate('bookmarks');
+    } catch (error) {
+        throw new Error(`Error finding bookmarked properties: ${error}`);
+    }
+
+    const bookmarks: Array<PropertyInterface> = user.bookmarks;
+    return bookmarks;
 }

@@ -177,14 +177,14 @@ const NavBar = () => {
                                             Your Profile
                                         </Link>
                                         <Link
-                                            href="/properties/saved"
+                                            href="/properties/bookmarked"
                                             className="block px-4 py-2 text-sm text-gray-700"
                                             role="menuitem"
                                             tabIndex={-1}
                                             id="user-menu-item-2"
                                             onClick={() => setIsProfileDropdownOpen(false)}
                                         >
-                                            Saved Properties
+                                            Bookmarked Properties
                                         </Link>
                                         <button
                                             className="block px-4 py-2 text-sm text-gray-700 cursor-pointer"

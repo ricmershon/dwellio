@@ -1,14 +1,11 @@
 import { FaTimes, FaBed, FaBath, FaRulerCombined, FaCheck, FaMapMarkerAlt } from "react-icons/fa";
 
-import { PropertyInterface, PropertyInterfaceWithId } from "@/app/lib/definitions";
-import PropertyMap from "./PropertyMap";
+import { PropertyInterface } from "@/app/models";
+// import PropertyMap from "./PropertyMap";
 
 const PropertyDetails = ({ property }: { property: PropertyInterface }) => {
     const { street, city, state, zipcode } = property.location;
     const { rates } = property;
-
-    const plainProperty: PropertyInterfaceWithId = JSON.parse(JSON.stringify(property));
-    
     
     return (
         <div>
@@ -103,9 +100,9 @@ const PropertyDetails = ({ property }: { property: PropertyInterface }) => {
             </div>
 
             {/* Map */}
-            <div className="bg-white p-6 rounded-lg shadow-md mt-6">
+            {/* <div className="bg-white p-6 rounded-lg shadow-md mt-6">
                 <PropertyMap property={plainProperty} />
-            </div>
+            </div> */}
         </div>
     );
  }
