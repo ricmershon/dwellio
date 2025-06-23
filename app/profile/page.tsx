@@ -12,14 +12,7 @@ const ProfilePage = async () => {
         throw new Error('User ID is required.')
     }
 
-    const properties = await fetchPropertiesByUserId(sessionUser.id);
-
-    /**
-     * An object passed from a server component to a client component must be a plain
-     * object. Convert the Mongoose document to a plain object before passing to
-     * client component.
-     */
-    const plainProperties: Array<PropertyInterface> = JSON.parse(JSON.stringify(properties));
+    const properties: Array<PropertyInterface> = await fetchPropertiesByUserId(sessionUser.id);
         
     return (
         <main>
@@ -51,7 +44,7 @@ const ProfilePage = async () => {
 
                             <div className="md:w-3/4 md:pl-4">
                                 <h2 className="text-xl font-semibold mb-4">Your Listings</h2>
-                                {<ProfileProperties properties={plainProperties} />}
+                                {<ProfileProperties properties={properties} />}
                             </div>
                         </div>
                     </div>

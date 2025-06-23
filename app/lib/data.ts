@@ -41,7 +41,7 @@ export const fetchPropertyById = async (propertyId: string) => {
 }
 
 export const fetchPropertiesByUserId = async (userId: string) => {
-    let properties;
+    let properties: Array<PropertyInterface> | null;
 
     try {
         await dbConnect();
