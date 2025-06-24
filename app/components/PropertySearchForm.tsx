@@ -1,7 +1,7 @@
 'use client';
 
 import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 // TODO: Clean up form components. Currently different sizes. Dropdown arrow needs to be fixed.
 const PropertySearchForm = () => {
@@ -9,6 +9,7 @@ const PropertySearchForm = () => {
     const [propertyType, setPropertyType] = useState('All');
 
     const router = useRouter();
+    const searchParams = useSearchParams();
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -16,8 +17,11 @@ const PropertySearchForm = () => {
         if (location === '' && propertyType === 'All') {
             router.push('/properties')
         } else {
-            const query = `?location=${location}&propertyType=${propertyType}`
-            router.push(`/properties/search/${query}`)
+            const queryParams = new URLSearchParams(searchParams);
+            queryParams.set('location', location);
+            queryParams.set('propertyType', propertyType);
+
+            router.push(`/properties/search/?${queryParams.toString()}`)
         }
     }
 
