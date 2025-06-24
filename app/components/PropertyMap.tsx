@@ -24,6 +24,7 @@ const PropertyMap = ({ property }: { property: PropertyInterface}) => {
     const [isLoading, setIsLoading] = useState(true);
     const [geocodeError, setGeocodeError] = useState(false);
 
+    console.log('^^^^^^^^ MAPS ^^^^^^^^\nCalling setDefaults');
     setDefaults({
         key: process.env.NEXT_PUBLIC_GOOGLE_GEOCODING_API_KEY,
         language: 'en',
@@ -36,6 +37,7 @@ const PropertyMap = ({ property }: { property: PropertyInterface}) => {
     useEffect(() => {
         const fetchCoordinates = async () => {
             try {
+                console.log('^^^^^^^^ MAPS ^^^^^^^^\nCalling fromAddress');
                 const response = await fromAddress(`${street} ${city} ${state} ${zipcode}`);
 
                 if (response.results.length === 0) {
