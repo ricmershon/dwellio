@@ -96,6 +96,7 @@ export const deleteProperty = async (propertyId: string) => {
     return toActionState('Property successfully deleted.', 'SUCCESS');
 }
 
+// FIXME: Cabin or Cottage being saved CabinorCottage
 export const updateProperty = async (
     propertyId: string,
     _prevState: ActionState,

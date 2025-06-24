@@ -2,6 +2,7 @@ import { HydratedDocument } from "mongoose";
 
 import dbConnect from "@/app/config/database-config"
 import { Property, PropertyInterface, User, UserInterface } from "@/app/models";
+import { PropertiesQuery } from "@/app/lib/definitions";
 
 export const fetchProperties = async (mostRecent: boolean) => {
     try {
@@ -67,4 +68,19 @@ export const getSavedProperties = async (userId: string) => {
 
     const bookmarks: Array<PropertyInterface> = user.bookmarks;
     return bookmarks;
+}
+
+export const findProperties = async (query: PropertiesQuery) => {
+    let properties: Array<PropertyInterface>;
+
+    try {
+        properties = await Property.find(query)
+        if (!properties) {
+            throw new Error('Error querying the database for properties.');
+        }
+    } catch (error) {
+        throw new Error(`Error querying the database for properties: ${error}`)
+    }
+
+    return properties;
 }

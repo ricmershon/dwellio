@@ -17,6 +17,10 @@ export const metadata: Metadata = {
     keywords: 'rental, property, real estate'
 };
 
+// TODO: Change sytlings
+// TODO: Get property pictures from somewhere else
+// TODO: Metadata for all files
+// TODO: See if ` as ` can be removed for more strictly typed
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
     return (
         <AuthProvider>

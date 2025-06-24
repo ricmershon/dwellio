@@ -101,7 +101,7 @@ const PropertyDetails = ({ property }: { property: PropertyInterface }) => {
 
             {/* Map */}
             {/* <div className="bg-white p-6 rounded-lg shadow-md mt-6">
-                <PropertyMap property={plainProperty} />
+                <PropertyMap property={property} />
             </div> */}
         </div>
     );
