@@ -1,4 +1,4 @@
-import InfoBox from "@/app/components/InfoBox";
+import InfoBox from "@/app/ui/root/page/info-box";
 
 const InfoBoxes = () => (
     <section>

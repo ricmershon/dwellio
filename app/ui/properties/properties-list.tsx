@@ -1,5 +1,5 @@
 import { PropertyInterface } from "@/app/models";
-import PropertyCard from "@/app/components/PropertyCard";
+import PropertyCard from "@/app/ui/properties/property-card";
 
 const PropertiesList = ({ properties }: { properties: Array<PropertyInterface>}) => (
     <section className='px-4 py-6'>

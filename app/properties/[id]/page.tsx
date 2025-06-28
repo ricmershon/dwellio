@@ -2,12 +2,12 @@ import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 
 import { fetchPropertyById } from "@/app/lib/data";
-import PropertyHeaderImage from "@/app/components/PropertyHeaderImage";
-import PropertyDetails from '@/app/components/PropertyDetails';
-import PropertyImages from "@/app/components/PropertyImages";
-import BookmarkPropertyButton from "@/app/components/BookmarkPropertyButton";
-import ShareButtons from "@/app/components/ShareButtons";
-import PropertyContactForm from "@/app/components/PropertyContactForm";
+import PropertyHeaderImage from "@/app/ui/properties/id/header-image";
+import PropertyDetails from '@/app/ui/properties/id/details';
+import PropertyImages from "@/app/ui/properties/id/images";
+import BookmarkPropertyButton from "@/app/ui/properties/id/bookmark-button";
+import ShareButtons from "@/app/ui/properties/id/share-buttons";
+import PropertyContactForm from "@/app/ui/properties/id/contact-form";
 import { PropertyInterface } from "@/app/models";
 
 const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) => {

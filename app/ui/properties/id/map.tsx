@@ -7,7 +7,7 @@ import Image from 'next/image';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 import { PropertyInterface } from "@/app/models";
-import Spinner from "@/app/components/Spinner";
+import Spinner from "@/app/ui/properties/id/Spinner";
 import pin from '@/assets/images/pin.svg';
 
 // TODO: Use google maps?
