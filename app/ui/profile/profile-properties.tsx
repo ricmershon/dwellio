@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { PropertyInterface } from "@/app/models";
-import DeletePropertyButton from "@/app/components/DeletePropertyButton";
+import DeletePropertyButton from "@/app/ui/profile/delete-property-button";
 
 const ProfileProperties = (
     { properties }: { properties: Array<PropertyInterface> }

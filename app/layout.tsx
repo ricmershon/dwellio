@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
 
-import AuthProvider from "@/app/components/AuthProvider";
-import NavBar from "@/app/components/NavBar";
-import Footer from "@/app/components/Footer";
+import AuthProvider from "@/app/ui/root/layout/auth-provider";
+import NavBar from "@/app/ui/root/layout/nav-bar";
+import Footer from "@/app/ui/root/layout/footer";
 
 import "@/app/globals.css";
 

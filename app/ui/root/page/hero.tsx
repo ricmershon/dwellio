@@ -1,4 +1,4 @@
-import PropertySearchForm from "@/app/components/PropertySearchForm";
+import PropertySearchForm from "@/app/ui/properties/search/form";
 
 const Hero = () => {
     return (

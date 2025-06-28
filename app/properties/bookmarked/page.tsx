@@ -1,4 +1,4 @@
-import PropertyCard from "@/app/components/PropertyCard";
+import PropertyCard from "@/app/ui/properties/property-card";
 import { getSavedProperties } from "@/app/lib/data";
 import { PropertyInterface } from "@/app/models";
 import { getSessionUser } from "@/app/utils/get-session-user";

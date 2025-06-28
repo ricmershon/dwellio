@@ -2,9 +2,9 @@ import Link from 'next/link';
 import { FaArrowAltCircleLeft } from 'react-icons/fa';
 import { Types } from 'mongoose';
 
-import PropertyCard from '@/app/components/PropertyCard';
-import PropertySearchForm from '@/app/components/PropertySearchForm';
-import PropertiesList from '@/app/components/PropertiesList';
+import PropertyCard from '@/app/ui/properties/property-card';
+import PropertySearchForm from '@/app/ui/properties/search/form';
+import PropertiesList from '@/app/ui/properties/properties-list';
 import { PropertiesQuery } from '@/app/lib/definitions';
 import { findProperties } from '@/app/lib/data';
 

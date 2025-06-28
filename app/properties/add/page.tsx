@@ -1,4 +1,4 @@
-import AddPropertyForm from "@/app/components/AddPropertyForm";
+import AddPropertyForm from "@/app/ui/properties/add/form";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

@@ -1,6 +1,6 @@
-import Hero from "@/app/components/Hero";
-import InfoBoxes from "@/app/components/InfoBoxes";
-import HomePageProperties from "@/app/components/HomePageProperties";
+import Hero from "@/app/ui/root/page/Hero"
+import InfoBoxes from "@/app/ui/root/page/info-boxes";
+import HomePageProperties from "@/app/ui/root/page/home-page-properties-list";
 
 const HomePage = () => {
     return (
