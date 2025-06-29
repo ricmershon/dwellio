@@ -14,15 +14,11 @@ interface PropertyPageAsideProps {
 const PropertyPageAside = ({ property, propertyId }: PropertyPageAsideProps) => {
     const { data: session } = useSession();
 
-    const userNotPropertyOwner = session?.user.id !== property.owner.toString();
-
     return (
         <aside className="space-y-4">
-            {userNotPropertyOwner && (
-                <BookmarkPropertyButton propertyId={propertyId} />
-            )}
+            <BookmarkPropertyButton propertyId={propertyId} />
             <ShareButtons property={property} />
-            {userNotPropertyOwner && (
+            {session?.user.id !== property.owner.toString() && (
                 <PropertyContactForm property={property} />
             )}
         </aside>
