@@ -7,7 +7,7 @@ import { Amenities } from '@/app/data/data'
 
 import { ActionState } from "@/app/lib/definitions";
 import type { PropertyInterface } from "@/app/models";
-import { updateProperty } from "@/app/lib/actions";
+import { updateProperty } from "@/app/lib/actions/property-actions";
 
 
 const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 
 import { PropertyInterface } from "@/app/models";
 import PropertiesList from "@/app/ui/properties/properties-list";
-import { fetchProperties } from "@/app/lib/data";
+import { fetchProperties } from "@/app/lib/data/property-data";
 
 export const metadata: Metadata = {
     title: 'Properties'

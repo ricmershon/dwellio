@@ -1,4 +1,4 @@
-import { createProperty } from "@/app/lib/actions"
+import { createProperty } from "@/app/lib/actions/property-actions"
 import { Amenities } from "@/app/data/data";
 
 // TODO: Fix select dropdown arrow position

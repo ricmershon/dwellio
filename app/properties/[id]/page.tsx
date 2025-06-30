@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 
-import { fetchPropertyById } from "@/app/lib/data";
+import { fetchPropertyById } from "@/app/lib/data/property-data";
 import PropertyHeaderImage from "@/app/ui/properties/id/header-image";
 import PropertyDetails from '@/app/ui/properties/id/details';
 import PropertyImages from "@/app/ui/properties/id/images";

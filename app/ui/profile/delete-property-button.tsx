@@ -2,7 +2,7 @@
 
 import { toast } from "react-toastify";
 
-import { deleteProperty } from "@/app/lib/actions";
+import { deleteProperty } from "@/app/lib/actions/property-actions";
 
 const DeletePropertyButton = ({ propertyId }: { propertyId: string }) => {
     const deletePropertyById = deleteProperty.bind(null, propertyId);

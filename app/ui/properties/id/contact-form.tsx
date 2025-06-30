@@ -5,7 +5,7 @@ import { FaPaperPlane } from "react-icons/fa";
 
 import { PropertyInterface } from "@/app/models";
 import { ActionState } from "@/app/lib/definitions";
-import { createMessage } from "@/app/lib/actions";
+import { createMessage } from "@/app/lib/actions/property-actions";
 import { toast } from "react-toastify";
 
 const PropertyContactForm = ({ property }: { property: PropertyInterface}) => {

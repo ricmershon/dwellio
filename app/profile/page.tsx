@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import profileDefaultImage from '@/assets/images/profile.png';
 import { getSessionUser } from "@/app/utils/get-session-user";
-import { fetchPropertiesByUserId } from "@/app/lib/data";
+import { fetchPropertiesByUserId } from "@/app/lib/data/property-data";
 import ProfileProperties from "@/app/ui/profile/profile-properties";
 import { PropertyInterface } from "@/app/models";
 
