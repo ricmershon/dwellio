@@ -1,5 +1,5 @@
 import { MessageInterface } from "@/app/models";
-import MarkMessageAsReadButton from "@/app/ui/messages/mark-message-as-read-button";
+import ToggleMessageReadButton from "@/app/ui/messages/toggle-message-read-button";
 import DeleteMessageButton from "@/app/ui/messages/delete-message-button";
 
 const MessageCard = ({ message }: { message: MessageInterface }) => {
@@ -7,6 +7,9 @@ const MessageCard = ({ message }: { message: MessageInterface }) => {
     console.log(message);
     return (
         <div className="relative bg-white p-4 rounded-md shadow-md border border-gray-200">
+            {!message.read && (
+                <div className="absolute top-2 right-2 bg-yellow-500 text-white px-2 py-1 rounded-md">New</div>
+            )}
             <h2 className="text-xl mb-4">
                 <span className="font-bold">Property Inquiry:</span>{' '}
                 {typeof message.property === 'object' && 'name' in message.property && message.property.name}
@@ -30,7 +33,10 @@ const MessageCard = ({ message }: { message: MessageInterface }) => {
                     {new Date(message.createdAt).toLocaleString()}
                 </li>
             </ul>
-            <MarkMessageAsReadButton messageId={message._id as string} />
+            <ToggleMessageReadButton
+                messageId={message._id as string}
+                read={message.read}
+            />
             <DeleteMessageButton messageId={message._id as string} />
         </div> 
     );
