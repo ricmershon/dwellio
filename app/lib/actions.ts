@@ -239,7 +239,7 @@ export const getBookmarkStatus = async (propertyId: string) => {
     return toActionState('Successfully fetched bookmark status', 'SUCCESS', isBookmarked);
 }
 
-export const createMessage = async (formData: FormData) => {
+export const createMessage = async (prevState: ActionState, formData: FormData) => {
     await dbConnect();
 
     const sessionUser = await getSessionUser();

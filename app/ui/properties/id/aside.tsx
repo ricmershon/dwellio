@@ -14,11 +14,15 @@ interface PropertyPageAsideProps {
 const PropertyPageAside = ({ property, propertyId }: PropertyPageAsideProps) => {
     const { data: session } = useSession();
 
+    /**
+     * Display bookmark button only if a user is logged in. Display contact form
+     * only if a user is logged in and the property owner is not the user.
+     */
     return (
         <aside className="space-y-4">
-            <BookmarkPropertyButton propertyId={propertyId} />
+            {session && <BookmarkPropertyButton propertyId={propertyId} />}
             <ShareButtons property={property} />
-            {session?.user.id !== property.owner.toString() && (
+            {session && session.user.id !== property.owner.toString() && (
                 <PropertyContactForm property={property} />
             )}
         </aside>
