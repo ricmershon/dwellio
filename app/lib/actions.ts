@@ -6,14 +6,14 @@ import { Types } from "mongoose";
 
 import dbConnect from "@/app/config/database-config";
 import type { ActionState } from "@/app/lib/definitions";
-import { Property, PropertyInterface, User, UserInterface } from "@/app/models";
+import { Property, PropertyInterface, User, UserInterface, Message } from "@/app/models";
 import { getSessionUser } from "@/app/utils/get-session-user";
 import cloudinary, { uploadImages } from "@/app/lib/cloudinary";
 import { toActionState } from "@/app/utils/to-action-state";
 
 // TODO: Add console logs to catch blocks
-
 // TODO: Add error handling
+// TODO: add try catch blocks
 export const createProperty = async (formData: FormData) => {
     await dbConnect();
 
@@ -237,4 +237,27 @@ export const getBookmarkStatus = async (propertyId: string) => {
     const isBookmarked = user.bookmarks.includes(propertyObjectId);
 
     return toActionState('Successfully fetched bookmark status', 'SUCCESS', isBookmarked);
+}
+
+export const createMessage = async (formData: FormData) => {
+    await dbConnect();
+
+    const sessionUser = await getSessionUser();
+    if (!sessionUser || !sessionUser.id) {
+        throw new Error('User ID is required.')
+    }
+
+    const newMessage = new Message({
+        sender: sessionUser.id,
+        recipient: formData.get('recipient'),
+        property: formData.get('property'),
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        body: formData.get('body')
+    });
+
+    await newMessage.save();
+
+    return toActionState('Message sent.', 'SUCCESS');
 }
