@@ -1,4 +1,4 @@
-import EditPropertyForm from "@/app/ui/properties/id/edit/form";
+import EditPropertyForm from "@/app/ui/properties/id/edit/edit-property-form";
 import { fetchPropertyById } from "@/app/lib/data";
 import { PropertyInterface } from "@/app/models";
 
