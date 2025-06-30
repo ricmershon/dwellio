@@ -12,7 +12,7 @@ export const fetchProperties = async (mostRecent: boolean) => {
         // console.log('Data received...')
         
         await dbConnect();
-        let properties;
+        let properties: PropertyInterface[] | null;
 
         if (mostRecent) {
             properties = await Property.find().sort({ createdAt: -1 }).limit(3);

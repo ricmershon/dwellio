@@ -1,22 +1,8 @@
 import GoogleProvider from "next-auth/providers/google";
-import type { Profile } from 'next-auth';
+import type { Profile, Session } from 'next-auth';
 
 import dbConnect from "@/app/config/database-config";
 import { User } from "@/app/models";
-
-interface DwellioSession {
-    user?: {
-        name?: string | null;
-        email?: string | null;
-        image?: string | null;
-        id?: string | null;
-    }
-    expires: string;
-}
-
-interface GoogleProfile extends Profile {
-    picture?: string;
-} 
 
 export const authConfig = {
     providers: [
@@ -34,7 +20,7 @@ export const authConfig = {
     ],
     callbacks: {
         // Invoked on successful sign in
-        async signIn({ profile }: { profile: GoogleProfile}) {
+        async signIn({ profile }: { profile: Profile}) {
             // Connect to database
             await dbConnect();
             const user  = await User.findOne({ email: profile.email })
@@ -53,7 +39,7 @@ export const authConfig = {
         },
 
         // Session callback function that modifies the session object
-        async session({ session }: { session: DwellioSession }) {
+        async session({ session }: { session: Session }) {
             // Get user from database and assign id to the session and return the session
             const user = await User.findOne({ email: session.user!.email });
             session.user!.id = user._id?.toString();

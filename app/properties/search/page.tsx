@@ -3,10 +3,10 @@ import { FaArrowAltCircleLeft } from 'react-icons/fa';
 import { Types } from 'mongoose';
 
 import PropertyCard from '@/app/ui/properties/property-card';
-import PropertySearchForm from '@/app/ui/properties/search/form';
+import PropertySearchForm from '@/app/ui/properties/search/search-form';
 import PropertiesList from '@/app/ui/properties/properties-list';
 import { PropertiesQuery } from '@/app/lib/definitions';
-import { findProperties } from '@/app/lib/data';
+import { findProperties } from '@/app/lib/data/property-data';
 
 interface SearchResultsPageProps {
     searchParams: Promise<{

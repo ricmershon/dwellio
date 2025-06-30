@@ -1,5 +1,5 @@
-import EditPropertyForm from "@/app/ui/properties/id/edit/form";
-import { fetchPropertyById } from "@/app/lib/data";
+import EditPropertyForm from "@/app/ui/properties/id/edit/edit-property-form";
+import { fetchPropertyById } from "@/app/lib/data/property-data";
 import { PropertyInterface } from "@/app/models";
 
 const EditPropertyPage = async ( { params }: { params: Promise<{ id: string }> }) => {

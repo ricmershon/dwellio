@@ -12,8 +12,8 @@ import cloudinary, { uploadImages } from "@/app/lib/cloudinary";
 import { toActionState } from "@/app/utils/to-action-state";
 
 // TODO: Add console logs to catch blocks
-
 // TODO: Add error handling
+// TODO: add try catch blocks
 export const createProperty = async (formData: FormData) => {
     await dbConnect();
 

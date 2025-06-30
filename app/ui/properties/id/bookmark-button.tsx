@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { FaBookmark } from "react-icons/fa";
 import { toast } from "react-toastify";
 
-import { bookmarkProperty } from "@/app/lib/actions";
-import { getBookmarkStatus } from "@/app/lib/actions";
+import { bookmarkProperty } from "@/app/lib/actions/property-actions";
+import { getBookmarkStatus } from "@/app/lib/actions/property-actions";
 import { ActionState } from "@/app/lib/definitions";
 
 const BookmarkPropertyButton = ({ propertyId }: { propertyId: string }) => {

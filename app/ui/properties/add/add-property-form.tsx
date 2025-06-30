@@ -1,28 +1,13 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-'use client';
+import { createProperty } from "@/app/lib/actions/property-actions"
+import { Amenities } from "@/app/data/data";
 
-import { useActionState } from "react";
-
-import { Amenities } from '@/app/data/data'
-
-import { ActionState } from "@/app/lib/definitions";
-import type { PropertyInterface } from "@/app/models";
-import { updateProperty } from "@/app/lib/actions";
-
-
-const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
-    const initialState: ActionState = {};
-    const updatePropertyById = updateProperty.bind(null, (property._id as string).toString());
-    const [_state, formAction] = useActionState(updatePropertyById, initialState);
-
-    const { street, city, state, zipcode } = property.location;
-    const { weekly, monthly, nightly } = property.rates;
-    const { name, email, phone } = property.seller_info;
-
+// TODO: Fix select dropdown arrow position
+// TODO: Add autocomplete to address with 
+const AddPropertyForm = () => {
     return (
-        <form action={formAction}>
+        <form action={createProperty}>
             <h2 className="text-3xl text-center font-semibold mb-6">
-                Edit Property
+                Add Property
             </h2>
 
             {/* Property type */}
@@ -37,7 +22,6 @@ const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
                     id="type"
                     name="type"
                     className="border rounded w-full py-2 px-3"
-                    defaultValue={property.type}
                     required
                 >
                     <option value="Apartment">Apartment</option>
@@ -59,7 +43,6 @@ const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
                     name="name"
                     className="border rounded w-full py-2 px-3 mb-2"
                     placeholder="eg. Beautiful Apartment In Miami"
-                    defaultValue={property.name}
                     required
                 />
             </div>
@@ -78,7 +61,6 @@ const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
                     className="border rounded w-full py-2 px-3"
                     rows={4}
                     placeholder="Add an optional description of your property"
-                    defaultValue={property.description}
                 />
             </div>
 
@@ -91,7 +73,6 @@ const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
                     name="location.street"
                     className="border rounded w-full py-2 px-3 mb-2"
                     placeholder="Street"
-                    defaultValue={street}
                 />
                 <input
                     type="text"
@@ -99,7 +80,6 @@ const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
                     name="location.city"
                     className="border rounded w-full py-2 px-3 mb-2"
                     placeholder="City"
-                    defaultValue={city}
                     required
                 />
                 <input
@@ -108,7 +88,6 @@ const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
                     name="location.state"
                     className="border rounded w-full py-2 px-3 mb-2"
                     placeholder="State"
-                    defaultValue={state}
                     required
                 />
                 <input
@@ -116,7 +95,6 @@ const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
                     id="zipcode"
                     name="location.zipcode"
                     className="border rounded w-full py-2 px-3 mb-2"
-                    defaultValue={zipcode}
                     placeholder="Zipcode"
                 />
             </div>
@@ -135,7 +113,6 @@ const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
                         id="beds"
                         name="beds"
                         className="border rounded w-full py-2 px-3"
-                        defaultValue={property.beds}
                         required
                     />
                 </div>
@@ -151,7 +128,6 @@ const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
                         id="baths"
                         name="baths"
                         className="border rounded w-full py-2 px-3"
-                        defaultValue={property.baths}
                         required
                         />
                     </div>
@@ -167,7 +143,6 @@ const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
                         id="square_feet"
                         name="square_feet"
                         className="border rounded w-full py-2 px-3"
-                        defaultValue={property.square_feet}
                         required
                     />
                 </div>
@@ -187,7 +162,6 @@ const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
                                 name="amenities"
                                 value={amenity.value}
                                 className='mr-2'
-                                defaultChecked={property.amenities?.includes(amenity.value)}
                             />
                             <label htmlFor={`amenity_${amenity.id}`}>{amenity.value}</label>
                         </div>
@@ -208,7 +182,6 @@ const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
                             id="weekly_rate"
                             name="rates.weekly"
                             className="border rounded w-full py-2 px-3"
-                            defaultValue={weekly}
                         />
                     </div>
                     <div className="flex items-center">
@@ -218,7 +191,6 @@ const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
                             id="monthly_rate"
                             name="rates.monthly"
                             className="border rounded w-full py-2 px-3"
-                            defaultValue={monthly}
                         />
                     </div>
                     <div className="flex items-center">
@@ -228,7 +200,6 @@ const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
                             id="nightly_rate"
                             name="rates.nightly"
                             className="border rounded w-full py-2 px-3"
-                            defaultValue={nightly}
                         />
                     </div>
                 </div>
@@ -248,7 +219,6 @@ const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
                     name="seller_info.name"
                     className="border rounded w-full py-2 px-3"
                     placeholder="Name"
-                    defaultValue={name}
                 />
             </div>
             <div className="mb-4">
@@ -264,7 +234,6 @@ const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
                     name="seller_info.email"
                     className="border rounded w-full py-2 px-3"
                     placeholder="Email address"
-                    defaultValue={email}
                     required
                 />
             </div>
@@ -282,7 +251,22 @@ const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
                     className="border rounded w-full py-2 px-3"
                     pattern='[0-9]{10}'
                     placeholder="1234567890"
-                    defaultValue={phone}
+                />
+            </div>
+
+            {/* Select images */}
+            <div className="mb-4">
+                <label htmlFor="images" className="block text-gray-700 font-bold mb-2">
+                    Images (Select up to 4 images)
+                </label>
+                <input
+                    type="file"
+                    id="images"
+                    name="images"
+                    className="border rounded w-full py-2 px-3"
+                    accept="image/*"
+                    multiple
+                    required
                 />
             </div>
 
@@ -292,11 +276,11 @@ const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
                     className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline cursor-pointer"
                     type="submit"
                 >
-                    Update Property
+                    Add Property
                 </button>
             </div>
         </form>
     );
 }
  
-export default EditPropertyForm;
+export default AddPropertyForm;
