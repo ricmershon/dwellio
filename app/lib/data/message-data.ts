@@ -28,10 +28,9 @@ export const fetchMessages = async (userId: string) => {
         throw new Error(`Failed to fetch message data: ${error}`)
     }
 
-    const messages = [...unreadMessages, ...readMessages].map((messageDoc) => 
+    const messages = [...unreadMessages, ...readMessages].map((messageDoc) => (
         toSerializedOjbect(messageDoc)
-    );
+    ));
 
-    console.log(messages);
-    return unreadMessages;
+    return messages;
 }
