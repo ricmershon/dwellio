@@ -23,6 +23,7 @@ export const metadata: Metadata = {
 // TODO: Metadata for all files
 // TODO: See if ` as ` can be removed for more strictly typed
 // FIXME: Cursor changes on button hovers
+// TODO: Add metadata for all pages
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
     return (
         <AuthProvider>
