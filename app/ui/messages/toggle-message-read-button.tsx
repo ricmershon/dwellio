@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 
+import { useGlobalContext } from "@/app/context/global-context";
 import { toggleMessageRead } from "@/app/lib/actions/message-actions";
 
 interface ToggleMessageReadButtonProps {
@@ -12,14 +13,16 @@ interface ToggleMessageReadButtonProps {
 
 const ToggleMessageReadButton = ({ messageId, read }: ToggleMessageReadButtonProps ) => {
     const [isRead, setIsRead] = useState(read);
+
+    const { setUnreadCount } = useGlobalContext();
     
     const toggleMessageReadAction = async () => {
         const result = await toggleMessageRead(messageId);
 
-        setIsRead(result.isRead!);
-
         if (result.message) {
             if (result.status === 'SUCCESS') {
+                setIsRead(result.isRead!);
+                setUnreadCount((prevCount) => (result.isRead ? prevCount - 1 : prevCount + 1))
                 toast.success(result.message);
             } else if (result.status === 'ERROR') {
                 toast.error(result.message);

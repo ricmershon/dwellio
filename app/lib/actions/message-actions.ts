@@ -84,3 +84,19 @@ export const deleteMessage = async (messageId: string) => {
     revalidatePath('/messages');
     return toActionState('Message successfully deleted.', 'SUCCESS');
 }
+
+export const getUnreadMessageCount = async () => {
+    await dbConnect();
+
+    const sessionUser = await getSessionUser();
+    if (!sessionUser || !sessionUser.id) {
+        throw new Error('User ID is required.')
+    }
+
+    const unreadCount = await Message.countDocuments({
+        recipient: sessionUser.id,
+        read: false
+    });
+
+    return { unreadCount }
+}

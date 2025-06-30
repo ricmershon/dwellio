@@ -10,7 +10,6 @@ const MessagesPage = async () => {
     }
 
     const messages: MessageInterface[] | null = await fetchMessages(sessionUser.id);
-    console.log(messages);
 
     return (
         <main>
