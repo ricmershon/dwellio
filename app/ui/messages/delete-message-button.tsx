@@ -2,18 +2,17 @@
 
 import { toast } from "react-toastify";
 
-import { deleteProperty } from "@/app/lib/actions/property-actions";
+import { deleteMessage } from "@/app/lib/actions/message-actions";
 
 const DeleteMessageButton = ({ messageId }: { messageId: string } ) => {
-    const deleteMessageWithId = deleteProperty.bind(null, messageId);
     
     const deleteMessageAction = async () => {
-        const result = await deleteMessageWithId();
+        const result = await deleteMessage(messageId);
         if (result.message) {
             if (result.status === 'SUCCESS') {
-                toast.success(result.message, { position: 'bottom-right' });
+                toast.success(result.message);
             } else if (result.status === 'ERROR') {
-                toast.error(result.message, { position: 'bottom-right' });
+                toast.error(result.message);
             }
         }
     }

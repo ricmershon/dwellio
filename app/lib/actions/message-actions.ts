@@ -60,3 +60,27 @@ export const toggleMessageRead = async (messageId: string) => {
         message.read
     );
 }
+
+export const deleteMessage = async (messageId: string) => {
+    await dbConnect();
+
+    const sessionUser = await getSessionUser();
+    if (!sessionUser || !sessionUser.id) {
+        throw new Error('User ID is required.')
+    }
+
+    const message: MessageInterface | null = await Message.findById(messageId);
+    if (!message) {
+        return toActionState('Message not found.', 'ERROR');
+    }
+
+    // Verify ownwership
+    if (message.recipient.toString() !== sessionUser.id) {
+        throw new Error('Not authorized to delete message.');
+    }
+
+    await message.deleteOne();
+
+    revalidatePath('/messages');
+    return toActionState('Message successfully deleted.', 'SUCCESS');
+}
