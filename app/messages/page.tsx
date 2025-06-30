@@ -1,5 +1,7 @@
 import { getSessionUser } from "@/app/utils/get-session-user";
 import { fetchMessages } from "@/app/lib/data/message-data";
+import MessageCard from "@/app/ui/messages/message-card";
+import { MessageInterface } from "../models";
 
 const MessagesPage = async () => {
     const sessionUser = await getSessionUser();
@@ -7,7 +9,8 @@ const MessagesPage = async () => {
         throw new Error('User ID is required.')
     }
 
-    const messages = await fetchMessages(sessionUser.id);
+    const messages: MessageInterface[] | null = await fetchMessages(sessionUser.id);
+    console.log(messages);
 
     return (
         <main>
@@ -20,7 +23,10 @@ const MessagesPage = async () => {
                                 <p>You have no messages.</p>
                             ) : (
                                 messages.map((message) => (
-                                    <h3 key={message._id}>{message.name}</h3>
+                                    <MessageCard
+                                        key={message._id as string}
+                                        message={message}
+                                    />
                                 ))
                             )}
                         </div>

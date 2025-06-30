@@ -1,13 +1,16 @@
 import { Document, Schema, Types, model, models } from 'mongoose';
+
 export interface MessageInterface extends Document {
     sender: Types.ObjectId,
     recipient: Types.ObjectId,
-    property: Types.ObjectId,
+    property: Types.ObjectId | { _id: Types.ObjectId, name: string },
     name: string,
     email: string,
     phone?: string,
     body?: string,
-    read: boolean
+    read: boolean,
+    createdAt: Date;
+    updatedAt: Date;
 }
 
 const MessageSchema = new Schema({

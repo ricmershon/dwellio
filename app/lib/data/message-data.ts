@@ -1,9 +1,12 @@
-import { Message } from "@/app/models"
+import dbConnect from "@/app/config/database-config";
+import { Message, MessageInterface } from "@/app/models"
 import { toSerializedOjbect } from "@/app/utils/to-serialized-object";
 
 export const fetchMessages = async (userId: string) => {
-    let unreadMessages;
-    let readMessages;
+    await dbConnect();
+    
+    let unreadMessages: MessageInterface[] | null;
+    let readMessages: MessageInterface[] | null;
 
     try {
         unreadMessages = await Message.find({
@@ -13,7 +16,6 @@ export const fetchMessages = async (userId: string) => {
             .sort({ createdAt: -1 })
             .populate('sender', 'username')
             .populate('property', 'name')
-            .lean();
 
         readMessages = await Message.find({
             recipient: userId,
@@ -22,13 +24,12 @@ export const fetchMessages = async (userId: string) => {
             .sort({ createdAt: -1 })
             .populate('sender', 'username')
             .populate('property', 'name')
-            .lean();
 
     } catch (error) {
         throw new Error(`Failed to fetch message data: ${error}`)
     }
 
-    const messages = [...unreadMessages, ...readMessages].map((messageDoc) => (
+    const messages: MessageInterface[] = [...unreadMessages, ...readMessages].map((messageDoc) => (
         toSerializedOjbect(messageDoc)
     ));
 
