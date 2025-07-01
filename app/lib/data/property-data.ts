@@ -2,7 +2,7 @@ import { HydratedDocument } from "mongoose";
 
 import dbConnect from "@/app/config/database-config"
 import { Property, PropertyInterface, User, UserInterface } from "@/app/models";
-import { PropertiesQuery } from "@/app/lib/definitions";
+import { MAX_ITEMS_PER_PAGE, PropertiesQuery } from "@/app/lib/definitions";
 
 export const fetchProperties = async (mostRecent: boolean) => {
     try {
@@ -57,10 +57,11 @@ export const fetchPropertiesByUserId = async (userId: string) => {
     return properties;
 }
 
-export const getSavedProperties = async (userId: string) => {
+export const fetchSavedProperties = async (userId: string) => {
     let user: UserInterface;
 
     try {
+        await dbConnect();
         user = await User.findById(userId).populate('bookmarks');
     } catch (error) {
         throw new Error(`Error finding bookmarked properties: ${error}`);
@@ -70,10 +71,11 @@ export const getSavedProperties = async (userId: string) => {
     return bookmarks;
 }
 
-export const findProperties = async (query: PropertiesQuery) => {
+export const searchProperties = async (query: PropertiesQuery) => {
     let properties: Array<PropertyInterface>;
 
     try {
+        await dbConnect();
         properties = await Property.find(query)
         if (!properties) {
             throw new Error('Error querying the database for properties.');
@@ -83,4 +85,32 @@ export const findProperties = async (query: PropertiesQuery) => {
     }
 
     return properties;
+}
+
+export const fetchNumPropertiesPages = async () => {
+    try {
+        await dbConnect();
+        const totalProperties = await Property.countDocuments();
+        const totalPages = Math.ceil(totalProperties) / MAX_ITEMS_PER_PAGE;
+        return totalPages;
+    } catch (error) {
+        console.error(`Database error fetching number of properties pages: ${error}`);
+        throw new Error('Failed to fetch total number of invoices.')
+    }
+}
+
+export const fetchPaginatedProperties = async (currentPage: number) => {
+    const offset = (currentPage - 1) * MAX_ITEMS_PER_PAGE;
+    
+    try {
+        await dbConnect();
+        const properties: PropertyInterface[] = await Property.find()
+            .skip(offset)
+            .limit(MAX_ITEMS_PER_PAGE);
+
+        return properties;
+    } catch (error) {
+        console.error(`Database error fetching invoices: ${error}`);
+        throw new Error('Failed to fetch invoices.')
+    }
 }

@@ -1,5 +1,5 @@
 import PropertyCard from "@/app/ui/properties/property-card";
-import { getSavedProperties } from "@/app/lib/data/property-data";
+import { fetchSavedProperties } from "@/app/lib/data/property-data";
 import { PropertyInterface } from "@/app/models";
 import { getSessionUser } from "@/app/utils/get-session-user";
 
@@ -10,7 +10,7 @@ const SavedPropertiesPage = async () => {
         throw new Error('User ID is required.')
     }
 
-    const savedProperties: Array<PropertyInterface> = await getSavedProperties(sessionUser.id);
+    const savedProperties: Array<PropertyInterface> = await fetchSavedProperties(sessionUser.id);
 
     return (
         <main>
