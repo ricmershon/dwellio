@@ -20,7 +20,7 @@ const PropertyImages = ({ images }: { images: Array<string>}) => {
                                 onClick={open}
                                 src={images[0]}
                                 alt=""
-                                className='object-cover h-[400px] mx-auto rounded-xl'
+                                className='object-cover h-[400px] mx-auto rounded-xl cursor-pointer'
                                 width={1800}
                                 height={400}
                                 priority={true}
@@ -50,7 +50,7 @@ const PropertyImages = ({ images }: { images: Array<string>}) => {
                                             onClick={open}
                                             src={image}
                                             alt=""
-                                            className='object-cover h-[400px] w-full rounded-xl'
+                                            className='object-cover h-[400px] w-full rounded-xl cursor-pointer'
                                             width={1800}
                                             height={400}
                                             priority={true}
