@@ -5,7 +5,8 @@ interface PropertiesPaginationProps {
     totalPages: number;
 }
 
-// Disable buttons instead of making them disappear
+// TODO: Disable buttons instead of making them disappear
+// TODO: Lots of updates
 const PropertiesPagination = ({ page, totalPages }: PropertiesPaginationProps) => (
     <section className="container mx-auto flex justify-center items-center my-8">
         {page > 1 && (
