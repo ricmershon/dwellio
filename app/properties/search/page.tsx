@@ -6,7 +6,7 @@ import PropertyCard from '@/app/ui/properties/property-card';
 import PropertySearchForm from '@/app/ui/properties/search/search-form';
 import PropertiesList from '@/app/ui/properties/properties-list';
 import { PropertiesQuery } from '@/app/lib/definitions';
-import { findProperties } from '@/app/lib/data/property-data';
+import { searchProperties } from '@/app/lib/data/property-data';
 
 interface SearchResultsPageProps {
     searchParams: Promise<{
@@ -40,7 +40,7 @@ const SearchResultsPage = async (props: SearchResultsPageProps) => {
         Object.assign(query, { type: propertyTypeRegex });
     }
 
-    const propertiesQueryResults = await findProperties(query);
+    const propertiesQueryResults = await searchProperties(query);
 
     return (
         <>

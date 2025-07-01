@@ -15,3 +15,5 @@ export interface PropertiesQuery {
         { 'location.zip': RegExp }
     ]
 }
+
+export const MAX_ITEMS_PER_PAGE = 2;
