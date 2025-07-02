@@ -1,5 +1,5 @@
 import GoogleProvider from "next-auth/providers/google";
-import type { DefaultUser, Profile, Session } from 'next-auth';
+import type { DefaultUser, Session } from 'next-auth';
 
 import dbConnect from "@/app/config/database-config";
 import { User } from "@/app/models";
