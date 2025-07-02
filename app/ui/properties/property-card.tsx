@@ -9,21 +9,9 @@ import {
 } from 'react-icons/fa';
 
 import { PropertyInterface } from '@/app/models';
+import { getRateDisplay } from '@/app/utils/get-rate-display';
 
-const PropertyCard = ({ property }: { property: PropertyInterface }) => {
-    const getRateDisplay = () => {
-        const { rates } = property;
-
-        if (rates.monthly) {
-            return `$${rates.monthly.toLocaleString()}/mo`;
-        } else if (rates.weekly) {
-            return `$${rates.weekly.toLocaleString()}/wk`;
-        } else if (rates.nightly) {
-            return `$${rates.nightly.toLocaleString()}/night`;
-        }
-    };
-
-    return (
+const PropertyCard = ({ property }: { property: PropertyInterface }) => (
         <div className='rounded-xl shadow-md relative'>
             <Link href={`/properties/${property._id}`}>
                 <Image
@@ -41,7 +29,7 @@ const PropertyCard = ({ property }: { property: PropertyInterface }) => {
                     <h3 className='text-xl font-bold'>{property.name}</h3>
                 </div>
                 <h3 className='absolute top-[10px] right-[10px] bg-white px-4 py-2 rounded-lg text-blue-500 font-bold text-right md:text-center lg:text-right'>
-                    {getRateDisplay()}
+                    {getRateDisplay(property.rates)}
                 </h3>
                 <div className='flex justify-center gap-4 text-gray-500 mb-4'>
                     <p>
@@ -54,8 +42,7 @@ const PropertyCard = ({ property }: { property: PropertyInterface }) => {
                     </p>
                     <p>
                         <FaRulerCombined className='md:hidden lg:inline' />
-                            {' '}
-                            {property.square_feet}{' '}
+                            {' '}{property.square_feet}{' '}
                         <span className='md:hidden lg:inline'>sqft</span>
                     </p>
                 </div>
@@ -88,6 +75,5 @@ const PropertyCard = ({ property }: { property: PropertyInterface }) => {
             </div>
         </div>
     );
-};
 
 export default PropertyCard;
