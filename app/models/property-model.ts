@@ -1,5 +1,11 @@
 import { Document, Schema, Types, model, models } from 'mongoose';
 
+export interface Rates {
+    nightly?: number;
+    weekly?: number;
+    monthly?: number
+}
+
 export interface PropertyInterface extends Document {
     owner: Types.ObjectId;
     name: string;
@@ -15,11 +21,7 @@ export interface PropertyInterface extends Document {
     baths: number;
     square_feet: number;
     amenities?: Array<string>;
-    rates: {
-        nightly?: number;
-        weekly?: number;
-        monthly?: number
-    };
+    rates: Rates;
     seller_info: {
         name: string;
         email: string;

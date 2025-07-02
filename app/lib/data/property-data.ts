@@ -5,12 +5,7 @@ import { Property, PropertyInterface, User, UserInterface } from "@/app/models";
 import { MAX_ITEMS_PER_PAGE, PropertiesQuery } from "@/app/lib/definitions";
 
 export const fetchProperties = async (mostRecent: boolean) => {
-    try {
-        // Artificial delay for testing loading components.
-        // console.log('Fetching data...')
-        // await new Promise((resolve) => setTimeout(resolve, 3000));
-        // console.log('Data received...')
-        
+    try {        
         await dbConnect();
         let properties: PropertyInterface[] | null;
 
@@ -44,6 +39,11 @@ export const fetchPropertyById = async (propertyId: string) => {
 export const fetchPropertiesByUserId = async (userId: string) => {
     let properties: Array<PropertyInterface> | null;
 
+    // Artificial delay for testing loading components.
+    // console.log('Fetching data...')
+    // await new Promise((resolve) => setTimeout(resolve, 5000));
+    // console.log('Data received...')
+
     try {
         await dbConnect();
         properties = await Property.find({ owner: userId });
@@ -55,6 +55,19 @@ export const fetchPropertiesByUserId = async (userId: string) => {
     }
 
     return properties;
+}
+
+export const fetchFeaturedProperties = async () => {
+    try {
+        await dbConnect();
+        const properties: PropertyInterface[] | null = await Property.find({ is_featured: true });
+        if (!properties) {
+            console.log('>>> No featured properties found.')
+        }
+        return properties;
+    } catch (error) {
+        throw new Error(`Error finding properties: ${error}`);
+    }
 }
 
 export const fetchSavedProperties = async (userId: string) => {
