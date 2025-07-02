@@ -1,10 +1,10 @@
 import GoogleProvider from "next-auth/providers/google";
-import type { Profile, Session } from 'next-auth';
+import type { DefaultUser, Profile, Session } from 'next-auth';
 
 import dbConnect from "@/app/config/database-config";
 import { User } from "@/app/models";
 
-export const authConfig = {
+export const authOptions = {
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -20,18 +20,18 @@ export const authConfig = {
     ],
     callbacks: {
         // Invoked on successful sign in
-        async signIn({ profile }: { profile: Profile}) {
+        async signIn({ user }: { user: DefaultUser }) {
             // Connect to database
             await dbConnect();
-            const user  = await User.findOne({ email: profile.email })
+            const dbUser  = await User.findOne({ email: user.email })
 
             // Check if user exists, if not create user
-            if (!user) {
-                const username = profile.name!.slice(0, 20);
+            if (!dbUser) {
+                const username = user.name!.slice(0, 20);
                 await User.create({
-                    email: profile.email,
+                    email: user.email,
                     username: username,
-                    image: profile.picture
+                    image: user.image
                 });
             }
             // Return true to allow sign in
