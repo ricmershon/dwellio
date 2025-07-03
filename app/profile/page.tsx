@@ -12,7 +12,7 @@ const ProfilePage = async () => {
         throw new Error('User ID is required.')
     }
 
-    const properties: Array<PropertyInterface> = await fetchPropertiesByUserId(sessionUser.id);
+    const properties: PropertyInterface[] = await fetchPropertiesByUserId(sessionUser.id);
         
     return (
         <main>

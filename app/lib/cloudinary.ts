@@ -6,8 +6,8 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export const uploadImages = async (images: Array<File>) => {
-    const imageUrls: Array<string> = [];
+export const uploadImages = async (images: File[]) => {
+    const imageUrls: string[] = [];
 
     for (const imageFile of images) {
         const imageBuffer = await imageFile.arrayBuffer();

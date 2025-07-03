@@ -5,7 +5,7 @@ import { PropertyInterface } from "@/app/models";
 import DeletePropertyButton from "@/app/ui/profile/delete-property-button";
 
 const ProfileProperties = (
-    { properties }: { properties: Array<PropertyInterface> }
+    { properties }: { properties: PropertyInterface[] }
 ) => {
     return (
         <>

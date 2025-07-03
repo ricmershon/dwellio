@@ -49,7 +49,7 @@ export const createProperty = async (formData: FormData) => {
         }
     }
 
-    const propertyImages = await uploadImages((formData.getAll('images') as Array<File>));
+    const propertyImages = await uploadImages((formData.getAll('images') as File[]));
     Object.assign(propertyData, { images: propertyImages });
 
     const newProprety = new Property(propertyData);

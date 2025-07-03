@@ -19,6 +19,7 @@ import { BuiltInProviderType } from "next-auth/providers/index";
 import profileDefaultImage from '@/assets/images/profile.png';
 import UnreadMessageCount from "@/app/ui/messages/unread-message-count";
 
+// TODO: Update mobile menu button and move to left of screen.
 const NavBar = () => {
     // Get session and user image
     const { data: session } = useSession();

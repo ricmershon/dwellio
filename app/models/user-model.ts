@@ -5,7 +5,7 @@ export interface UserInterface extends Document {
     username: string;
     email: string;
     image: string;
-    bookmarks: Array<Types.ObjectId> & Array<PropertyInterface>
+    bookmarks: Types.ObjectId[] & PropertyInterface[]
 }
 
 const UserSchema = new Schema({

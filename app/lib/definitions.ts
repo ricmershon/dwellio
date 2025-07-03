@@ -16,4 +16,4 @@ export interface PropertiesQuery {
     ]
 }
 
-export const MAX_ITEMS_PER_PAGE = 2;
+export const MAX_ITEMS_PER_PAGE = 6;
