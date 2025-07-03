@@ -3,7 +3,7 @@ interface Amenity {
     value: string
 }
 
-type AmenitiesType = Array<Amenity>
+type AmenitiesType = Amenity[]
 
 export const Amenities: AmenitiesType = [
     {

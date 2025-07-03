@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { FaArrowLeft } from "react-icons/fa";
 
-import { fetchPropertyById } from "@/app/lib/data/property-data";
+import { fetchProperty } from "@/app/lib/data/property-data";
 import PropertyHeaderImage from "@/app/ui/properties/id/header-image";
 import PropertyDetails from '@/app/ui/properties/id/details';
 import PropertyImages from "@/app/ui/properties/id/images";
@@ -10,7 +10,7 @@ import { PropertyInterface } from "@/app/models";
 
 const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
-    const propertyDoc = await fetchPropertyById(id);
+    const propertyDoc = await fetchProperty(id);
     const property: PropertyInterface = JSON.parse(JSON.stringify(propertyDoc));
 
     return (

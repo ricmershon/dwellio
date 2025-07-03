@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Gallery, Item } from 'react-photoswipe-gallery';
 
-const PropertyImages = ({ images }: { images: Array<string>}) => {
+const PropertyImages = ({ images }: { images: string[] }) => {
     return (
         <Gallery>
             <section className="bg-blue-50 p-4">

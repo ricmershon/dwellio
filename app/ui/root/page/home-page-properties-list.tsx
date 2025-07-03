@@ -6,7 +6,7 @@ import { fetchProperties } from '@/app/lib/data/property-data';
 
 const HomePageProperties = async () => {
     // Three most recent properties
-    const recentProperties: Array<PropertyInterface> = await fetchProperties(true);
+    const recentProperties: PropertyInterface[] = await fetchProperties(true);
 
     return (
         <>

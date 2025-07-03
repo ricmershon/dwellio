@@ -20,14 +20,14 @@ export interface PropertyInterface extends Document {
     beds: number;
     baths: number;
     square_feet: number;
-    amenities?: Array<string>;
+    amenities?: string[];
     rates: Rates;
     seller_info: {
         name: string;
         email: string;
         phone: string
     };
-    images: Array<string>;
+    images: string[];
     is_featured?: boolean;
     createdAt: Date;
     updatedAt: Date;
