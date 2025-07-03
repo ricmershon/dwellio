@@ -14,6 +14,10 @@ import { toActionState } from "@/app/utils/to-action-state";
 // TODO: Add console logs to catch blocks
 // TODO: Add error handling
 // TODO: add try catch blocks
+/**
+ * 
+ * @param formData 
+ */
 export const createProperty = async (formData: FormData) => {
     await dbConnect();
 
