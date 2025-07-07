@@ -32,7 +32,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                 <html lang="en">
                     <body>
                         <NavBar />
-                            {children}
+                            <div className="flex-grow p-6 md:overflow-y-auto md:p-8">{children}</div>
                         <Footer />
                         <ToastContainer
                             position='top-right'

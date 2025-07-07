@@ -3,9 +3,7 @@ interface Amenity {
     value: string
 }
 
-type AmenitiesType = Amenity[]
-
-export const Amenities: AmenitiesType = [
+export const Amenities: Amenity[] = [
     {
         id: 'wifi',
         value: 'WiFi',
@@ -78,4 +76,15 @@ export const Amenities: AmenitiesType = [
         id: 'coffee_maker',
         value: 'Coffee Maker',
     },
+];
+
+export const PropertyTypes = [
+    { value: 'Apartment', label: 'Apartment'},
+    { value: 'Cabin', label: 'Cabin'},
+    { value: 'Condo', label: 'Condo'},
+    { value: 'Cottage', label: 'Cottage'},
+    { value: 'House', label: 'House'},
+    { value: 'Room', label: 'Room'},
+    { value: 'Studio', label: 'Studio'},
+    { value: 'Other', label: 'Other'}
 ];
