@@ -1,5 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary';
 
+import { ImageData } from '@/app/lib/definitions';
+
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -7,7 +9,7 @@ cloudinary.config({
 });
 
 export const uploadImages = async (images: File[]) => {
-    const imageUrls: string[] = [];
+    const imagesData: ImageData[] = []
 
     for (const imageFile of images) {
         const imageBuffer = await imageFile.arrayBuffer();
@@ -16,14 +18,35 @@ export const uploadImages = async (images: File[]) => {
 
         const imageBase64 = imageData.toString('base64');
 
-        const result = await cloudinary.uploader.upload(
-            `data:image/png;base64,${imageBase64}`,
-           { folder: 'dwellio' }
-        );
-
-        imageUrls.push(result.secure_url);
+        try {
+            const result = await cloudinary.uploader.upload(
+                `data:image/png;base64,${imageBase64}`,
+               { folder: 'dwellio' }
+            );
+            imagesData.push({
+                secureUrl: result.secure_url,
+                publicId: result.public_id
+            });
+        } catch (error) {
+            console.error(`>>> Error uploading images: ${error}`);
+            throw new Error(`Error uploading images: ${error}`);
+        }
     }
-    return imageUrls;
+    return imagesData;
+}
+
+export const destroyImages = async (imagesData: ImageData[]) => {
+    for (const imageData of imagesData) {
+        try {
+            const response = await cloudinary.uploader.destroy(imageData.publicId);
+            if (response.result !== 'ok') {
+                throw new Error('error deleting image');
+            }
+        } catch (error) {
+            console.error(`>>> Cloudinary error: ${error}`);
+            throw new Error(`Cloudinary error: ${error}`);
+        }
+    }
 }
 
 export default cloudinary;
