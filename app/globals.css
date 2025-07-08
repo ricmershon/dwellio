@@ -24,3 +24,17 @@ body {
 	color: var(--foreground);
 	font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Spinning animation for icon within buttons */
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.icon-spin {
+	animation: spin 2s linear infinite; /* Adjust duration and timing function as needed */
+}
