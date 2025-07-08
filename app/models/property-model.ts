@@ -1,10 +1,13 @@
 import { Document, Schema, Types, model, models } from 'mongoose';
 
+import { ImageData } from '@/app/lib/definitions';
+
 export interface Rates {
     nightly?: number;
     weekly?: number;
     monthly?: number
 }
+
 
 export interface PropertyInterface extends Document {
     owner: Types.ObjectId;
@@ -27,11 +30,16 @@ export interface PropertyInterface extends Document {
         email: string;
         phone: string
     };
-    images: string[];
+    imagesData: ImageData[];
     is_featured?: boolean;
     createdAt: Date;
     updatedAt: Date;
 }
+
+const ImagesSchema = new Schema({
+  secureUrl: { type: String, required: true },
+  publicId: { type: String, required: true }
+}, { _id: false });
 
 const PropertySchema = new Schema({
     owner: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
@@ -58,11 +66,21 @@ const PropertySchema = new Schema({
         email: String,
         phone: String
     },
-    images: [{ type: String }],
+    imagesData: {
+      type: [ImagesSchema],
+      required: true,
+      validate: {
+        validator: function (value: any[]) {
+          return Array.isArray(value) && value.length > 0;
+        },
+        message: 'At least one image is required in imagesData.',
+      },
+    },
     is_featured: { type: Boolean, default: false }
 }, {
     timestamps: true
 });
 
+// delete models.Property;
 const Property = models.Property || model<PropertyInterface>('Property', PropertySchema);
 export default Property;

@@ -11,9 +11,8 @@ import { updateProperty } from "@/app/lib/actions/property-actions";
 
 
 const EditPropertyForm = ({ property }: { property: PropertyInterface }) => {
-    const initialState: ActionState = {};
     const updatePropertyById = updateProperty.bind(null, (property._id as string).toString());
-    const [_state, formAction] = useActionState(updatePropertyById, initialState);
+    const [_state, formAction] = useActionState(updatePropertyById, {} as ActionState);
 
     const { street, city, state, zipcode } = property.location;
     const { weekly, monthly, nightly } = property.rates;

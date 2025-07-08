@@ -5,4 +5,5 @@ export const toActionState = (
     status: "SUCCESS" | "ERROR",
     isBookmarked?: boolean,
     isRead?: boolean,
-): ActionState => ({ message, status, isBookmarked, isRead});
+    formData?: FormData
+): ActionState => ({ message, status, isBookmarked, isRead, formData });

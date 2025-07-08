@@ -15,7 +15,7 @@ const PropertyCard = ({ property }: { property: PropertyInterface }) => (
         <div className='rounded-xl shadow-md relative'>
             <Link href={`/properties/${property._id}`}>
                 <Image
-                    src={property.images[0]}
+                    src={property.imagesData[0].secureUrl}
                     alt={property.name}
                     width='0'
                     height='0'

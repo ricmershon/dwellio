@@ -1,282 +1,286 @@
+'use client';
+
+import { useActionState, useEffect } from "react";
+import Link from "next/link";
+import { LuRefreshCw } from "react-icons/lu";
+import { toast } from "react-toastify";
+
 import { createProperty } from "@/app/lib/actions/property-actions"
-import { Amenities } from "@/app/data/data";
+import { Amenities, PropertyTypes } from "@/app/data/data";
+import Input from "@/app/ui/shared/input";
+import DwellioSelect from "@/app/ui/shared/select";
+import { ActionState } from "@/app/lib/definitions";
 
-// TODO: Fix select dropdown arrow position
-// TODO: Add autocomplete to address with 
+
+// TODO: Google address component
 const AddPropertyForm = () => {
+    const [actionState, formAction, isPending] = useActionState(createProperty, {} as ActionState);
+
+    /**
+     * Display error message if the `createProperty` returns an `ERROR` status.
+     */
+    useEffect(() => {
+        if (actionState.status === 'ERROR') {
+            toast.error(actionState.message);
+        }
+    }, [actionState.message, actionState.status]);
+
     return (
-        <form action={createProperty}>
-            <h2 className="text-3xl text-center font-semibold mb-6">
-                Add Property
-            </h2>
+        <form action={formAction}>
+            <div className=" rounded-md bg-gray-50 p-4 md:p-6">
 
-            {/* Property type */}
-            <div className="mb-4">
-                <label
-                    htmlFor="type"
-                    className="block text-gray-700 font-bold mb-2"
-                >
-                    Property Type
-                </label>
-                <select
-                    id="type"
-                    name="type"
-                    className="border rounded w-full py-2 px-3"
-                    required
-                >
-                    <option value="Apartment">Apartment</option>
-                    <option value="Condo">Condo</option>
-                    <option value="House">House</option>
-                    <option value="CabinOrCottage">Cabin or Cottage</option>
-                    <option value="Room">Room</option>
-                    <option value="Studio">Studio</option>
-                    <option value="Other">Other</option>
-                </select>
-            </div>
+                {/* Property type */}
+                <div className="mb-4">
+                    <label
+                        htmlFor="type"
+                        className="mb-2 block font-medium text-gray-700"
+                    >
+                        Property Type
+                    </label>
+                    <DwellioSelect
+                        options={PropertyTypes}
+                        placeholder="Select a property type"
+                        name='type'
+                        id='type'
+                    />
+                </div>
 
-            {/* Listing name */}
-            <div className="mb-4">
-                <label className="block text-gray-700 font-bold mb-2">Listing Name</label>
-                <input
-                    type="text"
-                    id="name"
+                {/* Listing name */}
+                <Input
+                    inputType="input"
+                    id='name'
                     name="name"
-                    className="border rounded w-full py-2 px-3 mb-2"
-                    placeholder="eg. Beautiful Apartment In Miami"
-                    required
+                    type='text'
+                    label="Listing Name"
+                    placeholder="e.g., Beautiful Apartment in Miami"
+                    defaultValue={(actionState.formData?.get("name") || "") as string}
                 />
-            </div>
 
-            {/* Description */}
-            <div className="mb-4">
-                <label
-                    htmlFor="description"
-                    className="block text-gray-700 font-bold mb-2"
-                >
-                    Description
-                </label>
-                <textarea
-                    id="description"
+                {/* Description */}
+                <Input
+                    inputType="textarea"
+                    id='description'
                     name="description"
-                    className="border rounded w-full py-2 px-3"
-                    rows={4}
+                    label="Description"
                     placeholder="Add an optional description of your property"
+                    defaultValue={(actionState.formData?.get("description") || "") as string}
                 />
-            </div>
 
-            {/* Location */}
-            <div className="mb-4 bg-blue-50 p-4">
-                <label className="block text-gray-700 font-bold mb-2">Location</label>
-                <input
-                    type="text"
-                    id="street"
+                {/* Location */}
+                <Input
+                    inputType="input"
+                    id='street'
                     name="location.street"
-                    className="border rounded w-full py-2 px-3 mb-2"
+                    type='text'
+                    label="Location"
                     placeholder="Street"
+                    isInGroup={true}
+                    defaultValue={(actionState.formData?.get("location.street") || "") as string}
                 />
-                <input
-                    type="text"
-                    id="city"
+                <Input
+                    inputType="input"
+                    id='city'
                     name="location.city"
-                    className="border rounded w-full py-2 px-3 mb-2"
+                    type='text'
                     placeholder="City"
-                    required
+                    isInGroup={true}
+                    defaultValue={(actionState.formData?.get("location.city") || "") as string}
                 />
-                <input
-                    type="text"
-                    id="state"
+                <Input
+                    inputType="input"
+                    id='state'
                     name="location.state"
-                    className="border rounded w-full py-2 px-3 mb-2"
+                    type='text'
                     placeholder="State"
-                    required
+                    isInGroup={true}
+                    defaultValue={(actionState.formData?.get("location.state") || "") as string}
                 />
-                <input
-                    type="text"
-                    id="zipcode"
+                <Input
+                    inputType="input"
+                    id='zipcode'
                     name="location.zipcode"
-                    className="border rounded w-full py-2 px-3 mb-2"
-                    placeholder="Zipcode"
+                    type='text'
+                    placeholder="Zip Code"
+                    defaultValue={(actionState.formData?.get("location.zipcode") || "") as string}
                 />
-            </div>
 
-            {/* Number of beds and baths, and square feet */}
-            <div className="mb-4 flex flex-wrap">
-                <div className="w-full sm:w-1/3 pr-2">
-                    <label
-                        htmlFor="beds"
-                        className="block text-gray-700 font-bold mb-2"
-                    >
-                        Beds
-                    </label>
-                    <input
-                        type="number"
-                        id="beds"
-                        name="beds"
-                        className="border rounded w-full py-2 px-3"
-                        required
-                    />
-                </div>
-                <div className="w-full sm:w-1/3 px-2">
-                    <label
-                        htmlFor="baths"
-                        className="block text-gray-700 font-bold mb-2"
-                    >
-                        Baths
-                    </label>
+                {/* Number of beds and baths, and square feet */}
+                <div className="mb-4 flex flex-wrap">
+                    <div className="w-full sm:w-1/3 sm:pr-2 mb-2 sm:mb-0">
+                        <label
+                            htmlFor="beds"
+                            className="block text-gray-700 font-medium mb-2"
+                        >
+                            Beds
+                        </label>
                         <input
-                        type="number"
-                        id="baths"
-                        name="baths"
-                        className="border rounded w-full py-2 px-3"
-                        required
+                            type="number"
+                            id="beds"
+                            name="beds"
+                            className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                            defaultValue={(actionState.formData?.get("beds") || "") as string}
+                            required
                         />
                     </div>
-                <div className="w-full sm:w-1/3 pl-2">
-                    <label
-                        htmlFor="square_feet"
-                        className="block text-gray-700 font-bold mb-2"
-                    >
-                        Square Feet
-                    </label>
-                    <input
-                        type="number"
-                        id="square_feet"
-                        name="square_feet"
-                        className="border rounded w-full py-2 px-3"
-                        required
-                    />
-                </div>
-            </div>
-
-            {/* Amenitites */}
-            <div className="mb-4">
-                <label className="block text-gray-700 font-bold mb-2">
-                    Amenities
-                </label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                    {Amenities.map((amenity) => (
-                        <div key={amenity.id}>
+                    <div className="w-full sm:w-1/3 sm:px-2 mb-2 sm:mb-0">
+                        <label
+                            htmlFor="baths"
+                            className="block text-gray-700 font-medium mb-2"
+                        >
+                            Baths
+                        </label>
                             <input
-                                type="checkbox"
-                                id={`amenity_${amenity.id}`}
-                                name="amenities"
-                                value={amenity.value}
-                                className='mr-2'
+                            type="number"
+                            id="baths"
+                            name="baths"
+                            className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                            defaultValue={(actionState.formData?.get("baths") || "") as string}
+                            required
                             />
-                            <label htmlFor={`amenity_${amenity.id}`}>{amenity.value}</label>
                         </div>
-                    ))}
-                </div>
-            </div>
-
-            {/* Rates */}
-            <div className="mb-4 bg-blue-50 p-4">
-                <label className="block text-gray-700 font-bold mb-2">
-                    Rates (Leave blank if not applicable)
-                </label>
-                <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
-                    <div className="flex items-center">
-                        <label htmlFor="weekly_rate" className="mr-2">Weekly</label>
+                    <div className="w-full sm:w-1/3 sm:pl-2">
+                        <label
+                            htmlFor="square_feet"
+                            className="block text-gray-700 font-medium mb-2"
+                        >
+                            Square Feet
+                        </label>
                         <input
                             type="number"
-                            id="weekly_rate"
-                            name="rates.weekly"
-                            className="border rounded w-full py-2 px-3"
-                        />
-                    </div>
-                    <div className="flex items-center">
-                        <label htmlFor="monthly_rate" className="mr-2">Monthly</label>
-                        <input
-                            type="number"
-                            id="monthly_rate"
-                            name="rates.monthly"
-                            className="border rounded w-full py-2 px-3"
-                        />
-                    </div>
-                    <div className="flex items-center">
-                        <label htmlFor="nightly_rate" className="mr-2">Nightly</label>
-                        <input
-                            type="number"
-                            id="nightly_rate"
-                            name="rates.nightly"
-                            className="border rounded w-full py-2 px-3"
+                            id="square_feet"
+                            name="square_feet"
+                            className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                            defaultValue={(actionState.formData?.get("square_feet") || "") as string}
+                            required
                         />
                     </div>
                 </div>
-            </div>
 
-            {/* Renter info */}
-            <div className="mb-4">
-                <label
-                    htmlFor="seller_name"
-                    className="block text-gray-700 font-bold mb-2"
-                >
-                    Renter Name
-                </label>
-                <input
-                    type="text"
-                    id="seller_name"
+                {/* Amenitites */}
+                <div className="mb-4">
+                    <label className="block text-gray-700 font-medium mb-2">
+                        Amenities
+                    </label>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                        {Amenities.map((amenity) => (
+                            <div key={amenity.id}>
+                                <input
+                                    type="checkbox"
+                                    id={`amenity_${amenity.id}`}
+                                    name="amenities"
+                                    value={amenity.value}
+                                    className='mr-2'
+                                    defaultChecked={actionState.formData?.getAll('amenities').includes(amenity.value)}
+                                />
+                                <label
+                                    htmlFor={`amenity_${amenity.id}`}
+                                    className="text-sm font-medium text-gray-700"
+                                >
+                                    {amenity.value}
+                                </label>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Rates */}
+                <div className="mb-4">
+                    <label className="mb-2 block font-medium text-gray-700">
+                        Rates (Leave blank if not applicable)
+                    </label>
+                    <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
+                        <div className="flex items-center">
+                            <label htmlFor="weekly_rate" className="text-sm font-medium text-gray-700 mr-2">Weekly</label>
+                            <input
+                                type="number"
+                                id="weekly_rate"
+                                name="rates.weekly"
+                                className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                                defaultValue={(actionState.formData?.get("rates.weekly") || "") as string}
+                            />
+                        </div>
+                        <div className="flex items-center">
+                            <label htmlFor="monthly_rate" className="text-sm font-medium text-gray-700 mr-2">Monthly</label>
+                            <input
+                                type="number"
+                                id="monthly_rate"
+                                name="rates.monthly"
+                                className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                                defaultValue={(actionState.formData?.get("rates.monthly") || "") as string}
+                            />
+                        </div>
+                        <div className="flex items-center">
+                            <label htmlFor="nightly_rate" className="text-sm font-medium text-gray-700 mr-2">Nightly</label>
+                            <input
+                                type="number"
+                                id="nightly_rate"
+                                name="rates.nightly"
+                                className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                                defaultValue={(actionState.formData?.get("rates.nightly") || "") as string}
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Renter info */}
+                <Input
+                    inputType="input"
+                    id='seller_name'
                     name="seller_info.name"
-                    className="border rounded w-full py-2 px-3"
+                    type='text'
                     placeholder="Name"
+                    label="Renter Name"
+                    defaultValue={(actionState.formData?.get("seller_info.name") || "") as string}
                 />
-            </div>
-            <div className="mb-4">
-                <label
-                    htmlFor="seller_email"
-                    className="block text-gray-700 font-bold mb-2"
-                >
-                    Renter Email
-                </label>
-                <input
-                    type="email"
-                    id="seller_email"
+               <Input
+                    inputType="input"
+                    id='seller_email'
                     name="seller_info.email"
-                    className="border rounded w-full py-2 px-3"
+                    type='email'
                     placeholder="Email address"
-                    required
+                    label="Renter Email"
+                    defaultValue={(actionState.formData?.get("seller_info.email") || "") as string}
                 />
-            </div>
-            <div className="mb-4">
-                <label
-                    htmlFor="seller_phone"
-                    className="block text-gray-700 font-bold mb-2"
-                >
-                    Renter Phone
-                </label>
-                <input
-                    type="tel"
-                    id="seller_phone"
+               <Input
+                    inputType="input"
+                    id='seller_phone'
                     name="seller_info.phone"
-                    className="border rounded w-full py-2 px-3"
-                    pattern='[0-9]{10}'
-                    placeholder="1234567890"
+                    type='tel'
+                    label="Renter Phone"
+                    placeholder='Phone'
+                    defaultValue={(actionState.formData?.get("seller_info.phone") || "") as string}
                 />
+
+                {/* Select images */}
+                <div>
+                    <label htmlFor="images" className="mb-2 block font-medium text-gray-700">
+                        Images (Select up to 4 images)
+                    </label>
+                    <input
+                        type="file"
+                        id="images"
+                        name="images"
+                        className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                        accept="image/*"
+                        multiple
+                        required
+                    />
+                </div>
             </div>
 
-            {/* Select images */}
-            <div className="mb-4">
-                <label htmlFor="images" className="block text-gray-700 font-bold mb-2">
-                    Images (Select up to 4 images)
-                </label>
-                <input
-                    type="file"
-                    id="images"
-                    name="images"
-                    className="border rounded w-full py-2 px-3"
-                    accept="image/*"
-                    multiple
-                    required
-                />
-            </div>
-
-            {/* Add property button */}
-            <div>
+            <div className="mt-6 flex justify-end gap-4">
+                <Link
+                    href="/properties"
+                    className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
+                >
+                    Cancel
+                </Link>
                 <button
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline cursor-pointer"
+                    className="flex gap-1 h-10 items-center rounded-lg bg-blue-500 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-500 active:bg-blue-600 hover:cursor-pointer"
                     type="submit"
                 >
-                    Add Property
+                    {isPending && <LuRefreshCw className='text-lg icon-spin'/>}
+                    <span>Save Property</span>
                 </button>
             </div>
         </form>

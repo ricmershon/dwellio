@@ -9,8 +9,7 @@ import { createMessage } from "@/app/lib/actions/message-actions";
 import { toast } from "react-toastify";
 
 const PropertyContactForm = ({ property }: { property: PropertyInterface}) => {
-    const initialState: ActionState = {};
-    const [state, formAction, isPending] = useActionState(createMessage, initialState);
+    const [state, formAction, isPending] = useActionState(createMessage, {} as ActionState);
 
     useEffect(() => {
         if (state.status === 'ERROR') {

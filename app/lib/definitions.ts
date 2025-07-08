@@ -3,6 +3,7 @@ export type ActionState = {
     status?: 'SUCCESS' | 'ERROR' | null,
     isBookmarked?: boolean,
     isRead?: boolean,
+    formData?: FormData
 }
 
 export interface PropertiesQuery {
@@ -14,6 +15,11 @@ export interface PropertiesQuery {
         { 'location.state': RegExp },
         { 'location.zip': RegExp }
     ]
+}
+
+export interface ImageData {
+    secureUrl: string;
+    publicId: string;
 }
 
 export const MAX_ITEMS_PER_PAGE = 6;

@@ -5,25 +5,27 @@ import { redirect } from "next/navigation";
 import { Types } from "mongoose";
 
 import dbConnect from "@/app/config/database-config";
-import type { ActionState } from "@/app/lib/definitions";
+import type { ActionState, ImageData } from "@/app/lib/definitions";
 import { Property, PropertyInterface, User, UserInterface } from "@/app/models";
 import { getSessionUser } from "@/app/utils/get-session-user";
-import cloudinary, { uploadImages } from "@/app/lib/cloudinary";
+import { uploadImages, destroyImages } from "@/app/lib/cloudinary";
 import { toActionState } from "@/app/utils/to-action-state";
 
 // TODO: Add console logs to catch blocks
 // TODO: Add error handling
 // TODO: add try catch blocks
-/**
- * 
- * 
- * @param formData 
- */
-export const createProperty = async (formData: FormData) => {
-    await dbConnect();
 
+/**
+ * Creates a new property.
+ * 
+ * @param {ActionState} _prevState 
+ * @param {FormData} formData 
+ * @returns Promise<ActionState> - ActionState may include form data in order to
+ * repopulate the form if there's an error.
+ */
+export const createProperty = async (_prevState: ActionState, formData: FormData) => {
     const sessionUser = await getSessionUser();
-    if (!sessionUser || !sessionUser.id) {
+    if (!sessionUser) {
         throw new Error('User ID is required.')
     }
 
@@ -53,15 +55,37 @@ export const createProperty = async (formData: FormData) => {
             phone: formData.get('seller_info.phone'),            
         }
     }
+    
+    let newProperty: PropertyInterface;
+    let imagesData: ImageData[] = [];
 
-    const propertyImages = await uploadImages((formData.getAll('images') as File[]));
-    Object.assign(propertyData, { images: propertyImages });
+    try {
+        await dbConnect();
+        
+        imagesData = await uploadImages((formData.getAll('images') as File[]));
+        Object.assign(propertyData, { imagesData: imagesData });
+    
+        newProperty = new Property(propertyData);
+        await newProperty.save();
+    } catch (error) {
+        // Destroy the images just uploaded.
+        if (imagesData.length > 0) {
+            destroyImages(imagesData);
+        }
 
-    const newProprety = new Property(propertyData);
-    await newProprety.save();
+        console.error(`>>> Database error adding a property: ${error}`);
 
-    revalidatePath('/', 'layout');
-    redirect(`/properties/${newProprety._id}`);
+        // Return form data so the form can be repopulated.
+        return toActionState(
+            `Failed to add a property: ${error}`,
+            'ERROR',
+            undefined,
+            undefined,
+            formData
+        );
+    }
+
+    redirect(`/properties/${newProperty._id}`);
 }
 
 export const deleteProperty = async (propertyId: string) => {
@@ -82,18 +106,7 @@ export const deleteProperty = async (propertyId: string) => {
         return toActionState('Not authorized to delete peoperty.', 'ERROR');
     }
 
-    // Extract public ID from image URLs
-    const imagePublicIds = property.images.map((imageUrl) => {
-        const parts = imageUrl.split('/');
-        return parts.at(-1)!.split('.').at(0);
-    });
-
-    // Delete images from Cloudinary
-    if (imagePublicIds.length > 0) {
-        for (const imagePublicId of imagePublicIds) {
-            await cloudinary.uploader.destroy(`dwellio/${imagePublicId}`)
-        }
-    }
+    destroyImages(property.imagesData);
 
     await property.deleteOne();
 
