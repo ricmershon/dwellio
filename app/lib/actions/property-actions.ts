@@ -6,7 +6,7 @@ import { Types } from "mongoose";
 
 import dbConnect from "@/app/config/database-config";
 import type { ActionState, ImageData } from "@/app/lib/definitions";
-import { Property, PropertyInterface, User, UserInterface } from "@/app/models";
+import { Property, PropertyDocument, User, UserDocument } from "@/app/models";
 import { getSessionUser } from "@/app/utils/get-session-user";
 import { uploadImages, destroyImages } from "@/app/lib/cloudinary";
 import { toActionState } from "@/app/utils/to-action-state";
@@ -56,7 +56,7 @@ export const createProperty = async (_prevState: ActionState, formData: FormData
         }
     }
     
-    let newProperty: PropertyInterface;
+    let newProperty: PropertyDocument;
     let imagesData: ImageData[] = [];
 
     try {
@@ -96,7 +96,7 @@ export const deleteProperty = async (propertyId: string) => {
         throw new Error('User ID is required.')
     }
 
-    const property: PropertyInterface | null = await Property.findById(propertyId);
+    const property: PropertyDocument | null = await Property.findById(propertyId);
     if (!property) {
         return toActionState('Property not found.', 'ERROR');
     }
@@ -127,7 +127,7 @@ export const updateProperty = async (
         throw new Error('User ID is required.')
     }
 
-    const property: PropertyInterface | null = await Property.findById(propertyId);
+    const property: PropertyDocument | null = await Property.findById(propertyId);
     if (!property) {
         return toActionState('Property not found.', 'ERROR');
     }
@@ -181,7 +181,7 @@ export const bookmarkProperty = async (propertyId: string) => {
         throw new Error('User ID is required.')
     }
 
-    let user: UserInterface | null;
+    let user: UserDocument | null;
     let actionState: ActionState;
 
     try {
@@ -241,7 +241,7 @@ export const getBookmarkStatus = async (propertyId: string) => {
         throw new Error('User ID is required.')
     }
 
-    let user: UserInterface | null;
+    let user: UserDocument | null;
 
     try {
         user = await User.findById(sessionUser.id);

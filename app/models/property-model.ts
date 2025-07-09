@@ -1,15 +1,8 @@
 import { Document, Schema, Types, model, models } from 'mongoose';
 
-import { ImageData } from '@/app/lib/definitions';
+import { ImageData, Rates } from '@/app/lib/definitions';
 
-export interface Rates {
-    nightly?: number;
-    weekly?: number;
-    monthly?: number
-}
-
-
-export interface PropertyInterface extends Document {
+export interface PropertyDocument extends Document {
     owner: Types.ObjectId;
     name: string;
     type: string;
@@ -82,5 +75,5 @@ const PropertySchema = new Schema({
 });
 
 // delete models.Property;
-const Property = models.Property || model<PropertyInterface>('Property', PropertySchema);
+const Property = models.Property || model<PropertyDocument>('Property', PropertySchema);
 export default Property;

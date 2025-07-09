@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { PropertyInterface } from "@/app/models";
+import { PropertyDocument } from "@/app/models";
 import DeletePropertyButton from "@/app/ui/profile/delete-property-button";
 
 const ProfileProperties = (
-    { properties }: { properties: PropertyInterface[] }
+    { properties }: { properties: PropertyDocument[] }
 ) => (
     <>
         {properties.length !== 0 && properties.map((property) => {

@@ -2,11 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { FaBed, FaBath, FaRulerCombined, FaMoneyBill, FaMapMarkerAlt } from "react-icons/fa";
 
-import { PropertyInterface } from "@/app/models";
+import { PropertyDocument } from "@/app/models";
 import { getRateDisplay } from "@/app/utils/get-rate-display";
 
 // FIXME: image stretches within viewport
-const FeaturedPropertyCard = ({ property }: { property: PropertyInterface}) => {
+const FeaturedPropertyCard = ({ property }: { property: PropertyDocument}) => {
     return (
         <div className="bg-white rounded-xl shadow-md relative flex flex-col md:flex-row">
             <Image

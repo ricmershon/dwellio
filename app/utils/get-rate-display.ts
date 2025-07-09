@@ -1,4 +1,4 @@
-import { Rates } from "@/app/models/property-model";
+import { Rates } from "@/app/lib/definitions";
 
 export const getRateDisplay = (rates: Rates) => {
     if (rates.monthly) {

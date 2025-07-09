@@ -1,6 +1,6 @@
-import { MessageInterface, PropertyInterface } from "@/app/models";
+import { MessageDocument, PropertyDocument } from "@/app/models";
 
 // TODO: need a cleaner solution
-export const toSerializedOjbect = (object: PropertyInterface | MessageInterface) => (
+export const toSerializedOjbect = (object: PropertyDocument | MessageDocument) => (
     JSON.parse(JSON.stringify(object))
 );

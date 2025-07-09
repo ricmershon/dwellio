@@ -1,7 +1,7 @@
-import Property, { PropertyInterface } from "@/app/models/property-model";
-import User, { UserInterface} from "@/app/models/user-model";
-import Message, { MessageInterface} from "@/app/models/message-model";
+import Property, { PropertyDocument } from "@/app/models/property-model";
+import User, { UserDocument} from "@/app/models/user-model";
+import Message, { MessageDocument} from "@/app/models/message-model";
 import StaticInput, { StaticInputInterface } from "@/app/models/static-input-model";
 
 export { Property, User, Message, StaticInput };
-export type { PropertyInterface, UserInterface, MessageInterface, StaticInputInterface }
+export type { PropertyDocument, UserDocument, MessageDocument, StaticInputInterface }

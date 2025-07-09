@@ -1,9 +1,16 @@
+export interface Rates {
+    nightly?: number;
+    weekly?: number;
+    monthly?: number
+}
+
 export type ActionState = {
     message?: string | null;
     status?: 'SUCCESS' | 'ERROR' | null,
     isBookmarked?: boolean,
     isRead?: boolean,
-    formData?: FormData
+    formData?: FormData,
+    errors?: { [key: string]: string[] }
 }
 
 export interface PropertiesQuery {

@@ -6,9 +6,9 @@ import {
     TwitterShareButton, TwitterIcon
 } from "react-share";
 
-import { PropertyInterface } from "@/app/models";
+import { PropertyDocument } from "@/app/models";
 
-const ShareButtons = ({ property }: { property: PropertyInterface}) => {
+const ShareButtons = ({ property }: { property: PropertyDocument}) => {
     const shareUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/properties/${property._id}`;
     return (
         <>

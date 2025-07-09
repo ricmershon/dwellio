@@ -1,12 +1,12 @@
 import EditPropertyForm from "@/app/ui/properties/id/edit/edit-property-form";
 import { fetchProperty } from "@/app/lib/data/property-data";
-import { PropertyInterface } from "@/app/models";
+import { PropertyDocument } from "@/app/models";
 
 const EditPropertyPage = async ( { params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
 
-    const propertyDoc = (await fetchProperty(id) as PropertyInterface);
-    const property: PropertyInterface = JSON.parse(JSON.stringify(propertyDoc));
+    const propertyDoc = (await fetchProperty(id) as PropertyDocument);
+    const property: PropertyDocument = JSON.parse(JSON.stringify(propertyDoc));
 
     return (
         <section className="bg-blue-50">

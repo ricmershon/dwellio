@@ -124,18 +124,18 @@ const AddPropertyForm = () => {
                     </div>
                     <div className="w-full sm:w-1/3 sm:px-2 mb-2 sm:mb-0">
                         <label
-                            htmlFor="baths"
+                            htmlFor="baths" 
                             className="block text-gray-700 font-medium mb-2"
                         >
                             Baths
                         </label>
                             <input
-                            type="number"
-                            id="baths"
-                            name="baths"
-                            className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
-                            defaultValue={(actionState.formData?.get("baths") || "") as string}
-                            required
+                                type="number"
+                                id="baths"
+                                name="baths"
+                                className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                                defaultValue={(actionState.formData?.get("baths") || "") as string}
+                                required
                             />
                         </div>
                     <div className="w-full sm:w-1/3 sm:pl-2">

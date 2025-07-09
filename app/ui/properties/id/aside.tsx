@@ -5,10 +5,10 @@ import { useSession } from "next-auth/react";
 import BookmarkPropertyButton from "@/app/ui/properties/id/bookmark-button";
 import ShareButtons from "@/app/ui/properties/id/share-buttons";
 import PropertyContactForm from "@/app/ui/properties/id/contact-form";
-import { PropertyInterface } from "@/app/models";
+import { PropertyDocument } from "@/app/models";
 
 interface PropertyPageAsideProps {
-    property: PropertyInterface;
+    property: PropertyDocument;
     propertyId: string;
 }
 const PropertyPageAside = ({ property, propertyId }: PropertyPageAsideProps) => {

@@ -3,12 +3,12 @@
 import { useActionState, useEffect } from "react";
 import { FaPaperPlane } from "react-icons/fa";
 
-import { PropertyInterface } from "@/app/models";
+import { PropertyDocument } from "@/app/models";
 import { ActionState } from "@/app/lib/definitions";
 import { createMessage } from "@/app/lib/actions/message-actions";
 import { toast } from "react-toastify";
 
-const PropertyContactForm = ({ property }: { property: PropertyInterface}) => {
+const PropertyContactForm = ({ property }: { property: PropertyDocument}) => {
     const [state, formAction, isPending] = useActionState(createMessage, {} as ActionState);
 
     useEffect(() => {

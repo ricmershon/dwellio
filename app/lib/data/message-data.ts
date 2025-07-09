@@ -1,5 +1,5 @@
 import dbConnect from "@/app/config/database-config";
-import { Message, MessageInterface } from "@/app/models"
+import { Message, MessageDocument } from "@/app/models"
 import { toSerializedOjbect } from "@/app/utils/to-serialized-object";
 
 /**
@@ -7,12 +7,12 @@ import { toSerializedOjbect } from "@/app/utils/to-serialized-object";
  * ordered by unread then read.
  * 
  * @param {string} userId - ObjectId in database for user/property owner.
- * @returns Promise<MessageInterface[]>
+ * @returns Promise<MessageDocument[]>
  */
 export const fetchMessages = async (userId: string) => {
     try {
         await dbConnect();
-        const unreadMessages: MessageInterface[] | null = await Message.find({
+        const unreadMessages: MessageDocument[] | null = await Message.find({
             recipient: userId,
             read: false
         })
@@ -20,7 +20,7 @@ export const fetchMessages = async (userId: string) => {
             .populate('sender', 'username')
             .populate('property', 'name')
 
-        const readMessages: MessageInterface[] | null = await Message.find({
+        const readMessages: MessageDocument[] | null = await Message.find({
             recipient: userId,
             read: true
         })
@@ -28,7 +28,7 @@ export const fetchMessages = async (userId: string) => {
             .populate('sender', 'username')
             .populate('property', 'name')
 
-        const messages: MessageInterface[] = [...unreadMessages, ...readMessages].map((messageDoc) => (
+        const messages: MessageDocument[] = [...unreadMessages, ...readMessages].map((messageDoc) => (
             toSerializedOjbect(messageDoc)
         ));
         return messages;

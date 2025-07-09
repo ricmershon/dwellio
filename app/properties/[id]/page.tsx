@@ -6,12 +6,12 @@ import PropertyHeaderImage from "@/app/ui/properties/id/header-image";
 import PropertyDetails from '@/app/ui/properties/id/details';
 import PropertyImages from "@/app/ui/properties/id/images";
 import PropertyPageAside from "@/app/ui/properties/id/aside";
-import { PropertyInterface } from "@/app/models";
+import { PropertyDocument } from "@/app/models";
 
 const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
     const propertyDoc = await fetchProperty(id);
-    const property: PropertyInterface = JSON.parse(JSON.stringify(propertyDoc));
+    const property: PropertyDocument = JSON.parse(JSON.stringify(propertyDoc));
 
     return (
         <main>
