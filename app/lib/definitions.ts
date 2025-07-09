@@ -24,7 +24,7 @@ export interface PropertiesQuery {
     ]
 }
 
-export interface ImageData {
+export interface PropertyImageData {
     secureUrl: string;
     publicId: string;
 }

@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { Types } from "mongoose";
 
 import dbConnect from "@/app/config/database-config";
-import type { ActionState, ImageData } from "@/app/lib/definitions";
+import type { ActionState, PropertyImageData } from "@/app/lib/definitions";
 import { Property, PropertyDocument, User, UserDocument } from "@/app/models";
 import { getSessionUser } from "@/app/utils/get-session-user";
 import { uploadImages, destroyImages } from "@/app/lib/cloudinary";
@@ -57,7 +57,7 @@ export const createProperty = async (_prevState: ActionState, formData: FormData
     }
     
     let newProperty: PropertyDocument;
-    let imagesData: ImageData[] = [];
+    let imagesData: PropertyImageData[] = [];
 
     try {
         await dbConnect();

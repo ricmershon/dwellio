@@ -3,9 +3,9 @@
 import Image from "next/image";
 import { Gallery, Item } from 'react-photoswipe-gallery';
 
-import { ImageData } from "@/app/lib/definitions";
+import { PropertyImageData } from "@/app/lib/definitions";
 
-const PropertyImages = ({ imagesData }: { imagesData: ImageData[] }) => {
+const PropertyImages = ({ imagesData }: { imagesData: PropertyImageData[] }) => {
     return (
         <Gallery>
             <section className="bg-blue-50 p-4">

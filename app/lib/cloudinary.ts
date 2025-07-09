@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
 
-import { ImageData } from '@/app/lib/definitions';
+import { PropertyImageData } from '@/app/lib/definitions';
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -9,7 +9,7 @@ cloudinary.config({
 });
 
 export const uploadImages = async (images: File[]) => {
-    const imagesData: ImageData[] = []
+    const imagesData: PropertyImageData[] = []
 
     for (const imageFile of images) {
         const imageBuffer = await imageFile.arrayBuffer();
@@ -35,7 +35,7 @@ export const uploadImages = async (images: File[]) => {
     return imagesData;
 }
 
-export const destroyImages = async (imagesData: ImageData[]) => {
+export const destroyImages = async (imagesData: PropertyImageData[]) => {
     for (const imageData of imagesData) {
         try {
             const response = await cloudinary.uploader.destroy(imageData.publicId);

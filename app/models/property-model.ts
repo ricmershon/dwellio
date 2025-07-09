@@ -1,29 +1,10 @@
 import { Document, Schema, Types, model, models } from 'mongoose';
 
-import { ImageData, Rates } from '@/app/lib/definitions';
+import { PropertyInput } from '@/app/schemas/property-schema';
+import { PropertyImageData } from '@/app/lib/definitions';
 
-export interface PropertyDocument extends Document {
+export interface PropertyDocument extends PropertyInput, Document {
     owner: Types.ObjectId;
-    name: string;
-    type: string;
-    description?: string;
-    location: {
-        street: string;
-        city: string;
-        state: string;
-        zipcode: string
-    };
-    beds: number;
-    baths: number;
-    square_feet: number;
-    amenities?: string[];
-    rates: Rates;
-    seller_info: {
-        name: string;
-        email: string;
-        phone: string
-    };
-    imagesData: ImageData[];
     is_featured?: boolean;
     createdAt: Date;
     updatedAt: Date;
@@ -34,7 +15,7 @@ const ImagesSchema = new Schema({
   publicId: { type: String, required: true }
 }, { _id: false });
 
-const PropertySchema = new Schema({
+const PropertySchema = new Schema<PropertyDocument>({
     owner: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
     name: { type: String, required: true },
     type: { type: String, required: true },
@@ -60,20 +41,17 @@ const PropertySchema = new Schema({
         phone: String
     },
     imagesData: {
-      type: [ImagesSchema],
-      required: true,
-      validate: {
-        validator: function (value: any[]) {
-          return Array.isArray(value) && value.length > 0;
+        type: [ImagesSchema],
+        required: true,
+        validate: {
+            validator: (value: PropertyImageData[]) => Array.isArray(value) && value.length > 0,
+            message: 'At least one image is required in imagesData.',
         },
-        message: 'At least one image is required in imagesData.',
-      },
     },
     is_featured: { type: Boolean, default: false }
 }, {
     timestamps: true
 });
 
-// delete models.Property;
 const Property = models.Property || model<PropertyDocument>('Property', PropertySchema);
 export default Property;
