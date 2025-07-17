@@ -23,13 +23,12 @@ const AddPropertyForm = () => {
     useEffect(() => {
         if (actionState.status === 'ERROR') {
             toast.error(actionState.message);
-            console.log(actionState.formErrorMap?.amenities);
         }
-    }, [actionState.message, actionState.status, actionState.formErrorMap]);
+    }, [actionState.message, actionState.status]);
 
     return (
         <form action={formAction}>
-            <div className=" rounded-md bg-gray-50 p-4 md:p-6">
+            <div className="rounded-md bg-gray-50 p-4 md:p-6">
 
                 {/* Property type */}
                 <div className="mb-4">
@@ -332,6 +331,7 @@ const AddPropertyForm = () => {
                 </div>
             </div>
 
+            {/* Buttons */}
             <div className="mt-6 flex justify-end gap-4">
                 <Link
                     href="/properties"

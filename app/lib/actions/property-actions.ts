@@ -145,32 +145,34 @@ export const deleteProperty = async (propertyId: string) => {
     return toActionState('Property successfully deleted.', 'SUCCESS');
 }
 
-// TODO: Form validation
 export const updateProperty = async (
     propertyId: string,
     _prevState: ActionState,
     formData: FormData
 ) => {
-    await dbConnect();
-    
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
         throw new Error('User ID is required.')
     }
 
+    /**
+     * Confirm property's existence and verify ownership
+     */
     const property: PropertyDocument | null = await Property.findById(propertyId);
     if (!property) {
         return toActionState('Property not found.', 'ERROR');
     }
 
-    // Verify ownwership
     if (property.owner.toString() !== sessionUser.id) {
         return toActionState('Not authorized to update property.', 'ERROR');
     }
 
-    // Extract updated property data and update property
-    const propertyData = {
-        owner: sessionUser.id,
+    /**
+     * Remove `imagesData` from the data validation, extract property data and
+     * update property.
+     */
+    const UpdateProperty = PropertyInput.omit({ imagesData: true });
+    const validationResults = UpdateProperty.safeParse({
         type: formData.get('type'),
         name: formData.get('name'),
         description: formData.get('description'),
@@ -194,9 +196,38 @@ export const updateProperty = async (
             email: formData.get('sellerInfo.email'),
             phone: formData.get('sellerInfo.phone'),            
         }
+    });
+
+    /**
+     * Return immediately if form validation fails.
+     */
+    if (!validationResults.success) {
+        const formErrorMap = buildFormErrorMap(validationResults.error.issues);
+        console.log(formErrorMap);
+        return {
+            formData: formData,
+            formErrorMap: formErrorMap
+        } as ActionState
     }
 
-    await Property.findByIdAndUpdate(propertyId, propertyData);
+    try {
+        await dbConnect();
+        await Property.findByIdAndUpdate(propertyId, validationResults.data);
+    } catch (error) {
+        console.error(`>>> Database error updating a property: ${error}`);
+
+        /**
+         * Return form data so the form can be repopulated and the user does
+         * not have to re-enter info.
+         */
+        return toActionState(
+            `Failed to add a property: ${error}`,
+            'ERROR',
+            undefined,
+            undefined,
+            formData
+        );
+    }
 
     revalidatePath('/', 'layout');
     redirect(`/properties/${propertyId}`);
