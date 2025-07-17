@@ -65,15 +65,12 @@ export const createProperty = async (_prevState: ActionState, formData: FormData
      * Return immediately if form validation fails.
      */
     if (!validationResults.success) {
-        const errorMap = buildFormErrorMap(validationResults.error.issues);
-        console.log(errorMap);
-        return toActionState(
-            'Form validation failed. Please correct errors.',
-            'ERROR',
-            undefined,
-            undefined,
-            formData
-        );
+        const formErrorMap = buildFormErrorMap(validationResults.error.issues);
+        console.log(formErrorMap);
+        return {
+            formData: formData,
+            formErrorMap: formErrorMap
+        } as ActionState
     }
 
     /**

@@ -53,9 +53,10 @@ interface DwellioSelectProps {
     name: string;
     id: string;
     defaultValue?: PropsValue<OptionType>;
+    [x: string]: unknown;
 }
 
-const DwellioSelect = ({ options, placeholder, name, id, defaultValue }: DwellioSelectProps) => (
+const DwellioSelect = ({ options, placeholder, name, id, defaultValue, ...restProps }: DwellioSelectProps) => (
     <Select
         options={options}
         isClearable={false}
@@ -66,6 +67,7 @@ const DwellioSelect = ({ options, placeholder, name, id, defaultValue }: Dwellio
         defaultValue={defaultValue}
         styles={customStyles}
         theme={customTheme}
+        {...restProps}
     />
 );
 

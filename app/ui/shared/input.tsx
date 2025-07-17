@@ -1,3 +1,5 @@
+import FormErrors from "@/app/ui/shared/form-errors";
+
 interface InputProps {
     inputType?: 'input' | 'textarea',
     id: string;
@@ -8,12 +10,15 @@ interface InputProps {
     defaultValue?: string;
     required?: boolean;
     isInGroup?: boolean | false;
-    errorText?: string[];
+    errors?: Record<string, string[]> | string[];
     [x: string]: unknown;
 }
 
 // TODO: Add error element
-const Input = ({ inputType, id, type, name, label, placeholder, defaultValue, required, isInGroup, errorText, ...restProps }: InputProps) => {
+const Input = ({ inputType, id, type, name, label, placeholder, defaultValue, required, isInGroup, errors, ...restProps }: InputProps) => {
+    const ariaDescribedBy = `${id}-error`;
+
+    console.log(errors);
     const inputElement = inputType === 'input' ? (
         <input
             className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
@@ -23,7 +28,7 @@ const Input = ({ inputType, id, type, name, label, placeholder, defaultValue, re
             placeholder={placeholder}
             defaultValue={defaultValue}
             required={required}
-            aria-describedby={`${id}-error`}
+            aria-describedby={ariaDescribedBy}
             {...restProps}
         />
     ) : (
@@ -35,6 +40,7 @@ const Input = ({ inputType, id, type, name, label, placeholder, defaultValue, re
             defaultValue={defaultValue}
             required={required}
             rows={4}
+            aria-describedby={ariaDescribedBy}
             {...restProps}
         />
     );
@@ -50,16 +56,7 @@ const Input = ({ inputType, id, type, name, label, placeholder, defaultValue, re
                 </label>
             )}
             {inputElement}
-            {errorText && errorText.length > 0 && (
-                errorText.map((error: string) => (
-                    <p
-                        key={error}
-                        className="mt-1 text-sm text-red-500"
-                    >
-                        {error}
-                    </p>
-                ))
-            )}
+            {errors && <FormErrors errors={errors} id={id} />}
         </div>
     )
 }

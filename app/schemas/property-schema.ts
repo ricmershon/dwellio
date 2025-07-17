@@ -74,7 +74,7 @@ export const PropertyInput = z.object({
     squareFeet: z.coerce.number()
         .gt(249, { message: 'Property must have at least 250 square feet.' }),
     amenities: z.array(z.string())
-        .min(5, { message: 'Please select at least 5 amenities.' }),
+        .min(5, { message: 'Select at least 5 amenities.' }),
     rates: RatesSchema,
     sellerInfo: z.object({
         name: z.string()
@@ -83,7 +83,7 @@ export const PropertyInput = z.object({
         phone: z.string().nonempty({ message: 'Phone number is required.' })
     }),
     imagesData: z.array(z.instanceof(File))
-        .min(1, { message: 'Please select at least one image.' })
+        .min(1, { message: 'Select at least one image.' })
         .max(4, { message: 'You can upload a maximum of 4 images.'})
 });
 

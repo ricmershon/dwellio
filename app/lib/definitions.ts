@@ -1,3 +1,5 @@
+import { StructuredFormErrorMap } from "@/app/utils/build-form-error-map";
+
 export interface Rates {
     nightly?: number;
     weekly?: number;
@@ -10,7 +12,7 @@ export type ActionState = {
     isBookmarked?: boolean,
     isRead?: boolean,
     formData?: FormData,
-    errors?: { [key: string]: string[] }
+    formErrorMap?: StructuredFormErrorMap
 }
 
 export interface PropertiesQuery {

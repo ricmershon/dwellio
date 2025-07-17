@@ -1,7 +1,6 @@
 import { ZodError } from "zod";
 
 export const buildFormErrorMap = (issues: ZodError['issues']) => {
-    console.log(issues);
     const errorMap: Record<string, string[]> = {};
 
     for (const issue of issues) {
@@ -17,15 +16,15 @@ export const buildFormErrorMap = (issues: ZodError['issues']) => {
 
 type ErrorMap = Record<string, string[]>;
 
-interface StructuredErrorMap {
+export interface StructuredFormErrorMap {
     location?: Record<string, string[]>;
     rates?: Record<string, string[]>;
     sellerInfo?: Record<string, string[]>;
     [key: string]: Record<string, string[]> | string[] | undefined;
 }
 
-function structureErrors(flatErrors: ErrorMap): StructuredErrorMap {
-    const structured: StructuredErrorMap = {};
+function structureErrors(flatErrors: ErrorMap): StructuredFormErrorMap {
+    const structured: StructuredFormErrorMap = {};
 
     for (const [key, messages] of Object.entries(flatErrors)) {
         if (key.startsWith("location.")) {
