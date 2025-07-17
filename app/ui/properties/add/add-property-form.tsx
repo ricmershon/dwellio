@@ -119,7 +119,6 @@ const AddPropertyForm = () => {
                             name="beds"
                             className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
                             defaultValue={(actionState.formData?.get("beds") || "") as string}
-                            required
                         />
                     </div>
                     <div className="w-full sm:w-1/3 sm:px-2 mb-2 sm:mb-0">
@@ -135,7 +134,6 @@ const AddPropertyForm = () => {
                                 name="baths"
                                 className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
                                 defaultValue={(actionState.formData?.get("baths") || "") as string}
-                                required
                             />
                         </div>
                     <div className="w-full sm:w-1/3 sm:pl-2">
@@ -151,7 +149,6 @@ const AddPropertyForm = () => {
                             name="squareFeet"
                             className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
                             defaultValue={(actionState.formData?.get("squareFeet") || "") as string}
-                            required
                         />
                     </div>
                 </div>
@@ -263,7 +260,6 @@ const AddPropertyForm = () => {
                         className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
                         accept="image/*"
                         multiple
-                        required
                     />
                 </div>
             </div>

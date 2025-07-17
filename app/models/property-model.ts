@@ -1,19 +1,19 @@
 import { Document, Schema, Types, model, models } from 'mongoose';
 
 import { PropertyImageData } from '@/app/lib/definitions';
-import { PropertyInput } from '@/app/schemas/property-schema';
+import { PropertyInputType } from '@/app/schemas/property-schema';
 
-export interface PropertyDocument extends Omit<PropertyInput, 'imagesData'>, Document {
+export interface PropertyDocument extends Omit<PropertyInputType, 'imagesData'>, Document {
     owner: Types.ObjectId;
     isFeatured?: boolean;
     createdAt: Date;
     updatedAt: Date;
-    imagesData: PropertyImageData[];
+    imagesData?: PropertyImageData[];
 }
 
 const ImageSchema = new Schema({
-  secureUrl: { type: String, required: true },
-  publicId: { type: String, required: true }
+    secureUrl: { type: String, required: true },
+    publicId: { type: String, required: true }
 }, { _id: false });
 
 const PropertySchema = new Schema<PropertyDocument>({

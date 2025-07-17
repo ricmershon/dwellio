@@ -8,11 +8,12 @@ interface InputProps {
     defaultValue?: string;
     required?: boolean;
     isInGroup?: boolean | false;
+    errorText?: string[];
     [x: string]: unknown;
 }
 
 // TODO: Add error element
-const Input = ({ inputType, id, type, name, label, placeholder, defaultValue, required, isInGroup, ...restProps }: InputProps) => {
+const Input = ({ inputType, id, type, name, label, placeholder, defaultValue, required, isInGroup, errorText, ...restProps }: InputProps) => {
     const inputElement = inputType === 'input' ? (
         <input
             className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
@@ -22,6 +23,7 @@ const Input = ({ inputType, id, type, name, label, placeholder, defaultValue, re
             placeholder={placeholder}
             defaultValue={defaultValue}
             required={required}
+            aria-describedby={`${id}-error`}
             {...restProps}
         />
     ) : (
@@ -48,6 +50,16 @@ const Input = ({ inputType, id, type, name, label, placeholder, defaultValue, re
                 </label>
             )}
             {inputElement}
+            {errorText && errorText.length > 0 && (
+                errorText.map((error: string) => (
+                    <p
+                        key={error}
+                        className="mt-1 text-sm text-red-500"
+                    >
+                        {error}
+                    </p>
+                ))
+            )}
         </div>
     )
 }

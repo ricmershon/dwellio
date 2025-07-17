@@ -9,7 +9,9 @@ const PropertyTypesEnum = z.enum([
     'Room',
     'Studio',
     'Other'
-]);
+], {
+    message: 'Select a property type.'
+});
 
 const USstateCodes = z.enum([
     'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA',
@@ -24,17 +26,33 @@ const USstateCodes = z.enum([
 const USzipCode = z.string()
     .regex(/^\d{5}(-\d{4})?$/, { message: 'Invalid ZIP code format.' });
 
-export const RatesSchema = z.object({
-    nightly: z.number().optional(),
-    weekly: z.number().optional(),
-    monthly: z.number().optional()
-})
-    .refine(
-        (rates) => rates.nightly != null || rates.weekly != null || rates.monthly != null,
-        { message: 'At least one rate (nightly, weekly, or monthly) must be provided.' }
-    );
+const RateField = (label: string, minValue: number) => z.string()
+    .trim()
+    .transform((value) => (value === '' ? undefined : Number(value)))
+    .refine((value) => value === undefined || !isNaN(value), {
+        message: `${label} must be a number.`,
+    })
+    .refine((value) => value === undefined || value >= minValue, {
+        message: `${label} must be at least $${minValue}.`,
+    });
 
-export const PropertyInputSchema = z.object({
+export const RatesSchema = z.object({
+    nightly: RateField('Nightly rate', 200),
+    weekly: RateField('Weekly rate', 1000),
+    monthly: RateField('Monthly rate', 3200),
+}).refine(
+    (rates) =>
+        rates.nightly !== undefined ||
+        rates.weekly !== undefined ||
+        rates.monthly !== undefined,
+    {
+        message: 'At least one rate (nightly, weekly, or monthly) must be provided.',
+        path: [], // attach error to the whole object
+    }
+);
+
+
+export const PropertyInput = z.object({
     name: z.string()
         .min(10, { message: 'Name must be at least 10 characters long.' }),
     type: PropertyTypesEnum,
@@ -45,16 +63,16 @@ export const PropertyInputSchema = z.object({
         street: z.string()
             .min(10, { message: 'Street must be at least 10 characters long.' }),
         city: z.string()
-            .min(2, { message: 'Street must be at least 2 characters long.' }),
+            .min(2, { message: 'City must be at least 2 characters long.' }),
         state: USstateCodes,
         zipcode: USzipCode
     }),
-    beds: z.number()
+    beds: z.coerce.number()
         .gt(0, { message: 'Property must have at least one bed.' }),
-    baths: z.number()
+    baths: z.coerce.number()
         .gt(0, { message: 'Property must have at least one bath.' }),
-    squareFeet: z.number()
-        .gt(250, { message: 'Property must have at least 250 square feet.' }),
+    squareFeet: z.coerce.number()
+        .gt(249, { message: 'Property must have at least 250 square feet.' }),
     amenities: z.array(z.string())
         .min(5, { message: 'Please select at least 5 amenities.' }),
     rates: RatesSchema,
@@ -62,10 +80,11 @@ export const PropertyInputSchema = z.object({
         name: z.string()
             .min(5, { message: 'Name must be at least 5 characters.' }),
         email: z.email({ message: 'Enter a valid email address.' }),
-        phone: z.string()
+        phone: z.string().nonempty({ message: 'Phone number is required.' })
     }),
     imagesData: z.array(z.instanceof(File))
         .min(1, { message: 'Please select at least one image.' })
+        .max(4, { message: 'You can upload a maximum of 4 images.'})
 });
 
-export type PropertyInput = z.infer<typeof PropertyInputSchema>;
+export type PropertyInputType = z.infer<typeof PropertyInput>;

@@ -10,6 +10,8 @@ import { Property, PropertyDocument, User, UserDocument } from "@/app/models";
 import { getSessionUser } from "@/app/utils/get-session-user";
 import { uploadImages, destroyImages } from "@/app/lib/cloudinary";
 import { toActionState } from "@/app/utils/to-action-state";
+import { PropertyInput } from "@/app/schemas/property-schema";
+import { buildFormErrorMap } from "@/app/utils/build-form-error-map";
 
 // TODO: Add console logs to catch blocks
 // TODO: Add error handling
@@ -18,7 +20,7 @@ import { toActionState } from "@/app/utils/to-action-state";
 /**
  * Creates a new property.
  * 
- * @param {ActionState} _prevState 
+ * @param {ActionState} _prevState - required by useActionState
  * @param {FormData} formData 
  * @returns Promise<ActionState> - ActionState may include form data in order to
  * repopulate the form if there's an error.
@@ -29,8 +31,10 @@ export const createProperty = async (_prevState: ActionState, formData: FormData
         throw new Error('User ID is required.')
     }
 
-    const propertyData = {
-        owner: sessionUser.id,
+    const rawImages = formData.getAll('images') as File[];
+    const images = rawImages.filter(file => file.size > 0);
+
+    const validationResults = PropertyInput.safeParse({
         type: formData.get('type'),
         name: formData.get('name'),
         description: formData.get('description'),
@@ -53,29 +57,59 @@ export const createProperty = async (_prevState: ActionState, formData: FormData
             name: formData.get('sellerInfo.name'),
             email: formData.get('sellerInfo.email'),
             phone: formData.get('sellerInfo.phone'),            
-        }
+        },
+        imagesData: images
+    });
+
+    /**
+     * Return immediately if form validation fails.
+     */
+    if (!validationResults.success) {
+        const errorMap = buildFormErrorMap(validationResults.error.issues);
+        console.log(errorMap);
+        return toActionState(
+            'Form validation failed. Please correct errors.',
+            'ERROR',
+            undefined,
+            undefined,
+            formData
+        );
     }
-    
-    let newProperty: PropertyDocument;
-    let imagesData: PropertyImageData[] = [];
+
+    /**
+     * Create a property document that includes the data from `validationResults`
+     * and removes the `imagesData` field and adds the `owner` field.
+     */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { imagesData, ...propertyDataWithoutImages } = validationResults.data;
+    const propertyDocument = {
+        ...propertyDataWithoutImages
+    };
+    Object.assign(propertyDocument, { owner: sessionUser.id });
+
+    let newPropertyDocument: PropertyDocument;
+    let newImagesData: PropertyImageData[] = [];
 
     try {
         await dbConnect();
         
-        imagesData = await uploadImages((formData.getAll('images') as File[]));
-        Object.assign(propertyData, { imagesData: imagesData });
+        newImagesData = await uploadImages(rawImages);
+        Object.assign(propertyDocument, { imagesData: newImagesData });
     
-        newProperty = new Property(propertyData);
-        await newProperty.save();
+        newPropertyDocument = new Property(propertyDocument);
+        await newPropertyDocument.save();
     } catch (error) {
         // Destroy the images just uploaded.
-        if (imagesData.length > 0) {
-            destroyImages(imagesData);
+        if (newImagesData.length > 0) {
+            destroyImages(newImagesData);
         }
 
         console.error(`>>> Database error adding a property: ${error}`);
 
-        // Return form data so the form can be repopulated.
+        /**
+         * Return form data so the form can be repopulated and the user does
+         * not have to re-enter info.
+         */
         return toActionState(
             `Failed to add a property: ${error}`,
             'ERROR',
@@ -85,7 +119,7 @@ export const createProperty = async (_prevState: ActionState, formData: FormData
         );
     }
 
-    redirect(`/properties/${newProperty._id}`);
+    redirect(`/properties/${newPropertyDocument._id}`);
 }
 
 export const deleteProperty = async (propertyId: string) => {
@@ -106,7 +140,7 @@ export const deleteProperty = async (propertyId: string) => {
         return toActionState('Not authorized to delete peoperty.', 'ERROR');
     }
 
-    destroyImages(property.imagesData);
+    destroyImages(property.imagesData!);
 
     await property.deleteOne();
 
@@ -114,7 +148,7 @@ export const deleteProperty = async (propertyId: string) => {
     return toActionState('Property successfully deleted.', 'SUCCESS');
 }
 
-// FIXME: Cabin or Cottage being saved CabinorCottage
+// TODO: Form validation
 export const updateProperty = async (
     propertyId: string,
     _prevState: ActionState,
