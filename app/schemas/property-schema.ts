@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const PropertyTypesEnum = z.enum([
+const PropertyTypesEnum = z.enum([
     'Apartment',
     'Cabin',
     'Condo',
@@ -11,22 +11,18 @@ export const PropertyTypesEnum = z.enum([
     'Other'
 ]);
 
-const USstateCodes = z
-    .enum([
-        'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA',
-        'HI','ID','IL','IN','IA','KS','KY','LA','ME','MD',
-        'MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ',
-        'NM','NY','NC','ND','OH','OK','OR','PA','RI','SC',
-        'SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'
-    ], { message: 'Enter a United States two letter state code.'});
+const USstateCodes = z.enum([
+    'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA',
+    'HI','ID','IL','IN','IA','KS','KY','LA','ME','MD',
+    'MA','MI','MN','MS','MO','MT','NE','NV','NH','NJ',
+    'NM','NY','NC','ND','OH','OK','OR','PA','RI','SC',
+    'SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'
+], {
+    message: 'Enter a United States two letter state code.'
+});
 
 const USzipCode = z.string()
     .regex(/^\d{5}(-\d{4})?$/, { message: 'Invalid ZIP code format.' });
-
-export const ImageDataSchema = z.object({
-    secureUrl: z.url(),
-    publicId: z.string()
-});
 
 export const RatesSchema = z.object({
     nightly: z.number().optional(),
@@ -68,7 +64,8 @@ export const PropertyInputSchema = z.object({
         email: z.email({ message: 'Enter a valid email address.' }),
         phone: z.string()
     }),
-    imagesData: z.array(ImageDataSchema).min(1, "At least one image is required.")
+    imagesData: z.array(z.instanceof(File))
+        .min(1, { message: 'Please select at least one image.' })
 });
 
 export type PropertyInput = z.infer<typeof PropertyInputSchema>;

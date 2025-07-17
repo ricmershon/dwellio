@@ -9,7 +9,7 @@ cloudinary.config({
 });
 
 export const uploadImages = async (images: File[]) => {
-    const imagesData: PropertyImageData[] = []
+    const imagesData: PropertyImageData[] = [];
 
     for (const imageFile of images) {
         const imageBuffer = await imageFile.arrayBuffer();
@@ -40,11 +40,11 @@ export const destroyImages = async (imagesData: PropertyImageData[]) => {
         try {
             const response = await cloudinary.uploader.destroy(imageData.publicId);
             if (response.result !== 'ok') {
-                throw new Error('error deleting image');
+                throw new Error('Error deleting image');
             }
         } catch (error) {
-            console.error(`>>> Cloudinary error: ${error}`);
-            throw new Error(`Cloudinary error: ${error}`);
+            console.error(`>>> Error deleting images: ${error}`);
+            throw new Error(`Error deleting images: ${error}`);
         }
     }
 }

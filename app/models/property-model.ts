@@ -1,16 +1,17 @@
 import { Document, Schema, Types, model, models } from 'mongoose';
 
-import { PropertyInput } from '@/app/schemas/property-schema';
 import { PropertyImageData } from '@/app/lib/definitions';
+import { PropertyInput } from '@/app/schemas/property-schema';
 
-export interface PropertyDocument extends PropertyInput, Document {
+export interface PropertyDocument extends Omit<PropertyInput, 'imagesData'>, Document {
     owner: Types.ObjectId;
     is_featured?: boolean;
     createdAt: Date;
     updatedAt: Date;
+    imagesData: PropertyImageData[];
 }
 
-const ImagesSchema = new Schema({
+const ImageSchema = new Schema({
   secureUrl: { type: String, required: true },
   publicId: { type: String, required: true }
 }, { _id: false });
@@ -41,7 +42,7 @@ const PropertySchema = new Schema<PropertyDocument>({
         phone: String
     },
     imagesData: {
-        type: [ImagesSchema],
+        type: [ImageSchema],
         required: true,
         validate: {
             validator: (value: PropertyImageData[]) => Array.isArray(value) && value.length > 0,
