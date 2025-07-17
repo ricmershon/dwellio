@@ -5,7 +5,7 @@ import { PropertyInput } from '@/app/schemas/property-schema';
 
 export interface PropertyDocument extends Omit<PropertyInput, 'imagesData'>, Document {
     owner: Types.ObjectId;
-    is_featured?: boolean;
+    isFeatured?: boolean;
     createdAt: Date;
     updatedAt: Date;
     imagesData: PropertyImageData[];
@@ -29,14 +29,14 @@ const PropertySchema = new Schema<PropertyDocument>({
     },
     beds: { type: Number, required: true },
     baths: { type: Number, required: true },
-    square_feet: { type: Number, required: true },
+    squareFeet: { type: Number, required: true },
     amenities: [{ type: String }],
     rates: {
         nightly: Number,
         weekly: Number,
         monthly: Number
     },
-    seller_info: {
+    sellerInfo: {
         name: String,
         email: String,
         phone: String
@@ -49,7 +49,7 @@ const PropertySchema = new Schema<PropertyDocument>({
             message: 'At least one image is required in imagesData.',
         },
     },
-    is_featured: { type: Boolean, default: false }
+    isFeatured: { type: Boolean, default: false }
 }, {
     timestamps: true
 });

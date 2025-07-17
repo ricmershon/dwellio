@@ -16,7 +16,7 @@ const EditPropertyForm = ({ property }: { property: PropertyDocument }) => {
 
     const { street, city, state, zipcode } = property.location;
     const { weekly, monthly, nightly } = property.rates;
-    const { name, email, phone } = property.seller_info;
+    const { name, email, phone } = property.sellerInfo;
 
     return (
         <form action={formAction}>
@@ -156,17 +156,17 @@ const EditPropertyForm = ({ property }: { property: PropertyDocument }) => {
                     </div>
                 <div className="w-full sm:w-1/3 pl-2">
                     <label
-                        htmlFor="square_feet"
+                        htmlFor="squareFeet"
                         className="block text-gray-700 font-bold mb-2"
                     >
                         Square Feet
                     </label>
                     <input
                         type="number"
-                        id="square_feet"
-                        name="square_feet"
+                        id="squareFeet"
+                        name="squareFeet"
                         className="border rounded w-full py-2 px-3"
-                        defaultValue={property.square_feet}
+                        defaultValue={property.squareFeet}
                         required
                     />
                 </div>
@@ -244,7 +244,7 @@ const EditPropertyForm = ({ property }: { property: PropertyDocument }) => {
                 <input
                     type="text"
                     id="seller_name"
-                    name="seller_info.name"
+                    name="sellerInfo.name"
                     className="border rounded w-full py-2 px-3"
                     placeholder="Name"
                     defaultValue={name}
@@ -260,7 +260,7 @@ const EditPropertyForm = ({ property }: { property: PropertyDocument }) => {
                 <input
                     type="email"
                     id="seller_email"
-                    name="seller_info.email"
+                    name="sellerInfo.email"
                     className="border rounded w-full py-2 px-3"
                     placeholder="Email address"
                     defaultValue={email}
@@ -277,7 +277,7 @@ const EditPropertyForm = ({ property }: { property: PropertyDocument }) => {
                 <input
                     type="tel"
                     id="seller_phone"
-                    name="seller_info.phone"
+                    name="sellerInfo.phone"
                     className="border rounded w-full py-2 px-3"
                     pattern='[0-9]{10}'
                     placeholder="1234567890"

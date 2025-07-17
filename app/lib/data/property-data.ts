@@ -78,7 +78,7 @@ export const fetchPropertiesByUserId = async (userId: string) => {
 export const fetchFeaturedProperties = async () => {
     try {
         await dbConnect();
-        const properties: PropertyDocument[] | null = await Property.find({ is_featured: true });
+        const properties: PropertyDocument[] | null = await Property.find({ isFeatured: true });
         return properties;
     } catch (error) {
         console.error(`>>> Database error fetching featured properties: ${error}`);

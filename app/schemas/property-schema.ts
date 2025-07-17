@@ -53,12 +53,12 @@ export const PropertyInputSchema = z.object({
         .gt(0, { message: 'Property must have at least one bed.' }),
     baths: z.number()
         .gt(0, { message: 'Property must have at least one bath.' }),
-    square_feet: z.number()
+    squareFeet: z.number()
         .gt(250, { message: 'Property must have at least 250 square feet.' }),
     amenities: z.array(z.string())
         .min(5, { message: 'Please select at least 5 amenities.' }),
     rates: RatesSchema,
-    seller_info: z.object({
+    sellerInfo: z.object({
         name: z.string()
             .min(5, { message: 'Name must be at least 5 characters.' }),
         email: z.email({ message: 'Enter a valid email address.' }),

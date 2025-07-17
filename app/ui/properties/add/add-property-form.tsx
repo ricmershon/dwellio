@@ -140,17 +140,17 @@ const AddPropertyForm = () => {
                         </div>
                     <div className="w-full sm:w-1/3 sm:pl-2">
                         <label
-                            htmlFor="square_feet"
+                            htmlFor="squareFeet"
                             className="block text-gray-700 font-medium mb-2"
                         >
                             Square Feet
                         </label>
                         <input
                             type="number"
-                            id="square_feet"
-                            name="square_feet"
+                            id="squareFeet"
+                            name="squareFeet"
                             className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
-                            defaultValue={(actionState.formData?.get("square_feet") || "") as string}
+                            defaultValue={(actionState.formData?.get("squareFeet") || "") as string}
                             required
                         />
                     </div>
@@ -226,29 +226,29 @@ const AddPropertyForm = () => {
                 <Input
                     inputType="input"
                     id='seller_name'
-                    name="seller_info.name"
+                    name="sellerInfo.name"
                     type='text'
                     placeholder="Name"
                     label="Renter Name"
-                    defaultValue={(actionState.formData?.get("seller_info.name") || "") as string}
+                    defaultValue={(actionState.formData?.get("sellerInfo.name") || "") as string}
                 />
                <Input
                     inputType="input"
                     id='seller_email'
-                    name="seller_info.email"
+                    name="sellerInfo.email"
                     type='email'
                     placeholder="Email address"
                     label="Renter Email"
-                    defaultValue={(actionState.formData?.get("seller_info.email") || "") as string}
+                    defaultValue={(actionState.formData?.get("sellerInfo.email") || "") as string}
                 />
                <Input
                     inputType="input"
                     id='seller_phone'
-                    name="seller_info.phone"
+                    name="sellerInfo.phone"
                     type='tel'
                     label="Renter Phone"
                     placeholder='Phone'
-                    defaultValue={(actionState.formData?.get("seller_info.phone") || "") as string}
+                    defaultValue={(actionState.formData?.get("sellerInfo.phone") || "") as string}
                 />
 
                 {/* Select images */}
