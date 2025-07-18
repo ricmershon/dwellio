@@ -6,9 +6,9 @@ import { PropertyInputType } from '@/app/schemas/property-schema';
 export interface PropertyDocument extends Omit<PropertyInputType, 'imagesData'>, Document {
     owner: Types.ObjectId;
     isFeatured?: boolean;
+    imagesData?: PropertyImageData[];
     createdAt: Date;
     updatedAt: Date;
-    imagesData?: PropertyImageData[];
 }
 
 const ImageSchema = new Schema({

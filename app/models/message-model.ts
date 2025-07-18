@@ -1,13 +1,10 @@
 import { Document, Schema, Types, model, models } from 'mongoose';
+import { MessageInputType } from '@/app/schemas/message-schema';
 
-export interface MessageDocument extends Document {
+export interface MessageDocument extends MessageInputType, Document {
     sender: Types.ObjectId,
     recipient: Types.ObjectId,
     property: Types.ObjectId | { _id: Types.ObjectId, name: string },
-    name: string,
-    email: string,
-    phone?: string,
-    body?: string,
     read: boolean,
     createdAt: Date;
     updatedAt: Date;

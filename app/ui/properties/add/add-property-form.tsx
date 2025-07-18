@@ -340,8 +340,9 @@ const AddPropertyForm = () => {
                     Cancel
                 </Link>
                 <button
-                    className="flex gap-1 h-10 items-center rounded-lg bg-blue-500 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-500 active:bg-blue-600 hover:cursor-pointer"
+                    className={`flex gap-1 h-10 items-center rounded-lg bg-blue-500 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-500 active:bg-blue-600 ${isPending ? 'hover:cursor-not-allowed' : 'hover:cursor-pointer'}`}
                     type="submit"
+                    disabled={isPending}
                 >
                     {isPending && <LuRefreshCw className='text-lg icon-spin'/>}
                     <span>Save Property</span>

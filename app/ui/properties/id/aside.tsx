@@ -23,7 +23,11 @@ const PropertyPageAside = ({ property, propertyId }: PropertyPageAsideProps) => 
             {session && <BookmarkPropertyButton propertyId={propertyId} />}
             <ShareButtons property={property} />
             {session && session.user.id !== property.owner.toString() && (
-                <PropertyContactForm property={property} />
+                <PropertyContactForm
+                    property={property}
+                    userName={session.user.name}
+                    userEmail={session.user.email}
+                />
             )}
         </aside>
     );

@@ -11,14 +11,14 @@ interface InputProps {
     required?: boolean;
     isInGroup?: boolean | false;
     errors?: Record<string, string[]> | string[];
+    labelSize?: string;
     [x: string]: unknown;
 }
 
-// TODO: Add error element
-const Input = ({ inputType, id, type, name, label, placeholder, defaultValue, required, isInGroup, errors, ...restProps }: InputProps) => {
+const Input = ({ inputType, id, type, name, label, placeholder, defaultValue, required, isInGroup, errors, labelSize, ...restProps }: InputProps) => {
     const ariaDescribedBy = `${id}-error`;
 
-    console.log(errors);
+    console.log(labelSize);
     const inputElement = inputType === 'input' ? (
         <input
             className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
@@ -49,7 +49,7 @@ const Input = ({ inputType, id, type, name, label, placeholder, defaultValue, re
         <div className={`${isInGroup ? 'mb-2' : 'mb-4'}`}>
             {label && (
                 <label
-                    className="mb-2 block font-medium text-gray-700"
+                    className={`mb-2 block font-medium ${labelSize} text-gray-700`}
                     htmlFor={id}
                 >
                     {label}

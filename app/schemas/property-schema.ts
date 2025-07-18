@@ -36,7 +36,7 @@ const RateField = (label: string, minValue: number) => z.string()
         message: `${label} must be at least $${minValue}.`,
     });
 
-export const RatesSchema = z.object({
+const RatesSchema = z.object({
     nightly: RateField('Nightly rate', 200),
     weekly: RateField('Weekly rate', 1000),
     monthly: RateField('Monthly rate', 3200),

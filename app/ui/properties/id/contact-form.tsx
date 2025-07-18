@@ -7,103 +7,100 @@ import { PropertyDocument } from "@/app/models";
 import { ActionState } from "@/app/lib/definitions";
 import { createMessage } from "@/app/lib/actions/message-actions";
 import { toast } from "react-toastify";
+import Input from "@/app/ui/shared/input";
 
-const PropertyContactForm = ({ property }: { property: PropertyDocument}) => {
-    const [state, formAction, isPending] = useActionState(createMessage, {} as ActionState);
+interface PropertyContactFormProps {
+    property: PropertyDocument
+    userName: string | null | undefined;
+    userEmail: string | null | undefined
+}
 
+const PropertyContactForm = ({ property, userName, userEmail }: PropertyContactFormProps) => {
+    const [actionState, formAction, isPending] = useActionState(createMessage, {} as ActionState);
+
+    /**
+     * Toast message for error and success.
+     */
     useEffect(() => {
-        if (state.status === 'ERROR') {
-            toast.error(state.message);
-        } else if (state.status === 'SUCCESS') {
-            toast.success(state.message);
+        if (actionState.status === 'ERROR') {
+            toast.error(actionState.message);
+        } else if (actionState.status === 'SUCCESS') {
+            toast.success(actionState.message);
         }
-    }, [state.message, state.status]);
+    }, [actionState.message, actionState.status]);
     
     return (
         <>
-            {state.status === 'SUCCESS' ? (
+            {actionState.status === 'SUCCESS' ? (
                 <p className='text-green-500 mb-4'>Your message has been sent.</p>
                 
             ) : (
                 <div className="bg-white p-6 rounded-lg shadow-md">
-                    <h3 className="text-xl font-bold mb-6">Contact Property Manager</h3>
+                    <h3 className="mb-4 text-md text-gray-700">Contact Property Manager</h3>
                     <form action={formAction}>
-                        <div className="mb-4">
-                            <input
-                                type="hidden"
-                                id="property"
-                                name="property"
-                                defaultValue={(property._id as string)}
-                            />
-                            <input
-                                type="hidden"
-                                id="recipient"
-                                name="recipient"
-                                defaultValue={property.owner.toString()}
-                            />
-                            <label
-                                className="block text-gray-700 text-sm font-bold mb-2"
-                                htmlFor="name"
-                            >
-                                Name:
-                            </label>
-                            <input
-                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                id="name"
-                                name="name"
-                                type="text"
-                                placeholder="Enter your name"
-                                required
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label
-                                className="block text-gray-700 text-sm font-bold mb-2"
-                                htmlFor="email"
-                            >
-                                Email:
-                            </label>
-                            <input
-                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                id="email"
-                                name="email"
-                                type="email"
-                                placeholder="Enter your email"
-                                required
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label
-                                className="block text-gray-700 text-sm font-bold mb-2"
-                                htmlFor="phone"
-                            >
-                                Phone:
-                            </label>
-                            <input
-                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                id="phone"
-                                name="phone"
-                                type="text"
-                                placeholder="Enter your phone number"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label
-                                className="block text-gray-700 text-sm font-bold mb-2"
-                                htmlFor="body"
-                            >
-                                Message:
-                            </label>
-                            <textarea
-                                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 h-44 focus:outline-none focus:shadow-outline"
-                                id="body"
-                                name="body"
-                                placeholder="Enter your message"
-                            />
-                        </div>
+                        <input
+                            type="hidden"
+                            id="property"
+                            name="property"
+                            defaultValue={(property._id as string)}
+                        />
+                        <input
+                            type="hidden"
+                            id="recipient"
+                            name="recipient"
+                            defaultValue={property.owner.toString()}
+                        />
+                        
+                        <Input
+                            inputType="input"
+                            id='name'
+                            name="name"
+                            type='text'
+                            label="Name"
+                            placeholder="Enter your name"
+                            labelSize="text-sm"
+                            defaultValue={(userName! || actionState.formData?.get("name") || "") as string}
+                            errors={actionState.formErrorMap?.name}
+                        />
+
+                        <Input
+                            inputType="input"
+                            id='email'
+                            name="email"
+                            type='tel'
+                            label="Email"
+                            labelSize="text-sm"
+                            placeholder="Enter your email"
+                            defaultValue={(userEmail! || actionState.formData?.get("email") || "") as string}
+                            errors={actionState.formErrorMap?.email}
+                        />
+
+                        <Input
+                            inputType="input"
+                            id='phone'
+                            name="phone"
+                            type='tel'
+                            label="Phone"
+                            labelSize="text-sm"
+                            placeholder="Enter your phone number"
+                            defaultValue={(actionState.formData?.get("phone") || "") as string}
+                            errors={actionState.formErrorMap?.phone}
+                        />
+
+                        <Input
+                            inputType="textarea"
+                            id='body'
+                            name="body"
+                            label="Message"
+                            labelSize="text-sm"
+                            placeholder="Enter your message"
+                            defaultValue={(actionState.formData?.get("body") || "") as string}
+                            errors={actionState.formErrorMap?.body}
+                        />
+
                         <div>
                             <button
-                                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline flex items-center justify-center"
+                                className={`flex gap-1 h-10 items-center justify-center rounded-lg w-full bg-blue-500 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-500 active:bg-blue-600 ${isPending ? 'hover:cursor-not-allowed' : 'hover:cursor-pointer'}`}
                                 type="submit"
                                 disabled={isPending}
                             >
@@ -113,10 +110,8 @@ const PropertyContactForm = ({ property }: { property: PropertyDocument}) => {
                         </div>
                     </form>
                 </div>
-
             )}
         </>
-            
     );
 }
  

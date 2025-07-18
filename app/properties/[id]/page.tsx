@@ -15,7 +15,7 @@ const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) =>
 
     return (
         <main>
-            <PropertyHeaderImage image={property!.imagesData[0].secureUrl} />
+            <PropertyHeaderImage image={property.imagesData![0].secureUrl} />
 
             {/* Link to return to properties page */}
             <section>
@@ -40,7 +40,7 @@ const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) =>
             </section>
 
             {/* Property images */}
-            <PropertyImages imagesData={property!.imagesData} />
+            <PropertyImages imagesData={property.imagesData!} />
         </main>
     );
 }
