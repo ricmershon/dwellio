@@ -10,7 +10,7 @@ import { ActionState } from "@/app/lib/definitions";
 
 const BookmarkPropertyButton = ({ propertyId }: { propertyId: string }) => {
     const [isBookmarked, setIsBookmarked] = useState<boolean | undefined>(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isPending, setIsPending] = useState(true);
 
     useEffect(() => {
         const getStatus = async () => {
@@ -22,7 +22,7 @@ const BookmarkPropertyButton = ({ propertyId }: { propertyId: string }) => {
                     } else {
                         setIsBookmarked(false);
                     }
-                    setIsLoading(false);
+                    setIsPending(false);
                 } else {
                     toast.error(response.message);
                 }
@@ -54,7 +54,7 @@ const BookmarkPropertyButton = ({ propertyId }: { propertyId: string }) => {
 
     return (
         <>
-            {isLoading ? (
+            {isPending ? (
                 <p className="text-center">Loading bookmark status...</p>
             ) : (
                 <form action={bookmarkPropertyAction}>

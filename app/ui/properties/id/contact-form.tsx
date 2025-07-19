@@ -19,13 +19,11 @@ const PropertyContactForm = ({ property, userName, userEmail }: PropertyContactF
     const [actionState, formAction, isPending] = useActionState(createMessage, {} as ActionState);
 
     /**
-     * Toast message for error and success.
+     * Toast message for error.
      */
     useEffect(() => {
         if (actionState.status === 'ERROR') {
             toast.error(actionState.message);
-        } else if (actionState.status === 'SUCCESS') {
-            toast.success(actionState.message);
         }
     }, [actionState.message, actionState.status]);
     
