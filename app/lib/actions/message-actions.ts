@@ -87,36 +87,48 @@ export const toggleMessageRead = async (messageId: string) => {
     await message.save();
 
     revalidatePath('/messages');
-    return toActionState(
-        `Message marked ${message.read ? 'read.' : 'new.'}`,
-        'SUCCESS',
-        undefined,
-        message.read
-    );
+    return {
+        message: `Message marked ${message.read ? 'read.' : 'new.'}`,
+        status: 'SUCCESS',
+        isRead: message.read
+    } as ActionState;
 }
 
 export const deleteMessage = async (messageId: string) => {
-    await dbConnect();
-
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
         throw new Error('User ID is required.')
     }
 
+    /**
+     * Confirm message's existence and verify ownership.
+     */
     const message: MessageDocument | null = await Message.findById(messageId);
     if (!message) {
         return toActionState('Message not found.', 'ERROR');
     }
 
-    // Verify ownwership
     if (message.recipient.toString() !== sessionUser.id) {
-        throw new Error('Not authorized to delete message.');
+        return toActionState('Not authorized to delete message.', 'ERROR');
     }
 
-    await message.deleteOne();
+    try {
+        await dbConnect();
+        await message.deleteOne();
+    } catch (error) {
+        console.error(`>>> Database error updating a property: ${error}`);
+
+        return {
+            status: 'ERROR',
+            message: `Failed to delete message: ${error}`
+        } as ActionState;
+    }
 
     revalidatePath('/messages');
-    return toActionState('Message successfully deleted.', 'SUCCESS');
+    return {
+        status: 'SUCCESS',
+        message: "Message deleted."
+    } as ActionState;
 }
 
 export const getUnreadMessageCount = async () => {

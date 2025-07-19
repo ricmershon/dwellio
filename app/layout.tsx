@@ -25,6 +25,7 @@ export const metadata: Metadata = {
 // TODO: See if ` as ` can be removed for more strictly typed
 // FIXME: Cursor changes on button hovers
 // TODO: Add metadata for all pages
+// TODO: button consistency between hover and non-hover states.
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
     return (
         <AuthProvider>

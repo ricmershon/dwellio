@@ -1,5 +1,6 @@
 import { ZodError } from "zod";
 
+// TODO: document functions in this file.
 export const buildFormErrorMap = (issues: ZodError['issues']) => {
     const errorMap: Record<string, string[]> = {};
 

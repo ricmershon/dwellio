@@ -156,7 +156,7 @@ export const updateProperty = async (
     }
 
     /**
-     * Confirm property's existence and verify ownership
+     * Confirm property's existence and verify ownership.
      */
     const property: PropertyDocument | null = await Property.findById(propertyId);
     if (!property) {
@@ -289,7 +289,6 @@ export const bookmarkProperty = async (propertyId: string) => {
     }
 
     revalidatePath('/properties/bookmarked', 'page');
-
     return actionState;
 }
 

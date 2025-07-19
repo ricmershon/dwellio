@@ -2,15 +2,19 @@
 
 import { toast } from "react-toastify";
 
+import { useGlobalContext } from "@/app/context/global-context";
 import { deleteMessage } from "@/app/lib/actions/message-actions";
+import { ActionState } from "@/app/lib/definitions";
 
 const DeleteMessageButton = ({ messageId }: { messageId: string } ) => {
+    const { setUnreadCount } = useGlobalContext();
     
     const deleteMessageAction = async () => {
-        const result = await deleteMessage(messageId);
+        const result: ActionState = await deleteMessage(messageId);
         if (result.message) {
             if (result.status === 'SUCCESS') {
                 toast.success(result.message);
+                setUnreadCount((prevCount) => prevCount - 1);
             } else if (result.status === 'ERROR') {
                 toast.error(result.message);
             }
@@ -20,7 +24,7 @@ const DeleteMessageButton = ({ messageId }: { messageId: string } ) => {
     return (
         <form action={deleteMessageAction} className="inline-block">
             <button
-                className="mt-4 mr-3 bg-red-500 text-white py-1 px-3 rounded-md"
+                className='flex gap-1 py-[6px] px-3 rounded-md bg-red-500 text-sm font-medium text-white transition-colors hover:bg-red-400 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-red-500 active:bg-red-600 hover:cursor-pointer'
                 type="submit"
             >
                 Delete
