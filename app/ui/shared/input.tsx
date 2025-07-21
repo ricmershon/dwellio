@@ -1,21 +1,23 @@
+import { FormErrorsType } from "@/app/lib/definitions";
 import FormErrors from "@/app/ui/shared/form-errors";
 
 interface InputProps {
     inputType?: 'input' | 'textarea',
     id: string;
     type?: string;
-    name: string;
+    name?: string;
     label?: string;
     placeholder?: string;
     defaultValue?: string;
     required?: boolean;
     isInGroup?: boolean | false;
-    errors?: Record<string, string[]> | string[];
+    errors?: FormErrorsType;
     labelSize?: string;
+    noClasses?: boolean | false;
     [x: string]: unknown;
 }
 
-const Input = ({ inputType, id, type, name, label, placeholder, defaultValue, required, isInGroup, errors, labelSize, ...restProps }: InputProps) => {
+const Input = ({ inputType, id, type, name, label, placeholder, defaultValue, required, isInGroup, errors, labelSize, noClasses, ...restProps }: InputProps) => {
     const ariaDescribedBy = `${id}-error`;
 
     console.log(labelSize);
@@ -46,7 +48,7 @@ const Input = ({ inputType, id, type, name, label, placeholder, defaultValue, re
     );
 
     return (
-        <div className={`${isInGroup ? 'mb-2' : 'mb-4'}`}>
+        <div className={`${noClasses ? '' : isInGroup ? 'mb-2' : 'mb-4'}`}>
             {label && (
                 <label
                     className={`mb-2 block font-medium ${labelSize} text-gray-700`}

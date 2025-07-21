@@ -66,25 +66,36 @@ export const createMessage = async (_prevState: ActionState, formData: FormData)
 }
 
 export const toggleMessageRead = async (messageId: string) => {
-    await dbConnect();
-
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
         throw new Error('User ID is required.')
     }
 
+    /**
+     * Confirm message's existence and verify ownership.
+     */
     const message: MessageDocument | null = await Message.findById(messageId);
     if (!message) {
-        throw new Error('Message not found.')
+        return toActionState('Message not found.', 'ERROR');
     }
 
-    // Verify ownership
     if (message.recipient.toString() !== sessionUser.id) {
-        throw new Error('Not authorized to change message.');
+        return toActionState('Not authorized to change message.', 'ERROR');
     }
 
     message.read = !message.read;
-    await message.save();
+
+    try {
+        await dbConnect();
+        await message.save();
+    } catch (error) {
+        console.error(`>>> Database error changing message: ${error}`);
+
+        return {
+            status: 'ERROR',
+            message: `Failed to change message: ${error}`
+        } as ActionState;
+    }
 
     revalidatePath('/messages');
     return {
@@ -116,7 +127,7 @@ export const deleteMessage = async (messageId: string) => {
         await dbConnect();
         await message.deleteOne();
     } catch (error) {
-        console.error(`>>> Database error updating a property: ${error}`);
+        console.error(`>>> Database error deleting message: ${error}`);
 
         return {
             status: 'ERROR',
@@ -132,17 +143,20 @@ export const deleteMessage = async (messageId: string) => {
 }
 
 export const getUnreadMessageCount = async () => {
-    await dbConnect();
-
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
         throw new Error('User ID is required.')
     }
-
-    const unreadCount = await Message.countDocuments({
-        recipient: sessionUser.id,
-        read: false
-    });
-
-    return { unreadCount }
+    
+    try {
+        await dbConnect();
+        const unreadCount = await Message.countDocuments({
+            recipient: sessionUser.id,
+            read: false
+        });
+        return { unreadCount }
+    } catch (error) {
+        console.error(`>>> Database error getting unread message count: ${error}`);
+        throw new Error(`Failed to fetch unread message count: ${error}`);
+    }
 }

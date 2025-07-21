@@ -1,5 +1,7 @@
+import { FormErrorsType } from "@/app/lib/definitions";
+
 interface FormErrorsProps {
-    errors: Record<string, string[]> | string[];
+    errors: FormErrorsType;
     id: string;
 }
 

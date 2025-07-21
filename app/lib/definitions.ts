@@ -31,4 +31,6 @@ export interface PropertyImageData {
     publicId: string;
 }
 
+export type FormErrorsType = Record<string, string[]> | string[];
+
 export const MAX_ITEMS_PER_PAGE = 6;

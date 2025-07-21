@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import { PropsValue, StylesConfig, Theme } from 'react-select';
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
-interface OptionType {
+export interface OptionType {
     value: string;
     label: string;
 }
@@ -49,13 +49,15 @@ const customTheme = (theme: Theme) => ({
 
 interface DwellioSelectProps {
     options: OptionType[];
-    placeholder: string;
-    name: string;
-    id: string;
+    placeholder?: string;
+    name?: string;
+    id?: string;
     defaultValue?: PropsValue<OptionType>;
+    value?: PropsValue<OptionType>;
     [x: string]: unknown;
 }
 
+// TODO: Make colors consistent with rest of scheme
 const DwellioSelect = ({ options, placeholder, name, id, defaultValue, ...restProps }: DwellioSelectProps) => (
     <Select
         options={options}

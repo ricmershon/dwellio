@@ -1,4 +1,5 @@
 import { ZodError } from "zod";
+import { FormErrorsType } from "@/app/lib/definitions";
 
 // TODO: document functions in this file.
 export const buildFormErrorMap = (issues: ZodError['issues']) => {
@@ -21,7 +22,7 @@ export interface StructuredFormErrorMap {
     location?: Record<string, string[]>;
     rates?: Record<string, string[]>;
     sellerInfo?: Record<string, string[]>;
-    [key: string]: Record<string, string[]> | string[] | undefined;
+    [key: string]: FormErrorsType | undefined;
 }
 
 function structureErrors(flatErrors: ErrorMap): StructuredFormErrorMap {

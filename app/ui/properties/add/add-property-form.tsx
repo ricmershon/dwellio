@@ -12,7 +12,6 @@ import FormErrors from "@/app/ui/shared/form-errors";
 import DwellioSelect from "@/app/ui/shared/select";
 import { ActionState } from "@/app/lib/definitions";
 
-
 // TODO: Google address component
 const AddPropertyForm = () => {
     const [actionState, formAction, isPending] = useActionState(createProperty, {} as ActionState);
@@ -45,7 +44,6 @@ const AddPropertyForm = () => {
                         id='type'
                         aria-describedby='type-error'
                         aria-labelledby="type"
-
                     />
                     {actionState.formErrorMap?.type && <FormErrors
                         errors={actionState.formErrorMap.type}
