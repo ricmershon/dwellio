@@ -1,8 +1,8 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { PropsValue, StylesConfig, Theme, GroupBase, SingleValue } from 'react-select';
 
-import { PropsValue, StylesConfig, Theme } from 'react-select';
 const Select = dynamic(() => import('react-select'), { ssr: false });
 
 export interface OptionType {
@@ -10,7 +10,7 @@ export interface OptionType {
     label: string;
 }
 
-const customStyles: StylesConfig<OptionType, false> = {
+const customStyles: StylesConfig<OptionType, false, GroupBase<OptionType>> = {
     singleValue: (baseStyles) => ({
         ...baseStyles,
         fontSize: '.875rem',
@@ -54,23 +54,52 @@ interface DwellioSelectProps {
     id?: string;
     defaultValue?: PropsValue<OptionType>;
     value?: PropsValue<OptionType>;
+    onChange?: (selectedOption: SingleValue<OptionType>) => void;
+    isDisabled?: boolean;
+    isLoading?: boolean;
+    isClearable?: boolean;
+    isSearchable?: boolean;
     [x: string]: unknown;
 }
 
 // TODO: Make colors consistent with rest of scheme
-const DwellioSelect = ({ options, placeholder, name, id, defaultValue, ...restProps }: DwellioSelectProps) => (
-    <Select
-        options={options}
-        isClearable={false}
-        isSearchable={true}
-        placeholder={placeholder}
-        name={name}
-        id={id}
-        defaultValue={defaultValue}
-        styles={customStyles}
-        theme={customTheme}
-        {...restProps}
-    />
-);
+const DwellioSelect = ({ 
+    options, 
+    placeholder, 
+    name, 
+    id, 
+    defaultValue, 
+    onChange,
+    isDisabled = false,
+    isLoading = false,
+    isClearable = false,
+    isSearchable = true,
+    ...restProps 
+}: DwellioSelectProps) => {
+    // Wrapper function to handle the onChange with proper typing
+    const handleChange = (newValue: unknown) => {
+        if (onChange) {
+            onChange(newValue as SingleValue<OptionType>);
+        }
+    };
+
+    return (
+        <Select
+            options={options}
+            isClearable={isClearable}
+            isSearchable={isSearchable}
+            isDisabled={isDisabled}
+            isLoading={isLoading}
+            placeholder={placeholder}
+            name={name}
+            id={id}
+            defaultValue={defaultValue}
+            onChange={handleChange}
+            styles={customStyles as StylesConfig<unknown, boolean, GroupBase<unknown>>}
+            theme={customTheme}
+            {...restProps}
+        />
+    );
+};
 
 export default DwellioSelect;
