@@ -10,7 +10,7 @@ const FeaturedPropertyCard = ({ property }: { property: PropertyDocument}) => {
     return (
         <div className="bg-white rounded-xl shadow-md relative flex flex-col md:flex-row">
             <Image
-                src={property.imagesData[0].secureUrl}
+                src={property.imagesData![0].secureUrl}
                 alt={property.name}
                 width='0'
                 height='0'
