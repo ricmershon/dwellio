@@ -20,7 +20,6 @@ interface InputProps {
 const Input = ({ inputType, id, type, name, label, placeholder, defaultValue, required, isInGroup, errors, labelSize, noClasses, ...restProps }: InputProps) => {
     const ariaDescribedBy = `${id}-error`;
 
-    console.log(labelSize);
     const inputElement = inputType === 'input' ? (
         <input
             className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"

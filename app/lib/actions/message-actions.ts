@@ -36,7 +36,6 @@ export const createMessage = async (_prevState: ActionState, formData: FormData)
      */
     if (!validationResults.success) {
         const formErrorMap = buildFormErrorMap(validationResults.error.issues);
-        console.log(formErrorMap);
         return {
             formData: formData,
             formErrorMap: formErrorMap

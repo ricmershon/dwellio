@@ -97,7 +97,6 @@ export const fetchBookmarkedProperties = async (userId: string) => {
         await dbConnect();
         const user: UserDocument = await User.findById(userId).populate('bookmarks');
         const bookmarks: PropertyDocument[] = user.bookmarks;
-        console.log(user);
         return bookmarks;
     } catch (error) {
         console.error(`>>> Database error fetching bookmarked properties: ${error}`);
