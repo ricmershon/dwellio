@@ -13,12 +13,10 @@ interface ToggleMessageReadButtonProps {
 
 const ToggleMessageReadButton = ({ messageId, read }: ToggleMessageReadButtonProps ) => {
     const [isRead, setIsRead] = useState(read);
-
     const { setUnreadCount } = useGlobalContext();
     
     const toggleMessageReadAction = async () => {
         const result = await toggleMessageRead(messageId);
-
         if (result.message) {
             if (result.status === 'SUCCESS') {
                 setIsRead(result.isRead!);
@@ -33,7 +31,7 @@ const ToggleMessageReadButton = ({ messageId, read }: ToggleMessageReadButtonPro
     return (
         <form action={toggleMessageReadAction} className="inline-block">
             <button
-                className="mt-4 mr-3 bg-blue-500 text-white py-1 px-3 rounded-md"
+                className="flex gap-1 py-[6px] px-3 mt-4 mr-3 rounded-md bg-blue-500 text-sm font-medium text-white transition-colors hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-500 active:bg-blue-600 hover:cursor-pointer"
                 type="submit"
             >
                 {isRead ? 'Mark as Unread' : 'Mark as Read'}

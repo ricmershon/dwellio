@@ -1,14 +1,14 @@
 import { HydratedDocument } from "mongoose";
 
 import dbConnect from "@/app/config/database-config"
-import { Property, PropertyInterface, User, UserInterface } from "@/app/models";
+import { Property, PropertyDocument, User, UserDocument } from "@/app/models";
 import { MAX_ITEMS_PER_PAGE, PropertiesQuery } from "@/app/lib/definitions";
 
 /**
  * Returns all or three most recent properties in the database.
  * 
  * @param {boolean} mostRecent - if true return only 3 most recent properties.
- * @returns Promise<PropertyInterface[]>
+ * @returns Promise<PropertyDocument[]>
  */
 export const fetchProperties = async (mostRecent: boolean) => {
     // Artificial delay for testing loading components.
@@ -18,7 +18,7 @@ export const fetchProperties = async (mostRecent: boolean) => {
 
     try {        
         await dbConnect();
-        let properties: PropertyInterface[];
+        let properties: PropertyDocument[];
 
         if (mostRecent) {
             properties = await Property.find().sort({ createdAt: -1 }).limit(3);
@@ -36,12 +36,12 @@ export const fetchProperties = async (mostRecent: boolean) => {
  * Returns a single property from the database.
  * 
  * @param {string} propertyId - ObjectId in database for property.
- * @returns Promise<HydratedDocument<PropertyInterface>>
+ * @returns Promise<HydratedDocument<PropertyDocument>>
  */
 export const fetchProperty = async (propertyId: string) => {
     try {
         await dbConnect();
-        const property: HydratedDocument<PropertyInterface> | null = await Property.findById(propertyId);
+        const property: HydratedDocument<PropertyDocument> | null = await Property.findById(propertyId);
         if (!property) {
             console.error('>>> Property not found.');
             throw new Error(`Failed to fetch property data.`)
@@ -57,12 +57,12 @@ export const fetchProperty = async (propertyId: string) => {
  * Returns all properties in the database entered by currently logged in user.
  * 
  * @param {string} userId - ObjectId in database for user/property owner.
- * @returns Promise<PropertyInterface[]>
+ * @returns Promise<PropertyDocument[]>
  */
 export const fetchPropertiesByUserId = async (userId: string) => {
     try {
         await dbConnect();
-        const properties: PropertyInterface[] | null = await Property.find({ owner: userId });
+        const properties: PropertyDocument[] | null = await Property.find({ owner: userId });
         return properties;
     } catch (error) {
         console.error(`>>> Database error fetching properties: ${error}`);
@@ -73,12 +73,12 @@ export const fetchPropertiesByUserId = async (userId: string) => {
 /**
  * Returns properties marked as featured in the database.
  * 
- * @returns Promise<PropertyInterface[]>
+ * @returns Promise<PropertyDocument[]>
  */
 export const fetchFeaturedProperties = async () => {
     try {
         await dbConnect();
-        const properties: PropertyInterface[] | null = await Property.find({ is_featured: true });
+        const properties: PropertyDocument[] | null = await Property.find({ isFeatured: true });
         return properties;
     } catch (error) {
         console.error(`>>> Database error fetching featured properties: ${error}`);
@@ -90,13 +90,14 @@ export const fetchFeaturedProperties = async () => {
  * Returns all properties in the database bookmarked by currently logged in user.
  * 
  * @param {string} userId - ObjectId in database for user/property owner.
- * @returns Promise<PropertyInterface[]>
+ * @returns Promise<PropertyDocument[]>
  */
 export const fetchBookmarkedProperties = async (userId: string) => {
     try {
         await dbConnect();
-        const user: UserInterface = await User.findById(userId).populate('bookmarks');
-        const bookmarks: PropertyInterface[] = user.bookmarks;
+        const user: UserDocument = await User.findById(userId).populate('bookmarks');
+        const bookmarks: PropertyDocument[] = user.bookmarks;
+        console.log(user);
         return bookmarks;
     } catch (error) {
         console.error(`>>> Database error fetching bookmarked properties: ${error}`);
@@ -108,12 +109,12 @@ export const fetchBookmarkedProperties = async (userId: string) => {
  * Returns all properties from the database based on a user query.
  * 
  * @param {PropertiesQuery} query - database query object.
- * @returns Promise<PropertyInterface[]>
+ * @returns Promise<PropertyDocument[]>
  */
 export const searchProperties = async (query: PropertiesQuery) => {
     try {
         await dbConnect();
-        const properties: PropertyInterface[] | null = await Property.find(query)
+        const properties: PropertyDocument[] | null = await Property.find(query)
         return properties;
     } catch (error) {
         console.error(`>>> Database error querying properties: ${error}`);
@@ -142,14 +143,14 @@ export const fetchNumPropertiesPages = async () => {
  * Returns paginated properties from the database.
  * 
  * @param {number} currentPage - current page displayed.
- * @returns Promise<PropertyInterface[]>
+ * @returns Promise<PropertyDocument[]>
  */
 export const fetchPaginatedProperties = async (currentPage: number) => {
     const offset = (currentPage - 1) * MAX_ITEMS_PER_PAGE;
     
     try {
         await dbConnect();
-        const properties: PropertyInterface[] = await Property.find()
+        const properties: PropertyDocument[] = await Property.find()
             .skip(offset)
             .limit(MAX_ITEMS_PER_PAGE);
         return properties;

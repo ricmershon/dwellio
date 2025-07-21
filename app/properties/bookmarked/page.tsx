@@ -1,6 +1,6 @@
 import PropertyCard from "@/app/ui/properties/property-card";
 import { fetchBookmarkedProperties } from "@/app/lib/data/property-data";
-import { PropertyInterface } from "@/app/models";
+import { PropertyDocument } from "@/app/models";
 import { getSessionUser } from "@/app/utils/get-session-user";
 
 // TODO: Change the name of this route to /bookmarked
@@ -10,7 +10,7 @@ const SavedPropertiesPage = async () => {
         throw new Error('User ID is required.')
     }
 
-    const savedProperties: PropertyInterface[] = await fetchBookmarkedProperties(sessionUser.id);
+    const savedProperties: PropertyDocument[] = await fetchBookmarkedProperties(sessionUser.id);
 
     return (
         <main>

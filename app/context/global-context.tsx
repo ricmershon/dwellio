@@ -1,9 +1,6 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-
-import { getUnreadMessageCount } from '@/app/lib/actions/message-actions';
-
 import {
   createContext,
   useContext,
@@ -13,6 +10,8 @@ import {
   ReactNode,
   useEffect,
 } from 'react';
+
+import { getUnreadMessageCount } from '@/app/lib/actions/message-actions';
 
 interface GlobalContextProps {
     unreadCount: number;

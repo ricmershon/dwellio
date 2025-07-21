@@ -1,11 +1,11 @@
 import { Document, Schema, Types, model, models } from 'mongoose';
-import { PropertyInterface } from './property-model';
+import { PropertyDocument } from './property-model';
 
-export interface UserInterface extends Document {
+export interface UserDocument extends Document {
     username: string;
     email: string;
     image: string;
-    bookmarks: Types.ObjectId[] & PropertyInterface[]
+    bookmarks: Types.ObjectId[] & PropertyDocument[]
 }
 
 const UserSchema = new Schema({
@@ -21,5 +21,5 @@ const UserSchema = new Schema({
     timestamps: true
 });
 
-const User = models.User || model<UserInterface>('User', UserSchema);
+const User = models.User || model<UserDocument>('User', UserSchema);
 export default User;

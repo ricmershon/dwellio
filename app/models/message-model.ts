@@ -1,13 +1,10 @@
 import { Document, Schema, Types, model, models } from 'mongoose';
+import { MessageInputType } from '@/app/schemas/message-schema';
 
-export interface MessageInterface extends Document {
+export interface MessageDocument extends MessageInputType, Document {
     sender: Types.ObjectId,
     recipient: Types.ObjectId,
     property: Types.ObjectId | { _id: Types.ObjectId, name: string },
-    name: string,
-    email: string,
-    phone?: string,
-    body?: string,
     read: boolean,
     createdAt: Date;
     updatedAt: Date;
@@ -26,5 +23,5 @@ const MessageSchema = new Schema({
     timestamps: true
 });
 
-const Message = models.Message || model<MessageInterface>('Message', MessageSchema);
+const Message = models.Message || model<MessageDocument>('Message', MessageSchema);
 export default Message;

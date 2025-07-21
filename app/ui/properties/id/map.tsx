@@ -6,12 +6,12 @@ import Map, { Marker } from "react-map-gl/mapbox";
 import Image from 'next/image';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
-import { PropertyInterface } from "@/app/models";
+import { PropertyDocument } from "@/app/models";
 import Spinner from "@/app/ui/shared/spinner";
 import pin from '@/assets/images/pin.svg';
 
 // TODO: Use google maps?
-const PropertyMap = ({ property }: { property: PropertyInterface}) => {
+const PropertyMap = ({ property }: { property: PropertyDocument}) => {
     const [latitude, setLatitude] = useState<number | undefined>(undefined);
     const [longitude, setLongitude] = useState<number | undefined>(undefined);
     const [viewport, setViewport] = useState({

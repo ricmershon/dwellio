@@ -1,9 +1,9 @@
 import { FaTimes, FaBed, FaBath, FaRulerCombined, FaCheck, FaMapMarkerAlt } from "react-icons/fa";
 
-import { PropertyInterface } from "@/app/models";
+import { PropertyDocument } from "@/app/models";
 // import PropertyMap from "./PropertyMap";
 
-const PropertyDetails = ({ property }: { property: PropertyInterface }) => {
+const PropertyDetails = ({ property }: { property: PropertyDocument }) => {
     const { street, city, state, zipcode } = property.location;
     const { rates } = property;
     
@@ -75,7 +75,7 @@ const PropertyDetails = ({ property }: { property: PropertyInterface }) => {
                     </p>
                     <p>
                         <FaRulerCombined className="inline-block mr-2" />
-                        {property.square_feet}{' '}
+                        {property.squareFeet}{' '}
                         <span className="hidden sm:inline">sqft</span>
                     </p>
                 </div>

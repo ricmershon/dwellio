@@ -10,35 +10,29 @@ import { ActionState } from "@/app/lib/definitions";
 
 const BookmarkPropertyButton = ({ propertyId }: { propertyId: string }) => {
     const [isBookmarked, setIsBookmarked] = useState<boolean | undefined>(false);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isPending, setIsPending] = useState(true);
 
     useEffect(() => {
-        const getStatus = async () => {
-            try {
-                const response: ActionState = await getBookmarkStatus(propertyId)
-                if (response.status === 'SUCCESS') {
-                    if (response.isBookmarked) {
-                        setIsBookmarked(true);
-                    } else {
-                        setIsBookmarked(false);
-                    }
-                    setIsLoading(false);
+        getBookmarkStatus(propertyId).then((response) => {
+            if (response.status === 'SUCCESS') {
+                if (response.isBookmarked) {
+                    setIsBookmarked(true);
                 } else {
-                    toast.error(response.message);
+                    setIsBookmarked(false);
                 }
-            } catch (error) {
-                throw new Error(`Error getting bookmark status: ${error}`)
+                setIsPending(false);
+            } else {
+                toast.error(response.message);
             }
-        }
-
-        getStatus();
+        })
+        .catch((error) => {
+            throw new Error(`Error getting bookmark status: ${error}`)
+        })
     }, [propertyId])
-
-    const bookmarkPropertyById = bookmarkProperty.bind(null, propertyId);
 
     const bookmarkPropertyAction = async () => {
         try {
-            const result: ActionState = await bookmarkPropertyById();
+            const result: ActionState = await bookmarkProperty(propertyId);
             setIsBookmarked(result.isBookmarked);
             if (result.message) {
                 if (result.status === 'SUCCESS') {
@@ -54,7 +48,7 @@ const BookmarkPropertyButton = ({ propertyId }: { propertyId: string }) => {
 
     return (
         <>
-            {isLoading ? (
+            {isPending ? (
                 <p className="text-center">Loading bookmark status...</p>
             ) : (
                 <form action={bookmarkPropertyAction}>

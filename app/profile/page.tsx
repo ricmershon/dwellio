@@ -4,7 +4,7 @@ import profileDefaultImage from '@/assets/images/profile.png';
 import { getSessionUser } from "@/app/utils/get-session-user";
 import { fetchPropertiesByUserId } from "@/app/lib/data/property-data";
 import ProfileProperties from "@/app/ui/profile/profile-properties";
-import { PropertyInterface } from "@/app/models";
+import { PropertyDocument } from "@/app/models";
 
 const ProfilePage = async () => {
     const sessionUser = await getSessionUser();
@@ -12,7 +12,7 @@ const ProfilePage = async () => {
         throw new Error('User ID is required.')
     }
 
-    const properties: PropertyInterface[] = await fetchPropertiesByUserId(sessionUser.id);
+    const properties: PropertyDocument[] = await fetchPropertiesByUserId(sessionUser.id);
         
     return (
         <main>

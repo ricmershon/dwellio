@@ -1,25 +1,35 @@
 'use client';
 
-import { FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+
+import DwellioSelect, { OptionType } from "@/app/ui/shared/select";
+import { PropertyTypes } from "@/app/data/data";
+import Input from "../../shared/input";
 
 // TODO: Clean up form components. Currently different sizes. Dropdown arrow needs to be fixed.
 const PropertySearchForm = () => {
     const [location, setLocation] = useState('');
-    const [propertyType, setPropertyType] = useState('All');
+    const [propertyType, setPropertyType] = useState<OptionType>({ label: 'All', value: 'All' });
 
     const router = useRouter();
     const searchParams = useSearchParams();
 
+    const handlePropertyTypeChange = (selectedOption: OptionType | null) => {
+        if (selectedOption) {
+            setPropertyType(selectedOption);
+        }
+    };
+
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if (location === '' && propertyType === 'All') {
+        if (location === '' && propertyType.value === 'All') {
             router.push('/properties')
         } else {
             const queryParams = new URLSearchParams(searchParams);
             queryParams.set('location', location);
-            queryParams.set('propertyType', propertyType);
+            queryParams.set('propertyType', propertyType.value);
 
             router.push(`/properties/search/?${queryParams.toString()}`)
         }
@@ -31,34 +41,25 @@ const PropertySearchForm = () => {
             onSubmit={handleSubmit}
         >
             <div className="w-full md:w-3/5 md:pr-2 mb-4 md:mb-0">
-                <label htmlFor="location" className="sr-only">Location</label>
-                <input
-                    className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
-                    type="text"
-                    id="location"
-                    placeholder="Enter Location (City, State, Zip, etc"
-                    value={location}
-                    onChange={(event) => setLocation(event.target.value)}
+                <Input
+                    inputType="input"
+                    id='location'
+                    placeholder="Enter Location (City, State, Zip, etc."
+                    onChange={(event: ChangeEvent<HTMLInputElement>) => setLocation(event.target.value)}
+                    noClasses={true}
                 />
             </div>
             <div className="w-full md:w-2/5 md:pl-2">
                 <label htmlFor="property-type" className="sr-only">Property Type</label>
-                <select
+                <DwellioSelect
+                    options={[
+                        { label: 'All', value: 'All' },
+                        ...PropertyTypes
+                    ]}
                     id="property-type"
-                    className="w-full px-4 py-3 rounded-lg bg-white text-gray-800 focus:outline-none focus:ring focus:ring-blue-500"
                     value={propertyType}
-                    onChange={(event) => setPropertyType(event.target.value)}
-                >
-                    <option value="All">All</option>
-                    <option value="Apartment">Apartment</option>
-                    <option value="Studio">Studio</option>
-                    <option value="Condo">Condo</option>
-                    <option value="House">House</option>
-                    <option value="Cabin Or Cottage">Cabin or Cottage</option>
-                    <option value="Loft">Loft</option>
-                    <option value="Room">Room</option>
-                    <option value="Other">Other</option>
-                </select>
+                    onChange={(selectedOption) => handlePropertyTypeChange(selectedOption)}
+                />
             </div>
             <button
                 type="submit"

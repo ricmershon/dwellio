@@ -13,7 +13,7 @@ const dbConnect = async () => {
     }
 
     try {
-        const database = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster1.xc2q6sx.mongodb.net/${process.env.MONGODB_NAME}?retryWrites=true&w=majority&appName=Cluster1`;
+        const database = process.env.MONGODB_URI!;
         
         await mongoose.connect(database)
         connected = true;

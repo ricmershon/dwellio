@@ -3,14 +3,16 @@
 import Image from "next/image";
 import { Gallery, Item } from 'react-photoswipe-gallery';
 
-const PropertyImages = ({ images }: { images: string[] }) => {
+import { PropertyImageData } from "@/app/lib/definitions";
+
+const PropertyImages = ({ imagesData }: { imagesData: PropertyImageData[] }) => {
     return (
         <Gallery>
             <section className="bg-blue-50 p-4">
-                {images.length === 1 ? (
+                {imagesData.length === 1 ? (
                     <Item
-                        original={images[0]}
-                        thumbnail={images[0]}
+                        original={imagesData[0].secureUrl}
+                        thumbnail={imagesData[0].secureUrl}
                         width="1000"
                         height="600"
                     >
@@ -18,7 +20,7 @@ const PropertyImages = ({ images }: { images: string[] }) => {
                             <Image
                                 ref={ref}
                                 onClick={open}
-                                src={images[0]}
+                                src={imagesData[0].secureUrl}
                                 alt=""
                                 className='object-cover h-[400px] mx-auto rounded-xl cursor-pointer'
                                 width={1800}
@@ -29,18 +31,18 @@ const PropertyImages = ({ images }: { images: string[] }) => {
                     </Item>
                 ) : (
                     <div className="grid grid-cols-2 gap-4">
-                        {images.map((image, index) => (
+                        {imagesData.map((imageData, index) => (
                             <div
-                                key={image}
+                                key={imageData.secureUrl}
                                 className={
-                                    `${images.length === 3 && index === 2
+                                    `${imagesData.length === 3 && index === 2
                                         ? 'col-span-2'
                                         : 'col-span-1'}`
                                 }
                             >
                                 <Item
-                                    original={image}
-                                    thumbnail={image}
+                                    original={imageData.secureUrl}
+                                    thumbnail={imageData.secureUrl}
                                     width="1000"
                                     height="600"
                                 >
@@ -48,7 +50,7 @@ const PropertyImages = ({ images }: { images: string[] }) => {
                                         <Image
                                             ref={ref}
                                             onClick={open}
-                                            src={image}
+                                            src={imageData.secureUrl}
                                             alt=""
                                             className='object-cover h-[400px] w-full rounded-xl cursor-pointer'
                                             width={1800}
