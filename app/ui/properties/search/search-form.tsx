@@ -15,9 +15,10 @@ const PropertySearchForm = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const handlePropertyTypeChange = (selectedOption: OptionType
-    ) => {
-        setPropertyType(selectedOption);
+    const handlePropertyTypeChange = (selectedOption: OptionType | null) => {
+        if (selectedOption) {
+            setPropertyType(selectedOption);
+        }
     };
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -57,7 +58,7 @@ const PropertySearchForm = () => {
                     ]}
                     id="property-type"
                     value={propertyType}
-                    onChange={handlePropertyTypeChange}
+                    onChange={(selectedOption) => handlePropertyTypeChange(selectedOption)}
                 />
             </div>
             <button
