@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 let connected = false;
 
-// TODO: Research better way to persist db connection
 const dbConnect = async () => {
     mongoose.set('strictQuery', true);
 

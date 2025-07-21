@@ -7,7 +7,6 @@ import DwellioSelect, { OptionType } from "@/app/ui/shared/select";
 import { PropertyTypes } from "@/app/data/data";
 import Input from "../../shared/input";
 
-// TODO: Clean up form components. Currently different sizes. Dropdown arrow needs to be fixed.
 const PropertySearchForm = () => {
     const [location, setLocation] = useState('');
     const [propertyType, setPropertyType] = useState<OptionType>({ label: 'All', value: 'All' });

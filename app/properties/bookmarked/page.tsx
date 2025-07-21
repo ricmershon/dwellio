@@ -3,7 +3,6 @@ import { fetchBookmarkedProperties } from "@/app/lib/data/property-data";
 import { PropertyDocument } from "@/app/models";
 import { getSessionUser } from "@/app/utils/get-session-user";
 
-// TODO: Change the name of this route to /bookmarked
 const SavedPropertiesPage = async () => {
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {

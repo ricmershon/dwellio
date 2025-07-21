@@ -11,30 +11,12 @@ export interface OptionType {
 }
 
 const customStyles: StylesConfig<OptionType, false, GroupBase<OptionType>> = {
-    singleValue: (baseStyles) => ({
-        ...baseStyles,
-        fontSize: '.875rem',
-    }),
-    option: (baseStyles) => ({
-        ...baseStyles,
-        fontSize: '.875rem',
-    }),
-    control: (baseStyles) => ({
-        ...baseStyles,
-        minHeight: '35px',
-    }),
-    menu: (baseStyles) => ({
-        ...baseStyles,
-        fontSize: '.875rem', 
-    }),
-    placeholder: (baseStyles) => ({
-        ...baseStyles,
-        fontSize: '.875rem',
-    }),
-    indicatorSeparator: (baseStyles) => ({
-        ...baseStyles,
-        display: 'none',
-    })
+    singleValue: (baseStyles) => ({ ...baseStyles, fontSize: '.875rem' }),
+    option: (baseStyles) => ({ ...baseStyles, fontSize: '.875rem' }),
+    control: (baseStyles) => ({ ...baseStyles, minHeight: '35px' }),
+    menu: (baseStyles) => ({ ...baseStyles, fontSize: '.875rem' }),
+    placeholder: (baseStyles) => ({ ...baseStyles, fontSize: '.875rem' }),
+    indicatorSeparator: (baseStyles) => ({ ...baseStyles, display: 'none' })
 };
 
 const customTheme = (theme: Theme) => ({
@@ -76,6 +58,7 @@ const DwellioSelect = ({
     isSearchable = true,
     ...restProps 
 }: DwellioSelectProps) => {
+    
     // Wrapper function to handle the onChange with proper typing
     const handleChange = (newValue: unknown) => {
         if (onChange) {
