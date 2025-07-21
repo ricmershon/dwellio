@@ -6,17 +6,14 @@ import { Types } from "mongoose";
 
 import dbConnect from "@/app/config/database-config";
 import type { ActionState, PropertyImageData } from "@/app/lib/definitions";
-import { Property, PropertyDocument, User, UserDocument } from "@/app/models";
-import { getSessionUser } from "@/app/utils/get-session-user";
 import { uploadImages, destroyImages } from "@/app/lib/cloudinary";
+import { getSessionUser } from "@/app/utils/get-session-user";
 import { toActionState } from "@/app/utils/to-action-state";
-import { PropertyInput } from "@/app/schemas/property-schema";
 import { buildFormErrorMap } from "@/app/utils/build-form-error-map";
+import { Property, PropertyDocument, User, UserDocument } from "@/app/models";
+import { PropertyInput } from "@/app/schemas/property-schema";
 
-// TODO: Add console logs to catch blocks
-// TODO: Add error handling
-// TODO: add try catch blocks
-
+// FIXME: fix difference between property id types
 /**
  * Creates a new property.
  * 
@@ -119,32 +116,59 @@ export const createProperty = async (_prevState: ActionState, formData: FormData
     redirect(`/properties/${newPropertyDocument._id}`);
 }
 
+/**
+ * Deletes a property.
+ * 
+ * @param {string} propertyId - id of the property to be deleted.
+ * @returns Promise<ActionState>
+ */
 export const deleteProperty = async (propertyId: string) => {
-    await dbConnect();
-
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
         throw new Error('User ID is required.')
     }
 
+    /**
+     * Confirm properties existence and verify ownwerhip.
+     */
     const property: PropertyDocument | null = await Property.findById(propertyId);
     if (!property) {
         return toActionState('Property not found.', 'ERROR');
     }
 
-    // Verify ownwership
     if (property.owner.toString() !== sessionUser.id) {
         return toActionState('Not authorized to delete peoperty.', 'ERROR');
     }
 
-    destroyImages(property.imagesData!);
+    try {
+        await dbConnect();
 
-    await property.deleteOne();
+        destroyImages(property.imagesData!);
+        await property.deleteOne();
+    } catch (error) {
+        console.error(`>>> Database error deleting a property: ${error}`);
+        
+        return toActionState(
+            `Failed to add a property: ${error}`,
+            'ERROR',
+            undefined,
+            undefined
+        );
+    }
 
     revalidatePath('/profile');
     return toActionState('Property successfully deleted.', 'SUCCESS');
 }
 
+/**
+ * Updates a property.
+ * 
+ * @param {string} propertyId 
+ * @param {ActionState} _prevState - required by useActionState
+ * @param {FormData} formData 
+ * @returns Promise<ActionState> - ActionState may include form data in order to
+ * repopulate the form if there's an error.
+ */
 export const updateProperty = async (
     propertyId: string,
     _prevState: ActionState,
@@ -212,6 +236,7 @@ export const updateProperty = async (
 
     try {
         await dbConnect();
+
         await Property.findByIdAndUpdate(propertyId, validationResults.data);
     } catch (error) {
         console.error(`>>> Database error updating a property: ${error}`);
@@ -233,6 +258,12 @@ export const updateProperty = async (
     redirect(`/properties/${propertyId}`);
 }
 
+/**
+ * Sets the bookmark on a property.
+ * 
+ * @param {string} propertyId 
+ * @returns Promise<ActionState>
+ */
 export const bookmarkProperty = async (propertyId: string) => {
     const propertyObjectId = new Types.ObjectId(propertyId);
     
@@ -252,7 +283,11 @@ export const bookmarkProperty = async (propertyId: string) => {
             return toActionState('User not found.', 'ERROR');
         } 
     } catch (error) {
-        throw new Error(`Error finding user: ${error}`);
+        console.error(`>>> Database error finding user: ${error}`);
+        return toActionState(
+            `Error finding user: ${error}`,
+            'ERROR',
+        );
     }
 
     const isBookmarked = user.bookmarks.includes(propertyObjectId);
@@ -282,35 +317,46 @@ export const bookmarkProperty = async (propertyId: string) => {
             }
         }
         if (updatedUser.modifiedCount !== 1) {
-            return toActionState('Error updating user', 'ERROR');
+            console.error(`>>> Database error bookmarking property`);
+            return toActionState('Error bookmarking property', 'ERROR');
         }
     } catch (error) {
-        throw new Error(`Error updating user: ${error}`);
+        console.error(`>>> Database error bookmarking property: ${error}`)
+        return toActionState(`Error bookmarking property`, 'ERROR');
     }
 
     revalidatePath('/properties/bookmarked', 'page');
     return actionState;
 }
 
+/**
+ * Gets bookmark status.
+ * 
+ * @param {string} propertyId - property on which bookmark is being set or unset.
+ * @returns Promise<ActionState>
+ */
 export const getBookmarkStatus = async (propertyId: string) => {
     const propertyObjectId = new Types.ObjectId(propertyId);
     
-    await dbConnect();
-
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
         throw new Error('User ID is required.')
     }
-
+    
     let user: UserDocument | null;
-
+    
     try {
+        await dbConnect();
         user = await User.findById(sessionUser.id);
         if (!user) {
             return toActionState('User not found.', 'ERROR');
         } 
     } catch (error) {
-        throw new Error(`Error finding user: ${error}`)
+        console.error(`>>> Database error finding user: ${error}`)
+        return toActionState(
+            `Error finding user: ${error}`,
+            'ERROR',
+        );
     }
 
     const isBookmarked = user.bookmarks.includes(propertyObjectId);

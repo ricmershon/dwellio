@@ -10,6 +10,14 @@ import { ActionState } from "@/app/lib/definitions";
 import { MessageInput } from "@/app/schemas/message-schema";
 import { buildFormErrorMap } from "@/app/utils/build-form-error-map";
 
+/**
+ * Creates a message to the owner of a property.
+ * 
+ * @param {ActionState} _prevState - required by useActionState 
+ * @param {FormData }formData 
+ * @returns Promise<ActionState> - ActionState may include form data in order to
+ * repopulate the form if there's an error.
+ */
 export const createMessage = async (_prevState: ActionState, formData: FormData) => {
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
@@ -45,7 +53,6 @@ export const createMessage = async (_prevState: ActionState, formData: FormData)
             property: formData.get('property'),
         });
         await newMessage.save();
-
         return toActionState('Message sent.', 'SUCCESS');
 
     } catch (error) {
@@ -65,6 +72,12 @@ export const createMessage = async (_prevState: ActionState, formData: FormData)
     }
 }
 
+/**
+ * Toggles state of a messages `read` status.
+ * 
+ * @param {string} messageId - id of message whose status is to change.
+ * @returns Promise<ActionState>
+ */
 export const toggleMessageRead = async (messageId: string) => {
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
@@ -74,7 +87,15 @@ export const toggleMessageRead = async (messageId: string) => {
     /**
      * Confirm message's existence and verify ownership.
      */
-    const message: MessageDocument | null = await Message.findById(messageId);
+    let message: MessageDocument | null;
+    try {
+        dbConnect();
+        message = await Message.findById(messageId);
+    } catch (error) {
+        console.error(`>>> Database error finding message: ${error}`);
+        return toActionState(`Error finding message: ${error}`, 'ERROR');
+    }
+
     if (!message) {
         return toActionState('Message not found.', 'ERROR');
     }
@@ -86,7 +107,6 @@ export const toggleMessageRead = async (messageId: string) => {
     message.read = !message.read;
 
     try {
-        await dbConnect();
         await message.save();
     } catch (error) {
         console.error(`>>> Database error changing message: ${error}`);
@@ -105,6 +125,12 @@ export const toggleMessageRead = async (messageId: string) => {
     } as ActionState;
 }
 
+/**
+ * Deletes a message.
+ * 
+ * @param {string} messageId - id of message to be deleted.
+ * @returns Promise<ActionState>
+ */
 export const deleteMessage = async (messageId: string) => {
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
@@ -114,17 +140,24 @@ export const deleteMessage = async (messageId: string) => {
     /**
      * Confirm message's existence and verify ownership.
      */
-    const message: MessageDocument | null = await Message.findById(messageId);
+    let message: MessageDocument | null;
+    try {
+        dbConnect();
+        message = await Message.findById(messageId);
+    } catch (error) {
+        console.error(`>>> Database error finding message: ${error}`);
+        return toActionState(`Error finding message: ${error}`, 'ERROR');
+    }
+
     if (!message) {
         return toActionState('Message not found.', 'ERROR');
     }
 
     if (message.recipient.toString() !== sessionUser.id) {
-        return toActionState('Not authorized to delete message.', 'ERROR');
+        return toActionState('Not authorized to change message.', 'ERROR');
     }
 
     try {
-        await dbConnect();
         await message.deleteOne();
     } catch (error) {
         console.error(`>>> Database error deleting message: ${error}`);
@@ -142,6 +175,11 @@ export const deleteMessage = async (messageId: string) => {
     } as ActionState;
 }
 
+/**
+ * Gets count of unread messages.
+ * 
+ * @returns Promise<{unreadCount: number}> 
+ */
 export const getUnreadMessageCount = async () => {
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {

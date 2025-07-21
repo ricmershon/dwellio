@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 
 import { deleteProperty } from "@/app/lib/actions/property-actions";
 
-// TODO: bind required?
 const DeletePropertyButton = ({ propertyId }: { propertyId: string }) => {
     const deletePropertyById = deleteProperty.bind(null, propertyId);
     
