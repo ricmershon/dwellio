@@ -39,6 +39,8 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                         <ToastContainer
                             position='top-right'
                             transition={Slide}
+                            hideProgressBar={true}
+                            theme="colored"
                         />
                     </body>
                 </html>
