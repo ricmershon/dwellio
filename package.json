@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "cloudinary": "^2.7.0",
     "mapbox-gl": "^3.13.0",
     "mongodb": "^6.17.0",

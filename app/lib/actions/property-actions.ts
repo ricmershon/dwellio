@@ -265,17 +265,16 @@ export const updateProperty = async (
 export const favoriteProperty = async (propertyId: string) => {
     const propertyObjectId = new Types.ObjectId(propertyId);
     
-    await dbConnect();
-
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
         throw new Error('User ID is required.')
     }
-
+    
     let user: UserDocument | null;
     let actionState: ActionState;
-
+    
     try {
+        await dbConnect();
         user = await User.findById(sessionUser.id);
         if (!user) {
             return toActionState('User not found.', 'ERROR');

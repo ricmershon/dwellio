@@ -28,7 +28,7 @@ const FavoritePropertyButton = ({ propertyId }: { propertyId: string }) => {
         .catch((error) => {
             throw new Error(`Error getting favorite status: ${error}`)
         })
-    }, [propertyId])
+    }, [propertyId]);
 
     const favoritePropertyAction = async () => {
         try {
