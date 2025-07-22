@@ -21,6 +21,5 @@ const UserSchema = new Schema({
     timestamps: true
 });
 
-delete models.User;
 const User = models.User || model<UserDocument>('User', UserSchema);
 export default User;

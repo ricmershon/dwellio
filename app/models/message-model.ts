@@ -1,4 +1,5 @@
 import { Document, Schema, Types, model, models } from 'mongoose';
+
 import { MessageInputType } from '@/app/schemas/message-schema';
 
 export interface MessageDocument extends MessageInputType, Document {
