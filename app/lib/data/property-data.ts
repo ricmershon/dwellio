@@ -87,20 +87,20 @@ export const fetchFeaturedProperties = async () => {
 }
 
 /**
- * Returns all properties in the database bookmarked by currently logged in user.
+ * Returns all properties in the database favorited by currently logged in user.
  * 
  * @param {string} userId - ObjectId in database for user/property owner.
  * @returns Promise<PropertyDocument[]>
  */
-export const fetchBookmarkedProperties = async (userId: string) => {
+export const fetchFavoritedProperties = async (userId: string) => {
     try {
         await dbConnect();
-        const user: UserDocument = await User.findById(userId).populate('bookmarks');
-        const bookmarks: PropertyDocument[] = user.bookmarks;
-        return bookmarks;
+        const user: UserDocument = await User.findById(userId).populate('favorites');
+        const favorites: PropertyDocument[] = user.favorites;
+        return favorites;
     } catch (error) {
-        console.error(`>>> Database error fetching bookmarked properties: ${error}`);
-        throw new Error(`Failed to fetch bookmarked properties data: ${error}`);
+        console.error(`>>> Database error fetching favorite properties: ${error}`);
+        throw new Error(`Failed to fetch favorite properties data: ${error}`);
     }
 }
 

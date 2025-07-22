@@ -257,12 +257,12 @@ export const updateProperty = async (
 }
 
 /**
- * Sets the bookmark on a property.
+ * Sets favorite on a property.
  * 
  * @param {string} propertyId 
  * @returns Promise<ActionState>
  */
-export const bookmarkProperty = async (propertyId: string) => {
+export const favoriteProperty = async (propertyId: string) => {
     const propertyObjectId = new Types.ObjectId(propertyId);
     
     await dbConnect();
@@ -288,52 +288,52 @@ export const bookmarkProperty = async (propertyId: string) => {
         );
     }
 
-    const isBookmarked = user.bookmarks.includes(propertyObjectId);
+    const isFavorite = user.favorites.includes(propertyObjectId);
 
     try {
         let updatedUser;
 
-        if (isBookmarked) {
+        if (isFavorite) {
             updatedUser = await User.updateOne(
                 { _id: user._id },
-                { $pull: { bookmarks: propertyId } }
+                { $pull: { favorites: propertyId } }
             );
             actionState = {
-                message: 'Bookmark removed',
+                message: 'Removed from favorites',
                 status: 'SUCCESS',
-                isBookmarked: false
+                isFavorite: false
             }
         } else {
             updatedUser = await User.updateOne(
                 { _id: user._id },
-                { $push: { bookmarks: propertyId } }
+                { $push: { favorites: propertyId } }
             );
             actionState = {
-                message: 'Bookmark added',
+                message: 'Added to favorites',
                 status: 'SUCCESS',
-                isBookmarked: true
+                isFavorite: true
             }
         }
         if (updatedUser.modifiedCount !== 1) {
-            console.error(`>>> Database error bookmarking property`);
-            return toActionState('Error bookmarking property', 'ERROR');
+            console.error(`>>> Database error favoriting property`);
+            return toActionState('Error favoriting property', 'ERROR');
         }
     } catch (error) {
-        console.error(`>>> Database error bookmarking property: ${error}`)
-        return toActionState(`Error bookmarking property`, 'ERROR');
+        console.error(`>>> Database error favoriting property: ${error}`)
+        return toActionState(`Error favoriting property`, 'ERROR');
     }
 
-    revalidatePath('/properties/bookmarked', 'page');
+    revalidatePath('/properties/favorites', 'page');
     return actionState;
 }
 
 /**
- * Gets bookmark status.
+ * Gets favorite status for a property.
  * 
- * @param {string} propertyId - property on which bookmark is being set or unset.
+ * @param {string} propertyId - property on which favorite is being set or unset.
  * @returns Promise<ActionState>
  */
-export const getBookmarkStatus = async (propertyId: string) => {
+export const getFavoriteStatus = async (propertyId: string) => {
     const propertyObjectId = new Types.ObjectId(propertyId);
     
     const sessionUser = await getSessionUser();
@@ -357,7 +357,7 @@ export const getBookmarkStatus = async (propertyId: string) => {
         );
     }
 
-    const isBookmarked = user.bookmarks.includes(propertyObjectId);
+    const isFavorite = user.favorites.includes(propertyObjectId);
 
-    return toActionState('Successfully fetched bookmark status', 'SUCCESS', isBookmarked);
+    return toActionState('Successfully fetched favorites status', 'SUCCESS', isFavorite);
 }

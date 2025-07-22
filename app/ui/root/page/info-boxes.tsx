@@ -13,7 +13,7 @@ const InfoBoxes = () => (
                         text: "Browse Properties"
                     }}
                 >
-                    Find your dream rental property. Bookmark properties and contact owners.
+                    Find your dream rental property. Favorite properties and contact owners.
                 </InfoBox>
                 <InfoBox
                     headingText="For Property Owners"
@@ -24,7 +24,7 @@ const InfoBoxes = () => (
                         text: "Add Property"
                     }}
                 >
-                    Find your dream rental property. Bookmark properties and contact owners.
+                    Find your dream rental property. Favorite properties and contact owners.
                 </InfoBox>
             </div>
         </div>
