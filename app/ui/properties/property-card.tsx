@@ -14,7 +14,7 @@ import { getRateDisplay } from '@/app/utils/get-rate-display';
 import PropertyCardFavoriteButton from '@/app/ui/properties/property-card-favorite-button';
 
 const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
-    const propertyId = toSerializedOjbect(property)._id;
+    const serializedProperty: PropertyDocument = toSerializedOjbect(property);
 
     return (
         <div className='rounded-xl shadow-md relative'>
@@ -36,7 +36,7 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
                 <h3 className='absolute top-[10px] left-[10px] bg-white px-2 py-1 rounded-lg text-blue-500 font-bold text-right md:text-center lg:text-right'>
                     {getRateDisplay(property.rates)}
                 </h3>
-                <PropertyCardFavoriteButton propertyId={propertyId} />
+                <PropertyCardFavoriteButton property={serializedProperty} />
                 <div className='flex justify-center gap-4 text-gray-500 mb-4'>
                     <p>
                         <FaBed className='md:hidden lg:inline' /> {property.beds}{' '}

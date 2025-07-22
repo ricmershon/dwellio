@@ -11,6 +11,7 @@ interface PropertyPageAsideProps {
     property: PropertyDocument;
     propertyId: string;
 }
+
 const PropertyPageAside = ({ property, propertyId }: PropertyPageAsideProps) => {
     const { data: session } = useSession();
 
@@ -20,7 +21,7 @@ const PropertyPageAside = ({ property, propertyId }: PropertyPageAsideProps) => 
      */
     return (
         <aside className="space-y-4">
-            {session && <FavoritePropertyButton propertyId={propertyId} />}
+            {session && session.user.id !== property.owner.toString() && <FavoritePropertyButton propertyId={propertyId} />}
             <ShareButtons property={property} />
             {session && session.user.id !== property.owner.toString() && (
                 <PropertyContactForm
