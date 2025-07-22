@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { Types } from "mongoose";
+import { Types, startSession } from "mongoose";
 
 import dbConnect from "@/app/config/database-config";
 import type { ActionState, PropertyImageData } from "@/app/lib/definitions";
@@ -135,24 +135,50 @@ export const deleteProperty = async (propertyId: string) => {
         return toActionState('Property not found.', 'ERROR');
     }
 
-    if (property.owner.toString() !== sessionUser.id) {
-        return toActionState('Not authorized to delete peoperty.', 'ERROR');
-    }
+    const session = await startSession();
 
     try {
         await dbConnect();
-
+        
+        // Get the property and delete images from assets database.
+        const property: PropertyDocument | null = await Property.findById(propertyId);
+        if (!property) {
+            return toActionState('Property not found.', 'ERROR');
+        }
         destroyImages(property.imagesData!);
-        await property.deleteOne();
+
+        session.startTransaction();
+
+        const _id = new Types.ObjectId(propertyId);
+
+        // Delete property
+        const deleted = await Property.findByIdAndDelete(_id, { session });
+        if (!deleted) {
+            throw new Error('Property not found');
+        }
+
+        // Remove property ID from all users' favorites
+        await User.updateMany(
+            { favorites: _id },
+            { $pull: { favorites: _id } },
+            { session }
+        );
+
+        // Commit the transaction
+        await session.commitTransaction();
     } catch (error) {
         console.error(`>>> Database error deleting a property: ${error}`);
         
+        // Roll back changes after error
+        await session.abortTransaction();
         return toActionState(
-            `Failed to add a property: ${error}`,
+            `Failed to delete property: ${error}`,
             'ERROR',
             undefined,
             undefined
         );
+    } finally {
+        session.endSession();
     }
 
     revalidatePath('/profile');
