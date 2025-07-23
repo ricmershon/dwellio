@@ -1,5 +1,5 @@
 import { ZodError } from "zod";
-import { FormErrorsType } from "@/app/lib/definitions";
+import { FormErrorsType } from "@/app/types/definitions";
 
 // TODO: document functions in this file.
 export const buildFormErrorMap = (issues: ZodError['issues']) => {

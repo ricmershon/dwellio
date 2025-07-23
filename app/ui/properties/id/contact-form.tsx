@@ -4,7 +4,7 @@ import { useActionState, useEffect } from "react";
 import { FaPaperPlane } from "react-icons/fa";
 
 import { PropertyDocument } from "@/app/models";
-import { ActionState } from "@/app/lib/definitions";
+import { ActionState } from "@/app/types/definitions";
 import { createMessage } from "@/app/lib/actions/message-actions";
 import { toast } from "react-toastify";
 import Input from "@/app/ui/shared/input";

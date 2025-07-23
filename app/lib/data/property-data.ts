@@ -2,7 +2,7 @@ import { HydratedDocument } from "mongoose";
 
 import dbConnect from "@/app/config/database-config"
 import { Property, PropertyDocument, User, UserDocument } from "@/app/models";
-import { MAX_ITEMS_PER_PAGE, PropertiesQuery } from "@/app/lib/definitions";
+import { MAX_ITEMS_PER_PAGE, PropertiesQuery } from "@/app/types/definitions";
 
 /**
  * Returns all or three most recent properties in the database.

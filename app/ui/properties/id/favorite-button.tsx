@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 import { favoriteProperty } from "@/app/lib/actions/property-actions";
 import { getFavoriteStatus } from "@/app/lib/actions/property-actions";
-import { ActionState } from "@/app/lib/definitions";
+import { ActionState } from "@/app/types/definitions";
 
 const FavoritePropertyButton = ({ propertyId }: { propertyId: string }) => {
     const [isFavorite, setIsFavorite] = useState<boolean | undefined>(false);

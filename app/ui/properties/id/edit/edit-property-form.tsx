@@ -7,7 +7,7 @@ import { LuRefreshCw } from "react-icons/lu";
 import { toast } from "react-toastify";
 
 import { Amenities, PropertyTypes } from '@/app/data/data'
-import { ActionState } from "@/app/lib/definitions";
+import { ActionState } from "@/app/types/definitions";
 import type { PropertyDocument } from "@/app/models";
 import { updateProperty } from "@/app/lib/actions/property-actions";
 import FormErrors from "@/app/ui/shared/form-errors";

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { Gallery, Item } from 'react-photoswipe-gallery';
 
-import { PropertyImageData } from "@/app/lib/definitions";
+import { PropertyImageData } from "@/app/types/definitions";
 
 const PropertyImages = ({ imagesData }: { imagesData: PropertyImageData[] }) => {
     return (

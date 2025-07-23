@@ -10,7 +10,7 @@ import { Amenities, PropertyTypes } from "@/app/data/data";
 import Input from "@/app/ui/shared/input";
 import FormErrors from "@/app/ui/shared/form-errors";
 import DwellioSelect from "@/app/ui/shared/select";
-import { ActionState } from "@/app/lib/definitions";
+import { ActionState } from "@/app/types/definitions";
 
 // TODO: Google address component
 const AddPropertyForm = () => {
