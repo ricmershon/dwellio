@@ -27,6 +27,7 @@ export const metadata: Metadata = {
 // TODO: Add metadata for all pages
 // TODO: Standardize buttons and button states.
 // TODO: Add images in separate modal box where description can be added to the image.
+// TODO: Set max properties per page dynamically based on screen width.
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
     return (
         <AuthProvider>

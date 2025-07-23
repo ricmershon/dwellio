@@ -19,7 +19,7 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
     const serializedProperty = toSerializedOjbect(property);
 
     return (
-        <div className='rounded-xl shadow-md relative'>
+        <div className='rounded-md shadow-md relative'>
             <Link href={`/properties/${property._id}`}>
                 <Image
                     src={property.imagesData![0].secureUrl}
@@ -27,7 +27,7 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
                     width='0'
                     height='0'
                     sizes='100vw'
-                    className='w-full h-auto rounded-t-xl'
+                    className='w-full h-auto rounded-t-md'
                 />
             </Link>
             <div className='p-4'>
