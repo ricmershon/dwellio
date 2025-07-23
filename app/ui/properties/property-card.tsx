@@ -9,12 +9,14 @@ import {
 } from 'react-icons/fa';
 
 import { PropertyDocument } from '@/app/models';
-import { toSerializedOjbect } from '@/app/utils/to-serialized-object';
 import { getRateDisplay } from '@/app/utils/get-rate-display';
 import PropertyCardFavoriteButton from '@/app/ui/properties/property-card-favorite-button';
+import { getSessionUser } from '@/app/utils/get-session-user';
+import { toSerializedOjbect } from '@/app/utils/to-serialized-object';
 
 const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
-    const serializedProperty: PropertyDocument = toSerializedOjbect(property);
+    const sessionUser = await getSessionUser();
+    const serializedProperty = toSerializedOjbect(property);
 
     return (
         <div className='rounded-xl shadow-md relative'>
@@ -36,7 +38,13 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
                 <h3 className='absolute top-[10px] left-[10px] bg-white px-2 py-1 rounded-lg text-blue-500 font-bold text-right md:text-center lg:text-right'>
                     {getRateDisplay(property.rates)}
                 </h3>
-                <PropertyCardFavoriteButton property={serializedProperty} />
+                
+                {/* Don't display favorite button if user logged in and not current user */}
+                {sessionUser && sessionUser.id !== property.owner.toString() && (
+                    <PropertyCardFavoriteButton
+                        propertyId={serializedProperty._id}
+                    />
+                )}
                 <div className='flex justify-center gap-4 text-gray-500 mb-4'>
                     <p>
                         <FaBed className='md:hidden lg:inline' /> {property.beds}{' '}
