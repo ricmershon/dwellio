@@ -3,6 +3,7 @@ import { z } from 'zod';
 const PropertyTypesEnum = z.enum([
     'Apartment',
     'Cabin',
+    'Chalet',
     'Condo',
     'Cottage',
     'House',

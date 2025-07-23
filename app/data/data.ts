@@ -76,11 +76,24 @@ export const Amenities: Amenity[] = [
         id: 'coffee_maker',
         value: 'Coffee Maker',
     },
+    {
+        id: 'fireplace',
+        value: 'Fireplace',
+    },
+    {
+        id: 'hiking_trails_access',
+        value: 'Hiking Trails Access',
+    },
+    {
+        id: 'pet_friendly',
+        value: 'Pet-Friendly',
+    },
 ];
 
 export const PropertyTypes = [
     { value: 'Apartment', label: 'Apartment'},
     { value: 'Cabin', label: 'Cabin'},
+    { value: 'Chalet', label: 'Chalet'},
     { value: 'Condo', label: 'Condo'},
     { value: 'Cottage', label: 'Cottage'},
     { value: 'House', label: 'House'},

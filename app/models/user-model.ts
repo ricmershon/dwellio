@@ -5,7 +5,7 @@ export interface UserDocument extends Document {
     username: string;
     email: string;
     image: string;
-    bookmarks: Types.ObjectId[] & PropertyDocument[]
+    favorites: Types.ObjectId[] & PropertyDocument[]
 }
 
 const UserSchema = new Schema({
@@ -16,7 +16,7 @@ const UserSchema = new Schema({
         required: [true, 'Email is required']
     },
     image: { type: String },
-    bookmarks: [{ type: Schema.Types.ObjectId, ref: 'Property' }]
+    favorites: [{ type: Schema.Types.ObjectId, ref: 'Property' }]
 }, {
     timestamps: true
 });

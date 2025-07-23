@@ -9,7 +9,7 @@ export interface Rates {
 export type ActionState = {
     message?: string | null;
     status?: 'SUCCESS' | 'ERROR' | null,
-    isBookmarked?: boolean,
+    isFavorite?: boolean,
     isRead?: boolean,
     formData?: FormData,
     formErrorMap?: StructuredFormErrorMap

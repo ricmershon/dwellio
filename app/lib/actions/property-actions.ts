@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { Types } from "mongoose";
+import { Types, startSession } from "mongoose";
 
 import dbConnect from "@/app/config/database-config";
 import type { ActionState, PropertyImageData } from "@/app/lib/definitions";
@@ -135,24 +135,50 @@ export const deleteProperty = async (propertyId: string) => {
         return toActionState('Property not found.', 'ERROR');
     }
 
-    if (property.owner.toString() !== sessionUser.id) {
-        return toActionState('Not authorized to delete peoperty.', 'ERROR');
-    }
+    const session = await startSession();
 
     try {
         await dbConnect();
-
+        
+        // Get the property and delete images from assets database.
+        const property: PropertyDocument | null = await Property.findById(propertyId);
+        if (!property) {
+            return toActionState('Property not found.', 'ERROR');
+        }
         destroyImages(property.imagesData!);
-        await property.deleteOne();
+
+        session.startTransaction();
+
+        const _id = new Types.ObjectId(propertyId);
+
+        // Delete property
+        const deleted = await Property.findByIdAndDelete(_id, { session });
+        if (!deleted) {
+            throw new Error('Property not found');
+        }
+
+        // Remove property ID from all users' favorites
+        await User.updateMany(
+            { favorites: _id },
+            { $pull: { favorites: _id } },
+            { session }
+        );
+
+        // Commit the transaction
+        await session.commitTransaction();
     } catch (error) {
         console.error(`>>> Database error deleting a property: ${error}`);
         
+        // Roll back changes after error
+        await session.abortTransaction();
         return toActionState(
-            `Failed to add a property: ${error}`,
+            `Failed to delete property: ${error}`,
             'ERROR',
             undefined,
             undefined
         );
+    } finally {
+        session.endSession();
     }
 
     revalidatePath('/profile');
@@ -257,25 +283,24 @@ export const updateProperty = async (
 }
 
 /**
- * Sets the bookmark on a property.
+ * Sets favorite on a property.
  * 
  * @param {string} propertyId 
  * @returns Promise<ActionState>
  */
-export const bookmarkProperty = async (propertyId: string) => {
+export const favoriteProperty = async (propertyId: string) => {
     const propertyObjectId = new Types.ObjectId(propertyId);
     
-    await dbConnect();
-
     const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.id) {
         throw new Error('User ID is required.')
     }
-
+    
     let user: UserDocument | null;
     let actionState: ActionState;
-
+    
     try {
+        await dbConnect();
         user = await User.findById(sessionUser.id);
         if (!user) {
             return toActionState('User not found.', 'ERROR');
@@ -288,52 +313,52 @@ export const bookmarkProperty = async (propertyId: string) => {
         );
     }
 
-    const isBookmarked = user.bookmarks.includes(propertyObjectId);
+    const isFavorite = user.favorites.includes(propertyObjectId);
 
     try {
         let updatedUser;
 
-        if (isBookmarked) {
+        if (isFavorite) {
             updatedUser = await User.updateOne(
                 { _id: user._id },
-                { $pull: { bookmarks: propertyId } }
+                { $pull: { favorites: propertyId } }
             );
             actionState = {
-                message: 'Bookmark removed',
+                message: 'Removed from favorites',
                 status: 'SUCCESS',
-                isBookmarked: false
+                isFavorite: false
             }
         } else {
             updatedUser = await User.updateOne(
                 { _id: user._id },
-                { $push: { bookmarks: propertyId } }
+                { $push: { favorites: propertyId } }
             );
             actionState = {
-                message: 'Bookmark added',
+                message: 'Added to favorites',
                 status: 'SUCCESS',
-                isBookmarked: true
+                isFavorite: true
             }
         }
         if (updatedUser.modifiedCount !== 1) {
-            console.error(`>>> Database error bookmarking property`);
-            return toActionState('Error bookmarking property', 'ERROR');
+            console.error(`>>> Database error favoriting property`);
+            return toActionState('Error favoriting property', 'ERROR');
         }
     } catch (error) {
-        console.error(`>>> Database error bookmarking property: ${error}`)
-        return toActionState(`Error bookmarking property`, 'ERROR');
+        console.error(`>>> Database error favoriting property: ${error}`)
+        return toActionState(`Error favoriting property`, 'ERROR');
     }
 
-    revalidatePath('/properties/bookmarked', 'page');
+    revalidatePath('/properties/favorites', 'page');
     return actionState;
 }
 
 /**
- * Gets bookmark status.
+ * Gets favorite status for a property.
  * 
- * @param {string} propertyId - property on which bookmark is being set or unset.
+ * @param {string} propertyId - property on which favorite is being set or unset.
  * @returns Promise<ActionState>
  */
-export const getBookmarkStatus = async (propertyId: string) => {
+export const getFavoriteStatus = async (propertyId: string) => {
     const propertyObjectId = new Types.ObjectId(propertyId);
     
     const sessionUser = await getSessionUser();
@@ -357,7 +382,7 @@ export const getBookmarkStatus = async (propertyId: string) => {
         );
     }
 
-    const isBookmarked = user.bookmarks.includes(propertyObjectId);
+    const isFavorite = user.favorites.includes(propertyObjectId);
 
-    return toActionState('Successfully fetched bookmark status', 'SUCCESS', isBookmarked);
+    return toActionState('Successfully fetched favorites status', 'SUCCESS', isFavorite);
 }

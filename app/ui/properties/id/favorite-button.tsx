@@ -1,24 +1,24 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { FaBookmark } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 import { toast } from "react-toastify";
 
-import { bookmarkProperty } from "@/app/lib/actions/property-actions";
-import { getBookmarkStatus } from "@/app/lib/actions/property-actions";
+import { favoriteProperty } from "@/app/lib/actions/property-actions";
+import { getFavoriteStatus } from "@/app/lib/actions/property-actions";
 import { ActionState } from "@/app/lib/definitions";
 
-const BookmarkPropertyButton = ({ propertyId }: { propertyId: string }) => {
-    const [isBookmarked, setIsBookmarked] = useState<boolean | undefined>(false);
+const FavoritePropertyButton = ({ propertyId }: { propertyId: string }) => {
+    const [isFavorite, setIsFavorite] = useState<boolean | undefined>(false);
     const [isPending, setIsPending] = useState(true);
 
     useEffect(() => {
-        getBookmarkStatus(propertyId).then((response) => {
+        getFavoriteStatus(propertyId).then((response) => {
             if (response.status === 'SUCCESS') {
-                if (response.isBookmarked) {
-                    setIsBookmarked(true);
+                if (response.isFavorite) {
+                    setIsFavorite(true);
                 } else {
-                    setIsBookmarked(false);
+                    setIsFavorite(false);
                 }
                 setIsPending(false);
             } else {
@@ -26,14 +26,14 @@ const BookmarkPropertyButton = ({ propertyId }: { propertyId: string }) => {
             }
         })
         .catch((error) => {
-            throw new Error(`Error getting bookmark status: ${error}`)
+            throw new Error(`Error getting favorite status: ${error}`)
         })
-    }, [propertyId])
+    }, [propertyId]);
 
-    const bookmarkPropertyAction = async () => {
+    const favoritePropertyAction = async () => {
         try {
-            const result: ActionState = await bookmarkProperty(propertyId);
-            setIsBookmarked(result.isBookmarked);
+            const result: ActionState = await favoriteProperty(propertyId);
+            setIsFavorite(result.isFavorite);
             if (result.message) {
                 if (result.status === 'SUCCESS') {
                     toast.success(result.message);
@@ -42,30 +42,30 @@ const BookmarkPropertyButton = ({ propertyId }: { propertyId: string }) => {
                 }
             }
         } catch (error) {
-            throw new Error(`Error getting bookmark status: ${error}`)
+            throw new Error(`Error getting favorite status: ${error}`)
         }
     }
 
     return (
         <>
             {isPending ? (
-                <p className="text-center">Loading bookmark status...</p>
+                <p className="text-center">Loading favorite status...</p>
             ) : (
-                <form action={bookmarkPropertyAction}>
-                    {isBookmarked ? (
+                <form action={favoritePropertyAction}>
+                    {isFavorite ? (
                         <button
                             className="bg-red-500 hover:bg-red-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center"
                         >
-                            <FaBookmark className="mr-2" />
-                            Remove Bookmark
+                            <FaHeart className="mr-2" />
+                            Remove from Favorites
                         </button>
 
                     ) : (
                         <button
                             className="bg-blue-500 hover:bg-blue-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center"
                         >
-                            <FaBookmark className="mr-2" />
-                            Bookmark Property
+                            <FaHeart className="mr-2" />
+                            Add to Favorites
                         </button>
                     )}
                 </form>
@@ -74,4 +74,4 @@ const BookmarkPropertyButton = ({ propertyId }: { propertyId: string }) => {
     );
 }
  
-export default BookmarkPropertyButton;
+export default FavoritePropertyButton;
