@@ -30,8 +30,8 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
                     className='w-full h-auto rounded-t-md'
                 />
             </Link>
-            <div className='p-4 text-gray-500'>
-                <h3 className='absolute top-[10px] left-[10px] bg-white px-1 py-[2px] text-xs rounded-md text-gray-500 text-left md:text-center lg:text-right'>
+            <div className='p-4 text-gray-500 text-xs md:text-sm'>
+                <h3 className='absolute top-[10px] left-[10px] bg-white px-1 py-[2px] rounded-md text-gray-500 text-left md:text-center lg:text-right'>
                     {getRateDisplay(property.rates)}
                 </h3>
                 
@@ -42,7 +42,7 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
                     />
                 )}
                 
-                <div className='flex justify-center gap-4 text-sm mb-2'>
+                <div className='flex justify-center gap-2 mb-2'>
                     <p>
                         {property.beds}{' '}
                         <span><FaBed className='inline' /></span>
@@ -58,7 +58,7 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
                     </p>
 
                 </div>
-                <div className='flex justify-center gap-4 text-xs'>
+                <div className='flex justify-center gap-4'>
                     <p>
                         <FaMoneyBill className='text-green-900 inline' /> Weekly
                     </p>
@@ -67,8 +67,8 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
                     </p>
                 </div>
 
-                <div className='border border-gray-100 my-2'></div>
-                <p className='text-xs font-semibold text-gray-700 text-center'>{property.type} in {property.location.city}</p>
+                <div className='border border-gray-100 my-4'></div>
+                <p className='font-semibold text-gray-700 text-center'>{property.type} in {property.location.city}</p>
             </div>
         </div>
     );
