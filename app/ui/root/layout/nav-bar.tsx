@@ -47,9 +47,9 @@ const NavBar = () => {
     }, []);
     
     return (
-        <nav className='bg-blue-800'>
+        <nav className='border-b border-blue-700'>
             <div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
-                <div className='relative flex h-18 items-center justify-between'>
+                <div className='relative flex h-14 items-center justify-between'>
 
                     {/* Mobile menu button */}
                     <div className='absolute inset-y-0 left-0 flex items-center md:hidden'>
@@ -87,9 +87,9 @@ const NavBar = () => {
                         {/* Logo */}
                         <Link
                             className='flex flex-shrink-0 items-center' href='/' >
-                            <HiHome className='h-10 w-auto text-blue-700 rounded-full p-[4px] bg-white' />
+                            <HiHome className='h-9 w-auto text-blue-700 rounded-full p-[4px]' />
                             <span
-                                className="hidden md:block text-xl text-white ml-2"
+                                className="hidden md:block text-xl text-blue-700 ml-2"
                             >
                                 dwellio
                             </span>
@@ -101,16 +101,16 @@ const NavBar = () => {
                                 <Link
                                     href='/'
                                     className={`${pathname === '/'
-                                        && 'border-b border-white'
-                                    } text-white hover:border-b hover:border-white`}
+                                        && 'border-b border-blue-700'
+                                    } text-blue-700 hover:border-b hover:border-blue-700`}
                                 >
                                     Home
                                 </Link>
                                 <Link
                                     href='/properties'
                                     className={`${pathname === '/properties'
-                                        && 'border-b border-white'
-                                    } text-white hover:border-b hover:border-white`}
+                                        && 'border-b border-blue-700'
+                                    } text-blue-700 hover:border-b hover:border-blue-700`}
                                 >
                                     Properties
                                 </Link>
@@ -118,8 +118,8 @@ const NavBar = () => {
                                     <Link
                                         href='/properties/add'
                                         className={`${pathname === '/properties/add'
-                                            && 'border-b border-white'
-                                        } text-white hover:border-b hover:border-white`}
+                                            && 'border-b border-blue-700'
+                                        } text-blue-700 hover:border-b hover:border-blue-700`}
                                     >
                                         Add Property
                                     </Link>                        
