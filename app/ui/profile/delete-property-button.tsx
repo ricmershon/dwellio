@@ -21,7 +21,7 @@ const DeletePropertyButton = ({ propertyId }: { propertyId: string }) => {
     return (
         <form action={deletePropertyAction} className="inline-block">
             <button
-                className="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600 cursor-pointer"
+                className="btn btn-danger"
                 type="submit"
             >
                 Delete

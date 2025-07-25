@@ -47,7 +47,7 @@ const NavBar = () => {
     }, []);
     
     return (
-        <nav className='bg-blue-700 border-b border-blue-500'>
+        <nav className='bg-blue-800'>
             <div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
                 <div className='relative flex h-18 items-center justify-between'>
 
@@ -214,11 +214,11 @@ const NavBar = () => {
                                 {providers && Object.values(providers).map((provider) => (
                                     <button
                                         key={provider.id}
-                                        className="flex items-center text-white bg-gray-700 hover:bg-gray-900 hover:text-white rounded-md px-3 py-2 my-5 cursor-pointer"
+                                        className="flex items-center btn btn-secondary rounded-md my-5"
                                         onClick={() => signIn(provider.id)}
                                     >
-                                        <FaGoogle className='text-white mr-2' />
-                                        <span>Login or Register</span>
+                                        <FaGoogle className='mr-2' />
+                                        <span>Login</span>
                                     </button>
                                 ))}
                             </div>

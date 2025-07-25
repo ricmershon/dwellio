@@ -21,7 +21,7 @@ export const fetchProperties = async (mostRecent: boolean) => {
         let properties: PropertyDocument[];
 
         if (mostRecent) {
-            properties = await Property.find().sort({ createdAt: -1 }).limit(3);
+            properties = await Property.find().sort({ createdAt: -1 }).limit(6);
         } else {
             properties = await Property.find();
         }

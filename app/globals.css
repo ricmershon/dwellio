@@ -24,6 +24,21 @@
 	.rates-label {
 		@apply text-sm font-medium text-gray-700 mr-2;
 	}
+	.btn {
+		@apply px-3 py-2 items-center rounded-md text-sm font-medium transition-colors hover:cursor-pointer;
+	}
+	.btn-primary {
+		@apply text-white bg-blue-500 hover:bg-blue-700 active:bg-blue-600;
+	}
+	.btn-secondary {
+		@apply text-gray-600 hover:text-white active:text-white bg-gray-200 hover:bg-gray-400 active:bg-gray-300;
+	}
+	.btn-danger {
+		@apply text-white bg-red-500 hover:bg-red-700 active:bg-red-600;
+	}
+	.btn-pending-icon {
+		@apply text-lg mr-2;
+	}
 }
 
 @media (prefers-color-scheme: dark) {

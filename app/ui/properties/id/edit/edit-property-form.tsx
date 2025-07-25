@@ -330,16 +330,16 @@ const EditPropertyForm = ({ property }: { property: PropertyDocument }) => {
             <div className="mt-6 flex justify-end gap-4">
                 <Link
                     href="/profile"
-                    className="flex h-10 items-center rounded-lg bg-gray-100 px-4 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-200"
+                    className="flex btn btn-secondary"
                 >
                     Cancel
                 </Link>
                 <button
-                    className={`flex gap-1 h-10 items-center rounded-lg bg-blue-500 px-4 text-sm font-medium text-white transition-colors hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-500 active:bg-blue-600 ${isPending ? 'hover:cursor-not-allowed' : 'hover:cursor-pointer'}`}
+                    className={`flex gap-1 btn btn-primary ${isPending ? 'hover:cursor-not-allowed' : 'hover:cursor-pointer'}`}
                     type="submit"
                     disabled={isPending}
                 >
-                    {isPending && <LuRefreshCw className='text-lg icon-spin'/>}
+                    {isPending && <LuRefreshCw className='btn-pending-icon icon-spin'/>}
                     <span>Update Property</span>
                 </button>
 

@@ -23,7 +23,7 @@ const DeleteMessageButton = ({ messageId }: { messageId: string } ) => {
     return (
         <form action={deleteMessageAction} className="inline-block">
             <button
-                className='flex gap-1 py-[6px] px-3 rounded-md bg-red-500 text-sm text-white transition-colors hover:bg-red-400 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-red-500 active:bg-red-600 hover:cursor-pointer'
+                className='btn btn-danger'
                 type="submit"
             >
                 Delete

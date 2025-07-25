@@ -7,9 +7,9 @@ const HomePage = () => {
     return (
         <main>
             <Hero />
+            <HomePageProperties />
             <InfoBoxes />
             <FeaturedProperties />
-            <HomePageProperties />
         </main>
     );
 }

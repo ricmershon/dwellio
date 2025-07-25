@@ -5,7 +5,7 @@ import {
     FaBath,
     FaRulerCombined,
     FaMoneyBill,
-    FaMapMarkerAlt,
+    // FaMapMarkerAlt,
 } from 'react-icons/fa';
 
 import { PropertyDocument } from '@/app/models';

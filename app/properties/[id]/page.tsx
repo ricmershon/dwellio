@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowAltCircleLeft } from "react-icons/fa";
 
 import { fetchProperty } from "@/app/lib/data/property-data";
 import PropertyHeaderImage from "@/app/ui/properties/id/header-image";
@@ -21,10 +21,11 @@ const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) =>
             <section>
                 <div className="container m-auto py-6 px-6">
                     <Link
-                        href="/properties"
-                        className="text-blue-500 hover:text-blue-600 flex items-center"
+                        href='/properties'
+                        className='flex items-center text-blue-500 hover:underline mb-3'
                     >
-                        <FaArrowLeft className="mr-2" /> Back to Properties
+                        <FaArrowAltCircleLeft className='mr-2'/>
+                        Back to Properties
                     </Link>
                 </div>
             </section>
