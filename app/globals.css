@@ -39,6 +39,14 @@
 	.btn-pending-icon {
 		@apply text-lg mr-2;
 	}
+	.mobile-menu {
+		@apply cursor-pointer size-6 transition-all duration-[250ms] relative;
+	}
+	.mobile-menu-top,
+	.mobile-menu-middle,
+	.mobile-menu-bottom {
+		@apply absolute w-5 h-0.5 top-0 left-0 bg-gray-500 rotate-0 transition-all duration-300;
+	}
 }
 
 @media (prefers-color-scheme: dark) {
@@ -66,4 +74,29 @@ body {
 
 .icon-spin {
 	animation: spin 2s linear infinite; /* Adjust duration and timing function as needed */
+}
+
+.mobile-menu-middle {
+	transform: translateY(7px);
+}
+
+.mobile-menu-bottom {
+	transform: translateY(14px);
+}
+
+.mobile-menu-open {
+	transform: rotate(90deg);
+	transform: translateY(0px);
+}
+
+.mobile-menu-open .mobile-menu-top {
+	transform: rotate(45deg) translateY(6px) translateX(6px);
+}
+
+.mobile-menu-open .mobile-menu-middle {
+	display: none;
+}
+
+.mobile-menu-open .mobile-menu-bottom {
+	transform: rotate(-45deg) translateY(6px) translateX(-6px);
 }
