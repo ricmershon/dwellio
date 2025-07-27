@@ -42,28 +42,14 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
                     <div className='flex justify-center gap-2 mb-2'>
                         <p>
                             {property.beds}{' '}
-                            <span><FaBed className='inline' /></span>
+                            <span><FaBed className='inline text-lg' /></span>
                             
                         </p>
                         <p>
                             {property.baths}{' '}
-                            <span><FaBath className='inline' /></span>
-                        </p>
-                                            <p>
-                            {property.squareFeet}{' '}
-                            <span><FaRulerCombined className='inline' /></span>
-                        </p>
-
-                    </div>
-                    <div className='flex justify-center gap-4'>
-                        <p>
-                            <FaMoneyBill className='text-green-900 inline' /> Weekly
-                        </p>
-                        <p>
-                            <FaMoneyBill className='text-green-900 inline' /> Monthly
+                            <span><FaBath className='inline text-lg' /></span>
                         </p>
                     </div>
-
                     <div className='border border-gray-100 my-4'></div>
                     <p className='font-semibold text-gray-700 text-center'>{property.type} in {property.location.city}</p>
                 </div>
