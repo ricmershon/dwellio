@@ -11,29 +11,32 @@ const NavBarDesktopMiddle = () => {
     return (
         <div className="hidden md:flex md:flex-shrink-1 md:items-center md:justify-center">
             <div className="hidden md:block">
-                <div className="flex space-x-5">
+                <div className="flex space-x-3">
                     <Link
                         href='/'
                         className={`${pathname === '/'
-                            && 'border-b border-blue-800'
-                        } text-blue-800 hover:border-b text-sm hover:border-blue-800`}
+                            ? 'menu-btn-current-path'
+                            : 'menu-btn-not-current-path'
+                        } menu-btn w-auto`}
                     >
                         Home
                     </Link>
                     <Link
                         href='/properties'
                         className={`${pathname === '/properties'
-                            && 'border-b border-blue-800'
-                        } text-blue-800 hover:border-b text-sm hover:border-blue-800`}
+                            ? 'menu-btn-current-path'
+                            : 'menu-btn-not-current-path'
+                        } menu-btn w-auto`}
                     >
                         Properties
                     </Link>
                     {session && (
                         <Link
                             href='/properties/add'
-                            className={`${pathname === '/properties/add'
-                                && 'border-b border-blue-800'
-                            } text-blue-800 hover:border-b text-sm hover:border-blue-800`}
+                        className={`${pathname === '/properties/add'
+                                ? 'menu-btn-current-path'
+                                : 'menu-btn-not-current-path'
+                            } menu-btn w-auto`}
                         >
                             Add Property
                         </Link>                        

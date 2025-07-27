@@ -39,6 +39,18 @@
 	.btn-pending-icon {
 		@apply text-lg mr-2;
 	}
+	.btn-login-logout {
+		@apply text-gray-700 hover:text-white active:text-white bg-gray-300 hover:bg-gray-500 active:bg-gray-400;
+	}
+	.menu-btn {
+		@apply text-blue-800 px-3 py-1 text-sm font-medium w-full text-left;
+	}
+	.menu-btn-current-path {
+		@apply bg-gray-100 rounded-md hover:cursor-default;
+	}
+	.menu-btn-not-current-path {
+		@apply hover:border-b-1 hover:border-blue-800;
+	}
 	.mobile-menu {
 		@apply cursor-pointer size-6 transition-all duration-[250ms] relative;
 	}

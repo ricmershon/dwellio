@@ -1,38 +1,29 @@
 'use client';
 
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { useState } from "react";
+import { signOut, signIn, useSession } from "next-auth/react";
 import { FaGoogle } from "react-icons/fa";
 import { HiOutlineBell } from "react-icons/hi2";
-import { signOut, signIn, LiteralUnion, ClientSafeProvider, getProviders } from "next-auth/react";
-import { BuiltInProviderType } from "next-auth/providers/index";
 import Link from "next/link";
 import Image from "next/image";
 
+import { useAuthProviders } from "@/app/hooks/use-auth-providers";
 import profileDefaultImage from '@/assets/images/profile.png';
 import { useGlobalContext } from "@/app/context/global-context";
 import UnreadMessageCount from "@/app/ui/messages/unread-message-count";
 
 const NavBarRight = () => {
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-    const [providers, setProviders] = useState<
-        Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null
-    >(null);
-
     const { data: session } = useSession();
-
-    useEffect(() => {
-        const setAuthProviders = async () => {
-            const response = await getProviders();
-            setProviders(response);
-        }
-
-        setAuthProviders();
-    }, []);
     
-    const { unreadCount } = useGlobalContext();
-
     const profileImage = session?.user?.image;
+    const { unreadCount } = useGlobalContext();
+    const providers = useAuthProviders();
+
+    const handleSignOutClick = () => {
+        setIsProfileDropdownOpen(false);
+        signOut();
+    }
 
     return (
         <>
@@ -46,7 +37,7 @@ const NavBarRight = () => {
                     </Link>
 
                     {/* Profile dropdown button */}
-                    <div className="ml-5">
+                    <div className="ml-5 hidden md:block">
                         <div>
                             <button
                                 type="button"
@@ -93,7 +84,7 @@ const NavBarRight = () => {
                                     className="block px-4 py-2 text-sm text-gray-700"
                                     role="menuitem"
                                     tabIndex={-1}
-                                    id="user-menu-item-2"
+                                    id="user-menu-item-1"
                                     onClick={() => setIsProfileDropdownOpen(false)}
                                 >
                                     Favorite Properties
@@ -103,10 +94,7 @@ const NavBarRight = () => {
                                     role="menuitem"
                                     tabIndex={-1}
                                     id="user-menu-item-2"
-                                    onClick={() => {
-                                        setIsProfileDropdownOpen(false);
-                                        signOut();
-                                    }}
+                                    onClick={handleSignOutClick}
                                 >
                                     Sign Out
                                 </button>
@@ -121,7 +109,7 @@ const NavBarRight = () => {
                         {providers && Object.values(providers).map((provider) => (
                             <button
                                 key={provider.id}
-                                className="flex items-center btn btn-secondary rounded-md my-5"
+                                className="flex items-center btn btn-login-logout my-5"
                                 onClick={() => signIn(provider.id)}
                             >
                                 <FaGoogle className='mr-2' />
