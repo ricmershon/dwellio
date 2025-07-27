@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from 'cloudinary';
 
-import { PropertyImageData } from '@/app/types/definitions';
+import { PropertyImageData } from '@/app/types/types';
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,

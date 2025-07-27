@@ -5,7 +5,7 @@ import { Types } from 'mongoose';
 import PropertyCard from '@/app/ui/properties/property-card';
 import PropertySearchForm from '@/app/ui/properties/search/search-form';
 import PropertiesList from '@/app/ui/properties/properties-list';
-import { PropertiesQuery } from '@/app/types/definitions';
+import { PropertiesQuery } from '@/app/types/types';
 import { searchProperties } from '@/app/lib/data/property-data';
 
 interface SearchResultsPageProps {

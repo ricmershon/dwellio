@@ -1,4 +1,4 @@
-import { FormErrorsType } from "@/app/types/definitions";
+import { FormErrorsType } from "@/app/types/types";
 
 interface FormErrorsProps {
     errors: FormErrorsType;
