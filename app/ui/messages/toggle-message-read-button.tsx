@@ -20,8 +20,7 @@ const ToggleMessageReadButton = ({ messageId, read }: ToggleMessageReadButtonPro
         if (result.message) {
             if (result.status === 'SUCCESS') {
                 setIsRead(result.isRead!);
-                setUnreadCount((prevCount) => (result.isRead ? prevCount - 1 : prevCount + 1))
-                toast.success(result.message);
+                setUnreadCount((prevCount) => (result.isRead ? prevCount - 1 : prevCount + 1));
             } else if (result.status === 'ERROR') {
                 toast.error(result.message);
             }
@@ -31,7 +30,7 @@ const ToggleMessageReadButton = ({ messageId, read }: ToggleMessageReadButtonPro
     return (
         <form action={toggleMessageReadAction} className="inline-block">
             <button
-                className="flex gap-1 py-[6px] px-3 mt-4 mr-3 rounded-md bg-blue-500 text-sm font-medium text-white transition-colors hover:bg-blue-400 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-blue-500 active:bg-blue-600 hover:cursor-pointer"
+                className="btn btn-primary mt-4 mr-2"
                 type="submit"
             >
                 {isRead ? 'Mark as Unread' : 'Mark as Read'}

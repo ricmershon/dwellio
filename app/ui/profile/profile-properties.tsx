@@ -26,10 +26,10 @@ const ProfileProperties = (
                         <p className="text-lg font-semibold">{property.name}</p>
                         <p className="text-gray-600">Address: {street} {city} {state}</p>
                     </div>
-                    <div className="mt-2">
+                    <div className="mt-2 flex">
                         <Link
                             href={`/properties/${propertyId}/edit`}
-                            className="bg-blue-500 text-white px-3 py-3 rounded-md mr-2 hover:bg-blue-600"
+                            className="btn btn-primary mr-2"
                         >
                             Edit
                         </Link>

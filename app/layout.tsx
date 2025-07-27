@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import 'photoswipe/dist/photoswipe.css'
 
 import AuthProvider from "@/app/ui/root/auth-provider";
-import NavBar from "@/app/ui/root/layout/nav-bar";
+import NavBar from "@/app/ui/root/layout/nav-bar/nav-bar";
 import Footer from "@/app/ui/root/layout/footer";
 import { GlobalContextProvider } from "@/app/context/global-context";
 
@@ -27,6 +27,7 @@ export const metadata: Metadata = {
 // TODO: Add metadata for all pages
 // TODO: Standardize buttons and button states.
 // TODO: Add images in separate modal box where description can be added to the image.
+// TODO: Set max properties per page dynamically based on screen width.
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
     return (
         <AuthProvider>
@@ -34,7 +35,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                 <html lang="en">
                     <body>
                         <NavBar />
-                            <div className="flex-grow p-4 md:overflow-y-auto md:p-6">{children}</div>
+                        <div className="flex-grow p-4 md:overflow-y-auto md:p-6">{children}</div>
                         <Footer />
                         <ToastContainer
                             position='top-right'

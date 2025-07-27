@@ -24,6 +24,41 @@
 	.rates-label {
 		@apply text-sm font-medium text-gray-700 mr-2;
 	}
+	.btn {
+		@apply px-3 py-2 items-center rounded-md text-sm font-medium transition-colors hover:cursor-pointer;
+	}
+	.btn-primary {
+		@apply text-white bg-blue-500 hover:bg-blue-700 active:bg-blue-600;
+	}
+	.btn-secondary {
+		@apply text-gray-600 hover:text-white active:text-white bg-gray-200 hover:bg-gray-400 active:bg-gray-300;
+	}
+	.btn-danger {
+		@apply text-white bg-red-500 hover:bg-red-700 active:bg-red-600;
+	}
+	.btn-pending-icon {
+		@apply text-lg mr-2;
+	}
+	.btn-login-logout {
+		@apply text-gray-700 hover:text-white active:text-white bg-gray-300 hover:bg-gray-500 active:bg-gray-400;
+	}
+	.menu-btn {
+		@apply text-blue-800 px-3 py-1 text-sm font-medium w-full text-left;
+	}
+	.menu-btn-current-path {
+		@apply bg-gray-100 rounded-md hover:cursor-default;
+	}
+	.menu-btn-not-current-path {
+		@apply hover:border-b-1 hover:border-blue-800;
+	}
+	.mobile-menu {
+		@apply cursor-pointer size-6 transition-all duration-[250ms] relative;
+	}
+	.mobile-menu-top,
+	.mobile-menu-middle,
+	.mobile-menu-bottom {
+		@apply absolute w-5 h-0.5 top-0 left-0 bg-gray-500 rotate-0 transition-all duration-300;
+	}
 }
 
 @media (prefers-color-scheme: dark) {
@@ -51,4 +86,29 @@ body {
 
 .icon-spin {
 	animation: spin 2s linear infinite; /* Adjust duration and timing function as needed */
+}
+
+.mobile-menu-middle {
+	transform: translateY(7px);
+}
+
+.mobile-menu-bottom {
+	transform: translateY(14px);
+}
+
+.mobile-menu-open {
+	transform: rotate(90deg);
+	transform: translateY(0px);
+}
+
+.mobile-menu-open .mobile-menu-top {
+	transform: rotate(45deg) translateY(6px) translateX(6px);
+}
+
+.mobile-menu-open .mobile-menu-middle {
+	display: none;
+}
+
+.mobile-menu-open .mobile-menu-bottom {
+	transform: rotate(-45deg) translateY(6px) translateX(-6px);
 }

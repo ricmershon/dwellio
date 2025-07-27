@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { Types, startSession } from "mongoose";
 
 import dbConnect from "@/app/config/database-config";
-import type { ActionState, PropertyImageData } from "@/app/lib/definitions";
+import type { ActionState, PropertyImageData } from "@/app/types/definitions";
 import { uploadImages, destroyImages } from "@/app/lib/cloudinary";
 import { getSessionUser } from "@/app/utils/get-session-user";
 import { toActionState } from "@/app/utils/to-action-state";

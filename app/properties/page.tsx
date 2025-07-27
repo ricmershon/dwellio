@@ -1,8 +1,11 @@
 import { Metadata } from "next";
 
 import PropertiesList from "@/app/ui/properties/properties-list";
-import PropertiesPagination from "../ui/properties/properties-pagination";
-import { fetchNumPropertiesPages, fetchPaginatedProperties } from "../lib/data/property-data";
+import PropertiesPagination from "@/app/ui/properties/properties-pagination";
+import Breadcrumbs from "@/app/ui/shared/breadcrumbs";
+import { fetchNumPropertiesPages, fetchPaginatedProperties } from "@/app/lib/data/property-data";
+import { toSerializedOjbect } from "@/app/utils/to-serialized-object";
+import { PropertyDocument } from "@/app/models";
 
 export const metadata: Metadata = {
     title: 'Properties'
@@ -19,11 +22,19 @@ const PropertiesPage = async (props: PropertiesPageProps) => {
     const currentPage = Number(searchParams?.page) || 1;
     
     const totalPages = await fetchNumPropertiesPages();
-    const properties = await fetchPaginatedProperties(currentPage);
+    const serializedProperties: PropertyDocument[] = toSerializedOjbect(
+        await fetchPaginatedProperties(currentPage)
+    );
 
     return (
         <main>
-            <PropertiesList properties={properties} />
+            <Breadcrumbs
+                breadcrumbs={[
+                    { label: 'Home', href: '/' },
+                    { label: 'Recent Properties', href: '/properties', active: true }
+                ]}
+            />
+            <PropertiesList properties={serializedProperties} />
             <PropertiesPagination
                 page={currentPage}
                 totalPages={totalPages}

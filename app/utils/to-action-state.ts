@@ -1,4 +1,4 @@
-import { ActionState } from "@/app/lib/definitions";
+import { ActionState } from "@/app/types/definitions";
 
 export const toActionState = (
     message: string,

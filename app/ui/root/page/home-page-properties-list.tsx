@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 import type { PropertyDocument } from '@/app/models';
 import PropertiesList from '@/app/ui/properties/properties-list';
 import { fetchProperties } from '@/app/lib/data/property-data';
@@ -9,14 +7,9 @@ const HomePageProperties = async () => {
     const recentProperties: PropertyDocument[] = await fetchProperties(true);
 
     return (
-        <>
+        <div className='p-4'>
             <PropertiesList properties={recentProperties} />
-            <section className='m-auto max-w-lg my-6 px-6'>
-                <Link href='/properties' className='block bg-black text-white text-center py-4 px-6 rounded-xl hover:bg-gray-700'>
-                    View All Properties
-                </Link>
-            </section>
-        </>
+        </div>
     );
 }
  

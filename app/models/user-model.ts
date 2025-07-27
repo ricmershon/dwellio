@@ -1,5 +1,6 @@
 import { Document, Schema, Types, model, models } from 'mongoose';
-import { PropertyDocument } from './property-model';
+
+import { PropertyDocument } from '@/app/models/property-document';
 
 export interface UserDocument extends Document {
     username: string;
