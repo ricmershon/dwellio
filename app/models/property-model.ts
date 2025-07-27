@@ -1,6 +1,6 @@
 import { Document, Schema, Types, model, models } from 'mongoose';
 
-import { PropertyImageData } from '@/app/lib/definitions';
+import { PropertyImageData } from '@/app/types/types';
 import { PropertyInputType } from '@/app/schemas/property-schema';
 
 export interface PropertyDocument extends Omit<PropertyInputType, 'imagesData'>, Document {

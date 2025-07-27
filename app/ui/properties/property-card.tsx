@@ -3,8 +3,6 @@ import Link from 'next/link';
 import {
     FaBed,
     FaBath,
-    FaRulerCombined,
-    FaMoneyBill,
     // FaMapMarkerAlt,
 } from 'react-icons/fa';
 
