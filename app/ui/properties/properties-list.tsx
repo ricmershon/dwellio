@@ -1,7 +1,10 @@
+import { fetchPaginatedProperties } from "@/app/lib/data/property-data";
 import { PropertyDocument } from "@/app/models";
 import PropertyCard from "@/app/ui/properties/property-card";
 
-const PropertiesList = ({ properties }: { properties: PropertyDocument[] }) => { 
+const PropertiesList = async ({ currentPage }: { currentPage: number }) => { 
+    const properties = await fetchPaginatedProperties(currentPage);
+
     return (
         <section>
             <div className='container-xl lg:container m-auto'>

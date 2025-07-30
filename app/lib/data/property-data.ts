@@ -145,6 +145,10 @@ export const fetchNumPropertiesPages = async () => {
  * @returns Promise<PropertyDocument[]>
  */
 export const fetchPaginatedProperties = async (currentPage: number) => {
+    // Artificial delay for testing loading components.
+    // console.log('Fetching data...')
+    // await new Promise((resolve) => setTimeout(resolve, 5000));
+    // console.log('Data received...')
     const offset = (currentPage - 1) * MAX_ITEMS_PER_PAGE;
     
     try {
