@@ -1,4 +1,5 @@
 import { fetchPaginatedProperties } from "@/app/lib/data/property-data";
+import { PropertyDocument } from "@/app/models";
 import PropertyCard from "@/app/ui/properties/property-card";
 
 type PropertiesListProps =
