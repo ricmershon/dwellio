@@ -52,7 +52,7 @@
 		@apply border-b-2 border-blue-800 hover:cursor-default;
 	}
 	.menu-btn-desktop-current-path {
-		@apply relative after:content-[''] after:absolute after:bottom-[-10px] after:left-0 after:w-full after:border-b-2 after:border-blue-800;
+		@apply relative after:content-[''] after:absolute after:bottom-[-9px] after:left-0 after:w-full after:border-b-2 after:border-blue-800;
 	}
 	.mobile-menu {
 		@apply cursor-pointer size-6 transition-all duration-[250ms] relative;
