@@ -1,5 +1,4 @@
 import { fetchPaginatedProperties } from "@/app/lib/data/property-data";
-import { PropertyDocument } from "@/app/models";
 import PropertyCard from "@/app/ui/properties/property-card";
 
 const PropertiesList = async ({ currentPage }: { currentPage: number }) => { 
