@@ -29,7 +29,7 @@ const PropertiesPage = async (props: PropertiesPageProps) => {
             <Breadcrumbs
                 breadcrumbs={[
                     { label: 'Home', href: '/' },
-                    { label: 'Recent Properties', href: '/properties', active: true }
+                    { label: 'Properties', href: '/properties', active: true }
                 ]}
             />
             <Suspense fallback={
@@ -39,10 +39,12 @@ const PropertiesPage = async (props: PropertiesPageProps) => {
             }>
                 <PropertiesList currentPage={currentPage} />
             </Suspense>
-            <PropertiesPagination
-                page={currentPage}
-                totalPages={totalPages}
-            />
+            <div className="mt-5 flex w-full justify-center">
+                <PropertiesPagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                />
+            </div>
         </main>
     );
 }
