@@ -2,8 +2,13 @@ import { fetchPaginatedProperties } from "@/app/lib/data/property-data";
 import { PropertyDocument } from "@/app/models";
 import PropertyCard from "@/app/ui/properties/property-card";
 
-const PropertiesList = async ({ currentPage }: { currentPage: number }) => { 
-    const properties = await fetchPaginatedProperties(currentPage);
+type PropertiesListProps =
+    | { recentProperties: PropertyDocument[]; currentPage?: never }
+    | { currentPage: number; recentProperties?: never };
+
+const PropertiesList = async ({ currentPage, recentProperties }: PropertiesListProps) => {
+const properties: PropertyDocument[] =
+    recentProperties ?? (currentPage ? await fetchPaginatedProperties(currentPage) : []);
 
     return (
         <section>

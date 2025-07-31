@@ -5,12 +5,12 @@ import { Property, PropertyDocument, User, UserDocument } from "@/app/models";
 import { MAX_ITEMS_PER_PAGE, PropertiesQuery } from "@/app/types/types";
 
 /**
- * Returns all or three most recent properties in the database.
+ * Returns a number of the most recent properties.
  * 
- * @param {boolean} mostRecent - if true return only 3 most recent properties.
+ * @param {number} numProperties - number of properties to return.
  * @returns Promise<PropertyDocument[]>
  */
-export const fetchProperties = async (mostRecent: boolean) => {
+export const fetchRecentProperties = async (numProperties: number) => {
     // Artificial delay for testing loading components.
     // console.log('Fetching data...')
     // await new Promise((resolve) => setTimeout(resolve, 5000));
@@ -18,13 +18,9 @@ export const fetchProperties = async (mostRecent: boolean) => {
 
     try {        
         await dbConnect();
-        let properties: PropertyDocument[];
-
-        if (mostRecent) {
-            properties = await Property.find().sort({ createdAt: -1 }).limit(6);
-        } else {
-            properties = await Property.find();
-        }
+        const properties: PropertyDocument[] = await Property.find()
+            .sort({ createdAt: -1 })
+            .limit(numProperties);
         return properties;
     } catch (error) {
         console.error(`>>> Database error fetching properties: ${error}`);
