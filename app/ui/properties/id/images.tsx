@@ -8,7 +8,7 @@ import { PropertyImageData } from "@/app/types/types";
 const PropertyImages = ({ imagesData }: { imagesData: PropertyImageData[] }) => {
     return (
         <Gallery>
-            <section className="bg-blue-50 p-4">
+            <section className="">
                 {imagesData.length === 1 ? (
                     <Item
                         original={imagesData[0].secureUrl}
@@ -22,7 +22,7 @@ const PropertyImages = ({ imagesData }: { imagesData: PropertyImageData[] }) => 
                                 onClick={open}
                                 src={imagesData[0].secureUrl}
                                 alt=""
-                                className='object-cover h-[400px] mx-auto rounded-xl cursor-pointer'
+                                className='object-cover h-[400px] mx-auto rounded-md cursor-pointer'
                                 width={1800}
                                 height={400}
                                 priority={true}
@@ -30,7 +30,7 @@ const PropertyImages = ({ imagesData }: { imagesData: PropertyImageData[] }) => 
                         )}
                     </Item>
                 ) : (
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-2 gap-2">
                         {imagesData.map((imageData, index) => (
                             <div
                                 key={imageData.secureUrl}
@@ -52,7 +52,7 @@ const PropertyImages = ({ imagesData }: { imagesData: PropertyImageData[] }) => 
                                             onClick={open}
                                             src={imageData.secureUrl}
                                             alt=""
-                                            className='object-cover h-[400px] w-full rounded-xl cursor-pointer'
+                                            className='object-cover h-[400px] w-full rounded-md cursor-pointer'
                                             width={1800}
                                             height={400}
                                             priority={true}
