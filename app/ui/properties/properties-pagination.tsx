@@ -1,32 +1,75 @@
-import Link from "next/link";
+'use client';
+
+import { usePathname, useSearchParams } from "next/navigation";
+
+import { generatePagination } from "@/app/utils/generate-pagination";
+import PaginationArrow from "@/app/ui/shared/pagination-arrow";
+import PaginationNumber from "@/app/ui/shared/pagination-number";
 
 interface PropertiesPaginationProps {
-    page: number;
+    currentPage: number;
     totalPages: number;
 }
 
-// TODO: Disable buttons instead of making them disappear
-// TODO: Lots of updates
-const PropertiesPagination = ({ page, totalPages }: PropertiesPaginationProps) => (
-    <section className="container mx-auto flex justify-center items-center my-8">
-        {page > 1 && (
-            <Link
-                href={`/properties?page=${page - 1}`}
-                className="mr-2 px-2 py-1 border border-gray-300 rounded"
-            >
-                Previous
-            </Link>
-        )}
-        <span className="mx-2">Page {page} of {totalPages}</span>
-        {page < totalPages && (
-            <Link
-                href={`/properties?page=${page + 1}`}
-                className="ml-2 px-2 py-1 border border-gray-300 rounded"
-            >
-                Next
-            </Link>
-        )}
-    </section>
-);
- 
+const PropertiesPagination = ({ currentPage, totalPages }: PropertiesPaginationProps) => {
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+
+    const pagination = generatePagination(currentPage, totalPages);
+
+    const createPageURL = (pageNumber: number | string) => {
+        const params = new URLSearchParams(searchParams);
+        params.set('page', pageNumber.toString());
+        return `${pathname}?${params.toString()}`
+    }
+    
+    return (
+        <div className="inline-flex">
+            <PaginationArrow
+                direction="left"
+                href={createPageURL(currentPage - 1)}
+                isDisabled={currentPage <= 1}
+            />
+
+            <div className="flex -space-x-px">
+                {pagination.map((page, index) => {
+                    let position: 'first' | 'last' | 'single' | 'middle' | undefined;
+
+                    if (index === 0) {
+                        position = 'first';
+                    }
+
+                    if (index === pagination.length - 1) {
+                        position = 'last';
+                    }
+
+                    if (pagination.length === 1) {
+                        position = 'single';
+                    }
+
+                    if (page === '...') {
+                        position = 'middle';
+                    }
+
+                    return (
+                        <PaginationNumber
+                            key={`${page}-${index}`}
+                            href={createPageURL(page)}
+                            page={page}
+                            position={position}
+                            isActive={currentPage === page}
+                        />
+                    );
+                })}
+            </div>
+
+            <PaginationArrow
+                direction="right"
+                href={createPageURL(currentPage + 1)}
+                isDisabled={currentPage >= totalPages}
+            />
+        </div>
+    );
+}
+
 export default PropertiesPagination;

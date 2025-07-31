@@ -15,7 +15,7 @@ const NavBarDesktopMiddle = () => {
                     <Link
                         href='/'
                         className={`${pathname === '/'
-                            ? 'menu-btn-current-path'
+                            ? 'menu-btn-desktop-current-path'
                             : 'menu-btn-not-current-path'
                         } menu-btn w-auto`}
                     >
@@ -24,7 +24,7 @@ const NavBarDesktopMiddle = () => {
                     <Link
                         href='/properties'
                         className={`${pathname === '/properties'
-                            ? 'menu-btn-current-path'
+                            ? 'menu-btn-desktop-current-path'
                             : 'menu-btn-not-current-path'
                         } menu-btn w-auto`}
                     >
@@ -34,7 +34,7 @@ const NavBarDesktopMiddle = () => {
                         <Link
                             href='/properties/add'
                         className={`${pathname === '/properties/add'
-                                ? 'menu-btn-current-path'
+                                ? 'menu-btn-desktop-current-path'
                                 : 'menu-btn-not-current-path'
                             } menu-btn w-auto`}
                         >

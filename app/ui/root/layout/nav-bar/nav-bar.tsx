@@ -8,8 +8,8 @@ import NavBarMobileRight from "./nav-bar-mobile-right";
 const NavBar = () => {    
     return (
         <nav className='border-b border-gray-100'>
-            <div className='mx-auto max-w-7xl px-2 sm:px-6 lg:px-8'>
-                <div className='relative flex h-14 items-center justify-between'>
+            <div className='mx-auto max-w-7xl px-2 md:px-6'>
+                <div className='relative flex h-11 items-center justify-between'>
                     <NavBarLeft />
                     <NavBarDesktopMiddle />
                     <div className="flex relative">

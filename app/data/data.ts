@@ -85,6 +85,10 @@ export const Amenities: Amenity[] = [
         value: 'Hiking Trails Access',
     },
     {
+        id: 'ski_equipment-storage',
+        value: 'Ski Equipment Storage',
+    },
+    {
         id: 'pet_friendly',
         value: 'Pet-Friendly',
     },

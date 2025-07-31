@@ -52,6 +52,7 @@ const NavBarMobileRight = () => {
                         <Link
                             href='/'
                             className={`${pathname === '/' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
+                            onClick={() => setIsMobileMenuOpen(false)}
                             role="menuitem"
                             id="mobile-menu-item-0"
                             tabIndex={-1}
@@ -61,6 +62,7 @@ const NavBarMobileRight = () => {
                         <Link
                             href='/properties'
                             className={`${pathname === '/properties' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
+                            onClick={() => setIsMobileMenuOpen(false)}
                             role="menuitem"
                             id="mobile-menu-item-1"
                             tabIndex={-1}
@@ -71,6 +73,7 @@ const NavBarMobileRight = () => {
                             <Link
                                 href='/properties/add'
                                 className={`${pathname === '/properties/add' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
+                                onClick={() => setIsMobileMenuOpen(false)}
                                 role="menuitem"
                                 id="mobile-menu-item-2"
                                 tabIndex={-1}
@@ -82,7 +85,7 @@ const NavBarMobileRight = () => {
                                 <hr className="w-full border-t border-gray-200"/>
                                 {providers && Object.values(providers).map((provider) => (
                                     <button
-                                    key={provider.id}
+                                        key={provider.id}
                                         className="flex items-center justify-center btn btn-login-logout w-full"
                                         role="menuitem"
                                         id="mobile-menu-item-3"

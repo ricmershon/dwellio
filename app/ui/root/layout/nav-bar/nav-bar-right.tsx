@@ -31,7 +31,7 @@ const NavBarRight = () => {
                 // Logged in
                 <div className="flex items-center pr-2">
                     <Link className='relative group' href='/messages'>
-                        <HiOutlineBell className='relative size-8 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'/>
+                        <HiOutlineBell className='relative size-8 rounded-full btn btn-login-logout p-1'/>
                         {unreadCount > 0 && <UnreadMessageCount unreadCount={unreadCount} />}
                         
                     </Link>
@@ -109,7 +109,7 @@ const NavBarRight = () => {
                         {providers && Object.values(providers).map((provider) => (
                             <button
                                 key={provider.id}
-                                className="flex items-center btn btn-login-logout my-5"
+                                className="flex items-center btn btn-login-logout py-[6px] px-3"
                                 onClick={() => signIn(provider.id)}
                             >
                                 <FaGoogle className='mr-2' />

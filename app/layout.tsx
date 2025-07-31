@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Slide, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'
+import 'react-loading-skeleton/dist/skeleton.css';
 import 'photoswipe/dist/photoswipe.css'
 
 import AuthProvider from "@/app/ui/root/auth-provider";
