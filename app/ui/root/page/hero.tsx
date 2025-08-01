@@ -1,4 +1,5 @@
 import PropertySearchForm from "@/app/ui/properties/search/search-form";
+import { Suspense } from "react";
 
 const Hero = () => {
     return (
@@ -16,7 +17,9 @@ const Hero = () => {
                         Discover the perfect property that suits your needs.
                     </p>
                 </div>
-                <PropertySearchForm />
+                <Suspense>
+                    <PropertySearchForm />
+                </Suspense>
             </div>
         </section>
     );
