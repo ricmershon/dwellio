@@ -28,7 +28,7 @@
 		@apply px-3 py-2 items-center rounded-md text-sm font-medium transition-colors hover:cursor-pointer;
 	}
 	.btn-primary {
-		@apply text-white bg-blue-500 hover:bg-blue-700 active:bg-blue-600;
+		@apply text-white bg-blue-600 hover:bg-blue-800 active:bg-blue-700;
 	}
 	.btn-secondary {
 		@apply text-gray-600 hover:text-white active:text-white bg-gray-200 hover:bg-gray-400 active:bg-gray-300;
@@ -40,16 +40,16 @@
 		@apply text-lg mr-2;
 	}
 	.btn-login-logout {
-		@apply text-gray-700 hover:text-white active:text-white bg-gray-300 hover:bg-gray-500 active:bg-gray-400;
+		@apply text-gray-700 hover:text-white active:text-white bg-gray-300 hover:bg-gray-500 active:bg-gray-400 text-lg md:text-sm;
 	}
 	.menu-btn {
-		@apply text-blue-800 px-3 py-1 text-sm font-medium w-full text-left;
+		@apply text-blue-800 px-3 py-1 text-lg font-medium w-full text-left md:text-sm;
 	}
 	.menu-btn-not-current-path {
 		@apply hover:bg-gray-100 rounded-md;
 	}
 	.menu-btn-current-path {
-		@apply border-b-2 border-blue-800 hover:cursor-default;
+		@apply bg-gray-100 rounded-md hover:cursor-default pointer-events-none;
 	}
 	.menu-btn-desktop-current-path {
 		@apply relative after:content-[''] after:absolute after:bottom-[-9px] after:left-0 after:w-full after:border-b-2 after:border-blue-800;
@@ -60,7 +60,7 @@
 	.mobile-menu-top,
 	.mobile-menu-middle,
 	.mobile-menu-bottom {
-		@apply absolute w-5 h-0.5 top-0 left-0 bg-gray-500 rotate-0 transition-all duration-300;
+		@apply absolute w-6 h-0.5 top-0 left-0 bg-gray-500 rotate-0 transition-all duration-300;
 	}
 }
 
@@ -88,15 +88,15 @@ body {
 }
 
 .icon-spin {
-	animation: spin 2s linear infinite; /* Adjust duration and timing function as needed */
+	animation: spin 2s linear infinite;
 }
 
 .mobile-menu-middle {
-	transform: translateY(7px);
+	transform: translateY(8px);
 }
 
 .mobile-menu-bottom {
-	transform: translateY(14px);
+	transform: translateY(16px);
 }
 
 .mobile-menu-open {

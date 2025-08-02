@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:local": "cp .env.local .env && next dev",
+    "dev:phone": "cp .env.phone .env && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

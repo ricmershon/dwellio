@@ -1,144 +1,126 @@
 'use client';
 
 import { useState } from "react";
-import { signIn, signOut, useSession } from "next-auth/react";
-import { usePathname } from "next/navigation";
-import Link from "next/link";
+import { signOut, signIn, useSession } from "next-auth/react";
 import { FaGoogle } from "react-icons/fa";
+import { HiOutlineBell } from "react-icons/hi2";
+import Link from "next/link";
+import Image from "next/image";
 
 import { useAuthProviders } from "@/app/hooks/use-auth-providers";
+import profileDefaultImage from '@/assets/images/profile.png';
+import { useGlobalContext } from "@/app/context/global-context";
+import UnreadMessageCount from "@/app/ui/messages/unread-message-count";
 
-const NavBarMobileRight = () => {
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+const NavBarDesktopRight = () => {
+    const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const { data: session } = useSession();
-    const pathname = usePathname();
-
+    
+    const profileImage = session?.user?.image;
+    const { unreadCount } = useGlobalContext();
     const providers = useAuthProviders();
 
     const handleSignOutClick = () => {
-        setIsMobileMenuOpen(false);
+        setIsProfileDropdownOpen(false);
         signOut();
     }
 
     return (
         <>
-            {/* Mobile menu button */}
-            <div className='flex items-center md:hidden'>
-                <button
-                    type='button'
-                    id='mobile-menu-button'
-                    className={`z-40 block mobile-menu md:hidden focus:outline-none mt-2 ml-4 ${isMobileMenuOpen && 'mobile-menu-open'}`}
-                    aria-controls='mobile-menu'
-                    aria-expanded='false'
-                    onClick={() => setIsMobileMenuOpen((prevState) => !prevState)}
-                >
-                    <span className="mobile-menu-top"></span>
-                    <span className="mobile-menu-middle"></span>
-                    <span className="mobile-menu-bottom"></span>
-                </button>
-            </div>
-            
-            {/* Mobile menu */}
-            {isMobileMenuOpen && (
-                <div
-                    id="mobile-menu"
-                    className="absolute w-75 px-3 py-3 rounded-md bg-white text-sm right-0 top-10 z-40 md:hidden border border-gray-100 shadow-md"
-                    role="menu"
-                    aria-orientation="vertical"
-                    aria-labelledby="mobile-menu-button"
-                    tabIndex={-1}
-                >
-                    <div className="flex flex-col items-center justify-center w-full space-y-3">
-                        <Link
-                            href='/'
-                            className={`${pathname === '/' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            role="menuitem"
-                            id="mobile-menu-item-0"
-                            tabIndex={-1}
-                        >
-                            Home
-                        </Link>
-                        <Link
-                            href='/properties'
-                            className={`${pathname === '/properties' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            role="menuitem"
-                            id="mobile-menu-item-1"
-                            tabIndex={-1}
-                    >
-                            Properties
-                        </Link>
-                        {session ? (
-                            <Link
-                                href='/properties/add'
-                                className={`${pathname === '/properties/add' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
-                                onClick={() => setIsMobileMenuOpen(false)}
-                                role="menuitem"
-                                id="mobile-menu-item-2"
+            {session ? (
+                // Logged in
+                <div className="flex items-center pr-2">
+                    <Link className='relative group' href='/messages'>
+                        <HiOutlineBell className='relative size-8 rounded-full btn btn-login-logout p-1'/>
+                        {unreadCount > 0 && <UnreadMessageCount unreadCount={unreadCount} />}
+                        
+                    </Link>
+
+                    {/* Profile dropdown button */}
+                    <div className="ml-5 hidden md:block">
+                        <div>
+                            <button
+                                type="button"
+                                className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 cursor-pointer"
+                                id="user-menu-button"
+                                aria-expanded="false"
+                                aria-haspopup="true"
+                                onClick={() => setIsProfileDropdownOpen((prevState) => !prevState)}
+                            >
+                            <span className="absolute inset-1.5"></span>
+                            <span className="sr-only">Open user menu</span>
+                            <Image
+                                className="h-8 w-8 rounded-full"
+                                height={40}
+                                width={40}
+                                src={profileImage || profileDefaultImage}
+                                alt=""
+                            />
+                            </button>
+                        </div>
+
+                        {/* Profile dropdown menu */}
+                        {isProfileDropdownOpen && (
+                            <div
+                                id="user-menu"
+                                className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                role="menu"
+                                aria-orientation="vertical"
+                                aria-labelledby="user-menu-button"
                                 tabIndex={-1}
                             >
-                                Add Property
-                            </Link>
-                        ) : (
-                            <>
-                                <hr className="w-full border-t border-gray-200"/>
-                                {providers && Object.values(providers).map((provider) => (
-                                    <button
-                                        key={provider.id}
-                                        className="flex items-center justify-center btn btn-login-logout w-full"
-                                        role="menuitem"
-                                        id="mobile-menu-item-3"
-                                        tabIndex={-1}
-                                        onClick={() => signIn(provider.id)}
-                                    >
-                                        <FaGoogle className='mr-2' />
-                                        <span>Login</span>
-                                    </button>
-                                ))}
-                            </>
-                        )}
-                        {session && (
-                            <>
-                                <hr className="w-full border-t border-gray-200"/>
                                 <Link
-                                    href='/profile'
-                                    className={`${pathname === '/profile' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
-                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    href="/profile"
+                                    className="block px-4 py-2 text-sm text-gray-700"
                                     role="menuitem"
-                                    id="mobile-menu-item-4"
                                     tabIndex={-1}
+                                    id="user-menu-item-0"
+                                    onClick={() => setIsProfileDropdownOpen(false)}
                                 >
                                     Your Profile
                                 </Link>
                                 <Link
-                                    href='/properties/favorites'
-                                    className={`${pathname === '/properties/favorites' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
-                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    href="/properties/favorites"
+                                    className="block px-4 py-2 text-sm text-gray-700"
                                     role="menuitem"
-                                    id="mobile-menu-item-5"
                                     tabIndex={-1}
+                                    id="user-menu-item-1"
+                                    onClick={() => setIsProfileDropdownOpen(false)}
                                 >
                                     Favorite Properties
                                 </Link>
-                                <hr className="w-full border-t border-gray-200"/>
-
                                 <button
-                                    className="btn btn-login-logout w-full"
+                                    className="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
                                     role="menuitem"
                                     tabIndex={-1}
-                                    id="user-menu-item-6"
+                                    id="user-menu-item-2"
                                     onClick={handleSignOutClick}
                                 >
                                     Sign Out
                                 </button>
-                            </>
+                            </div>
                         )}
+                    </div>
+                </div>
+            ) : (
+                // Logged out
+                <div className="hidden md:block md:ml-6">
+                    <div className="flex items-center">
+                        {providers && Object.values(providers).map((provider) => (
+                            <button
+                                key={provider.id}
+                                className="flex items-center btn btn-login-logout py-[6px] px-3"
+                                onClick={() => signIn(provider.id)}
+                            >
+                                <FaGoogle className='mr-2' />
+                                <span>Login</span>
+                            </button>
+                        ))}
                     </div>
                 </div>
             )}
         </>
-    );
-}
- 
-export default NavBarMobileRight;
+    )
+};
+
+export default NavBarDesktopRight;
