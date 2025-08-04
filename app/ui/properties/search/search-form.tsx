@@ -9,7 +9,7 @@ import Input from "../../shared/input";
 
 const PropertySearchForm = () => {
     const [location, setLocation] = useState('');
-    const [propertyType, setPropertyType] = useState<OptionType>({ label: 'All', value: 'All' });
+    const [propertyType, setPropertyType] = useState<OptionType>();
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -23,14 +23,16 @@ const PropertySearchForm = () => {
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if (location === '' && propertyType.value === 'All') {
-            router.push('/properties')
-        } else {
-            const queryParams = new URLSearchParams(searchParams);
-            queryParams.set('location', location);
-            queryParams.set('propertyType', propertyType.value);
-
-            router.push(`/properties/search/?${queryParams.toString()}`)
+        if (propertyType) {
+            if (location === '' && propertyType.value === 'All') {
+                router.push('/properties')
+            } else {
+                const queryParams = new URLSearchParams(searchParams);
+                queryParams.set('location', location);
+                queryParams.set('propertyType', propertyType.value);
+        
+                router.push(`/properties/search/?${queryParams.toString()}`)
+            }
         }
     }
 
@@ -57,6 +59,7 @@ const PropertySearchForm = () => {
                     ]}
                     id="property-type"
                     value={propertyType}
+                    placeholder="Property Type"
                     onChange={(selectedOption) => handlePropertyTypeChange(selectedOption)}
                 />
             </div>

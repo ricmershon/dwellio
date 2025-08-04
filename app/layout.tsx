@@ -36,7 +36,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                 <html lang="en">
                     <body>
                         <NavBar />
-                        <div className="flex-grow md:overflow-y-auto px-4 md:px-6 lg:px-8 py-6 lg:py-12">{children}</div>
+                        <div className="flex-grow md:overflow-y-auto px-4 md:px-6 lg:px-8 py-6 lg:py-8">{children}</div>
                         <Footer />
                         <ToastContainer
                             position='top-right'
