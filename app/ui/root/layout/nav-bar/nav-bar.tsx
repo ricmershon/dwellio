@@ -7,7 +7,7 @@ import NavBarRight from "./nav-bar-right";
 const NavBar = () => {    
     return (
         <nav className='border-b border-gray-100'>
-            <div className='mx-auto max-w-7xl px-6'>
+            <div className='mx-auto max-w-7xl px-4 md:px-6 lg:px-8'>
                 <div className='relative flex h-15 md:h-11 items-center justify-between'>
                     <NavBarLeft />
                     <NavBarDesktopMiddle />

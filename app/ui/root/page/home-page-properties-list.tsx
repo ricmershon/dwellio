@@ -7,10 +7,8 @@ const HomePageProperties = async () => {
     const recentProperties: PropertyDocument[] = await fetchRecentProperties(6);
 
     return (
-        <div className='p-4'>
-            <PropertiesList
-                recentProperties={recentProperties}
-            />
+        <div className="mb-8">
+            <PropertiesList recentProperties={recentProperties} />
         </div>
     );
 }

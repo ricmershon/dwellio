@@ -3,7 +3,7 @@ import Link from 'next/link';
 import {
     FaBed,
     FaBath,
-    // FaMapMarkerAlt,
+    FaMapMarkerAlt,
 } from 'react-icons/fa';
 
 import { PropertyDocument } from '@/app/models';
@@ -18,12 +18,7 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
 
     return (
         <div className='rounded-md shadow-md relative'>
-            {/* Don't display favorite button if user logged in and not current user */}
-            {sessionUser && sessionUser.id !== property.owner.toString() && (
-                <PropertyCardFavoriteButton
-                    propertyId={serializedProperty._id}
-                />
-            )}
+
             <Link href={`/properties/${property._id}`}>
                 <Image
                     src={property.imagesData![0].secureUrl}
@@ -33,25 +28,47 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
                     sizes='100vw'
                     className='w-full h-auto rounded-t-md'
                 />
-                <div className='p-4 text-gray-500 text-xs md:text-sm'>
-                    <h3 className='absolute top-[10px] left-[10px] bg-white px-1 py-[2px] rounded-md text-gray-500 text-left md:text-center lg:text-right'>
-                        {getRateDisplay(property.rates)}
-                    </h3>
-                    <div className='flex justify-center gap-2 mb-2'>
-                        <p>
-                            {property.beds}{' '}
-                            <span><FaBed className='inline text-lg' /></span>
-                            
-                        </p>
-                        <p>
-                            {property.baths}{' '}
-                            <span><FaBath className='inline text-lg' /></span>
-                        </p>
-                    </div>
-                    <div className='border border-gray-100 my-4'></div>
-                    <p className='font-semibold text-gray-700 text-center'>{property.type} in {property.location.city}</p>
-                </div>
             </Link>
+            <div>
+                <div className='text-xs md:text-sm p-[10px]'>
+                    <div className="flex justify-between items-center mb-2">
+                        <p className='text-gray-700 mr-3'>{property.name}</p>
+
+                        {/* Display favorite button if not owned by user */}
+                        {sessionUser && sessionUser.id !== property.owner.toString() && (
+                            <PropertyCardFavoriteButton
+                                propertyId={serializedProperty._id}
+                            />
+                        )}
+                    </div>
+                    <div className="flex justify-between items-center mb-2">
+                        <div className='text-gray-700 text-base'>
+                            {getRateDisplay(property.rates)}
+                        </div>
+                        <div>Rating</div>
+                    </div>
+                    <Link href={`/properties/${property._id}`}>
+                        <div className="flex justify-between items-center text-blue-800 text-[11px]">
+                            <div className="flex justify-center items-center gap-1">
+                                <FaMapMarkerAlt className='inline text-sm' />
+                                <p>{property.location.city}</p>
+                            </div>
+                            <div className='flex justify-center items-center gap-3'>
+                                <p>
+                                    <span><FaBed className='inline text-base' /> </span>
+                                    {property.beds}
+                                    
+                                </p>
+                                <p>
+                                    <span><FaBath className='inline text-base' /> </span>
+                                    {property.baths}
+                                </p>
+                            </div>
+                        </div>
+                    </Link>
+                </div>
+
+            </div>
         </div>
     );
 };
