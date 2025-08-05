@@ -42,7 +42,7 @@ const NavBarRight = () => {
             {isMobileMenuOpen && (
                 <div
                     id="mobile-menu"
-                    className="md:hidden absolute w-75 px-3 py-3 rounded-md bg-white text-sm right-0 top-10 z-40 border border-gray-100 shadow-md"
+                    className="md:hidden absolute w-screen -mr-4 px-3 py-3 rounded-sm bg-white text-sm right-0 top-10 z-40 border border-gray-100 shadow-md"
                     role="menu"
                     aria-orientation="vertical"
                     aria-labelledby="mobile-menu-button"

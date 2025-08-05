@@ -9,11 +9,20 @@ const PropertyDetails = ({ property }: { property: PropertyDocument }) => {
     
     return (
         <div>
-            <div className="bg-white p-6 rounded-lg shadow-md text-center md:text-left">
 
-                {/* Property type, name and location */}
-                <div className="text-gray-500 mb-4">{property.type}</div>
-                <h1 className="text-3xl font-bold mb-4">{property.name}</h1>
+
+                {/* Property name, city, beds, baths and sqft */}
+                <h1 className="text-xl">{property.name} in {property.location.city}</h1>
+                <p className="text-sm pb-4 mb-4 border-b border-gray-200">
+                    {property.beds} beds
+                    <span className="text-[10px]"> • </span>
+                    {property.baths} baths
+                    <span className="text-[10px]"> • </span>
+                    {property.squareFeet} square feet
+                </p>
+
+                {/* Property description */}
+                <p className="text-base">{property.description}</p>
                 <div className="text-gray-500 mb-4 flex align-middle justify-center md:justify-start">
                     <FaMapMarkerAlt className="text-orange-700 mr-1 mt-1" />
                     <p className="text-orange-700">
@@ -57,7 +66,6 @@ const PropertyDetails = ({ property }: { property: PropertyDocument }) => {
                         </div>
                     </div>
                 </div>
-            </div>
 
             {/* Description and details */}
             <div className="bg-white p-6 rounded-lg shadow-md mt-6">

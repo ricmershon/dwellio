@@ -8,7 +8,7 @@ const HomePageProperties = async () => {
 
     return (
         <div className="mb-8">
-            <PropertiesList recentProperties={recentProperties} />
+            <PropertiesList properties={recentProperties} />
         </div>
     );
 }

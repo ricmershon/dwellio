@@ -45,7 +45,7 @@ const PropertySearchForm = () => {
                 <Input
                     inputType="input"
                     id='location'
-                    placeholder="Enter Location (City, State, Zip, etc.)"
+                    placeholder="Location (City, State or Zip)"
                     onChange={(event: ChangeEvent<HTMLInputElement>) => setLocation(event.target.value)}
                     noClasses={true}
                 />

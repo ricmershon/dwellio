@@ -20,7 +20,7 @@ const MessagesPage = async () => {
                     { label: 'Your Messages', href: '/messages', active: true }
                 ]}
             />
-            <div className="m-auto p-4 md:p-6">
+            <div className="m-auto">
                 <div className="space-y-5">
                     {messages.length === 0 ? (
                         <p>You have no messages.</p>
