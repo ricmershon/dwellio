@@ -20,100 +20,98 @@ const PropertyContactForm = ({ property, userName, userEmail }: PropertyContactF
     const [actionState, formAction, isPending] = useActionState(createMessage, {} as ActionState);
 
     /**
-     * Toast message for error.
+     * Toast message for success or error.
      */
     useEffect(() => {
+        if (actionState.status === 'SUCCESS') {
+            toast.success(actionState.message);
+        }
         if (actionState.status === 'ERROR') {
             toast.error(actionState.message);
         }
-    }, [actionState.message, actionState.status]);
+    }, [actionState]);
     
     return (
         <>
-            {actionState.status === 'SUCCESS' ? (
-                <p className='text-green-500 mb-4'>Your message has been sent.</p>
-                
-            ) : (
-                <div className="bg-white p-6 rounded-lg shadow-md">
-                    <h3 className="mb-4 text-md text-gray-700">Contact Property Manager</h3>
-                    <form action={formAction}>
-                        <input
-                            type="hidden"
-                            id="property"
-                            name="property"
-                            defaultValue={(property._id as string)}
-                        />
-                        <input
-                            type="hidden"
-                            id="recipient"
-                            name="recipient"
-                            defaultValue={property.owner.toString()}
-                        />
-                        
-                        <Input
-                            inputType="input"
-                            id='name'
-                            name="name"
-                            type='text'
-                            label="Name"
-                            placeholder="Enter your name"
-                            labelSize="text-sm"
-                            defaultValue={(userName! || actionState.formData?.get("name") || "") as string}
-                            errors={actionState.formErrorMap?.name}
-                        />
+            <div className="bg-white p-4 rounded-md shadow-xl">
+                <h3 className="mb-4 text-md text-gray-700">Contact Property Manager</h3>
+                <form action={formAction}>
+                    <input
+                        type="hidden"
+                        id="property"
+                        name="property"
+                        defaultValue={(property._id as string)}
+                    />
+                    <input
+                        type="hidden"
+                        id="recipient"
+                        name="recipient"
+                        defaultValue={property.owner.toString()}
+                    />
+                    
+                    <Input
+                        inputType="input"
+                        id='name'
+                        name="name"
+                        type='text'
+                        label="Name"
+                        placeholder="Enter your name"
+                        labelSize="text-sm"
+                        defaultValue={(userName! || actionState.formData?.get("name") || "") as string}
+                        errors={actionState.formErrorMap?.name}
+                    />
 
-                        <Input
-                            inputType="input"
-                            id='email'
-                            name="email"
-                            type='tel'
-                            label="Email"
-                            labelSize="text-sm"
-                            placeholder="Enter your email"
-                            defaultValue={(userEmail! || actionState.formData?.get("email") || "") as string}
-                            errors={actionState.formErrorMap?.email}
-                        />
+                    <Input
+                        inputType="input"
+                        id='email'
+                        name="email"
+                        type='tel'
+                        label="Email"
+                        labelSize="text-sm"
+                        placeholder="Enter your email"
+                        defaultValue={(userEmail! || actionState.formData?.get("email") || "") as string}
+                        errors={actionState.formErrorMap?.email}
+                    />
 
-                        <Input
-                            inputType="input"
-                            id='phone'
-                            name="phone"
-                            type='tel'
-                            label="Phone"
-                            labelSize="text-sm"
-                            placeholder="Enter your phone number"
-                            defaultValue={(actionState.formData?.get("phone") || "") as string}
-                            errors={actionState.formErrorMap?.phone}
-                        />
+                    <Input
+                        inputType="input"
+                        id='phone'
+                        name="phone"
+                        type='tel'
+                        label="Phone"
+                        labelSize="text-sm"
+                        placeholder="Enter your phone number"
+                        defaultValue={(actionState.formData?.get("phone") || "") as string}
+                        errors={actionState.formErrorMap?.phone}
+                    />
 
-                        <Input
-                            inputType="textarea"
-                            id='body'
-                            name="body"
-                            label="Message"
-                            labelSize="text-sm"
-                            placeholder="Enter your message"
-                            defaultValue={(actionState.formData?.get("body") || "") as string}
-                            errors={actionState.formErrorMap?.body}
-                        />
+                    <Input
+                        inputType="textarea"
+                        id='body'
+                        name="body"
+                        label="Message"
+                        labelSize="text-sm"
+                        placeholder="Enter your message"
+                        defaultValue={(actionState.formData?.get("body") || "") as string}
+                        errors={actionState.formErrorMap?.body}
+                    />
 
-                        <div>
-                            <button
-                                className={`flex gap-1 btn btn-primary w-full justify-center ${isPending ? 'hover:cursor-not-allowed' : 'hover:cursor-pointer'}`}
-                                type="submit"
-                                disabled={isPending}
-                            >
-                                {isPending ? (
-                                    <LuRefreshCw className='btn-pending-icon icon-spin'/>
-                                ) : (
-                                    <FaPaperPlane className="mr-2" />
-                                )}
-                                Send Message
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            )}
+                    <div>
+                        <button
+                            className={`flex gap-1 btn btn-primary w-full justify-center ${isPending ? 'hover:cursor-not-allowed' : 'hover:cursor-pointer'}`}
+                            type="submit"
+                            disabled={isPending}
+                        >
+                            {isPending ? (
+                                <LuRefreshCw className='btn-pending-icon icon-spin'/>
+                            ) : (
+                                <FaPaperPlane className="mr-2" />
+                            )}
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+            </div>
         </>
     );
 }

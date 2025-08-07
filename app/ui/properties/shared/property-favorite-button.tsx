@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 import { favoriteProperty } from "@/app/lib/actions/property-actions";
 import { getFavoriteStatus } from "@/app/lib/actions/property-actions";
 
-const PropertyCardFavoriteButton = ({ propertyId }: { propertyId: string }) => {
+const PropertyFavoriteButton = ({ propertyId }: { propertyId: string }) => {
     const [isFavorite, setIsFavorite] = useState<boolean | undefined>(false);
 
     useEffect(() => {
@@ -39,8 +39,8 @@ const PropertyCardFavoriteButton = ({ propertyId }: { propertyId: string }) => {
 
     return (
         <>
-            <form action={favoritePropertyAction}>
-                <button className="size-[18px] hover:cursor-pointer">
+            <form action={favoritePropertyAction} className="size-[18px]">
+                <button className="size-4 hover:cursor-pointer">
                     {isFavorite ? (
                         <HeartSolidIcon className='text-red-600' />
                     ) : (
@@ -52,4 +52,4 @@ const PropertyCardFavoriteButton = ({ propertyId }: { propertyId: string }) => {
     );
 }
  
-export default PropertyCardFavoriteButton;
+export default PropertyFavoriteButton;

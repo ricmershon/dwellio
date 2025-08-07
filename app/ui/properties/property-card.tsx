@@ -2,9 +2,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 
+import PropertyFavoriteButton from '@/app/ui/properties/shared/property-favorite-button';
 import { PropertyDocument } from '@/app/models';
 import { getRateDisplay } from '@/app/utils/get-rate-display';
-import PropertyCardFavoriteButton from '@/app/ui/properties/property-card-favorite-button';
 import { getSessionUser } from '@/app/utils/get-session-user';
 import { toSerializedOjbect } from '@/app/utils/to-serialized-object';
 import { isWithinLastWeek } from '@/app/utils/is-within-last-seven-days';
@@ -41,11 +41,9 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
                 <div className="flex justify-between items-center mb-2">
                     <p className='text-gray-700 mr-3'>{property.name}</p>
 
-                    {/* Display favorite button if not owned by user */}
+                    {/* Display favorite button if logged in and not owned by user */}
                     {sessionUser && sessionUser.id !== property.owner.toString() && (
-                        <PropertyCardFavoriteButton
-                            propertyId={serializedProperty._id}
-                        />
+                        <PropertyFavoriteButton propertyId={serializedProperty._id} />
                     )}
                 </div>
                 <div className="flex justify-between items-center mb-2">

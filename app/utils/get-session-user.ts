@@ -1,4 +1,5 @@
 import { getServerSession } from "next-auth/next";
+
 import { authOptions } from "@/app/config/auth-options";
 
 export const getSessionUser = async () => {

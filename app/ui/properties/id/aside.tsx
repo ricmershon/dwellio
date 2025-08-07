@@ -2,17 +2,10 @@
 
 import { useSession } from "next-auth/react";
 
-import FavoritePropertyButton from "@/app/ui/properties/id/favorite-button";
-import ShareButtons from "@/app/ui/properties/id/share-buttons";
 import PropertyContactForm from "@/app/ui/properties/id/contact-form";
 import { PropertyDocument } from "@/app/models";
 
-interface PropertyPageAsideProps {
-    property: PropertyDocument;
-    propertyId: string;
-}
-
-const PropertyPageAside = ({ property, propertyId }: PropertyPageAsideProps) => {
+const PropertyPageAside = ({ property }: { property: PropertyDocument }) => {
     const { data: session } = useSession();
 
     /**
@@ -20,9 +13,7 @@ const PropertyPageAside = ({ property, propertyId }: PropertyPageAsideProps) => 
      * only if a user is logged in and the property owner is not the user.
      */
     return (
-        <aside className="space-y-4">
-            {session && session.user.id !== property.owner.toString() && <FavoritePropertyButton propertyId={propertyId} />}
-            <ShareButtons property={property} />
+        <aside>
             {session && session.user.id !== property.owner.toString() && (
                 <PropertyContactForm
                     property={property}
