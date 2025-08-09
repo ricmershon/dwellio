@@ -26,7 +26,7 @@ const EditPropertyForm = ({ property }: { property: PropertyDocument }) => {
         if (actionState.status === 'ERROR') {
             toast.error(actionState.message);
         }
-    }, [actionState.message, actionState.status]);
+    }, [actionState]);
 
     const { street, city, state, zipcode } = property.location;
     const { weekly, monthly, nightly } = property.rates;

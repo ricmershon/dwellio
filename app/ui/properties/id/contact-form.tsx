@@ -34,7 +34,7 @@ const PropertyContactForm = ({ property, userName, userEmail }: PropertyContactF
     return (
         <>
             <div className="bg-white p-4 rounded-md shadow-xl">
-                <h3 className="mb-4 text-md text-gray-700">Contact Property Manager</h3>
+                <h3 className="mb-2 text-md text-gray-700">Contact Property Manager</h3>
                 <form action={formAction}>
                     <input
                         type="hidden"

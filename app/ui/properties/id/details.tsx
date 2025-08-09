@@ -1,10 +1,9 @@
-import { FaTimes, FaCheck, FaMapMarkerAlt } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
 
 import { PropertyDocument } from "@/app/models";
-// import PropertyMap from "./PropertyMap";
+import PropertyMap from "./map";
 
 const PropertyDetails = ({ property }: { property: PropertyDocument }) => {
-    const { street, city, state, zipcode } = property.location;
     const { rates } = property;
     
     return (
@@ -38,15 +37,8 @@ const PropertyDetails = ({ property }: { property: PropertyDocument }) => {
                 </ul>
             </div>
 
-            {/* <div className="text-gray-500 mb-4 flex align-middle justify-center md:justify-start">
-                <FaMapMarkerAlt className="text-orange-700 mr-1 mt-1" />
-                <p className="text-orange-700">
-                    {street} {city}, {state} {zipcode}
-                </p>
-            </div> */}
-
             {/* Property rates and options */}
-            <div className='pb-4 border-b border-gray-200'>
+            <div className='pb-4 mb-4 border-b border-gray-200'>
                 <h3 className="mb-2">Rates</h3>
                 <div className="flex flex-col md:flex-row justify-start items-start">
                     {rates.nightly && (
@@ -73,7 +65,7 @@ const PropertyDetails = ({ property }: { property: PropertyDocument }) => {
             </div>
 
             {/* Map */}
-            {/* <div className="bg-white p-6 rounded-lg shadow-md mt-6">
+            {/* <div className="bg-white p-4 rounded-md shadow-md">
                 <PropertyMap property={property} />
             </div> */}
         </div>
