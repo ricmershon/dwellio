@@ -31,7 +31,7 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
 
                 {/* Recently created or added */}
                 {(isCreatedWithinLastWeek || isUpdatedWithinLastWeek) && (
-                    <p className='absolute top-[10px] left-[10px] bg-white px-[10px] py-1 rounded-md text-gray-800 text-sm text-center'>
+                    <p className='absolute top-2 left-2 bg-white px-[18px] py-1 rounded-md text-gray-800 text-xs text-center'>
                         {isCreatedWithinLastWeek ? 'Recently Added' : 'Recently Updated'}
                     </p>
                 )}

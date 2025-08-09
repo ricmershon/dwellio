@@ -5,10 +5,10 @@ const Footer = () => {
     const currentYear = new Date().getFullYear();
 
     return (
-        <footer className="bg-gray-200 py-4 mt-24">
+        <footer className="bg-gray-100 py-4 mt-24">
             <div className="container mx-auto flex flex-col md:flex-row items-center justify-between px-4">
                 <div className="mb-4 md:mb-0">
-                    <HiHome className="h-8 w-auto text-gray-200 rounded-full p-[4px] bg-blue-700" />
+                    <HiHome className="h-8 w-auto text-gray-100 rounded-full p-[4px] bg-blue-800" />
                 </div>
                 <div className="flex flex-wrap justify-center md:justify-start mb-4 md:mb-0">
                     <ul className="flex space-x-4">
