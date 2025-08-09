@@ -1,8 +1,14 @@
+import { Metadata } from "next";
+
 import { getSessionUser } from "@/app/utils/get-session-user";
 import { fetchMessages } from "@/app/lib/data/message-data";
 import MessageCard from "@/app/ui/messages/message-card";
 import { MessageDocument } from "@/app/models";
 import Breadcrumbs from "@/app/ui/shared/breadcrumbs";
+
+export const metadata: Metadata = {
+    title: 'Messages'
+}
 
 const MessagesPage = async () => {
     const sessionUser = await getSessionUser();

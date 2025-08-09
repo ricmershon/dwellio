@@ -1,3 +1,5 @@
+import { Metadata } from "next";
+
 import { fetchProperty } from "@/app/lib/data/property-data";
 import PropertyDetails from '@/app/ui/properties/id/details';
 import PropertyImages from "@/app/ui/properties/id/images";
@@ -8,12 +10,18 @@ import PropertyFavoriteButton from "@/app/ui/properties/shared/property-favorite
 import { toSerializedOjbect } from "@/app/utils/to-serialized-object";
 import ShareButtons from "@/app/ui/properties/id/share-buttons";
 
+export const metadata: Metadata = {
+    title: 'Property'
+}
+
 const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
     const sessionUser = await getSessionUser();
 
     const propertyDoc = await fetchProperty(id);
     const property = toSerializedOjbect(propertyDoc);
+
+    const notPropertyOwner = sessionUser && sessionUser.id !== property.owner.toString();
 
     return (
         <main>
@@ -29,7 +37,7 @@ const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) =>
                         <ShareButtons property={property} />
 
                         {/* Display favorite button if not owned by user and logged in */}
-                        {sessionUser && sessionUser.id !== property.owner.toString() && (
+                        {notPropertyOwner && (
                             <div className="flex justify-between items-center ml-4">
                                 <div>
                                     <PropertyFavoriteButton
@@ -49,9 +57,12 @@ const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) =>
             {/* Property details */}
             <section className="mt-4">
                 <div className="container m-auto">
-                    <div className="grid grid-cols-1 md:grid-cols-70/30 w-full gap-[14px]">
+                    <div className={`grid grid-cols-1 w-full gap-[20px] ${notPropertyOwner && 'md:grid-cols-70/30'}`}>
+                    {/* <div className="grid grid-cols-1 md:grid-cols-70/30 w-full gap-[14px]"> */}
                         <PropertyDetails property={property} />
-                        <PropertyPageAside property={property} />
+                        {notPropertyOwner && (
+                            <PropertyPageAside property={property} />
+                        )}
                     </div>
                 </div>
             </section>

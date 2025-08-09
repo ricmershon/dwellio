@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { FaArrowAltCircleLeft } from 'react-icons/fa';
 import { Types } from 'mongoose';
@@ -7,6 +8,10 @@ import PropertySearchForm from '@/app/ui/properties/search/search-form';
 import PropertiesList from '@/app/ui/properties/properties-list';
 import { PropertiesQuery } from '@/app/types/types';
 import { searchProperties } from '@/app/lib/data/property-data';
+
+export const metadata: Metadata = {
+    title: 'Search Properties'
+}
 
 interface SearchResultsPageProps {
     searchParams: Promise<{

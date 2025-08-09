@@ -1,8 +1,14 @@
+import { Metadata } from "next";
+
 import { fetchFavoritedProperties } from "@/app/lib/data/property-data";
 import { PropertyDocument } from "@/app/models";
 import { getSessionUser } from "@/app/utils/get-session-user";
 import Breadcrumbs from "@/app/ui/shared/breadcrumbs";
 import PropertiesList from "@/app/ui/properties/properties-list";
+
+export const metadata: Metadata = {
+    title: "Favorite Properties"
+}
 
 const FavoritePropertiesPage = async () => {
     const sessionUser = await getSessionUser();

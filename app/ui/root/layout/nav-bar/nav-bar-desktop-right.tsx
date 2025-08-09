@@ -63,7 +63,7 @@ const NavBarDesktopRight = () => {
                         {isProfileDropdownOpen && (
                             <div
                                 id="user-menu"
-                                className="absolute right-0 top-9 z-10 p-2 w-50 origin-top-right rounded-sm bg-white border-gray-100 shadow-md flex flex-col items-center justify-center space-y-2"
+                                className="absolute right-0 top-10 z-10 p-2 w-50 origin-top-right rounded-sm bg-white border-gray-100 shadow-md flex flex-col items-center justify-center space-y-2"
                                 role="menu"
                                 aria-orientation="vertical"
                                 aria-labelledby="user-menu-button"
@@ -77,7 +77,7 @@ const NavBarDesktopRight = () => {
                                     id="user-menu-item-0"
                                     onClick={() => setIsProfileDropdownOpen(false)}
                                 >
-                                    Your Profile
+                                    Profile
                                 </Link>
                                 <Link
                                     href="/properties/favorites"

@@ -24,7 +24,6 @@ export const metadata: Metadata = {
 // TODO: Get property pictures from somewhere else
 // TODO: Metadata for all files
 // TODO: See if ` as ` can be removed for more strictly typed
-// FIXME: Cursor changes on button hovers
 // TODO: Add metadata for all pages
 // TODO: Standardize buttons and button states.
 // TODO: Add images in separate modal box where description can be added to the image.

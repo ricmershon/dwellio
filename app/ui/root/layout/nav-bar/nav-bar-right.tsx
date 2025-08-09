@@ -108,7 +108,7 @@ const NavBarRight = () => {
                                 id="mobile-menu-item-4"
                                 tabIndex={-1}
                             >
-                                Your Profile
+                                Profile
                             </Link>
                             <Link
                                 href='/properties/favorites'
