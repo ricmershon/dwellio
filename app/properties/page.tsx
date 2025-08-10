@@ -7,6 +7,8 @@ import Breadcrumbs from "@/app/ui/shared/breadcrumbs";
 import { fetchNumPropertiesPages } from "@/app/lib/data/property-data";
 import PropertiesListSkeleton from "@/app/ui/skeletons/properties-list-skeleton";
 import DelayedRender from "@/app/ui/shared/delayed-render";
+import { PropertiesQuery } from "@/app/types/types";
+import PropertyFilterForm from "@/app/ui/properties/properties-filter-form";
 
 export const metadata: Metadata = {
     title: 'Properties'
@@ -14,15 +16,31 @@ export const metadata: Metadata = {
 
 interface PropertiesPageProps {
     searchParams: Promise<{
+        query?: string
         page?: string
     }>
 }
 
 const PropertiesPage = async (props: PropertiesPageProps) => {
     const searchParams = await props.searchParams;
+    const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
+    const queryRegex = new RegExp(query, 'i');
     
-    const totalPages = await fetchNumPropertiesPages();
+    const propertiesQuery: PropertiesQuery = {
+        $or: [
+            { name: queryRegex },
+            { description: queryRegex },
+            { amenities: queryRegex },
+            { type: queryRegex },
+            { 'location.street': queryRegex },
+            { 'location.city': queryRegex },
+            { 'location.state': queryRegex },
+            { 'location.zip': queryRegex },
+        ],
+    };
+
+    const totalPages = await fetchNumPropertiesPages(propertiesQuery);
 
     return (
         <main>
@@ -32,12 +50,16 @@ const PropertiesPage = async (props: PropertiesPageProps) => {
                     { label: 'Properties', href: '/properties', active: true }
                 ]}
             />
+            <PropertyFilterForm />
             <Suspense fallback={
                 <DelayedRender>
                     <PropertiesListSkeleton />
                 </DelayedRender>
             }>
-                <PropertiesList currentPage={currentPage} />
+                <PropertiesList
+                    query={propertiesQuery}
+                    currentPage={currentPage}
+                />
             </Suspense>
             <div className="mt-5 flex w-full justify-center">
                 <PropertiesPagination

@@ -1,7 +1,7 @@
 import { FaCheck } from "react-icons/fa";
 
 import { PropertyDocument } from "@/app/models";
-import PropertyMap from "./map";
+import PropertyMap from "@/app/ui/properties/id/map";
 
 const PropertyDetails = ({ property }: { property: PropertyDocument }) => {
     const { rates } = property;

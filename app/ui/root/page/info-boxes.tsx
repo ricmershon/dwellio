@@ -1,7 +1,7 @@
 import InfoBox from "@/app/ui/root/page/info-box";
 
 const InfoBoxes = () => (
-    <section>
+    <section className="mt-8">
         <div className="container-xl lg:container m-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <InfoBox

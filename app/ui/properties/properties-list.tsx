@@ -1,14 +1,24 @@
-import { fetchPaginatedProperties } from "@/app/lib/data/property-data";
+import { fetchFeaturedProperties, fetchPaginatedProperties } from "@/app/lib/data/property-data";
 import { PropertyDocument } from "@/app/models";
+import { PropertiesQuery } from "@/app/types/types";
 import PropertyCard from "@/app/ui/properties/property-card";
 
 type PropertiesListProps =
-    | { properties: PropertyDocument[]; currentPage?: never }
-    | { currentPage: number; properties?: never };
+    | { properties: PropertyDocument[]; currentPage?: never; query?: never; featured?: never }
+    | { currentPage: number; query: PropertiesQuery; properties?: never; featured?: never }
+    | { query: PropertiesQuery; currentPage: number; properties?: never; featured?: never }
+    | { featured: boolean; properties?: never; currentPage?: never; query?: never };
 
-const PropertiesList = async ({ currentPage, properties }: PropertiesListProps) => {
-const propertiesToList: PropertyDocument[] =
-    properties ?? (currentPage ? await fetchPaginatedProperties(currentPage) : []);
+const PropertiesList = async ({ featured = false, currentPage, properties, query }: PropertiesListProps) => {
+    let propertiesToList: PropertyDocument[];
+
+    if (featured) {
+        propertiesToList = await fetchFeaturedProperties();
+    } else {
+        propertiesToList = properties
+            ?? (currentPage ? await fetchPaginatedProperties(currentPage, query) : []);
+
+    }
 
     return (
         <section>

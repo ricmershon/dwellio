@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { signOut, signIn, useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import { FaGoogle } from "react-icons/fa";
 import { HiOutlineBell } from "react-icons/hi2";
 import Link from "next/link";
@@ -15,6 +16,7 @@ import UnreadMessageCount from "@/app/ui/messages/unread-message-count";
 const NavBarDesktopRight = () => {
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const { data: session } = useSession();
+    const pathname = usePathname();
     
     const profileImage = session?.user?.image;
     const { unreadCount } = useGlobalContext();
@@ -71,7 +73,7 @@ const NavBarDesktopRight = () => {
                             >
                                 <Link
                                     href="/profile"
-                                    className="menu-btn menu-btn-not-current-path"
+                                    className={`${pathname === '/profile' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
                                     role="menuitem"
                                     tabIndex={-1}
                                     id="user-menu-item-0"
@@ -81,7 +83,7 @@ const NavBarDesktopRight = () => {
                                 </Link>
                                 <Link
                                     href="/properties/favorites"
-                                    className="menu-btn menu-btn-not-current-path"
+                                    className={`${pathname === '/properties/favorites' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
                                     role="menuitem"
                                     tabIndex={-1}
                                     id="user-menu-item-1"

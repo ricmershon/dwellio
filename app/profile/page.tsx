@@ -6,7 +6,7 @@ import { getSessionUser } from "@/app/utils/get-session-user";
 import { fetchPropertiesByUserId } from "@/app/lib/data/property-data";
 import ProfileProperties from "@/app/ui/profile/profile-properties";
 import { PropertyDocument } from "@/app/models";
-import Breadcrumbs from "../ui/shared/breadcrumbs";
+import Breadcrumbs from "@/app/ui/shared/breadcrumbs";
 
 export const metadata: Metadata = {
     title: 'Profile'

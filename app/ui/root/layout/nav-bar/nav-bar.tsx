@@ -1,7 +1,7 @@
-import NavBarLeft from "./nav-bar-left";
-import NavBarRight from "./nav-bar-right";
-import NavBarDesktopMiddle from "./nav-bar-desktop-middle";
-import NavBarDesktopRight from "./nav-bar-desktop-right";
+import NavBarLeft from "@/app/ui/root/layout/nav-bar/nav-bar-left";
+import NavBarRight from "@/app/ui/root/layout/nav-bar/nav-bar-right";
+import NavBarDesktopMiddle from "@/app/ui/root/layout/nav-bar/nav-bar-desktop-middle";
+import NavBarDesktopRight from "@/app/ui/root/layout/nav-bar/nav-bar-desktop-right";
 
 
 const NavBar = () => {    
