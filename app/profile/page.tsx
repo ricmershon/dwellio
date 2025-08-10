@@ -32,7 +32,7 @@ const ProfilePage = async () => {
                 <div className="container-xl lg:container m-auto">
                     <div className="flex flex-col md:flex-row">
                         <div className="md:w-1/4 md:mx-5">
-                            <h1 className="text-[20px] font-semibold mb-5">About me</h1>
+                            <h1 className="heading">About me</h1>
                             <div className="rounded-3xl bg-white p-6 shadow-xl mb-4 flex flex-col items-center">
                                 <Image
                                     className="size-14 md:size-20 rounded-full mx-auto md:mx-0 mb-2"
@@ -52,7 +52,7 @@ const ProfilePage = async () => {
                         </div>
 
                         <div className="md:w-3/4 md:mx-5">
-                            <h1 className="mt-5 md:mt-0 text-[20px] font-semibold mb-5">My listings</h1>
+                            <h1 className="heading mt-5 md:mt-0">My listings</h1>
                             {<ProfileProperties properties={properties} />}
                         </div>
                     </div>

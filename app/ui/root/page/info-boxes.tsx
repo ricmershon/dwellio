@@ -13,7 +13,9 @@ const InfoBoxes = () => (
                         text: "Browse Properties"
                     }}
                 >
-                    Find your dream rental property. Favorite properties and contact owners.
+                    <p className="text-sm">
+                        Find your dream rental property. Favorite properties and contact owners.
+                    </p>
                 </InfoBox>
                 <InfoBox
                     headingText="For Property Owners"
@@ -24,7 +26,9 @@ const InfoBoxes = () => (
                         text: "Add Property"
                     }}
                 >
-                    Find your dream rental property. Favorite properties and contact owners.
+                    <p className="text-sm">
+                        Rent your property. You must be logged in.
+                    </p>
                 </InfoBox>
             </div>
         </div>

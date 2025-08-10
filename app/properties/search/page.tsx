@@ -63,8 +63,8 @@ const SearchResultsPage = async (props: SearchResultsPageProps) => {
 
             <section className="py-6">
                 <div className="container-xl lg:container m-auto">
-                    <h1 className="text-lg mb-4">Search Results</h1>
-                    {PropertiesList.length === 0 ? (
+                    <h1 className="heading">Search Results</h1>
+                    {propertiesQueryResults.length === 0 ? (
                         <p>No search results</p>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
