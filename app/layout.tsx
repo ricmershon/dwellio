@@ -24,7 +24,6 @@ export const metadata: Metadata = {
 // TODO: Get property pictures from somewhere else
 // TODO: Metadata for all files
 // TODO: See if ` as ` can be removed for more strictly typed
-// FIXME: Cursor changes on button hovers
 // TODO: Add metadata for all pages
 // TODO: Standardize buttons and button states.
 // TODO: Add images in separate modal box where description can be added to the image.
@@ -36,7 +35,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
                 <html lang="en">
                     <body>
                         <NavBar />
-                        <div className="flex-grow p-4 md:overflow-y-auto md:p-6">{children}</div>
+                        <div className="flex-grow md:overflow-y-auto px-4 md:px-6 lg:px-8 py-6 lg:py-8">{children}</div>
                         <Footer />
                         <ToastContainer
                             position='top-right'

@@ -17,7 +17,21 @@ interface InputProps {
     [x: string]: unknown;
 }
 
-const Input = ({ inputType, id, type, name, label, placeholder, defaultValue, required, isInGroup, errors, labelSize, noClasses, ...restProps }: InputProps) => {
+const Input = ({
+    inputType,
+    id,
+    type,
+    name,
+    label,
+    placeholder,
+    defaultValue,
+    required,
+    isInGroup,
+    errors,
+    labelSize,
+    noClasses,
+    ...restProps
+}: InputProps) => {
     const ariaDescribedBy = `${id}-error`;
 
     const inputElement = inputType === 'input' ? (

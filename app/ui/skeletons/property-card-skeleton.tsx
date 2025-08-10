@@ -5,28 +5,22 @@ const PropertyCardSkeleton = () => (
         baseColor='#f7f8fb'
         highlightColor='white'
     >
-        <div className="rounded-md shadow-md bg-white">
-            <div className="relative">
-                {/* Image */}
-                <Skeleton height={120} width="100%" borderRadius="0.375rem 0.375rem 0 0" />
+        <div className="rounded-md shadow-md">
+            {/* Image */}
+            <Skeleton height={200} width="100%" className='w-full h-auto rounded-t-md' />
 
-                {/* Rate badge */}
-                <div className="absolute top-[10px] left-[10px]">
-                    <Skeleton height={20} width={60} borderRadius={6} />
+            <div className='p-[10px]'>
+                <div className="flex justify-between items-center mb-2">
+                    <Skeleton height={12} width={150} />
+                    <Skeleton height={12} width={40} />
                 </div>
-            </div>
-            <div className="p-4 text-xs md:text-sm text-gray-500">
-                {/* Bed and Bath */}
-                <div className="flex justify-center gap-4 mb-2">
-                    <Skeleton height={16} width={48} />
-                    <Skeleton height={16} width={48} />
+                <div className="flex justify-between items-center mb-2">
+                    <Skeleton height={16} width={150} />
+                    <Skeleton height={12} width={40} />
                 </div>
-
-                <div className="border border-gray-100 my-4" />
-
-                {/* Type and location */}
-                <div className="text-center">
-                    <Skeleton height={16} width={140} />
+                <div className="flex justify-between items-center">
+                    <Skeleton height={12} width={150} />
+                    <Skeleton height={12} width={40} />
                 </div>
             </div>
         </div>

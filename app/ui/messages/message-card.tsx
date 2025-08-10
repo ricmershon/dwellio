@@ -14,19 +14,19 @@ const MessageCard = ({ message }: { message: MessageDocument }) => (
         <p>{message.body}</p>
         <ul className="mt-4">
             <li>
-                <span className="font-bold">Reply Email:</span>{' '}
+                <span className="font-bold">Reply Email: </span>
                 <a href={`mailto:${message.email}`} className='text-blue-500'>
                     {message.email}
                 </a>
             </li>
             <li>
-                <strong>Reply Phone: </strong>{' '}
+                <span className="font-bold">Reply Phone: </span>
                 <a href={`tel:${message.phone}`} className='text-blue-500'>
                     {message.phone}
                 </a>
             </li>
             <li>
-                <strong>Received: </strong>{' '}
+                <span className="font-bold">Received: </span>
                 {new Date(message.createdAt).toLocaleString()}
             </li>
         </ul>

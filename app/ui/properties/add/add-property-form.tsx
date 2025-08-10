@@ -23,7 +23,7 @@ const AddPropertyForm = () => {
         if (actionState.status === 'ERROR') {
             toast.error(actionState.message);
         }
-    }, [actionState.message, actionState.status]);
+    }, [actionState]);
 
     return (
         <form action={formAction}>

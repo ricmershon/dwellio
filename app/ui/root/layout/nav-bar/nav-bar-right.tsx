@@ -42,99 +42,97 @@ const NavBarRight = () => {
             {isMobileMenuOpen && (
                 <div
                     id="mobile-menu"
-                    className="md:hidden absolute w-75 px-3 py-3 rounded-md bg-white text-sm right-0 top-10 z-40 border border-gray-100 shadow-md"
+                    className="md:hidden absolute w-screen -mr-4 p-3 rounded-sm bg-white text-sm right-0 top-10 z-10 border border-gray-100 shadow-md flex flex-col items-center justify-center space-y-3"
                     role="menu"
                     aria-orientation="vertical"
                     aria-labelledby="mobile-menu-button"
                     tabIndex={-1}
                 >
-                    <div className="flex flex-col items-center justify-center w-full space-y-3">
+                    <Link
+                        href='/'
+                        className={`${pathname === '/' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        role="menuitem"
+                        id="mobile-menu-item-0"
+                        tabIndex={-1}
+                    >
+                        Home
+                    </Link>
+                    <Link
+                        href='/properties'
+                        className={`${pathname === '/properties' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        role="menuitem"
+                        id="mobile-menu-item-1"
+                        tabIndex={-1}
+                >
+                        Properties
+                    </Link>
+                    {session ? (
                         <Link
-                            href='/'
-                            className={`${pathname === '/' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
+                            href='/properties/add'
+                            className={`${pathname === '/properties/add' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
                             onClick={() => setIsMobileMenuOpen(false)}
                             role="menuitem"
-                            id="mobile-menu-item-0"
+                            id="mobile-menu-item-2"
                             tabIndex={-1}
                         >
-                            Home
+                            Add Property
                         </Link>
-                        <Link
-                            href='/properties'
-                            className={`${pathname === '/properties' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            role="menuitem"
-                            id="mobile-menu-item-1"
-                            tabIndex={-1}
-                    >
-                            Properties
-                        </Link>
-                        {session ? (
+                    ) : (
+                        <>
+                            <hr className="w-full border-t border-gray-200"/>
+                            {providers && Object.values(providers).map((provider) => (
+                                <button
+                                    key={provider.id}
+                                    className="flex items-center justify-center btn btn-login-logout w-full"
+                                    role="menuitem"
+                                    id="mobile-menu-item-3"
+                                    tabIndex={-1}
+                                    onClick={() => signIn(provider.id)}
+                                >
+                                    <FaGoogle className='mr-2' />
+                                    <span>Login</span>
+                                </button>
+                            ))}
+                        </>
+                    )}
+                    {session && (
+                        <>
+                            <hr className="w-full border-t border-gray-200"/>
                             <Link
-                                href='/properties/add'
-                                className={`${pathname === '/properties/add' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
+                                href='/profile'
+                                className={`${pathname === '/profile' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 role="menuitem"
-                                id="mobile-menu-item-2"
+                                id="mobile-menu-item-4"
                                 tabIndex={-1}
                             >
-                                Add Property
+                                Profile
                             </Link>
-                        ) : (
-                            <>
-                                <hr className="w-full border-t border-gray-200"/>
-                                {providers && Object.values(providers).map((provider) => (
-                                    <button
-                                        key={provider.id}
-                                        className="flex items-center justify-center btn btn-login-logout w-full"
-                                        role="menuitem"
-                                        id="mobile-menu-item-3"
-                                        tabIndex={-1}
-                                        onClick={() => signIn(provider.id)}
-                                    >
-                                        <FaGoogle className='mr-2' />
-                                        <span>Login</span>
-                                    </button>
-                                ))}
-                            </>
-                        )}
-                        {session && (
-                            <>
-                                <hr className="w-full border-t border-gray-200"/>
-                                <Link
-                                    href='/profile'
-                                    className={`${pathname === '/profile' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    role="menuitem"
-                                    id="mobile-menu-item-4"
-                                    tabIndex={-1}
-                                >
-                                    Your Profile
-                                </Link>
-                                <Link
-                                    href='/properties/favorites'
-                                    className={`${pathname === '/properties/favorites' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    role="menuitem"
-                                    id="mobile-menu-item-5"
-                                    tabIndex={-1}
-                                >
-                                    Favorite Properties
-                                </Link>
-                                <hr className="w-full border-t border-gray-200"/>
+                            <Link
+                                href='/properties/favorites'
+                                className={`${pathname === '/properties/favorites' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                role="menuitem"
+                                id="mobile-menu-item-5"
+                                tabIndex={-1}
+                            >
+                                Favorite Properties
+                            </Link>
+                            <hr className="w-full border-t border-gray-200"/>
 
-                                <button
-                                    className="btn btn-login-logout w-full"
-                                    role="menuitem"
-                                    tabIndex={-1}
-                                    id="user-menu-item-6"
-                                    onClick={handleSignOutClick}
-                                >
-                                    Sign Out
-                                </button>
-                            </>
-                        )}
-                    </div>
+                            <button
+                                className="btn btn-login-logout w-full"
+                                role="menuitem"
+                                tabIndex={-1}
+                                id="user-menu-item-6"
+                                onClick={handleSignOutClick}
+                            >
+                                Sign Out
+                            </button>
+                        </>
+                    )}
                 </div>
             )}
         </>

@@ -12,28 +12,30 @@ const ProfileProperties = (
             const { street, city, state } = property.location;
             const propertyId = (property._id as string).toString();
             return (
-                <div key={propertyId} className="mb-10">
+                <div key={propertyId} className="mb-4 md:mb-6 rounded-lg shadow-lg">
                     <Link href={`/properties/${propertyId}`}>
                         <Image
-                            className="h-32 w-full rounded-md object-cover"
+                            className="h-32 w-full rounded-t-lg object-cover"
                             src={property.imagesData![0].secureUrl}
                             alt={propertyId}
                             width={400}
                             height={400}
                         />
                     </Link>
-                    <div className="mt-2">
-                        <p className="text-lg font-semibold">{property.name}</p>
-                        <p className="text-gray-600">Address: {street} {city} {state}</p>
-                    </div>
-                    <div className="mt-2 flex">
-                        <Link
-                            href={`/properties/${propertyId}/edit`}
-                            className="btn btn-primary mr-2"
-                        >
-                            Edit
-                        </Link>
-                        <DeletePropertyButton propertyId={propertyId} />
+                    <div className="p-4">
+                        <div className="">
+                            <p className="text-lg">{property.name}</p>
+                            <p className="text-gray-800">{street} {city} {state}</p>
+                        </div>
+                        <div className="mt-2 flex">
+                            <Link
+                                href={`/properties/${propertyId}/edit`}
+                                className="btn btn-primary mr-2"
+                            >
+                                Edit
+                            </Link>
+                            <DeletePropertyButton propertyId={propertyId} />
+                        </div>
                     </div>
                 </div>
             )

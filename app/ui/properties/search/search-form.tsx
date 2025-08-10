@@ -5,11 +5,16 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import DwellioSelect, { OptionType } from "@/app/ui/shared/select";
 import { PropertyTypes } from "@/app/data/data";
-import Input from "../../shared/input";
+import Input from "@/app/ui/shared/input";
 
 const PropertySearchForm = () => {
-    const [location, setLocation] = useState('');
-    const [propertyType, setPropertyType] = useState<OptionType>({ label: 'All', value: 'All' });
+    const [propertyType, setPropertyType] = useState<OptionType>();
+    const [query, setQuery] = useState('');
+    
+    const propertyTypeOptions = [
+        ...PropertyTypes,
+        { label: 'All', value: 'All' },
+    ];
 
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -23,12 +28,14 @@ const PropertySearchForm = () => {
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if (location === '' && propertyType.value === 'All') {
-            router.push('/properties')
+        if (query === '' && propertyType && propertyType.value === 'All') {
+            router.push('/properties');
         } else {
             const queryParams = new URLSearchParams(searchParams);
-            queryParams.set('location', location);
-            queryParams.set('propertyType', propertyType.value);
+            queryParams.set('query', query);
+            if (propertyType) {
+                queryParams.set('propertyType', propertyType.value);
+            }
 
             router.push(`/properties/search/?${queryParams.toString()}`)
         }
@@ -43,20 +50,18 @@ const PropertySearchForm = () => {
                 <Input
                     inputType="input"
                     id='location'
-                    placeholder="Enter Location (City, State, Zip, etc.)"
-                    onChange={(event: ChangeEvent<HTMLInputElement>) => setLocation(event.target.value)}
+                    placeholder="Name, description, location or amenity"
+                    onChange={(event: ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)}
                     noClasses={true}
                 />
             </div>
             <div className="w-full md:w-2/5 md:pl-2">
                 <label htmlFor="property-type" className="sr-only">Property Type</label>
                 <DwellioSelect
-                    options={[
-                        { label: 'All', value: 'All' },
-                        ...PropertyTypes
-                    ]}
+                    options={propertyTypeOptions}
                     id="property-type"
                     value={propertyType}
+                    placeholder="Property Type"
                     onChange={(selectedOption) => handlePropertyTypeChange(selectedOption)}
                 />
             </div>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { signOut, signIn, useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
 import { FaGoogle } from "react-icons/fa";
 import { HiOutlineBell } from "react-icons/hi2";
 import Link from "next/link";
@@ -15,6 +16,7 @@ import UnreadMessageCount from "@/app/ui/messages/unread-message-count";
 const NavBarDesktopRight = () => {
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const { data: session } = useSession();
+    const pathname = usePathname();
     
     const profileImage = session?.user?.image;
     const { unreadCount } = useGlobalContext();
@@ -31,7 +33,7 @@ const NavBarDesktopRight = () => {
                 // Logged in
                 <div className="flex items-center pr-2">
                     <Link className='relative group' href='/messages'>
-                        <HiOutlineBell className='relative size-8 rounded-full btn btn-login-logout p-1'/>
+                        <HiOutlineBell className='size-8 rounded-full btn btn-login-logout p-1'/>
                         {unreadCount > 0 && <UnreadMessageCount unreadCount={unreadCount} />}
                         
                     </Link>
@@ -41,7 +43,7 @@ const NavBarDesktopRight = () => {
                         <div>
                             <button
                                 type="button"
-                                className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 cursor-pointer"
+                                className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-200 cursor-pointer"
                                 id="user-menu-button"
                                 aria-expanded="false"
                                 aria-haspopup="true"
@@ -63,7 +65,7 @@ const NavBarDesktopRight = () => {
                         {isProfileDropdownOpen && (
                             <div
                                 id="user-menu"
-                                className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                                className="absolute right-0 top-10 z-10 p-2 w-50 origin-top-right rounded-sm bg-white border-gray-100 shadow-md flex flex-col items-center justify-center space-y-2"
                                 role="menu"
                                 aria-orientation="vertical"
                                 aria-labelledby="user-menu-button"
@@ -71,17 +73,17 @@ const NavBarDesktopRight = () => {
                             >
                                 <Link
                                     href="/profile"
-                                    className="block px-4 py-2 text-sm text-gray-700"
+                                    className={`${pathname === '/profile' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
                                     role="menuitem"
                                     tabIndex={-1}
                                     id="user-menu-item-0"
                                     onClick={() => setIsProfileDropdownOpen(false)}
                                 >
-                                    Your Profile
+                                    Profile
                                 </Link>
                                 <Link
                                     href="/properties/favorites"
-                                    className="block px-4 py-2 text-sm text-gray-700"
+                                    className={`${pathname === '/properties/favorites' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
                                     role="menuitem"
                                     tabIndex={-1}
                                     id="user-menu-item-1"
@@ -90,7 +92,7 @@ const NavBarDesktopRight = () => {
                                     Favorite Properties
                                 </Link>
                                 <button
-                                    className="block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                                    className="btn btn-login-logout w-full"
                                     role="menuitem"
                                     tabIndex={-1}
                                     id="user-menu-item-2"

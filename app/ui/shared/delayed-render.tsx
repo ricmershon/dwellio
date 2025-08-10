@@ -7,7 +7,7 @@ interface DelayedRenderProps {
     delay?: number;   // defaults to 500ms
 }
 
-const DelayedRender = ({ children, delay = 0 }: DelayedRenderProps) => {
+const DelayedRender = ({ children, delay = 500 }: DelayedRenderProps) => {
     const [isVisible, setIsVisible] = useState(false);
     
     useEffect(() => {

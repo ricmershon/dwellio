@@ -7,9 +7,8 @@ import { toast } from "react-toastify";
 
 import { favoriteProperty } from "@/app/lib/actions/property-actions";
 import { getFavoriteStatus } from "@/app/lib/actions/property-actions";
-import { ActionState } from "@/app/types/types";
 
-const PropertyCardFavoriteButton = ({ propertyId }: { propertyId: string }) => {
+const PropertyFavoriteButton = ({ propertyId }: { propertyId: string }) => {
     const [isFavorite, setIsFavorite] = useState<boolean | undefined>(false);
 
     useEffect(() => {
@@ -31,7 +30,7 @@ const PropertyCardFavoriteButton = ({ propertyId }: { propertyId: string }) => {
 
     const favoritePropertyAction = async () => {
         try {
-            const result: ActionState = await favoriteProperty(propertyId);
+            const result = await favoriteProperty(propertyId);
             setIsFavorite(result.isFavorite);
         } catch (error) {
             throw new Error(`Error getting favorite status: ${error}`)
@@ -40,12 +39,12 @@ const PropertyCardFavoriteButton = ({ propertyId }: { propertyId: string }) => {
 
     return (
         <>
-            <form action={favoritePropertyAction}>
-                <button className="absolute top-[10px] right-[10px] size-6 hover:cursor-pointer">
+            <form action={favoritePropertyAction} className="size-[18px]">
+                <button className="size-4 hover:cursor-pointer">
                     {isFavorite ? (
                         <HeartSolidIcon className='text-red-600' />
                     ) : (
-                        <HeartOutlineIcon className='text-white heroicon-opacity' />
+                        <HeartOutlineIcon className='text-gray-600' />
                     )}
                 </button>
             </form>
@@ -53,4 +52,4 @@ const PropertyCardFavoriteButton = ({ propertyId }: { propertyId: string }) => {
     );
 }
  
-export default PropertyCardFavoriteButton;
+export default PropertyFavoriteButton;

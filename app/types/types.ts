@@ -18,7 +18,9 @@ export type ActionState = {
 export interface PropertiesQuery {
     $or: [
         { name: RegExp },
-        { description: RegExp},
+        { description: RegExp },
+        { amenities: RegExp },
+        { type: RegExp },
         { 'location.street': RegExp },
         { 'location.city': RegExp },
         { 'location.state': RegExp },
