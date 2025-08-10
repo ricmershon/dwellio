@@ -14,7 +14,7 @@ const Hero = () => {
                         Find The Perfect Rental
                     </h1>
                     <p className="my-4 text-xl text-gray-700">
-                        Discover the perfect property that suits your needs.
+                        Discover the perfect property.
                     </p>
                 </div>
                 <Suspense>
