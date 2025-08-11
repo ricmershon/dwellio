@@ -2,31 +2,7 @@ import { HydratedDocument } from "mongoose";
 
 import dbConnect from "@/config/database-config"
 import { Property, PropertyDocument, User, UserDocument } from "@/models";
-import { MAX_ITEMS_PER_PAGE, PropertiesQuery } from "@/types/types";
-
-/**
- * Returns a number of the most recent properties.
- * 
- * @param {number} numProperties - number of properties to return.
- * @returns Promise<PropertyDocument[]>
- */
-export const fetchRecentProperties = async (numProperties: number) => {
-    // Artificial delay for testing loading components.
-    // console.log('Fetching data...')
-    // await new Promise((resolve) => setTimeout(resolve, 5000));
-    // console.log('Data received...')
-
-    try {        
-        await dbConnect();
-        const properties: PropertyDocument[] = await Property.find()
-            .sort({ createdAt: -1 })
-            .limit(numProperties);
-        return properties;
-    } catch (error) {
-        console.error(`>>> Database error fetching properties: ${error}`);
-        throw new Error(`Failed to fetch properties data: ${error}`);
-    }
-}
+import { PropertiesQuery } from "@/types/types";
 
 /**
  * Returns a single property from the database.
@@ -71,10 +47,24 @@ export const fetchPropertiesByUserId = async (userId: string) => {
  * 
  * @returns Promise<PropertyDocument[]>
  */
-export const fetchFeaturedProperties = async () => {
+export const fetchFeaturedProperties = async (viewportWidth: number) => {
+    let numProperties;
+
+    if (viewportWidth < 768) {
+        numProperties = 4;
+    } else if (viewportWidth < 1024) {
+        numProperties = 8;
+    } else if (viewportWidth < 1280) {
+        numProperties = 10;
+    } else {
+        numProperties = 12;
+    }
+
     try {
         await dbConnect();
-        const properties: PropertyDocument[] | null = await Property.find({ isFeatured: true });
+        const properties: PropertyDocument[] | null = await Property.find({ isFeatured: true })
+            .sort({ createdAt: -1 })
+            .limit(numProperties);
         return properties;
     } catch (error) {
         console.error(`>>> Database error fetching featured properties: ${error}`);
@@ -122,7 +112,19 @@ export const searchProperties = async (query: PropertiesQuery) => {
  * 
  * @returns Promise<number>
  */
-export const fetchNumPropertiesPages = async (query: PropertiesQuery) => {
+export const fetchNumPropertiesPages = async (query: PropertiesQuery, viewportWidth: number) => {
+    let maxItemsPerPage: number;
+
+    if (viewportWidth < 640) {
+        maxItemsPerPage = 8;
+    } else if (viewportWidth < 768) {
+        maxItemsPerPage = 10
+    } else if (viewportWidth < 1024) {
+        maxItemsPerPage = 12;
+    } else {
+        maxItemsPerPage = 15;
+    }
+
     let totalProperties: number;
 
     try {
@@ -134,7 +136,7 @@ export const fetchNumPropertiesPages = async (query: PropertiesQuery) => {
             totalProperties = await Property.countDocuments()
         }
 
-        const totalPages = Math.ceil(totalProperties / MAX_ITEMS_PER_PAGE);
+        const totalPages = Math.ceil(totalProperties / maxItemsPerPage);
         return totalPages;
     } catch (error) {
         console.error(`>>> Database error fetching document count: ${error}`);
@@ -150,13 +152,29 @@ export const fetchNumPropertiesPages = async (query: PropertiesQuery) => {
  */
 export const fetchPaginatedProperties = async (
     currentPage: number,
-    query?: PropertiesQuery
+    viewportWidth: number,
+    query?: PropertiesQuery,
 ) => {
     // Artificial delay for testing loading components.
     // console.log('Fetching data...')
     // await new Promise((resolve) => setTimeout(resolve, 5000));
     // console.log('Data received...')
-    const offset = (currentPage - 1) * MAX_ITEMS_PER_PAGE;
+
+        let maxItemsPerPage: number;
+
+    if (viewportWidth < 640) {
+        maxItemsPerPage = 8;
+    } else if (viewportWidth < 768) {
+        maxItemsPerPage = 10
+    } else if (viewportWidth < 1024) {
+        maxItemsPerPage = 12;
+    } else if (viewportWidth < 1280) {
+        maxItemsPerPage = 15;
+    } else {
+        maxItemsPerPage = 18
+    }
+
+    const offset = (currentPage - 1) * maxItemsPerPage;
     
     let properties: PropertyDocument[] | null;
     try {
@@ -165,11 +183,11 @@ export const fetchPaginatedProperties = async (
         if (query) {
             properties = await Property.find(query)
                 .skip(offset)
-                .limit(MAX_ITEMS_PER_PAGE);
+                .limit(maxItemsPerPage);
         } else {
             properties = await Property.find()
                 .skip(offset)
-                .limit(MAX_ITEMS_PER_PAGE);
+                .limit(maxItemsPerPage);
         }
         return properties;
     } catch (error) {

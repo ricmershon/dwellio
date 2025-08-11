@@ -19,8 +19,6 @@ const AddPropertyForm = () => {
     const [actionState, formAction, isPending] = useActionState(createProperty, {} as ActionState);
     const { data: session } = useSession();
 
-    console.log(actionState);
-
     /**
      * Display error message if the `createProperty` returns an `ERROR` status.
      */

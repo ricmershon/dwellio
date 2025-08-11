@@ -35,4 +35,4 @@ export interface PropertyImageData {
 
 export type FormErrorsType = Record<string, string[]> | string[];
 
-export const MAX_ITEMS_PER_PAGE = 6;
+export const VIEWPORT_WIDTH_COOKIE_NAME = 'viewport_width';

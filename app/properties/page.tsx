@@ -9,6 +9,7 @@ import PropertiesListSkeleton from "@/ui/skeletons/properties-list-skeleton";
 import DelayedRender from "@/ui/shared/delayed-render";
 import { PropertiesQuery } from "@/types/types";
 import PropertyFilterForm from "@/ui/properties/properties-filter-form";
+import { getViewportWidth } from "@/utils/get-viewport-width";
 
 export const metadata: Metadata = {
     title: 'Properties'
@@ -22,6 +23,8 @@ interface PropertiesPageProps {
 }
 
 const PropertiesPage = async (props: PropertiesPageProps) => {
+    const viewportWidth = await getViewportWidth();
+
     const searchParams = await props.searchParams;
     const query = searchParams?.query || '';
     const currentPage = Number(searchParams?.page) || 1;
@@ -40,7 +43,7 @@ const PropertiesPage = async (props: PropertiesPageProps) => {
         ],
     };
 
-    const totalPages = await fetchNumPropertiesPages(propertiesQuery);
+    const totalPages = await fetchNumPropertiesPages(propertiesQuery, viewportWidth);
 
     return (
         <main>
@@ -59,6 +62,7 @@ const PropertiesPage = async (props: PropertiesPageProps) => {
                 <PropertiesList
                     query={propertiesQuery}
                     currentPage={currentPage}
+                    viewportWidth={viewportWidth}
                 />
             </Suspense>
             <div className="mt-5 flex w-full justify-center">

@@ -4,19 +4,19 @@ import { PropertiesQuery } from "@/types/types";
 import PropertyCard from "@/ui/properties/property-card";
 
 type PropertiesListProps =
-    | { properties: PropertyDocument[]; currentPage?: never; query?: never; featured?: never }
-    | { currentPage: number; query: PropertiesQuery; properties?: never; featured?: never }
-    | { query: PropertiesQuery; currentPage: number; properties?: never; featured?: never }
-    | { featured: boolean; properties?: never; currentPage?: never; query?: never };
+    | { properties: PropertyDocument[]; viewportWidth: number; currentPage?: never; query?: never; featured?: never }
+    | { currentPage: number; query: PropertiesQuery; viewportWidth: number; properties?: never; featured?: never }
+    | { query: PropertiesQuery; currentPage: number; viewportWidth: number; properties?: never; featured?: never }
+    | { featured: boolean; viewportWidth: number; properties?: never; currentPage?: never; query?: never };
 
-const PropertiesList = async ({ featured = false, currentPage, properties, query }: PropertiesListProps) => {
+const PropertiesList = async ({ featured = false, currentPage, properties, query, viewportWidth }: PropertiesListProps) => {
     let propertiesToList: PropertyDocument[];
 
     if (featured) {
-        propertiesToList = await fetchFeaturedProperties();
+        propertiesToList = await fetchFeaturedProperties(viewportWidth);
     } else {
         propertiesToList = properties
-            ?? (currentPage ? await fetchPaginatedProperties(currentPage, query) : []);
+            ?? (currentPage ? await fetchPaginatedProperties(currentPage, viewportWidth, query) : []);
 
     }
 
