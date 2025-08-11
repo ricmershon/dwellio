@@ -8,6 +8,7 @@ import AuthProvider from "@/app/ui/root/auth-provider";
 import NavBar from "@/app/ui/root/layout/nav-bar/nav-bar";
 import Footer from "@/app/ui/root/layout/footer";
 import { GlobalContextProvider } from "@/app/context/global-context";
+import ViewportCookieWriter from "@/app/ui/root/viewport-cookie-writer";
 
 import "@/app/globals.css";
 
@@ -34,6 +35,7 @@ const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
             <GlobalContextProvider>
                 <html lang="en">
                     <body>
+                        <ViewportCookieWriter />
                         <NavBar />
                         <div className="flex-grow md:overflow-y-auto px-4 md:px-6 lg:px-8 py-6 lg:py-8">{children}</div>
                         <Footer />

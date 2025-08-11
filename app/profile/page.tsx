@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Metadata } from "next";
+import { cookies } from 'next/headers';
 
 import profileDefaultImage from '@/assets/images/profile.png';
 import { getSessionUser } from "@/app/utils/get-session-user";
@@ -18,7 +19,13 @@ const ProfilePage = async () => {
         throw new Error('User ID is required.')
     }
 
-    const properties: PropertyDocument[] = await fetchPropertiesByUserId(sessionUser.id);
+    // Read viewport width cookie written by the client to inform server-side logic
+    const cookieStore = await cookies();
+    const vwCookie = cookieStore.get('vw')?.value;
+    const viewportWidth = vwCookie ? Number(vwCookie) : 0;
+
+    const properties: PropertyDocument[] = await fetchPropertiesByUserId(sessionUser.id, viewportWidth);
+    // viewportWidth is available here to pass into server-side fetches or tailor queries if needed
         
     return (
         <main>

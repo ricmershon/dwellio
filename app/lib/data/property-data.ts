@@ -55,7 +55,9 @@ export const fetchProperty = async (propertyId: string) => {
  * @param {string} userId - ObjectId in database for user/property owner.
  * @returns Promise<PropertyDocument[]>
  */
-export const fetchPropertiesByUserId = async (userId: string) => {
+export const fetchPropertiesByUserId = async (userId: string, _viewportWidth?: number) => {
+    // Parameter reserved for responsive server logic driven by viewport width
+    void _viewportWidth;
     try {
         await dbConnect();
         const properties: PropertyDocument[] | null = await Property.find({ owner: userId });
