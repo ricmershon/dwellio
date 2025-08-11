@@ -1,10 +1,10 @@
 import { Metadata } from "next";
 
-import { fetchFavoritedProperties } from "@/app/lib/data/property-data";
-import { PropertyDocument } from "@/app/models";
-import { getSessionUser } from "@/app/utils/get-session-user";
-import Breadcrumbs from "@/app/ui/shared/breadcrumbs";
-import PropertiesList from "@/app/ui/properties/properties-list";
+import { fetchFavoritedProperties } from "@/lib/data/property-data";
+import { PropertyDocument } from "@/models";
+import { getSessionUser } from "@/utils/get-session-user";
+import Breadcrumbs from "@/ui/shared/breadcrumbs";
+import PropertiesList from "@/ui/properties/properties-list";
 
 export const metadata: Metadata = {
     title: "Favorite Properties"

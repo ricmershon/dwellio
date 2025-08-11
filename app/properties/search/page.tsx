@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
 import { Types } from 'mongoose';
 
-import PropertyCard from '@/app/ui/properties/property-card';
-import PropertySearchForm from '@/app/ui/properties/search/search-form';
-import { PropertiesQuery } from '@/app/types/types';
-import { searchProperties } from '@/app/lib/data/property-data';
-import Breadcrumbs from '@/app/ui/shared/breadcrumbs';
+import PropertyCard from '@/ui/properties/property-card';
+import PropertySearchForm from '@/ui/properties/search/search-form';
+import { PropertiesQuery } from '@/types/types';
+import { searchProperties } from '@/lib/data/property-data';
+import Breadcrumbs from '@/ui/shared/breadcrumbs';
 
 export const metadata: Metadata = {
     title: 'Search Properties'

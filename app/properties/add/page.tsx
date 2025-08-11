@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
-import AddPropertyForm from "@/app/ui/properties/add/add-property-form";
-import Breadcrumbs from "@/app/ui/shared/breadcrumbs";
+import AddPropertyForm from "@/ui/properties/add/add-property-form";
+import Breadcrumbs from "@/ui/shared/breadcrumbs";
 
 export const metadata: Metadata = {
     title: "Add New Property"
