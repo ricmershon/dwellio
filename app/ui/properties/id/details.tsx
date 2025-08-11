@@ -2,7 +2,7 @@ import { FaCheck } from "react-icons/fa";
 
 import { PropertyDocument } from "@/app/models";
 import { getSessionUser } from "@/app/utils/get-session-user";
-// import PropertyMap from "@/app/ui/properties/id/map";
+import PropertyMap from "@/app/ui/properties/id/map";
 
 const PropertyDetails = async ({ property }: { property: PropertyDocument }) => {
     const { rates } = property;
@@ -50,7 +50,7 @@ const PropertyDetails = async ({ property }: { property: PropertyDocument }) => 
             </div>
 
             {/* Property rates and options */}
-            <div className='pb-4 mb-4 border-b border-gray-200'>
+            <div className='pb-4 mb-6 border-b border-gray-200'>
                 <h3 className="mb-2">Rates</h3>
                 <div className="flex flex-col md:flex-row justify-start items-start">
                     {rates.nightly && (
@@ -77,9 +77,9 @@ const PropertyDetails = async ({ property }: { property: PropertyDocument }) => 
             </div>
 
             {/* Map */}
-            {/* <div className="bg-white p-4 rounded-md shadow-md">
+            <div className="bg-white p-4 rounded-md shadow-md">
                 <PropertyMap property={property} />
-            </div> */}
+            </div>
         </div>
     );
  }
