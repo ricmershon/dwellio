@@ -71,7 +71,9 @@ const Input = ({
                 </label>
             )}
             {inputElement}
-            {errors && <FormErrors errors={errors} id={id} />}
+            {errors &&
+                <FormErrors errors={errors} id={id} />
+            }
         </div>
     )
 }

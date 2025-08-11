@@ -13,6 +13,7 @@ import { updateProperty } from "@/app/lib/actions/property-actions";
 import FormErrors from "@/app/ui/shared/form-errors";
 import DwellioSelect from "@/app/ui/shared/select";
 import Input from "@/app/ui/shared/input";
+import InputErrors from "@/app/ui/shared/input-errors";
 
 
 const EditPropertyForm = ({ property }: { property: PropertyDocument }) => {
@@ -322,8 +323,7 @@ const EditPropertyForm = ({ property }: { property: PropertyDocument }) => {
                     defaultValue={(actionState.formData?.get("sellerInfo.phone") || phone) as string}
                     errors={actionState.formErrorMap?.sellerInfo?.phone}
                 />
-
-
+                <InputErrors numErrors={Object.keys(actionState).length} />
             </div>
 
             {/* Buttons */}

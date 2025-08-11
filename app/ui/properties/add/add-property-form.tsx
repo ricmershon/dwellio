@@ -12,11 +12,14 @@ import Input from "@/app/ui/shared/input";
 import FormErrors from "@/app/ui/shared/form-errors";
 import DwellioSelect from "@/app/ui/shared/select";
 import { ActionState } from "@/app/types/types";
+import InputErrors from "@/app/ui/shared/input-errors";
 
 // TODO: Google address component
 const AddPropertyForm = () => {
     const [actionState, formAction, isPending] = useActionState(createProperty, {} as ActionState);
     const { data: session } = useSession();
+
+    console.log(actionState);
 
     /**
      * Display error message if the `createProperty` returns an `ERROR` status.
@@ -324,11 +327,14 @@ const AddPropertyForm = () => {
                         multiple
                         aria-describedby="images-error"
                     />
-                    {actionState.formErrorMap?.imagesData && <FormErrors
-                        errors={actionState.formErrorMap.imagesData}
-                        id='images'
-                    />}
+                    {actionState.formErrorMap?.imagesData &&
+                        <FormErrors
+                            errors={actionState.formErrorMap.imagesData}
+                            id='images'
+                        />
+                    }
                 </div>
+                <InputErrors numErrors={Object.keys(actionState).length} />
             </div>
 
             {/* Buttons */}
