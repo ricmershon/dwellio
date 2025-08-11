@@ -1,6 +1,6 @@
 import Hero from "@/app/ui/root/page/hero"
 import InfoBoxes from "@/app/ui/root/page/info-boxes";
-import FeaturedProperties from "./ui/root/page/featured-properties";
+import FeaturedProperties from "@/app/ui/root/page/featured-properties";
 
 const HomePage = () => {
     return (
