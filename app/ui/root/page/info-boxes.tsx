@@ -27,7 +27,7 @@ const InfoBoxes = () => (
                     }}
                 >
                     <p className="text-sm">
-                        Rent your property. You must be logged in.
+                        Log in and rent your property.
                     </p>
                 </InfoBox>
             </div>
