@@ -4,10 +4,10 @@ import 'react-toastify/dist/ReactToastify.css'
 import 'react-loading-skeleton/dist/skeleton.css';
 import 'photoswipe/dist/photoswipe.css'
 
-import AuthProvider from "@/app/ui/root/auth-provider";
-import NavBar from "@/app/ui/root/layout/nav-bar/nav-bar";
-import Footer from "@/app/ui/root/layout/footer";
-import { GlobalContextProvider } from "@/app/context/global-context";
+import AuthProvider from "@/ui/root/auth-provider";
+import NavBar from "@/ui/root/layout/nav-bar/nav-bar";
+import Footer from "@/ui/root/layout/footer";
+import { GlobalContextProvider } from "@/context/global-context";
 
 import "@/app/globals.css";
 

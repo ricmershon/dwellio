@@ -2,11 +2,11 @@ import Image from "next/image";
 import { Metadata } from "next";
 
 import profileDefaultImage from '@/assets/images/profile.png';
-import { getSessionUser } from "@/app/utils/get-session-user";
-import { fetchPropertiesByUserId } from "@/app/lib/data/property-data";
-import ProfileProperties from "@/app/ui/profile/profile-properties";
-import { PropertyDocument } from "@/app/models";
-import Breadcrumbs from "@/app/ui/shared/breadcrumbs";
+import { getSessionUser } from "@/utils/get-session-user";
+import { fetchPropertiesByUserId } from "@/lib/data/property-data";
+import ProfileProperties from "@/ui/profile/profile-properties";
+import { PropertyDocument } from "@/models";
+import Breadcrumbs from "@/ui/shared/breadcrumbs";
 
 export const metadata: Metadata = {
     title: 'Profile'

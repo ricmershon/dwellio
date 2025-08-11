@@ -1,14 +1,14 @@
 import { Metadata } from "next";
 
-import { fetchProperty } from "@/app/lib/data/property-data";
-import PropertyDetails from '@/app/ui/properties/id/details';
-import PropertyImages from "@/app/ui/properties/id/images";
-import PropertyPageAside from "@/app/ui/properties/id/aside";
-import Breadcrumbs from "@/app/ui/shared/breadcrumbs";
-import { getSessionUser } from "@/app/utils/get-session-user";
-import PropertyFavoriteButton from "@/app/ui/properties/shared/property-favorite-button";
-import { toSerializedOjbect } from "@/app/utils/to-serialized-object";
-import ShareButtons from "@/app/ui/properties/id/share-buttons";
+import { fetchProperty } from "@/lib/data/property-data";
+import PropertyDetails from '@/ui/properties/id/details';
+import PropertyImages from "@/ui/properties/id/images";
+import PropertyPageAside from "@/ui/properties/id/aside";
+import Breadcrumbs from "@/ui/shared/breadcrumbs";
+import { getSessionUser } from "@/utils/get-session-user";
+import PropertyFavoriteButton from "@/ui/properties/shared/property-favorite-button";
+import { toSerializedOjbect } from "@/utils/to-serialized-object";
+import ShareButtons from "@/ui/properties/id/share-buttons";
 
 export const metadata: Metadata = {
     title: 'Property'
