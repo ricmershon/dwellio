@@ -9,6 +9,7 @@ import { ActionState } from "@/app/types/types";
 import { createMessage } from "@/app/lib/actions/message-actions";
 import { toast } from "react-toastify";
 import Input from "@/app/ui/shared/input";
+import InputErrors from "@/app/ui/shared/input-errors";
 
 interface PropertyContactFormProps {
     property: PropertyDocument
@@ -95,7 +96,7 @@ const PropertyContactForm = ({ property, userName, userEmail }: PropertyContactF
                         defaultValue={(actionState.formData?.get("body") || "") as string}
                         errors={actionState.formErrorMap?.body}
                     />
-
+                    <InputErrors numErrors={Object.keys(actionState).length} />
                     <div>
                         <button
                             className={`flex gap-1 btn btn-primary w-full justify-center ${isPending ? 'hover:cursor-not-allowed' : 'hover:cursor-pointer'}`}

@@ -1,10 +1,16 @@
 import { FaCheck } from "react-icons/fa";
 
 import { PropertyDocument } from "@/app/models";
-// import PropertyMap from "@/app/ui/properties/id/map";
+import { getSessionUser } from "@/app/utils/get-session-user";
+import PropertyMap from "@/app/ui/properties/id/map";
 
-const PropertyDetails = ({ property }: { property: PropertyDocument }) => {
+const PropertyDetails = async ({ property }: { property: PropertyDocument }) => {
     const { rates } = property;
+    const sessionUser = await getSessionUser();
+
+    const sessionUserId: string | null = sessionUser && sessionUser.id
+        ? sessionUser.id.toString()
+        : null;
     
     return (
         <div>
@@ -18,8 +24,14 @@ const PropertyDetails = ({ property }: { property: PropertyDocument }) => {
                 {property.squareFeet} square feet
             </p>
 
-            {/* Property description */}
-            <p className="pb-4 mb-4 border-b border-gray-200">{property.description}</p>
+            {/* Property description and host/owner */}
+            <p className="mb-4">{property.description}</p>
+            <p className="pb-4 mb-4 border-b border-gray-200 font-bold">
+                {`${property.owner.toString() === sessionUserId
+                    ? "You own this property"
+                    : `Hosted by ${property.sellerInfo.name}`
+                }`}
+            </p>
 
 
             {/* Amenities */}
@@ -38,7 +50,7 @@ const PropertyDetails = ({ property }: { property: PropertyDocument }) => {
             </div>
 
             {/* Property rates and options */}
-            <div className='pb-4 mb-4 border-b border-gray-200'>
+            <div className='pb-4 mb-6 border-b border-gray-200'>
                 <h3 className="mb-2">Rates</h3>
                 <div className="flex flex-col md:flex-row justify-start items-start">
                     {rates.nightly && (
@@ -65,9 +77,9 @@ const PropertyDetails = ({ property }: { property: PropertyDocument }) => {
             </div>
 
             {/* Map */}
-            {/* <div className="bg-white p-4 rounded-md shadow-md">
+            <div className="bg-white p-4 rounded-md shadow-md">
                 <PropertyMap property={property} />
-            </div> */}
+            </div>
         </div>
     );
  }

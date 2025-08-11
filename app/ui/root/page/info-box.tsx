@@ -1,4 +1,5 @@
 import Link from "next/link";
+import React from "react";
 
 interface InfoBoxProps {
     headingText: string;
@@ -8,7 +9,7 @@ interface InfoBoxProps {
         styles: string
         text: string;
     };
-    children: string;
+    children: React.ReactNode;
 }
 
 const InfoBox = ({
@@ -18,13 +19,13 @@ const InfoBox = ({
     children
 }: InfoBoxProps) => (
     <div className={`${backgroundColor} p-6 rounded-lg shadow-md`}>
-        <h2 className="text-xl font-bold">{headingText}</h2>
-        <p className="mt-2 mb-4">
+        <h2 className="heading">{headingText}</h2>
+        <div className="mt-2 mb-4">
             {children}
-        </p>
+        </div>
         <Link
             href={buttonInfo.link}
-            className={`${buttonInfo.styles} text-white inline-block rounded-lg px-4 py-2`}
+            className={`${buttonInfo.styles} text-white btn`}
         >
             {buttonInfo.text}
         </Link>

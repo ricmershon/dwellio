@@ -3,7 +3,6 @@ import { Types } from 'mongoose';
 
 import PropertyCard from '@/app/ui/properties/property-card';
 import PropertySearchForm from '@/app/ui/properties/search/search-form';
-import PropertiesList from '@/app/ui/properties/properties-list';
 import { PropertiesQuery } from '@/app/types/types';
 import { searchProperties } from '@/app/lib/data/property-data';
 import Breadcrumbs from '@/app/ui/shared/breadcrumbs';
@@ -57,14 +56,14 @@ const SearchResultsPage = async (props: SearchResultsPageProps) => {
                     { label: 'Search Properties', href: '/properties/search', active: true }
                 ]}
             />
-                <div className="max-width-7xl mx-auto px-4 flex flex-col tems-start sm:px-6 lg:px-8">
-                    <PropertySearchForm />
-                </div>
+            <div className="max-width-7xl mx-auto px-4 flex flex-col tems-start sm:px-6 lg:px-8">
+                <PropertySearchForm />
+            </div>
 
             <section className="py-6">
                 <div className="container-xl lg:container m-auto">
-                    <h1 className="text-lg mb-4">Search Results</h1>
-                    {PropertiesList.length === 0 ? (
+                    <h1 className="heading">Search Results</h1>
+                    {propertiesQueryResults.length === 0 ? (
                         <p>No search results</p>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

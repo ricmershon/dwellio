@@ -2,7 +2,7 @@ import PropertiesList from "@/app/ui/properties/properties-list";
 
 const FeaturedProperties = async () => (
     <>
-        <h2 className="mb-4 text-xl font-bold">Featured Properties</h2>
+        <h1 className="heading">Featured Properties</h1>
         <PropertiesList featured={true} />
     </>
 )

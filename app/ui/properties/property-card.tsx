@@ -50,7 +50,7 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
                     <div className='text-gray-700 text-base'>
                         {getRateDisplay(property.rates)}
                     </div>
-                    <div>Rating</div>
+                    {/* <div>Rating</div> */}
                 </div>
                 <Link href={`/properties/${property._id}`}>
                     <div className="flex justify-between items-center text-blue-800 text-[11px]">

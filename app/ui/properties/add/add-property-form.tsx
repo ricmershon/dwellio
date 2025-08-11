@@ -2,6 +2,7 @@
 
 import { useActionState, useEffect } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { LuRefreshCw } from "react-icons/lu";
 import { toast } from "react-toastify";
 
@@ -11,10 +12,14 @@ import Input from "@/app/ui/shared/input";
 import FormErrors from "@/app/ui/shared/form-errors";
 import DwellioSelect from "@/app/ui/shared/select";
 import { ActionState } from "@/app/types/types";
+import InputErrors from "@/app/ui/shared/input-errors";
 
 // TODO: Google address component
 const AddPropertyForm = () => {
     const [actionState, formAction, isPending] = useActionState(createProperty, {} as ActionState);
+    const { data: session } = useSession();
+
+    console.log(actionState);
 
     /**
      * Display error message if the `createProperty` returns an `ERROR` status.
@@ -283,7 +288,7 @@ const AddPropertyForm = () => {
                     type='text'
                     placeholder="Name"
                     label="Renter Name"
-                    defaultValue={(actionState.formData?.get("sellerInfo.name") || "") as string}
+                    defaultValue={(actionState.formData?.get("sellerInfo.name") || session?.user.name) as string}
                     errors={actionState.formErrorMap?.sellerInfo?.name}
                     
                 />
@@ -294,7 +299,7 @@ const AddPropertyForm = () => {
                     type='email'
                     placeholder="Email address"
                     label="Renter Email"
-                    defaultValue={(actionState.formData?.get("sellerInfo.email") || "") as string}
+                    defaultValue={(actionState.formData?.get("sellerInfo.email") || session?.user.email) as string}
                     errors={actionState.formErrorMap?.sellerInfo?.email}
                 />
                <Input
@@ -322,11 +327,14 @@ const AddPropertyForm = () => {
                         multiple
                         aria-describedby="images-error"
                     />
-                    {actionState.formErrorMap?.imagesData && <FormErrors
-                        errors={actionState.formErrorMap.imagesData}
-                        id='images'
-                    />}
+                    {actionState.formErrorMap?.imagesData &&
+                        <FormErrors
+                            errors={actionState.formErrorMap.imagesData}
+                            id='images'
+                        />
+                    }
                 </div>
+                <InputErrors numErrors={Object.keys(actionState).length} />
             </div>
 
             {/* Buttons */}
