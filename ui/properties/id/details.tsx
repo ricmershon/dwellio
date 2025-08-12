@@ -3,6 +3,7 @@ import { FaCheck } from "react-icons/fa";
 import { PropertyDocument } from "@/models";
 import { getSessionUser } from "@/utils/get-session-user";
 import PropertyMap from "@/ui/properties/id/map";
+import { getViewportWidth } from "@/utils/get-viewport-width";
 
 const PropertyDetails = async ({ property }: { property: PropertyDocument }) => {
     const { rates } = property;
@@ -11,6 +12,8 @@ const PropertyDetails = async ({ property }: { property: PropertyDocument }) => 
     const sessionUserId: string | null = sessionUser && sessionUser.id
         ? sessionUser.id.toString()
         : null;
+
+    const viewportWidth = await getViewportWidth();
     
     return (
         <div>
@@ -80,7 +83,10 @@ const PropertyDetails = async ({ property }: { property: PropertyDocument }) => 
 
             {/* Map */}
             <div className="bg-white p-4 rounded-md shadow-md">
-                <PropertyMap property={property} />
+                <PropertyMap
+                    property={property}
+                    viewportWidth={viewportWidth}
+                />
             </div>
         </div>
     );
