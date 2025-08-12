@@ -3,10 +3,10 @@ import { Document, Schema, Types, model, models } from 'mongoose';
 import { MessageInputType } from '@/schemas/message-schema';
 
 export interface MessageDocument extends MessageInputType, Document {
-    sender: Types.ObjectId,
-    recipient: Types.ObjectId,
-    property: Types.ObjectId | { _id: Types.ObjectId, name: string },
-    read: boolean,
+    sender: Types.ObjectId;
+    recipient: Types.ObjectId;
+    property: Types.ObjectId | { _id: Types.ObjectId; name: string };
+    read: boolean;
     createdAt: Date;
     updatedAt: Date;
 }

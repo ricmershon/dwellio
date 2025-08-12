@@ -6,8 +6,8 @@ import { useSession } from "next-auth/react";
 import { LuRefreshCw } from "react-icons/lu";
 import { toast } from "react-toastify";
 
+import { useStaticInputs } from "@/context/global-context";
 import { createProperty } from "@/lib/actions/property-actions"
-import { Amenities, PropertyTypes } from "@/data/data";
 import Input from "@/ui/shared/input";
 import FormErrors from "@/ui/shared/form-errors";
 import DwellioSelect from "@/ui/shared/select";
@@ -18,6 +18,7 @@ import InputErrors from "@/ui/shared/input-errors";
 const AddPropertyForm = () => {
     const [actionState, formAction, isPending] = useActionState(createProperty, {} as ActionState);
     const { data: session } = useSession();
+    const { propertyTypes, amenities } = useStaticInputs();
 
     /**
      * Display error message if the `createProperty` returns an `ERROR` status.
@@ -41,7 +42,7 @@ const AddPropertyForm = () => {
                         Property Type
                     </label>
                     <DwellioSelect
-                        options={PropertyTypes}
+                        options={propertyTypes}
                         placeholder="Select a property type"
                         name='type'
                         id='type'
@@ -192,7 +193,7 @@ const AddPropertyForm = () => {
                         className="grid grid-cols-2 md:grid-cols-3 gap-2"
                         aria-describedby="amenities-error"
                     >
-                        {Amenities.map((amenity) => (
+                        {amenities.map((amenity) => (
                             <div key={amenity.id}>
                                 <input
                                     type="checkbox"

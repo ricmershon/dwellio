@@ -6,7 +6,7 @@ import Link from "next/link";
 import { LuRefreshCw } from "react-icons/lu";
 import { toast } from "react-toastify";
 
-import { Amenities, PropertyTypes } from '@/data/data'
+import { useStaticInputs } from "@/context/global-context";
 import { ActionState, ActionStatus } from "@/types/types";
 import type { PropertyDocument } from "@/models";
 import { updateProperty } from "@/lib/actions/property-actions";
@@ -20,6 +20,7 @@ const EditPropertyForm = ({ property }: { property: PropertyDocument }) => {
     const updatePropertyById = updateProperty.bind(null, (property._id as string).toString());
     const [actionState, formAction, isPending] = useActionState(updatePropertyById, {} as ActionState);
 
+    const { propertyTypes, amenities} = useStaticInputs();
     /**
      * Display error message if the `createProperty` returns an `ERROR` status.
      */
@@ -46,7 +47,7 @@ const EditPropertyForm = ({ property }: { property: PropertyDocument }) => {
                         Property Type
                     </label>
                     <DwellioSelect
-                        options={PropertyTypes}
+                        options={propertyTypes}
                         placeholder="Select a property type"
                         name='type'
                         id='type'
@@ -202,7 +203,7 @@ const EditPropertyForm = ({ property }: { property: PropertyDocument }) => {
                         className="grid grid-cols-2 md:grid-cols-3 gap-2"
                         aria-describedby="amenities-error"
                     >
-                        {Amenities.map((amenity) => (
+                        {amenities.map((amenity) => (
                             <div key={amenity.id}>
                                 <input
                                     type="checkbox"

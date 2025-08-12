@@ -3,16 +3,19 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import DwellioSelect, { OptionType } from "@/ui/shared/select";
-import { PropertyTypes } from "@/data/data";
+import { OptionType } from "@/types/types";
+import DwellioSelect from "@/ui/shared/select";
 import Input from "@/ui/shared/input";
+import { useStaticInputs } from "@/context/global-context";
 
 const PropertySearchForm = () => {
     const [propertyType, setPropertyType] = useState<OptionType>();
     const [query, setQuery] = useState('');
+
+    const { propertyTypes } = useStaticInputs();
     
     const propertyTypeOptions = [
-        ...PropertyTypes,
+        ...propertyTypes,
         { label: 'All', value: 'All' },
     ];
 

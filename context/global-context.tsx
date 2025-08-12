@@ -1,38 +1,46 @@
 'use client';
 
-import {
+import React, {
     createContext,
     useContext,
     useState,
     Dispatch,
     SetStateAction,
     ReactNode,
-    useEffect,
+    useEffect
 } from 'react';
 import { useSession } from 'next-auth/react';
 
 import { getUnreadMessageCount } from '@/lib/actions/message-actions';
+import { StaticInputsDocument } from '@/models';
 
 interface GlobalContextProps {
     isLoggedIn: boolean;
     unreadCount: number;
     setUnreadCount: Dispatch<SetStateAction<number>>;
+    staticInputs: StaticInputsDocument | null;
 }
 
 const GlobalContext = createContext<GlobalContextProps>({
     isLoggedIn: false,
     unreadCount: 0,
     setUnreadCount: (() => undefined) as Dispatch<SetStateAction<number>>,
+    staticInputs: null
 });
 
-export const GlobalContextProvider = ({ children }: { children: ReactNode }) => {
+interface GlobalContextProviderProps {
+    children: ReactNode,
+    initialStaticInputs: StaticInputsDocument
+}
+
+export const GlobalContextProvider = ({ children, initialStaticInputs }: GlobalContextProviderProps) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [unreadCount, setUnreadCount] = useState(0);
 
     const { data: session } = useSession();
 
     /**
-     * Track logged in state and message count
+     * Keep auth state and message count in sync
      */
     useEffect(() => {
         if (session && session.user) {
@@ -46,10 +54,23 @@ export const GlobalContextProvider = ({ children }: { children: ReactNode }) => 
     }, [session])
 
     return (
-        <GlobalContext.Provider value={{ isLoggedIn, unreadCount, setUnreadCount }}>
+        <GlobalContext.Provider value={{
+            isLoggedIn,
+            unreadCount,
+            setUnreadCount,
+            staticInputs: initialStaticInputs
+        }}>
             {children}
         </GlobalContext.Provider>
     );
 };
 
 export const useGlobalContext = () => useContext(GlobalContext);
+
+export const useStaticInputs = () => {
+    const { staticInputs } = useGlobalContext();
+    return {
+        propertyTypes: staticInputs?.property_types ?? [],
+        amenities: staticInputs?.amenities ?? []
+    }
+}

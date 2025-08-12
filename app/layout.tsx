@@ -5,11 +5,11 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import 'photoswipe/dist/photoswipe.css'
 
 import ViewportCookieWriter from "@/ui/root/viewport-cookie-writer";
+import { fetchStaticInputs } from "@/lib/data/static-inputs-data";
 import AuthProvider from "@/ui/root/auth-provider";
 import NavBar from "@/ui/root/layout/nav-bar/nav-bar";
 import Footer from "@/ui/root/layout/footer";
 import { GlobalContextProvider } from "@/context/global-context";
-
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
@@ -25,10 +25,12 @@ export const metadata: Metadata = {
 // TODO: See if ` as ` can be removed for more strictly typed
 // TODO: Add images in separate modal box where description can be added to the image.
 // TODO: componentize
-const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
+const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>) => {
+    const initialStaticInputs = await fetchStaticInputs();
+
     return (
         <AuthProvider>
-            <GlobalContextProvider>
+            <GlobalContextProvider initialStaticInputs={initialStaticInputs}>
                 <html lang="en">
                     <body>
                         <ViewportCookieWriter />

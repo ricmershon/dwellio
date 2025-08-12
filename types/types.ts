@@ -42,6 +42,16 @@ export interface Rates {
     monthly?: number
 }
 
+export interface Amenity {
+    id: string,
+    value: string
+}
+
+export interface OptionType {
+    value: string;
+    label: string;
+}
+
 export type FormErrorsType = Record<string, string[]> | string[];
 
 export const VIEWPORT_WIDTH_COOKIE_NAME = 'viewport_width';
