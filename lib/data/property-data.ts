@@ -160,7 +160,7 @@ export const fetchPaginatedProperties = async (
     // await new Promise((resolve) => setTimeout(resolve, 5000));
     // console.log('Data received...')
 
-        let maxItemsPerPage: number;
+    let maxItemsPerPage: number;
 
     if (viewportWidth < 640) {
         maxItemsPerPage = 8;

@@ -17,9 +17,11 @@ const PropertyDetails = async ({ property }: { property: PropertyDocument }) => 
             {/* Property name, city, beds, baths and sqft */}
             <h1 className="text-xl">{property.name} in {property.location.city}</h1>
             <p className="text-sm mb-4">
-                {property.beds} beds
+                {property.beds}
+                {property.beds === 1 ? ' bed': ' beds'}
                 <span className="text-[10px]"> • </span>
-                {property.baths} baths
+                {property.baths}
+                {property.baths === 1 ? ' bath': ' baths'}
                 <span className="text-[10px]"> • </span>
                 {property.squareFeet} square feet
             </p>
