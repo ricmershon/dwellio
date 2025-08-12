@@ -24,11 +24,8 @@ const PropertyContactForm = ({ property, userName, userEmail }: PropertyContactF
      * Toast message for success or error.
      */
     useEffect(() => {
-        if (actionState.status === 'SUCCESS') {
-            toast.success(actionState.message);
-        }
-        if (actionState.status === 'ERROR') {
-            toast.error(actionState.message);
+        if (actionState.status) {
+            toast[actionState.status](actionState.message);
         }
     }, [actionState]);
     

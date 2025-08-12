@@ -1,19 +1,22 @@
 import { StructuredFormErrorMap } from "@/utils/build-form-error-map";
 
-export interface Rates {
-    nightly?: number;
-    weekly?: number;
-    monthly?: number
-}
+export const ActionStatus = {
+    INFO: 'info',
+    SUCCESS: 'success',
+    WARNING: 'warning',
+    ERROR: 'error',
+} as const;
+
+type ActionStatus = (typeof ActionStatus)[keyof typeof ActionStatus];
 
 export type ActionState = {
-    message?: string | null;
-    status?: 'SUCCESS' | 'ERROR' | null,
-    isFavorite?: boolean,
-    isRead?: boolean,
-    formData?: FormData,
-    formErrorMap?: StructuredFormErrorMap
-}
+  message?: string | null;
+  status?: ActionStatus | null;
+  isFavorite?: boolean;
+  isRead?: boolean;
+  formData?: FormData;
+  formErrorMap?: StructuredFormErrorMap;
+};
 
 export interface PropertiesQuery {
     $or: [
@@ -31,6 +34,12 @@ export interface PropertiesQuery {
 export interface PropertyImageData {
     secureUrl: string;
     publicId: string;
+}
+
+export interface Rates {
+    nightly?: number;
+    weekly?: number;
+    monthly?: number
 }
 
 export type FormErrorsType = Record<string, string[]> | string[];

@@ -7,7 +7,7 @@ import { LuRefreshCw } from "react-icons/lu";
 import { toast } from "react-toastify";
 
 import { Amenities, PropertyTypes } from '@/data/data'
-import { ActionState } from "@/types/types";
+import { ActionState, ActionStatus } from "@/types/types";
 import type { PropertyDocument } from "@/models";
 import { updateProperty } from "@/lib/actions/property-actions";
 import FormErrors from "@/ui/shared/form-errors";
@@ -24,7 +24,7 @@ const EditPropertyForm = ({ property }: { property: PropertyDocument }) => {
      * Display error message if the `createProperty` returns an `ERROR` status.
      */
     useEffect(() => {
-        if (actionState.status === 'ERROR') {
+        if (actionState.status === ActionStatus.ERROR) {
             toast.error(actionState.message);
         }
     }, [actionState]);

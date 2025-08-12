@@ -6,7 +6,7 @@ import dbConnect from "@/config/database-config";
 import { Message, MessageDocument } from "@/models";
 import { getSessionUser } from "@/utils/get-session-user";
 import { toActionState } from "@/utils/to-action-state";
-import { ActionState } from "@/types/types";
+import { ActionState, ActionStatus } from "@/types/types";
 import { MessageInput } from "@/schemas/message-schema";
 import { buildFormErrorMap } from "@/utils/build-form-error-map";
 
@@ -36,10 +36,10 @@ export const createMessage = async (_prevState: ActionState, formData: FormData)
      */
     if (!validationResults.success) {
         const formErrorMap = buildFormErrorMap(validationResults.error.issues);
-        return {
+        return toActionState ({
             formData: formData,
             formErrorMap: formErrorMap
-        } as ActionState
+        })
     }
 
     try {
@@ -52,7 +52,10 @@ export const createMessage = async (_prevState: ActionState, formData: FormData)
             property: formData.get('property'),
         });
         await newMessage.save();
-        return toActionState('Message sent.', 'SUCCESS');
+        return toActionState({
+            status: ActionStatus.SUCCESS,
+            message: 'Message sent.'
+        });
 
     } catch (error) {
         console.error(`>>> Database error sending a message: ${error}`);
@@ -61,13 +64,11 @@ export const createMessage = async (_prevState: ActionState, formData: FormData)
          * Return form data so the form can be repopulated and the user does
          * not have to re-enter info.
          */
-        return toActionState(
-            `Failed to send message: ${error}`,
-            'ERROR',
-            undefined,
-            undefined,
-            formData
-        );
+        return toActionState({
+            status: ActionStatus.ERROR,
+            message: `Failed to send message: ${error}`,
+            formData: formData
+        });
     }
 }
 
@@ -92,15 +93,24 @@ export const toggleMessageRead = async (messageId: string) => {
         message = await Message.findById(messageId);
     } catch (error) {
         console.error(`>>> Database error finding message: ${error}`);
-        return toActionState(`Error finding message: ${error}`, 'ERROR');
+        return toActionState({
+            status: ActionStatus.ERROR,
+            message: `Error finding message: ${error}`
+        });
     }
 
     if (!message) {
-        return toActionState('Message not found.', 'ERROR');
+        return toActionState({
+            status: ActionStatus.ERROR,
+            message: 'Message not found.'
+        });
     }
 
     if (message.recipient.toString() !== sessionUser.id) {
-        return toActionState('Not authorized to change message.', 'ERROR');
+        return toActionState({
+            status: ActionStatus.ERROR,
+            message: 'Not authorized to change message.'
+        });
     }
 
     message.read = !message.read;
@@ -110,18 +120,18 @@ export const toggleMessageRead = async (messageId: string) => {
     } catch (error) {
         console.error(`>>> Database error changing message: ${error}`);
 
-        return {
-            status: 'ERROR',
+        return toActionState({
+            status: ActionStatus.ERROR,
             message: `Failed to change message: ${error}`
-        } as ActionState;
+        });
     }
 
     revalidatePath('/messages');
-    return {
+    return toActionState({
+        status: ActionStatus.SUCCESS,
         message: `Message marked ${message.read ? 'read.' : 'new.'}`,
-        status: 'SUCCESS',
         isRead: message.read
-    } as ActionState;
+    });
 }
 
 /**
@@ -145,15 +155,24 @@ export const deleteMessage = async (messageId: string) => {
         message = await Message.findById(messageId);
     } catch (error) {
         console.error(`>>> Database error finding message: ${error}`);
-        return toActionState(`Error finding message: ${error}`, 'ERROR');
+        return toActionState({
+            status: ActionStatus.ERROR,
+            message: `Error finding message: ${error}`
+        });
     }
 
     if (!message) {
-        return toActionState('Message not found.', 'ERROR');
+        return toActionState({
+            status: ActionStatus.ERROR,
+            message: 'Message not found.'
+        });
     }
 
     if (message.recipient.toString() !== sessionUser.id) {
-        return toActionState('Not authorized to change message.', 'ERROR');
+        return toActionState({
+            status: ActionStatus.ERROR,
+            message: 'Not authorized to change message.'
+        });
     }
 
     try {
@@ -161,17 +180,17 @@ export const deleteMessage = async (messageId: string) => {
     } catch (error) {
         console.error(`>>> Database error deleting message: ${error}`);
 
-        return {
-            status: 'ERROR',
+        return toActionState({
+            status: ActionStatus.ERROR,
             message: `Failed to delete message: ${error}`
-        } as ActionState;
+        })
     }
 
     revalidatePath('/messages');
-    return {
-        status: 'SUCCESS',
+    return toActionState({
+        status: ActionStatus.SUCCESS,
         message: "Message deleted."
-    } as ActionState;
+    });;
 }
 
 /**

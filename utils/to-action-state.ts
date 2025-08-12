@@ -1,9 +1,8 @@
 import { ActionState } from "@/types/types";
 
-export const toActionState = (
-    message: string,
-    status: "SUCCESS" | "ERROR",
-    isFavorite?: boolean,
-    isRead?: boolean,
-    formData?: FormData
-): ActionState => ({ message, status, isFavorite, isRead, formData });
+export const toActionState = (actionState: ActionState): ActionState => {
+    const { status, message, isFavorite, isRead, formData, formErrorMap } = actionState;
+    return (
+        { status, message, isFavorite, isRead, formData, formErrorMap }
+    )
+};

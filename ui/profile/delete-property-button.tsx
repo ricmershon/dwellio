@@ -9,12 +9,8 @@ const DeletePropertyButton = ({ propertyId }: { propertyId: string }) => {
     
     const deletePropertyAction = async () => {
         const result = await deletePropertyById();
-        if (result.message) {
-            if (result.status === 'SUCCESS') {
-                toast.success(result.message);
-            } else if (result.status === 'ERROR') {
-                toast.error(result.message);
-            }
+        if (result.message && result.status) {
+            toast[result.status](result.message);
         }
     }
     

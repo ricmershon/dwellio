@@ -23,13 +23,6 @@ const PropertyMap = ({ property }: { property: PropertyDocument}) => {
     const [isLoading, setIsLoading] = useState(true);
     const [hasGeocodeError, setHasGeocodeError] = useState(false);
 
-    setDefaults({
-        key: process.env.NEXT_PUBLIC_GOOGLE_GEOCODING_API_KEY,
-        language: 'en',
-        region: 'us',
-        outputFormat: OutputFormat.JSON
-    });
-
     const { street, city, state, zipcode } = property.location;
 
     const locationInfo = (
@@ -38,36 +31,39 @@ const PropertyMap = ({ property }: { property: PropertyDocument}) => {
         </p>
     );
 
+    setDefaults({
+        key: process.env.NEXT_PUBLIC_GOOGLE_GEOCODING_API_KEY,
+        language: 'en',
+        region: 'us',
+        outputFormat: OutputFormat.JSON
+    });
+
     useEffect(() => {
-        const fetchCoordinates = async () => {
-            try {
-                const response = await fromAddress(`${street} ${city} ${state} ${zipcode}`);
-
-                if (response.results.length === 0) {
-                    setHasGeocodeError(true);
-                    return;
-                }
-
-                const { lat, lng } = response.results[0].geometry.location;
-
-                setLatitude(lat);
-                setLongitude(lng);
-
-                setViewport({
-                    ...viewport,
-                    latitude: latitude!,
-                    longitude: longitude!
-                })
-            } catch (error) {
+        fromAddress(`${street} ${city} ${state} ${zipcode}`).then((response) => {
+            if (response.results.length === 0) {
                 setHasGeocodeError(true);
-                console.error(`Error fetching coordinates: ${error}`);
-            } finally {
-                setIsLoading(false);
+                return;
             }
-        }
 
-        fetchCoordinates();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+            const { lat, lng } = response.results[0].geometry.location;
+
+            setLatitude(lat);
+            setLongitude(lng);
+
+            setViewport({
+                ...viewport,
+                latitude: latitude!,
+                longitude: longitude!
+            });
+        })
+        .catch((error) => {
+            setHasGeocodeError(true);
+            console.error(`Error fetching coordinates: ${error}`);
+        })
+        .finally(() => {
+            setIsLoading(false);
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (hasGeocodeError) {
@@ -81,9 +77,9 @@ const PropertyMap = ({ property }: { property: PropertyDocument}) => {
 
     return (
         <>
+            {locationInfo}
             {!isLoading ? (
                 <>
-                    {locationInfo}
                     <Map
                         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
                         mapLib={import('mapbox-gl')}
@@ -103,10 +99,7 @@ const PropertyMap = ({ property }: { property: PropertyDocument}) => {
                     </Map>
                 </>
             ) : (
-                <>
-                    {locationInfo}
-                    <MapSkeleton />
-                </>
+                <MapSkeleton />
             )}
         </>
     );

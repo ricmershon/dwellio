@@ -8,11 +8,7 @@ export const useAuthProviders = () => {
     >(null);
 
     useEffect(() => {
-        const setAuthProviders = async () => {
-            const response = await getProviders();
-            setProviders(response);
-        };
-        setAuthProviders();
+        getProviders().then((response) => setProviders(response));
     }, []);
 
     return providers;

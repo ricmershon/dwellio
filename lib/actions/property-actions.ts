@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { Types, startSession } from "mongoose";
 
 import dbConnect from "@/config/database-config";
-import type { ActionState, PropertyImageData } from "@/types/types";
+import { ActionStatus, type ActionState, type PropertyImageData } from "@/types/types";
 import { uploadImages, destroyImages } from "@/lib/cloudinary";
 import { getSessionUser } from "@/utils/get-session-user";
 import { toActionState } from "@/utils/to-action-state";
@@ -63,10 +63,10 @@ export const createProperty = async (_prevState: ActionState, formData: FormData
      */
     if (!validationResults.success) {
         const formErrorMap = buildFormErrorMap(validationResults.error.issues);
-        return {
+        return toActionState({
             formData: formData,
             formErrorMap: formErrorMap
-        } as ActionState
+        });
     }
 
     /**
@@ -103,13 +103,11 @@ export const createProperty = async (_prevState: ActionState, formData: FormData
          * Return form data so the form can be repopulated and the user does
          * not have to re-enter info.
          */
-        return toActionState(
-            `Failed to add a property: ${error}`,
-            'ERROR',
-            undefined,
-            undefined,
-            formData
-        );
+        return toActionState({
+            message: `Failed to add a property: ${error}`,
+            status: ActionStatus.ERROR,
+            formData: formData
+        });
     }
 
     redirect(`/properties/${newPropertyDocument._id}`);
@@ -132,7 +130,10 @@ export const deleteProperty = async (propertyId: string) => {
      */
     const property: PropertyDocument | null = await Property.findById(propertyId);
     if (!property) {
-        return toActionState('Property not found.', 'ERROR');
+        return toActionState({
+            status: ActionStatus.ERROR,
+            message: 'Property not found.'
+        });
     }
 
     const session = await startSession();
@@ -143,7 +144,10 @@ export const deleteProperty = async (propertyId: string) => {
         // Get the property and delete images from assets database.
         const property: PropertyDocument | null = await Property.findById(propertyId);
         if (!property) {
-            return toActionState('Property not found.', 'ERROR');
+            return toActionState({
+                status: ActionStatus.ERROR,
+                message: 'Property not found.'
+            });
         }
         destroyImages(property.imagesData!);
 
@@ -171,18 +175,19 @@ export const deleteProperty = async (propertyId: string) => {
         
         // Roll back changes after error
         await session.abortTransaction();
-        return toActionState(
-            `Failed to delete property: ${error}`,
-            'ERROR',
-            undefined,
-            undefined
-        );
+        return toActionState({
+            status: ActionStatus.ERROR,
+            message:  `Failed to delete property: ${error}`
+        });
     } finally {
         session.endSession();
     }
 
     revalidatePath('/profile');
-    return toActionState('Property successfully deleted.', 'SUCCESS');
+    return toActionState({
+        status: ActionStatus.SUCCESS,
+        message: 'Property successfully deleted.'
+    });
 }
 
 /**
@@ -209,11 +214,17 @@ export const updateProperty = async (
      */
     const property: PropertyDocument | null = await Property.findById(propertyId);
     if (!property) {
-        return toActionState('Property not found.', 'ERROR');
+        return toActionState({
+            status: ActionStatus.ERROR,
+            message: 'Property not found.'
+        });
     }
 
     if (property.owner.toString() !== sessionUser.id) {
-        return toActionState('Not authorized to update property.', 'ERROR');
+        return toActionState({
+            status: ActionStatus.ERROR,
+            message: 'Not authorized to update property.'
+        });
     }
 
     /**
@@ -252,10 +263,10 @@ export const updateProperty = async (
      */
     if (!validationResults.success) {
         const formErrorMap = buildFormErrorMap(validationResults.error.issues);
-        return {
+        return toActionState({
             formData: formData,
             formErrorMap: formErrorMap
-        } as ActionState
+        })
     }
 
     try {
@@ -269,13 +280,11 @@ export const updateProperty = async (
          * Return form data so the form can be repopulated and the user does
          * not have to re-enter info.
          */
-        return toActionState(
-            `Failed to add a property: ${error}`,
-            'ERROR',
-            undefined,
-            undefined,
-            formData
-        );
+        return toActionState({
+            status: ActionStatus.ERROR,
+            message: `Failed to add a property: ${error}`,
+            formData: formData
+        });
     }
 
     revalidatePath('/', 'layout');
@@ -303,14 +312,17 @@ export const favoriteProperty = async (propertyId: string) => {
         await dbConnect();
         user = await User.findById(sessionUser.id);
         if (!user) {
-            return toActionState('User not found.', 'ERROR');
+            return toActionState({
+                status: ActionStatus.ERROR,
+                message: 'User not found.'
+            });
         } 
     } catch (error) {
         console.error(`>>> Database error finding user: ${error}`);
-        return toActionState(
-            `Error finding user: ${error}`,
-            'ERROR',
-        );
+        return toActionState({
+            status: ActionStatus.ERROR,
+            message: `Error finding user: ${error}`
+        });
     }
 
     const isFavorite = user.favorites.includes(propertyObjectId);
@@ -325,7 +337,7 @@ export const favoriteProperty = async (propertyId: string) => {
             );
             actionState = {
                 message: 'Removed from favorites',
-                status: 'SUCCESS',
+                status: ActionStatus.SUCCESS,
                 isFavorite: false
             }
         } else {
@@ -335,17 +347,23 @@ export const favoriteProperty = async (propertyId: string) => {
             );
             actionState = {
                 message: 'Added to favorites',
-                status: 'SUCCESS',
+                status: ActionStatus.SUCCESS,
                 isFavorite: true
             }
         }
         if (updatedUser.modifiedCount !== 1) {
             console.error(`>>> Database error favoriting property`);
-            return toActionState('Error favoriting property', 'ERROR');
+            return toActionState({
+                status: ActionStatus.ERROR,
+                message: 'Error favoriting property'
+            });
         }
     } catch (error) {
         console.error(`>>> Database error favoriting property: ${error}`)
-        return toActionState(`Error favoriting property`, 'ERROR');
+        return toActionState({
+            status: ActionStatus.ERROR,
+            message: `Error favoriting property`
+        });
     }
 
     revalidatePath('/properties/favorites', 'page');
@@ -372,17 +390,24 @@ export const getFavoriteStatus = async (propertyId: string) => {
         await dbConnect();
         user = await User.findById(sessionUser.id);
         if (!user) {
-            return toActionState('User not found.', 'ERROR');
+            return toActionState({
+                status: ActionStatus.ERROR,
+                message: 'User not found.'
+            });
         } 
     } catch (error) {
         console.error(`>>> Database error finding user: ${error}`)
-        return toActionState(
-            `Error finding user: ${error}`,
-            'ERROR',
-        );
+        return toActionState({
+            status: ActionStatus.ERROR,
+            message: `Error finding user: ${error}`,
+        });
     }
 
     const isFavorite = user.favorites.includes(propertyObjectId);
 
-    return toActionState('Successfully fetched favorites status', 'SUCCESS', isFavorite);
+    return toActionState({
+        status: ActionStatus.SUCCESS,
+        message: 'Successfully fetched favorites status',
+        isFavorite: isFavorite
+    });
 }

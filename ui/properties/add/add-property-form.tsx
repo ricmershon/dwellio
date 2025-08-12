@@ -11,7 +11,7 @@ import { Amenities, PropertyTypes } from "@/data/data";
 import Input from "@/ui/shared/input";
 import FormErrors from "@/ui/shared/form-errors";
 import DwellioSelect from "@/ui/shared/select";
-import { ActionState } from "@/types/types";
+import { ActionState, ActionStatus } from "@/types/types";
 import InputErrors from "@/ui/shared/input-errors";
 
 // TODO: Google address component
@@ -23,7 +23,7 @@ const AddPropertyForm = () => {
      * Display error message if the `createProperty` returns an `ERROR` status.
      */
     useEffect(() => {
-        if (actionState.status === 'ERROR') {
+        if (actionState.status === ActionStatus.ERROR) {
             toast.error(actionState.message);
         }
     }, [actionState]);

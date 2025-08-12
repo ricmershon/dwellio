@@ -21,11 +21,10 @@ export const metadata: Metadata = {
     keywords: 'rental, property, real estate'
 };
 
-// TODO: Change sytlings
 // TODO: Get property pictures from somewhere else
 // TODO: See if ` as ` can be removed for more strictly typed
 // TODO: Add images in separate modal box where description can be added to the image.
-// TODO: Set max properties per page dynamically based on screen width.
+// TODO: componentize
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
     return (
         <AuthProvider>

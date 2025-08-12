@@ -19,7 +19,7 @@ const setCookie = (name: string, value: string) => {
     document.cookie = `${name}=${encodeURIComponent(value)}; Path=/; Max-Age=${COOKIE_MAX_AGE_SECONDS}; SameSite=Lax`;
 }
 
-const getViewPortWidth = () => (
+const getViewportWidth = () => (
     Math.max(window.innerWidth || 0, document.documentElement.clientWidth || 0)
 );
 
@@ -45,7 +45,7 @@ const ViewportCookieWriter = () => {
         /**
          * Initialize on mount.
          */
-        writeIfChanged(getViewPortWidth());
+        writeIfChanged(getViewportWidth());
 
         const onResize = () => {
             if (debounceTimer.current) {
@@ -53,7 +53,7 @@ const ViewportCookieWriter = () => {
             }
 
             debounceTimer.current = window.setTimeout(() => {
-                writeIfChanged(getViewPortWidth());
+                writeIfChanged(getViewportWidth());
             }, 300)
         }
 
