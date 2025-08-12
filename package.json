@@ -4,11 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:local": "cp .env.local .env && next dev",
+    "dev:phone": "cp .env.phone .env && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "cloudinary": "^2.7.0",
     "mapbox-gl": "^3.13.0",
     "mongodb": "^6.17.0",
@@ -20,11 +23,15 @@
     "react-dom": "^19.0.0",
     "react-geocode": "^2.0.1",
     "react-icons": "^5.5.0",
+    "react-loading-skeleton": "^3.5.0",
     "react-map-gl": "^8.0.4",
     "react-photoswipe-gallery": "^3.1.1",
+    "react-select": "^5.10.1",
     "react-share": "^5.2.2",
     "react-spinners": "^0.17.0",
-    "react-toastify": "^11.0.5"
+    "react-toastify": "^11.0.5",
+    "use-debounce": "^10.0.5",
+    "zod": "^4.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

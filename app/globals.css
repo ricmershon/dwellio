@@ -5,11 +5,77 @@
 	--foreground: #171717;
 }
 
+.heroicon-opacity {
+	fill-opacity: 0.6;
+	fill: black;
+}
+
 @theme inline {
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
 	--font-sans: "Poppins", sans-serif;
 	--grid-template-columns-70\/30: 70% 28%;
+}
+
+@theme {
+	--shadow-md: 0 -1px 2px rgba(0, 0, 0, 0.03),
+		0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+
+	--shadow-lg: 0 -2px 4px rgba(0, 0, 0, 0.03),
+		0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+
+	--shadow-xl: 0 -3px 6px rgba(0, 0, 0, 0.03),
+		0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+@layer components {
+	.form-label {
+		@apply mb-2 block text-sm font-medium text-gray-700;
+	}
+	.rates-label {
+		@apply text-sm font-medium text-gray-700 mr-2;
+	}
+	.heading {
+		@apply text-lg mb-2 md:text-xl md:mb-4;
+	}
+	.btn {
+		@apply px-3 py-2 items-center rounded-md text-sm font-medium transition-colors hover:cursor-pointer;
+	}
+	.btn-primary {
+		@apply text-white bg-blue-600 hover:bg-blue-800 active:bg-blue-700;
+	}
+	.btn-secondary {
+		@apply text-gray-600 hover:text-white active:text-white bg-gray-200 hover:bg-gray-400 active:bg-gray-300;
+	}
+	.btn-danger {
+		@apply text-white bg-red-500 hover:bg-red-700 active:bg-red-600;
+	}
+	.btn-pending-icon {
+		@apply text-lg mr-2;
+	}
+	.btn-login-logout {
+		@apply text-gray-700 hover:text-white active:text-white bg-gray-300 hover:bg-gray-500 active:bg-gray-400 text-lg md:text-sm;
+	}
+	.menu-btn {
+		@apply text-blue-800 px-3 py-1 text-lg font-medium w-full text-left md:text-base;
+	}
+	.menu-btn-not-current-path {
+		@apply hover:bg-gray-100 rounded-md;
+	}
+	.menu-btn-current-path {
+		@apply bg-gray-100 rounded-md hover:cursor-default pointer-events-none;
+	}
+	.menu-btn-desktop-current-path {
+		@apply relative after:content-[''] after:absolute after:bottom-[-15px] after:left-0 after:w-full after:border-b-2 after:border-blue-800;
+	}
+	.mobile-menu {
+		@apply cursor-pointer size-6 transition-all duration-[250ms] relative;
+	}
+	.mobile-menu-top,
+	.mobile-menu-middle,
+	.mobile-menu-bottom {
+		@apply absolute w-6 h-0.5 top-0 left-0 bg-gray-500 rotate-0 transition-all duration-300;
+	}
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,4 +89,43 @@ body {
 	background: var(--background);
 	color: var(--foreground);
 	font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Spinning animation for icon within buttons */
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+.icon-spin {
+	animation: spin 2s linear infinite;
+}
+
+.mobile-menu-middle {
+	transform: translateY(8px);
+}
+
+.mobile-menu-bottom {
+	transform: translateY(16px);
+}
+
+.mobile-menu-open {
+	transform: rotate(90deg);
+	transform: translateY(0px);
+}
+
+.mobile-menu-open .mobile-menu-top {
+	transform: rotate(45deg) translateY(6px) translateX(6px);
+}
+
+.mobile-menu-open .mobile-menu-middle {
+	display: none;
+}
+
+.mobile-menu-open .mobile-menu-bottom {
+	transform: rotate(-45deg) translateY(6px) translateX(-6px);
 }

@@ -1,5 +1,7 @@
-import AddPropertyForm from "@/app/ui/properties/add/add-property-form";
 import { Metadata } from "next";
+
+import AddPropertyForm from "@/ui/properties/add/add-property-form";
+import Breadcrumbs from "@/ui/shared/breadcrumbs";
 
 export const metadata: Metadata = {
     title: "Add New Property"
@@ -8,13 +10,13 @@ export const metadata: Metadata = {
 const AddPropertyPage = () => {
     return (
         <main>
-            <section className="bg-blue-50">
-                <div className="container m-auto max-w-2xl py-24">
-                    <div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
-                        <AddPropertyForm />
-                    </div>
-                </div>
-            </section>
+            <Breadcrumbs
+                breadcrumbs={[
+                    { label: 'Properties', href: '/properties' },
+                    { label: 'Add Property', href: '/properties/add', active: true }
+                ]}
+            />
+            <AddPropertyForm />
         </main>
     );
 }
