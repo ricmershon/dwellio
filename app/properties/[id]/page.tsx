@@ -56,7 +56,7 @@ const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) =>
 
             {/* Property details */}
             <section className="mt-4">
-                <div className="container m-auto">
+                <div>
                     <div className={`grid grid-cols-1 w-full gap-[20px] ${notPropertyOwner && 'md:grid-cols-70/30'}`}>
                     {/* <div className="grid grid-cols-1 md:grid-cols-70/30 w-full gap-[14px]"> */}
                         <PropertyDetails property={property} />

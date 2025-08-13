@@ -8,6 +8,12 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+/**
+ * Uploads images to Cloudinary and returns an array of image data.
+ * 
+ * @param {File[]} images - Array of image files to upload.
+ * @returns {Promise<PropertyImageData[]>} - Promise resolving to an array of image data.
+ */
 export const uploadImages = async (images: File[]) => {
     const imagesData: PropertyImageData[] = [];
 
@@ -25,7 +31,9 @@ export const uploadImages = async (images: File[]) => {
             );
             imagesData.push({
                 secureUrl: result.secure_url,
-                publicId: result.public_id
+                publicId: result.public_id,
+                height: result.height,
+                width: result.width
             });
         } catch (error) {
             console.error(`>>> Error uploading images: ${error}`);
@@ -35,6 +43,12 @@ export const uploadImages = async (images: File[]) => {
     return imagesData;
 }
 
+/**
+ * Deletes images from Cloudinary for provided image data.
+ * 
+ * @param {PropertyImageData[]} imagesData - Array of image data to delete.
+ * @returns {Promise<void>} - Promise resolving when images are deleted.
+ */
 export const destroyImages = async (imagesData: PropertyImageData[]) => {
     for (const imageData of imagesData) {
         try {

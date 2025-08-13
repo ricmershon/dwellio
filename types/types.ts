@@ -34,6 +34,8 @@ export interface PropertiesQuery {
 export interface PropertyImageData {
     secureUrl: string;
     publicId: string;
+    width: number;
+    height: number;
 }
 
 export interface Rates {

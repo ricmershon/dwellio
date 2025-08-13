@@ -42,7 +42,6 @@ const AddPropertyForm = () => {
 
     const handlePickImages = (event: React.ChangeEvent<HTMLInputElement>) => {
         const imageFiles = event.target.files;
-        console.log(imageFiles)
         if (imageFiles && imageFiles.length > 0) {
             setSelectedImages(Array.from(imageFiles).map(file => file.name).join(', '));
         }

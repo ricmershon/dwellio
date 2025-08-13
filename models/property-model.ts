@@ -13,7 +13,9 @@ export interface PropertyDocument extends Omit<PropertyInputType, 'imagesData'>,
 
 const ImageSchema = new Schema({
     secureUrl: { type: String, required: true },
-    publicId: { type: String, required: true }
+    publicId: { type: String, required: true },
+    height: { type: Number, required: true },
+    width: { type: Number, required: true },
 }, { _id: false });
 
 const PropertySchema = new Schema<PropertyDocument>({
