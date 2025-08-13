@@ -240,7 +240,7 @@ const AddPropertyForm = () => {
                 {/* Rates */}
                 <div className="mb-4">
                     <label className="mb-2 block font-medium text-gray-700">
-                        Rates (Select at least one)
+                        Rates (enter at least one)
                     </label>
                     <div
                         className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4"
@@ -334,7 +334,7 @@ const AddPropertyForm = () => {
                 {/* Select images */}
                 <div>
                     <label htmlFor="images" className="mb-2 block font-medium text-gray-700">
-                        Images (Select at least 5)
+                        Images (minimum 5)
                     </label>
                     <div className="relative flex flex-1 flex-shrink-0">
                         <input
@@ -356,7 +356,7 @@ const AddPropertyForm = () => {
                             Select Images
                         </button>
                         <span className="text-sm absolute left-37  top-1/2 -translate-y-1/2">
-                            {selectedImages ? selectedImages : 'No images selected'}
+                            {selectedImages ? selectedImages : 'First image selected is main photo'}
                         </span>
                     </div>
                     {actionState.formErrorMap?.imagesData &&

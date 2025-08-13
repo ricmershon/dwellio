@@ -234,7 +234,7 @@ const EditPropertyForm = ({ property }: { property: PropertyDocument }) => {
                 {/* Rates */}
                 <div className="mb-4">
                     <label className="mb-2 block font-medium text-gray-700">
-                        Rates (Select at least one)
+                        Rates (enter at least one)
                     </label>
                     <div
                         className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4"
