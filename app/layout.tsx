@@ -24,6 +24,7 @@ export const metadata: Metadata = {
 // TODO: Get property pictures from somewhere else
 // TODO: See if ` as ` can be removed for more strictly typed
 // TODO: Add images in separate modal box where description can be added to the image.
+// FIXME: Delete messages associated with a property when the property is deleted.
 // TODO: componentize
 const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>) => {
     const initialStaticInputs = await fetchStaticInputs();

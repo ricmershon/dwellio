@@ -18,6 +18,8 @@ const MessagesPage = async () => {
 
     const messages: MessageDocument[] | null = await fetchMessages(sessionUser.id);
 
+    console.log(messages);
+
     return (
         <main>
             <Breadcrumbs
