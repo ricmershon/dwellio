@@ -93,7 +93,7 @@ const PropertyContactForm = ({ property, userName, userEmail }: PropertyContactF
                         defaultValue={(actionState.formData?.get("body") || "") as string}
                         errors={actionState.formErrorMap?.body}
                     />
-                    <InputErrors numErrors={Object.keys(actionState).length} />
+                    {Object.keys(actionState).length > 0 && <InputErrors />}
                     <div>
                         <button
                             className={`flex gap-1 btn btn-primary w-full justify-center ${isPending ? 'hover:cursor-not-allowed' : 'hover:cursor-pointer'}`}

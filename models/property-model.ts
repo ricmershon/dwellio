@@ -45,8 +45,8 @@ const PropertySchema = new Schema<PropertyDocument>({
         type: [ImageSchema],
         required: true,
         validate: {
-            validator: (value: PropertyImageData[]) => Array.isArray(value) && value.length > 0,
-            message: 'At least one image is required.',
+            validator: (value: PropertyImageData[]) => Array.isArray(value) && value.length > 4,
+            message: 'At least five images are required.',
         },
     },
     isFeatured: { type: Boolean, default: false }

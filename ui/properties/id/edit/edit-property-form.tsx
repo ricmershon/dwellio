@@ -22,7 +22,7 @@ const EditPropertyForm = ({ property }: { property: PropertyDocument }) => {
 
     const { propertyTypes, amenities} = useStaticInputs();
     /**
-     * Display error message if the `createProperty` returns an `ERROR` status.
+     * Display error message if the `updateProperty` returns an `ERROR` status.
      */
     useEffect(() => {
         if (actionState.status === ActionStatus.ERROR) {
@@ -83,7 +83,7 @@ const EditPropertyForm = ({ property }: { property: PropertyDocument }) => {
                     id='description'
                     name="description"
                     label="Description"
-                    placeholder="Add an optional description of your property"
+                    placeholder="Add a description of your property"
                     defaultValue={(actionState.formData?.get("description") || property.description) as string}
                     errors={actionState.formErrorMap?.description}
                 />
@@ -324,7 +324,7 @@ const EditPropertyForm = ({ property }: { property: PropertyDocument }) => {
                     defaultValue={(actionState.formData?.get("sellerInfo.phone") || phone) as string}
                     errors={actionState.formErrorMap?.sellerInfo?.phone}
                 />
-                <InputErrors numErrors={Object.keys(actionState).length} />
+                {Object.keys(actionState).length > 0 && <InputErrors />}
             </div>
 
             {/* Buttons */}

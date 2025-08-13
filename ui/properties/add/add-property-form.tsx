@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState, useEffect } from "react";
+import { useActionState, useEffect, useRef, MouseEvent, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { LuRefreshCw } from "react-icons/lu";
@@ -16,9 +16,12 @@ import InputErrors from "@/ui/shared/input-errors";
 
 // TODO: Google address component
 const AddPropertyForm = () => {
+    const [selectedImages, setSelectedImages] = useState('');
     const [actionState, formAction, isPending] = useActionState(createProperty, {} as ActionState);
     const { data: session } = useSession();
     const { propertyTypes, amenities } = useStaticInputs();
+
+    const imagePickerRef = useRef<HTMLInputElement>(null)
 
     /**
      * Display error message if the `createProperty` returns an `ERROR` status.
@@ -28,6 +31,22 @@ const AddPropertyForm = () => {
             toast.error(actionState.message);
         }
     }, [actionState]);
+
+    const handleOpenImagePicker = (event: MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+
+        if (imagePickerRef.current) {
+            imagePickerRef.current.click();
+        }
+    }
+
+    const handlePickImages = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const imageFiles = event.target.files;
+        console.log(imageFiles)
+        if (imageFiles && imageFiles.length > 0) {
+            setSelectedImages(Array.from(imageFiles).map(file => file.name).join(', '));
+        }
+    }
 
     return (
         <form action={formAction}>
@@ -73,7 +92,7 @@ const AddPropertyForm = () => {
                     id='description'
                     name="description"
                     label="Description"
-                    placeholder="Add an optional description of your property"
+                    placeholder="Add a description of your property"
                     defaultValue={(actionState.formData?.get("description") || "") as string}
                     errors={actionState.formErrorMap?.description}
                 />
@@ -315,17 +334,31 @@ const AddPropertyForm = () => {
                 {/* Select images */}
                 <div>
                     <label htmlFor="images" className="mb-2 block font-medium text-gray-700">
-                        Images (Select up to 4 images)
+                        Images (Select at least 5)
                     </label>
-                    <input
-                        type="file"
-                        id="images"
-                        name="images"
-                        className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
-                        accept="image/*"
-                        multiple
-                        aria-describedby="images-error"
-                    />
+                    <div className="relative flex flex-1 flex-shrink-0">
+                        <input
+                            type="file"
+                            id="images"
+                            name="images"
+                            className=" w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white text-white"
+                            accept="image/*"
+                            multiple
+                            aria-describedby="images-error"
+                            ref={imagePickerRef}
+                            onChange={handlePickImages}
+                        />
+                        <button
+                            id="images-button"
+                            className="btn btn-primary text-sm rounded-sm py-1 px-5 absolute left-[6px] top-1/2 -translate-y-1/2"
+                            onClick={handleOpenImagePicker}
+                        >
+                            Select Images
+                        </button>
+                        <span className="text-sm absolute left-37  top-1/2 -translate-y-1/2">
+                            {selectedImages ? selectedImages : 'No images selected'}
+                        </span>
+                    </div>
                     {actionState.formErrorMap?.imagesData &&
                         <FormErrors
                             errors={actionState.formErrorMap.imagesData}
@@ -333,7 +366,7 @@ const AddPropertyForm = () => {
                         />
                     }
                 </div>
-                <InputErrors numErrors={Object.keys(actionState).length} />
+                {Object.keys(actionState).length > 0 && <InputErrors />}
             </div>
 
             {/* Buttons */}

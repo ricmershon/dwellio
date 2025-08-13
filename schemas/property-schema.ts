@@ -47,7 +47,7 @@ const RatesSchema = z.object({
         rates.weekly !== undefined ||
         rates.monthly !== undefined,
     {
-        message: 'At least one rate (nightly, weekly, or monthly) must be provided.',
+        message: 'At least one rate must be provided.',
         path: [], // attach error to the whole object
     }
 );
@@ -84,8 +84,8 @@ export const PropertyInput = z.object({
         phone: z.string().nonempty({ message: 'Phone number is required.' })
     }),
     imagesData: z.array(z.instanceof(File))
-        .min(1, { message: 'Select at least one image.' })
-        .max(4, { message: 'You can upload a maximum of 4 images.'})
+        .min(5, { message: 'Select at least five images.' })
+        .max(10, { message: 'You can upload a maximum of 10 images.'})
 });
 
 export type PropertyInputType = z.infer<typeof PropertyInput>;
