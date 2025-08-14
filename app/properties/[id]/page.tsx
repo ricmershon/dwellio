@@ -14,6 +14,7 @@ export const metadata: Metadata = {
     title: 'Property'
 }
 
+// FIXME: Add label to favorite button
 const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
     const sessionUser = await getSessionUser();
@@ -42,7 +43,7 @@ const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) =>
                                 <div>
                                     <PropertyFavoriteButton
                                         propertyId={property._id}
-                                        />
+                                    />
                                 </div>
                                 <p className="ml-1">Favorite</p>
                             </div>
