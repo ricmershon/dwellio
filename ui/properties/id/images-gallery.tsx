@@ -16,7 +16,7 @@ const PropertyImagesGallery = ({ imagesData }: { imagesData: PropertyImageData[]
 
     return (
         <div className="relative">
-            <div className="grid grid-cols-4 grid-rows-2 gap- md:gap-3">
+            <div className="grid grid-cols-4 grid-rows-2 gap-2 md:gap-3">
                 {imagesData.map((imageData, index) => (
                     <div
                         key={imageData.secureUrl}
