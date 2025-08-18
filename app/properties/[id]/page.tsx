@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import clsx from 'clsx';
 
 import { fetchProperty } from "@/lib/data/property-data";
 import PropertyDetails from '@/ui/properties/id/details';
@@ -58,8 +59,12 @@ const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) =>
             {/* Property details */}
             <section className="mt-4">
                 <div>
-                    <div className={`grid grid-cols-1 w-full gap-[20px] ${notPropertyOwner && 'md:grid-cols-70/30'}`}>
-                    {/* <div className="grid grid-cols-1 md:grid-cols-70/30 w-full gap-[14px]"> */}
+                    <div
+                        className={clsx(
+                            'grid grid-cols-1 w-full gap-[20px]',
+                            { 'md:grid-cols-70/30': notPropertyOwner }
+                        )}
+                    >
                         <PropertyDetails property={property} />
                         {notPropertyOwner && (
                             <PropertyPageAside property={property} />

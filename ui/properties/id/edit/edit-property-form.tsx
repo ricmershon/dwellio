@@ -5,6 +5,7 @@ import { useActionState, useEffect } from "react";
 import Link from "next/link";
 import { LuRefreshCw } from "react-icons/lu";
 import { toast } from "react-toastify";
+import clsx from "clsx";
 
 import { useStaticInputs } from "@/context/global-context";
 import { ActionState, ActionStatus } from "@/types/types";
@@ -336,7 +337,13 @@ const EditPropertyForm = ({ property }: { property: PropertyDocument }) => {
                     Cancel
                 </Link>
                 <button
-                    className={`flex gap-1 btn btn-primary ${isPending ? 'hover:cursor-not-allowed' : 'hover:cursor-pointer'}`}
+                    className={clsx(
+                        'flex gap-1 btn btn-primary',
+                        {
+                            'hover:cursor-not-allowed': isPending,
+                            'hover:cursor-pointer': !isPending
+                        }
+                    )}
                     type="submit"
                     disabled={isPending}
                 >
