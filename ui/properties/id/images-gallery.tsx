@@ -2,7 +2,7 @@ import { MouseEventHandler } from "react";
 import Image from "next/image";
 import clsx from "clsx";
 import { Item, useGallery } from 'react-photoswipe-gallery';
-import { PhotoIcon } from "@heroicons/react/24/solid";
+import { RiGalleryView2 } from 'react-icons/ri';
 
 import { PropertyImageData } from "@/types/types";
 
@@ -50,7 +50,7 @@ const PropertyImagesGallery = ({ imagesData }: { imagesData: PropertyImageData[]
                                         priority={true}
                                     />
                                     {index === 4 && imagesData.length > 5 &&
-                                        <PhotoIcon
+                                        <RiGalleryView2
                                             className="absolute bottom-2 right-2 size-10 z-10 text-gray-400 bg-white/80 rounded-sm"
                                             onClick={handlePhotoIconClick}
                                         />

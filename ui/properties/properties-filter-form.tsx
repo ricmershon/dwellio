@@ -1,9 +1,9 @@
 'use client';
 
+import { ChangeEvent } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useDebouncedCallback } from 'use-debounce';
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { ChangeEvent } from "react";
 
 const PropertyFilterForm = () => {
     const searchParams = useSearchParams();

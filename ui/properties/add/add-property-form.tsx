@@ -10,18 +10,18 @@ import { useStaticInputs } from "@/context/global-context";
 import { createProperty } from "@/lib/actions/property-actions"
 import Input from "@/ui/shared/input";
 import FormErrors from "@/ui/shared/form-errors";
-import DwellioSelect from "@/ui/shared/select";
 import { ActionState, ActionStatus } from "@/types/types";
 import InputErrors from "@/ui/shared/input-errors";
+import PropertyTypeInput from "@/ui/properties/shared/property-type-input";
+import AddressInput from "@/ui/properties/shared/address-input";
 
-// TODO: Google address component
 const AddPropertyForm = () => {
     const [selectedImages, setSelectedImages] = useState('');
     const [actionState, formAction, isPending] = useActionState(createProperty, {} as ActionState);
     const { data: session } = useSession();
-    const { propertyTypes, amenities } = useStaticInputs();
+    const { amenities } = useStaticInputs();
 
-    const imagePickerRef = useRef<HTMLInputElement>(null)
+    const imagePickerRef = useRef<HTMLInputElement>(null);
 
     /**
      * Display error message if the `createProperty` returns an `ERROR` status.
@@ -49,31 +49,10 @@ const AddPropertyForm = () => {
 
     return (
         <form action={formAction}>
-            <div className="p-4 md:p-6">
+            <div className="px-4 py-6 md:p-6 border border-gray-200 rounded-md">
+                <PropertyTypeInput actionState={actionState} />
 
-                {/* Property type */}
-                <div className="mb-4">
-                    <label
-                        id="type"
-                        className="mb-1 block font-medium text-gray-700"
-                    >
-                        Property Type
-                    </label>
-                    <DwellioSelect
-                        options={propertyTypes}
-                        placeholder="Select a property type"
-                        name='type'
-                        id='type'
-                        aria-describedby='type-error'
-                        aria-labelledby="type"
-                    />
-                    {actionState.formErrorMap?.type && <FormErrors
-                        errors={actionState.formErrorMap.type}
-                        id="type"
-                    />}
-                </div>
-
-                {/* Listing name */}
+                {/* Listing name and description*/}
                 <Input
                     inputType="input"
                     id='name'
@@ -96,119 +75,14 @@ const AddPropertyForm = () => {
                     errors={actionState.formErrorMap?.description}
                 />
 
-                {/* Location */}
-                <Input
-                    inputType="input"
-                    id='street'
-                    name="location.street"
-                    type='text'
-                    label="Location"
-                    placeholder="Street"
-                    isInGroup={true}
-                    defaultValue={(actionState.formData?.get("location.street") || "") as string}
-                    errors={actionState.formErrorMap?.location?.street}
-                />
-
-                <div className="mb-4 flex flex-wrap">
-                    <div className="w-full sm:w-1/3 sm:pr-2 mb-2 sm:mb-0">
-                        <label
-                            htmlFor="city"
-                            className="block text-gray-700 font-medium mb-2"
-                        >
-                            City
-                        </label>
-                        <input
-                            type="text"
-                            id="city"
-                            name="location.city"
-                            className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
-                            defaultValue={(actionState.formData?.get("location.city") || "") as string}
-                            aria-describedby="city-error"
-                        />
-                        {actionState.formErrorMap?.location?.city && <FormErrors
-                            errors={actionState.formErrorMap?.location?.city}
-                            id="city"
-                        />}
-                    </div>
-                    <div className="w-full sm:w-1/3 sm:px-2 mb-2 sm:mb-0">
-                        <label
-                            htmlFor="state" 
-                            className="block text-gray-700 font-medium mb-2"
-                        >
-                            State
-                        </label>
-                        <input
-                            type="text"
-                            id="state"
-                            name="location.state"
-                            className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
-                            defaultValue={(actionState.formData?.get("location.state") || "") as string}
-                            aria-describedby="state-error"
-                        />
-                        {actionState.formErrorMap?.location?.state && <FormErrors
-                            errors={actionState.formErrorMap?.location?.state}
-                            id='state'
-                        />}
-                    </div>
-                    <div className="w-full sm:w-1/3 sm:pl-2">
-                        <label
-                            htmlFor="zipcode"
-                            className="block text-gray-700 font-medium mb-2"
-                        >
-                            zipcode
-                        </label>
-                        <input
-                            type="text"
-                            id="zipcode"
-                            name="location.zipcode"
-                            className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
-                            defaultValue={(actionState.formData?.get("location.zipcode") || "") as string}
-                            aria-describedby="zipcode-error"
-                        />
-                        {actionState.formErrorMap?.location?.zipcode && <FormErrors
-                            errors={actionState.formErrorMap.location?.zipcode}
-                            id="zipcode"
-                        />}
-                    </div>
-                </div>
-
-
-                {/* <Input
-                    inputType="input"
-                    id='city'
-                    name="location.city"
-                    type='text'
-                    placeholder="City"
-                    isInGroup={true}
-                    defaultValue={(actionState.formData?.get("location.city") || "") as string}
-                    errors={actionState.formErrorMap?.location?.city}
-                />
-                <Input
-                    inputType="input"
-                    id='state'
-                    name="location.state"
-                    type='text'
-                    placeholder="State"
-                    isInGroup={true}
-                    defaultValue={(actionState.formData?.get("location.state") || "") as string}
-                    errors={actionState.formErrorMap?.location?.state}
-                />
-                <Input
-                    inputType="input"
-                    id='zipcode'
-                    name="location.zipcode"
-                    type='text'
-                    placeholder="Zip Code"
-                    defaultValue={(actionState.formData?.get("location.zipcode") || "") as string}
-                    errors={actionState.formErrorMap?.location?.zipcode}
-                /> */}
+                <AddressInput actionState={actionState} />
 
                 {/* Number of beds and baths, and square feet */}
                 <div className="mb-4 flex flex-wrap">
                     <div className="w-full sm:w-1/3 sm:pr-2 mb-2 sm:mb-0">
                         <label
                             htmlFor="beds"
-                            className="block text-gray-700 font-medium mb-2"
+                            className="block text-gray-700 font-bold"
                         >
                             Beds
                         </label>
@@ -228,7 +102,7 @@ const AddPropertyForm = () => {
                     <div className="w-full sm:w-1/3 sm:px-2 mb-2 sm:mb-0">
                         <label
                             htmlFor="baths" 
-                            className="block text-gray-700 font-medium mb-2"
+                            className="block text-gray-700 font-bold"
                         >
                             Baths
                         </label>
@@ -248,7 +122,7 @@ const AddPropertyForm = () => {
                     <div className="w-full sm:w-1/3 sm:pl-2">
                         <label
                             htmlFor="squareFeet"
-                            className="block text-gray-700 font-medium mb-2"
+                            className="block text-gray-700 font-bold"
                         >
                             Square Feet
                         </label>
@@ -269,7 +143,7 @@ const AddPropertyForm = () => {
 
                 {/* Amenitites */}
                 <div className="mb-4">
-                    <label className="block text-gray-700 font-medium mb-2">
+                    <label className="block text-gray-700 font-bold">
                         Amenities
                     </label>
                     <div
@@ -303,15 +177,15 @@ const AddPropertyForm = () => {
 
                 {/* Rates */}
                 <div className="mb-4">
-                    <label className="mb-2 block font-medium text-gray-700">
+                    <h2 className="block text-gray-700 font-bold mb-1">
                         Rates (enter at least one)
-                    </label>
+                    </h2>
                     <div
-                        className="flex flex-wrap"
+                        className="flex flex-wrap mb-2 sm:mb-0"
                         aria-describedby="rates-error"
                     >
-                        <div className="w-full sm:w-1/3 sm:px-2 mb-2 sm:mb-0">
-                            <label htmlFor="nightly_rate" className="block text-gray-700 font-medium mb-2">Nightly</label>
+                        <div className="w-full sm:w-1/3 sm:pr-2">
+                            <label htmlFor="nightly_rate" className="block text-sm text-gray-500 font-medium">Nightly</label>
                             <input
                                 type="number"
                                 id="nightly_rate"
@@ -325,8 +199,8 @@ const AddPropertyForm = () => {
                                 id="nightly_rate"
                             />}
                         </div>
-                        <div className="w-full sm:w-1/3 sm:px-2 mb-2 sm:mb-0">
-                            <label htmlFor="weekly_rate" className="block text-gray-700 font-medium mb-2">Weekly</label>
+                        <div className="w-full sm:w-1/3 sm:px-2">
+                            <label htmlFor="weekly_rate" className="block text-sm text-gray-500 font-medium">Weekly</label>
                             <input
                                 type="number"
                                 id="weekly_rate"
@@ -341,7 +215,7 @@ const AddPropertyForm = () => {
                             />}
                         </div>
                         <div className="w-full sm:w-1/3 sm:pl-2">
-                            <label htmlFor="monthly_rate" className="block text-gray-700 font-medium mb-2">Monthly</label>
+                            <label htmlFor="monthly_rate" className="block text-sm text-gray-500 font-medium">Monthly</label>
                             <input
                                 type="number"
                                 id="monthly_rate"
@@ -362,38 +236,81 @@ const AddPropertyForm = () => {
                     />}
                 </div>
 
-                {/* Renter info */}
-                <Input
-                    inputType="input"
-                    id='seller_name'
-                    name="sellerInfo.name"
-                    type='text'
-                    placeholder="Name"
-                    label="Renter Name"
-                    defaultValue={(actionState.formData?.get("sellerInfo.name") || session?.user.name) as string}
-                    errors={actionState.formErrorMap?.sellerInfo?.name}
-                    
-                />
-               <Input
-                    inputType="input"
-                    id='seller_email'
-                    name="sellerInfo.email"
-                    type='email'
-                    placeholder="Email address"
-                    label="Renter Email"
-                    defaultValue={(actionState.formData?.get("sellerInfo.email") || session?.user.email) as string}
-                    errors={actionState.formErrorMap?.sellerInfo?.email}
-                />
-               <Input
-                    inputType="input"
-                    id='seller_phone'
-                    name="sellerInfo.phone"
-                    type='tel'
-                    label="Renter Phone"
-                    placeholder='Phone'
-                    defaultValue={(actionState.formData?.get("sellerInfo.phone") || "") as string}
-                    errors={actionState.formErrorMap?.sellerInfo?.phone}
-                />
+                <div className="mb-4">
+                    <h2 className="block text-gray-700 font-bold mb-1">
+                        Host Information
+                    </h2>
+                    <div className="mb-3">
+                        <label
+                            htmlFor="seller_name"
+                            className="block text-sm text-gray-500 medium"
+                        >
+                            Name
+                        </label>
+                        <input
+                            className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                            type="text"
+                            id='seller_name'
+                            name="sellerInfo.name"
+                            placeholder="Name"
+                            defaultValue={(actionState.formData?.get("sellerInfo.name") || session?.user.name) as string}
+                            aria-describedby="seller_name-error"
+                        />
+                        {actionState.formErrorMap?.sellerInfo?.name &&
+                            <FormErrors
+                                errors={actionState.formErrorMap?.sellerInfo?.name}
+                                id='seller_name'
+                            />
+                        }
+                    </div>
+                    <div className="flex flex-wrap mb-2 sm-mb-0">
+                        <div className="w-full sm:w-1/2 sm:pr-2">
+                            <label
+                                htmlFor="seller_email"
+                                className="block text-sm text-gray-500 medium"
+                            >
+                                Email
+                            </label>
+                            <input
+                                className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                                type="email"
+                                id='seller_email'
+                                name="sellerInfo.email"
+                                placeholder="Email"
+                                defaultValue={(actionState.formData?.get("sellerInfo.email") || session?.user.email) as string}
+                                aria-describedby="seller_email-error"
+                            />
+                            {actionState.formErrorMap?.sellerInfo?.email &&
+                                <FormErrors
+                                    errors={actionState.formErrorMap?.sellerInfo?.email}
+                                    id='seller_email'
+                                />
+                            }
+                        </div>
+                        <div className="w-full sm:w-1/2 sm:pl-2">
+                            <label
+                                htmlFor="seller_phone"
+                                className="block text-sm text-gray-500 medium"
+                            >
+                                Phone
+                            </label>
+                            <input
+                                className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                                type="tel"
+                                id='seller_phone'
+                                name="sellerInfo.phone"
+                                defaultValue={(actionState.formData?.get("sellerInfo.phone") || "") as string}
+                                aria-describedby="seller_phone-error"
+                            />
+                            {actionState.formErrorMap?.sellerInfo?.phone &&
+                                <FormErrors
+                                    errors={actionState.formErrorMap?.sellerInfo?.phone}
+                                    id='seller_phone'
+                                />
+                            }
+                        </div>
+                    </div>
+                </div>
 
                 {/* Select images */}
                 <div>
@@ -434,7 +351,7 @@ const AddPropertyForm = () => {
             </div>
 
             {/* Buttons */}
-            <div className="mt-6 flex justify-end gap-4">
+            <div className="mt-4 flex justify-end gap-4">
                 <Link
                     href="/properties"
                     className="flex btn btn-secondary"
