@@ -27,6 +27,7 @@ export const metadata: Metadata = {
 // FIXME: Delete messages associated with a property when the property is deleted.
 // FIXME: dark mode
 // TODO: componentize
+// TODO: add contact information to property page
 const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>) => {
     const initialStaticInputs = await fetchStaticInputs();
 

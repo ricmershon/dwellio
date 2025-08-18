@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 
-import PropertyFavoriteButton from '@/ui/properties/shared/property-favorite-button';
+import PropertyFavoriteButton from '@/ui/properties/shared/form/property-favorite-button';
 import { PropertyDocument } from '@/models';
 import { getRateDisplay } from '@/utils/get-rate-display';
 import { getSessionUser } from '@/utils/get-session-user';

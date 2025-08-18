@@ -1,10 +1,10 @@
 import { useState } from "react";
 
 import FormErrors from "@/ui/shared/form-errors";
-import AddressSearch from "@/ui/properties/shared/address-search";
+import AddressSearch from "@/ui/properties/shared/form/address-search";
 import { ActionState } from "@/types/types";
 
-const AddressInput = ({ actionState }: { actionState: ActionState}) => {
+const Address = ({ actionState }: { actionState: ActionState}) => {
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
     const [zipcode, setZipcode] = useState('');
@@ -95,4 +95,4 @@ const AddressInput = ({ actionState }: { actionState: ActionState}) => {
     );
 }
  
-export default AddressInput;
+export default Address;

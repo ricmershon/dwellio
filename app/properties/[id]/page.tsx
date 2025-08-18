@@ -6,7 +6,7 @@ import PropertyImages from "@/ui/properties/id/images";
 import PropertyPageAside from "@/ui/properties/id/aside";
 import Breadcrumbs from "@/ui/shared/breadcrumbs";
 import { getSessionUser } from "@/utils/get-session-user";
-import PropertyFavoriteButton from "@/ui/properties/shared/property-favorite-button";
+import PropertyFavoriteButton from "@/ui/properties/shared/form/property-favorite-button";
 import { toSerializedOjbect } from "@/utils/to-serialized-object";
 import ShareButtons from "@/ui/properties/id/share-buttons";
 
