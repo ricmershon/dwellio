@@ -65,12 +65,14 @@ const PropertiesPage = async (props: PropertiesPageProps) => {
                     viewportWidth={viewportWidth}
                 />
             </Suspense>
-            <div className="mt-5 flex w-full justify-center">
-                <PropertiesPagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                />
-            </div>
+            {totalPages > 0 &&
+                <div className="mt-5 flex w-full justify-center">
+                    <PropertiesPagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                    />
+                </div>
+            }
         </main>
     );
 }

@@ -13,7 +13,7 @@ import profileDefaultImage from '@/assets/images/profile.png';
 import { useGlobalContext } from "@/context/global-context";
 import UnreadMessageCount from "@/ui/messages/unread-message-count";
 
-const NavBarDesktopRight = () => {
+const NavBarDesktopRight = ({ viewportWidth }: { viewportWidth: number }) => {
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const { data: session } = useSession();
     const pathname = usePathname();
@@ -34,7 +34,12 @@ const NavBarDesktopRight = () => {
                 <div className="flex items-center pr-2">
                     <Link className='relative group' href='/messages'>
                         <HiOutlineBell className='size-8 rounded-full btn btn-login-logout p-1'/>
-                        {unreadCount > 0 && <UnreadMessageCount unreadCount={unreadCount} />}
+                        {unreadCount > 0 &&
+                            <UnreadMessageCount
+                                unreadCount={unreadCount}
+                                viewportWidth={viewportWidth}
+                            />
+                        }
                         
                     </Link>
 

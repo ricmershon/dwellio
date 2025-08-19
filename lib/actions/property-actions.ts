@@ -6,7 +6,7 @@ import { Types, startSession } from "mongoose";
 
 import dbConnect from "@/config/database-config";
 import { ActionStatus, type ActionState, type PropertyImageData } from "@/types/types";
-import { uploadImages, destroyImages } from "@/lib/cloudinary";
+import { uploadImages, destroyImages } from "@/lib/data/images-data";
 import { getSessionUser } from "@/utils/get-session-user";
 import { toActionState } from "@/utils/to-action-state";
 import { buildFormErrorMap } from "@/utils/build-form-error-map";

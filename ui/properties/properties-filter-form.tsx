@@ -1,9 +1,9 @@
 'use client';
 
+import { ChangeEvent } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { useDebouncedCallback } from 'use-debounce';
-
-import Input from "@/ui/shared/input";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 const PropertyFilterForm = () => {
     const searchParams = useSearchParams();
@@ -23,18 +23,19 @@ const PropertyFilterForm = () => {
     }, 500);    // Half second debounce
 
     return (
-        <div className="mb-6">
+        <div className="mb-6 relative flex flex-1 flex-shrink-0">
             <label htmlFor="property-filter" className="sr-only">
                 Search
             </label>
-            <Input
+            <input
                 id="property-filter"
-                inputType="input"
                 type='text'
                 placeholder="Search by name, description, location or amenity"
-                onChange={(event: { target: { value: string; }; }) => handleSearch(event.target.value)}
+                onChange={(event: ChangeEvent<HTMLInputElement>) => handleSearch(event.target.value)}
                 defaultValue={searchParams.get('query')?.toString()}
+                className="w-full rounded-md border border-gray-300 py-2 pl-10 px-3 text-sm placeholder:text-gray-500 bg-white"
             />
+            <MagnifyingGlassIcon className="absolute left-3 top-1/2 size-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
         </div>
     )
 }

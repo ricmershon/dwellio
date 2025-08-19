@@ -64,7 +64,7 @@ const Input = ({
         <div className={`${noClasses ? '' : isInGroup ? 'mb-2' : 'mb-4'}`}>
             {label && (
                 <label
-                    className={`mb-2 block font-medium ${labelSize} text-gray-700`}
+                    className={`block font-bold ${labelSize} text-gray-700`}
                     htmlFor={id}
                 >
                     {label}

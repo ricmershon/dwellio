@@ -49,7 +49,7 @@ const PropertyMap = ({ property, viewportWidth }: PropertyMapProps) => {
     );
 
     setDefaults({
-        key: process.env.NEXT_PUBLIC_GOOGLE_GEOCODING_API_KEY,
+        key: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
         language: 'en',
         region: 'us',
         outputFormat: OutputFormat.JSON

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import clsx from 'clsx';
 import { FaGoogle } from "react-icons/fa";
 
 import { useAuthProviders } from "@/hooks/use-auth-providers";
@@ -50,7 +51,13 @@ const NavBarRight = () => {
                 >
                     <Link
                         href='/'
-                        className={`${pathname === '/' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
+                        className={clsx(
+                            'menu-btn',
+                            {
+                                'menu-btn-current-path': pathname === '/',
+                                'menu-btn-not-current-path': pathname !== '/'
+                            }
+                        )}
                         onClick={() => setIsMobileMenuOpen(false)}
                         role="menuitem"
                         id="mobile-menu-item-0"
@@ -60,7 +67,13 @@ const NavBarRight = () => {
                     </Link>
                     <Link
                         href='/properties'
-                        className={`${pathname === '/properties' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
+                        className={clsx(
+                            'menu-btn',
+                            {
+                                'menu-btn-current-path': pathname === '/properties',
+                                'menu-btn-not-current-path': pathname !== '/properties'
+                            }
+                        )}
                         onClick={() => setIsMobileMenuOpen(false)}
                         role="menuitem"
                         id="mobile-menu-item-1"
@@ -71,7 +84,13 @@ const NavBarRight = () => {
                     {session ? (
                         <Link
                             href='/properties/add'
-                            className={`${pathname === '/properties/add' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
+                            className={clsx(
+                                'menu-btn',
+                                {
+                                    'menu-btn-current-path': pathname === '/properties/add',
+                                    'menu-btn-not-current-path': pathname !== '/properties/add'
+                                }
+                            )}
                             onClick={() => setIsMobileMenuOpen(false)}
                             role="menuitem"
                             id="mobile-menu-item-2"
@@ -102,7 +121,13 @@ const NavBarRight = () => {
                             <hr className="w-full border-t border-gray-200"/>
                             <Link
                                 href='/profile'
-                                className={`${pathname === '/profile' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
+                                className={clsx(
+                                    'menu-btn',
+                                    {
+                                        'menu-btn-current-path': pathname === '/profile',
+                                        'menu-btn-not-current-path': pathname !== '/profile'
+                                    }
+                                )}
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 role="menuitem"
                                 id="mobile-menu-item-4"
@@ -112,7 +137,13 @@ const NavBarRight = () => {
                             </Link>
                             <Link
                                 href='/properties/favorites'
-                                className={`${pathname === '/properties/favorites' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
+                                className={clsx(
+                                    'menu-btn',
+                                    {
+                                        'menu-btn-current-path': pathname === '/properties/favorites',
+                                        'menu-btn-not-current-path': pathname !== '/properties/favorites'
+                                    }
+                                )}
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 role="menuitem"
                                 id="mobile-menu-item-5"

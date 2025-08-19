@@ -2,9 +2,12 @@ import NavBarLeft from "@/ui/root/layout/nav-bar/nav-bar-left";
 import NavBarRight from "@/ui/root/layout/nav-bar/nav-bar-right";
 import NavBarDesktopMiddle from "@/ui/root/layout/nav-bar/nav-bar-desktop-middle";
 import NavBarDesktopRight from "@/ui/root/layout/nav-bar/nav-bar-desktop-right";
+import { getViewportWidth } from "@/utils/get-viewport-width";
 
 
-const NavBar = () => {    
+const NavBar = async () => {    
+    const viewportWidth = await getViewportWidth();
+
     return (
         <nav className='border-b border-gray-100'>
             <div className='mx-auto max-w-7xl px-4 md:px-6 lg:px-8'>
@@ -12,7 +15,7 @@ const NavBar = () => {
                     <NavBarLeft />
                     <NavBarDesktopMiddle />
                     <div className="flex relative">
-                        <NavBarDesktopRight />
+                        <NavBarDesktopRight viewportWidth={viewportWidth} />
                         <NavBarRight />
                     </div>
                 </div>

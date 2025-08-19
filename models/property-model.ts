@@ -13,7 +13,9 @@ export interface PropertyDocument extends Omit<PropertyInputType, 'imagesData'>,
 
 const ImageSchema = new Schema({
     secureUrl: { type: String, required: true },
-    publicId: { type: String, required: true }
+    publicId: { type: String, required: true },
+    height: { type: Number, required: true },
+    width: { type: Number, required: true },
 }, { _id: false });
 
 const PropertySchema = new Schema<PropertyDocument>({
@@ -45,8 +47,8 @@ const PropertySchema = new Schema<PropertyDocument>({
         type: [ImageSchema],
         required: true,
         validate: {
-            validator: (value: PropertyImageData[]) => Array.isArray(value) && value.length > 0,
-            message: 'At least one image is required.',
+            validator: (value: PropertyImageData[]) => Array.isArray(value) && value.length > 4,
+            message: 'At least five images are required.',
         },
     },
     isFeatured: { type: Boolean, default: false }

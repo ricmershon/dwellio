@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { FaMapMarkerAlt } from 'react-icons/fa';
 
-import PropertyFavoriteButton from '@/ui/properties/shared/property-favorite-button';
+import PropertyFavoriteButton from '@/ui/properties/shared/form/property-favorite-button';
 import { PropertyDocument } from '@/models';
 import { getRateDisplay } from '@/utils/get-rate-display';
 import { getSessionUser } from '@/utils/get-session-user';
@@ -20,15 +20,16 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
     return (
         <div className='rounded-md shadow-md relative'>
             <Link href={`/properties/${property._id}`}>
+                <div className="w-full aspect-[4/3] relative rounded-t-md overflow-hidden">
                 <Image
                     src={property.imagesData![0].secureUrl}
                     alt={property.name}
-                    width='0'
-                    height='0'
+                    fill
                     sizes='100vw'
-                    className='w-full h-auto rounded-t-md'
+                    className="object-cover rounded-t-md"
+                    priority
                 />
-
+                </div>
                 {/* Recently created or added */}
                 {(isCreatedWithinLastWeek || isUpdatedWithinLastWeek) && (
                     <p className='absolute top-2 left-2 bg-white px-[18px] py-1 rounded-md text-gray-800 text-xs text-center'>

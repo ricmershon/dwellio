@@ -34,6 +34,8 @@ export interface PropertiesQuery {
 export interface PropertyImageData {
     secureUrl: string;
     publicId: string;
+    width: number;
+    height: number;
 }
 
 export interface Rates {
@@ -53,5 +55,47 @@ export interface OptionType {
 }
 
 export type FormErrorsType = Record<string, string[]> | string[];
+
+export interface AutocompleteFetchOptions {
+    signal?: AbortSignal;
+    includeDetails?: boolean;
+    maxDetails?: number;
+    regionCode?: string;
+    includedPrimaryTypes?: string[];
+};
+
+export interface AutocompleteSuggestion {
+    placePrediction: {
+        placeId: string;
+        text?: {
+            text: string;
+            languageCode?: string;
+        };
+        structuredFormat?: {
+            mainText?: { text: string; matches?: Array<{ startOffset: number; endOffset: number }> };
+            secondaryText?: { text: string; matches?: Array<{ startOffset: number; endOffset: number }> };
+        };
+    };
+}
+
+export interface AutocompletePrediction {
+    placeId: string;
+    text: string;
+    structuredFormat?: AutocompleteSuggestion["placePrediction"]["structuredFormat"];
+    street?: string | null;
+    city?: string | null;
+    state?: string | null;
+    zipcode?: string | null;
+}
+
+export interface AutocompleteResponse {
+    suggestions?: AutocompleteSuggestion[];
+}
+
+export interface AddressComponent {
+    types?: string[];
+    longText?: string;
+    shortText?: string;
+};
 
 export const VIEWPORT_WIDTH_COOKIE_NAME = 'viewport_width';

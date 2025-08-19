@@ -3,6 +3,7 @@
 import { useActionState, useEffect } from "react";
 import { FaPaperPlane } from "react-icons/fa";
 import { LuRefreshCw } from "react-icons/lu";
+import clsx from 'clsx';
 
 import { PropertyDocument } from "@/models";
 import { ActionState } from "@/types/types";
@@ -93,10 +94,16 @@ const PropertyContactForm = ({ property, userName, userEmail }: PropertyContactF
                         defaultValue={(actionState.formData?.get("body") || "") as string}
                         errors={actionState.formErrorMap?.body}
                     />
-                    <InputErrors numErrors={Object.keys(actionState).length} />
+                    {Object.keys(actionState).length > 0 && <InputErrors />}
                     <div>
                         <button
-                            className={`flex gap-1 btn btn-primary w-full justify-center ${isPending ? 'hover:cursor-not-allowed' : 'hover:cursor-pointer'}`}
+                        className={clsx(
+                            'flex gap-1 btn btn-primary w-full justify-center',
+                            {
+                                'hover:cursor-not-allowed': isPending,
+                                'hover:cursor-pointer': !isPending
+                            }
+                        )}
                             type="submit"
                             disabled={isPending}
                         >

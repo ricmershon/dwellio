@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import clsx from 'clsx';
 
 import { fetchProperty } from "@/lib/data/property-data";
 import PropertyDetails from '@/ui/properties/id/details';
@@ -6,7 +7,7 @@ import PropertyImages from "@/ui/properties/id/images";
 import PropertyPageAside from "@/ui/properties/id/aside";
 import Breadcrumbs from "@/ui/shared/breadcrumbs";
 import { getSessionUser } from "@/utils/get-session-user";
-import PropertyFavoriteButton from "@/ui/properties/shared/property-favorite-button";
+import PropertyFavoriteButton from "@/ui/properties/shared/form/property-favorite-button";
 import { toSerializedOjbect } from "@/utils/to-serialized-object";
 import ShareButtons from "@/ui/properties/id/share-buttons";
 
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
     title: 'Property'
 }
 
+// FIXME: Add label to favorite button
 const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) => {
     const { id } = await params;
     const sessionUser = await getSessionUser();
@@ -42,7 +44,7 @@ const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) =>
                                 <div>
                                     <PropertyFavoriteButton
                                         propertyId={property._id}
-                                        />
+                                    />
                                 </div>
                                 <p className="ml-1">Favorite</p>
                             </div>
@@ -56,9 +58,13 @@ const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) =>
 
             {/* Property details */}
             <section className="mt-4">
-                <div className="container m-auto">
-                    <div className={`grid grid-cols-1 w-full gap-[20px] ${notPropertyOwner && 'md:grid-cols-70/30'}`}>
-                    {/* <div className="grid grid-cols-1 md:grid-cols-70/30 w-full gap-[14px]"> */}
+                <div>
+                    <div
+                        className={clsx(
+                            'grid grid-cols-1 w-full gap-[20px]',
+                            { 'md:grid-cols-70/30': notPropertyOwner }
+                        )}
+                    >
                         <PropertyDetails property={property} />
                         {notPropertyOwner && (
                             <PropertyPageAside property={property} />
