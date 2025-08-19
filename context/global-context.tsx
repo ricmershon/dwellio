@@ -7,7 +7,8 @@ import React, {
     Dispatch,
     SetStateAction,
     ReactNode,
-    useEffect
+    useEffect,
+    useMemo
 } from 'react';
 import { useSession } from 'next-auth/react';
 
@@ -51,15 +52,17 @@ export const GlobalContextProvider = ({ children, initialStaticInputs }: GlobalC
                 }
             })
         }
-    }, [session])
+    }, [session]);
+
+    const value = useMemo(() => ({
+        isLoggedIn,
+        unreadCount,
+        setUnreadCount,
+        staticInputs: initialStaticInputs
+    }), [initialStaticInputs, isLoggedIn, unreadCount]);
 
     return (
-        <GlobalContext.Provider value={{
-            isLoggedIn,
-            unreadCount,
-            setUnreadCount,
-            staticInputs: initialStaticInputs
-        }}>
+        <GlobalContext.Provider value={value}>
             {children}
         </GlobalContext.Provider>
     );
