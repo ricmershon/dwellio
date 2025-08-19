@@ -31,12 +31,21 @@ const PropertyDetails = async ({ property }: { property: PropertyDocument }) => 
 
             {/* Property description and host/owner */}
             <p className="mb-4">{property.description}</p>
-            <p className="pb-4 mb-4 border-b border-gray-200 font-bold">
-                {`${property.owner.toString() === sessionUserId
-                    ? "You own this property"
-                    : `Hosted by ${property.sellerInfo.name}`
-                }`}
-            </p>
+            <div className="mb-4 pb-4 border-b border-gray-200">
+                <h1 className="text-lg">
+                    {`${property.owner.toString() === sessionUserId
+                        ? "You own this property"
+                        : `Hosted by ${property.sellerInfo.name}`
+                    }`}
+                </h1>
+                {property.owner.toString() !== sessionUserId && (
+                    <p className="text-sm">
+                        {property.sellerInfo.email}
+                        <span className="text-[10px]"> • </span>
+                        {property.sellerInfo.phone}
+                    </p>
+                )}
+            </div>
 
 
             {/* Amenities */}

@@ -1,12 +1,16 @@
 import { ActionState } from "@/types/types";
 import FormErrors from "@/ui/shared/form-errors";
 
-const BedsBathsAndSqft = ({ actionState }: { actionState: ActionState}) => (
-    <div className="mb-4 flex flex-wrap">
+const Specs = ({ actionState }: { actionState: ActionState}) => (
+    <div className="mb-4">
+        <h2 className="block text-gray-700 font-bold mb-1">
+            Specs
+        </h2>
+    <div className="flex flex-wrap">
         <div className="w-full sm:w-1/3 sm:pr-2 mb-2 sm:mb-0">
             <label
                 htmlFor="beds"
-                className="block text-gray-700 font-bold"
+                className="block text-sm text-gray-500 medium"
             >
                 Beds
             </label>
@@ -26,7 +30,7 @@ const BedsBathsAndSqft = ({ actionState }: { actionState: ActionState}) => (
         <div className="w-full sm:w-1/3 sm:px-2 mb-2 sm:mb-0">
             <label
                 htmlFor="baths" 
-                className="block text-gray-700 font-bold"
+                className="block text-sm text-gray-500 medium"
             >
                 Baths
             </label>
@@ -46,7 +50,7 @@ const BedsBathsAndSqft = ({ actionState }: { actionState: ActionState}) => (
         <div className="w-full sm:w-1/3 sm:pl-2">
             <label
                 htmlFor="squareFeet"
-                className="block text-gray-700 font-bold"
+                className="block text-sm text-gray-500 medium"
             >
                 Square Feet
             </label>
@@ -64,6 +68,7 @@ const BedsBathsAndSqft = ({ actionState }: { actionState: ActionState}) => (
             />}
         </div>
     </div>
+    </div>
 );
  
-export default BedsBathsAndSqft;
+export default Specs;

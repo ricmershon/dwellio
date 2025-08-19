@@ -34,8 +34,8 @@ const HostInfo = ({ actionState }: { actionState: ActionState }) => {
                     />
                 }
             </div>
-            <div className="flex flex-wrap mb-2 sm-mb-0">
-                <div className="w-full sm:w-1/2 sm:pr-2">
+            <div className="flex flex-wrap">
+                <div className="w-full sm:w-1/2 mb-2 sm:mb-0 sm:pr-2">
                     <label
                         htmlFor="seller_email"
                         className="block text-sm text-gray-500 medium"

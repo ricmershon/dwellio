@@ -13,6 +13,7 @@ interface AddressSearchProps {
     setState: Dispatch<SetStateAction<string>>,
     setZipcode: Dispatch<SetStateAction<string>>
 }
+
 const AddressSearch = ({ actionState, setCity, setState, setZipcode }: AddressSearchProps) => {
     const [placeQuery, setPlaceQuery] = useState('');
     const [isPlaceSelected, setIsPlaceSelected] = useState(false);
@@ -42,7 +43,7 @@ const AddressSearch = ({ actionState, setCity, setState, setZipcode }: AddressSe
     };
     
     return (
-        <div className="relative mb-3">
+        <div className="relative mb-2">
             <label
                 htmlFor="street"
                 className="block text-sm text-gray-500 font-medium"

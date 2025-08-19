@@ -1,7 +1,7 @@
 import { ActionState } from "@/types/types";
 import FormErrors from "@/ui/shared/form-errors";
 
-const RatesInput = ({ actionState }: { actionState: ActionState}) => (
+const Rates = ({ actionState }: { actionState: ActionState}) => (
     <div className="mb-4">
         <h2 className="block text-gray-700 font-bold mb-1">
             Rates (enter at least one)
@@ -10,8 +10,10 @@ const RatesInput = ({ actionState }: { actionState: ActionState}) => (
             className="flex flex-wrap mb-2 sm:mb-0"
             aria-describedby="rates-error"
         >
-            <div className="w-full sm:w-1/3 sm:pr-2">
-                <label htmlFor="nightly_rate" className="block text-sm text-gray-500 font-medium">Nightly</label>
+            <div className="w-full sm:w-1/3 mb-2 sm:mb-0 sm:pr-2">
+                <label htmlFor="nightly_rate" className="block text-sm text-gray-500 font-medium">
+                    Nightly
+                </label>
                 <input
                     type="number"
                     id="nightly_rate"
@@ -27,7 +29,7 @@ const RatesInput = ({ actionState }: { actionState: ActionState}) => (
                     />
                 }
             </div>
-            <div className="w-full sm:w-1/3 sm:px-2">
+            <div className="w-full sm:w-1/3 mb-2 sm:mb-0 sm:px-2">
                 <label htmlFor="weekly_rate" className="block text-sm text-gray-500 font-medium">Weekly</label>
                 <input
                     type="number"
@@ -71,4 +73,4 @@ const RatesInput = ({ actionState }: { actionState: ActionState}) => (
     </div>
 );
  
-export default RatesInput;
+export default Rates;

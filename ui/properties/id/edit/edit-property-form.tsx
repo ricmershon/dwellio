@@ -37,7 +37,7 @@ const EditPropertyForm = ({ property }: { property: PropertyDocument }) => {
 
     return (
         <form action={formAction}>
-            <div className="rounded-md bg-gray-50 p-4 md:p-6">
+            <div className="p-4 md:p-6 border border-gray-200 rounded-md">
 
                 {/* Property type */}
                 <div className="mb-4">
