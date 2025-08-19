@@ -1,7 +1,12 @@
+import { PropertyDocument } from "@/models";
 import { ActionState } from "@/types/types";
 import FormErrors from "@/ui/shared/form-errors";
 
-const Specs = ({ actionState }: { actionState: ActionState}) => (
+interface SpecsProps {
+    actionState: ActionState;
+    property?: PropertyDocument;
+}
+const Specs = ({ actionState, property }: SpecsProps) => (
     <div className="mb-4">
         <h2 className="block text-gray-700 font-bold mb-1">
             Specs
@@ -19,7 +24,10 @@ const Specs = ({ actionState }: { actionState: ActionState}) => (
                 id="beds"
                 name="beds"
                 className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
-                defaultValue={(actionState.formData?.get("beds") || "") as string}
+                defaultValue={
+                    (actionState.formData?.get("beds") || (
+                        property ? property.beds : ""
+                    )) as string}
                 aria-describedby="beds-error"
             />
             {actionState.formErrorMap?.beds && <FormErrors
@@ -39,7 +47,10 @@ const Specs = ({ actionState }: { actionState: ActionState}) => (
                 id="baths"
                 name="baths"
                 className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
-                defaultValue={(actionState.formData?.get("baths") || "") as string}
+                defaultValue={
+                    (actionState.formData?.get("baths") || (
+                        property ? property.baths : ""
+                    )) as string}
                 aria-describedby="bath-error"
             />
             {actionState.formErrorMap?.baths && <FormErrors
@@ -59,7 +70,10 @@ const Specs = ({ actionState }: { actionState: ActionState}) => (
                 id="squareFeet"
                 name="squareFeet"
                 className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
-                defaultValue={(actionState.formData?.get("squareFeet") || "") as string}
+                defaultValue={
+                    (actionState.formData?.get("squareFeet") || (
+                        property ? property.squareFeet : ""
+                    )) as string}
                 aria-describedby="squareFeet-error"
             />
             {actionState.formErrorMap?.squareFeet && <FormErrors

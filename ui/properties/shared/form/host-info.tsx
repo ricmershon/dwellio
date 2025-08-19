@@ -2,8 +2,13 @@ import { useSession } from "next-auth/react";
 
 import { ActionState } from "@/types/types";
 import FormErrors from "@/ui/shared/form-errors";
+import { PropertyDocument } from "@/models";
 
-const HostInfo = ({ actionState }: { actionState: ActionState }) => {
+interface HostInfoProps {
+    actionState: ActionState;
+    property?: PropertyDocument;
+}
+const HostInfo = ({ actionState, property }: HostInfoProps) => {
     const { data: session } = useSession();
 
     return (
@@ -24,7 +29,11 @@ const HostInfo = ({ actionState }: { actionState: ActionState }) => {
                     id='seller_name'
                     name="sellerInfo.name"
                     placeholder="Name"
-                    defaultValue={(actionState.formData?.get("sellerInfo.name") || session?.user.name) as string}
+                    defaultValue={
+                        (actionState.formData?.get("sellerInfo.name") || (
+                            property ? property.sellerInfo.name : session?.user.name
+                        )) as string
+                    }                    
                     aria-describedby="seller_name-error"
                 />
                 {actionState.formErrorMap?.sellerInfo?.name &&
@@ -48,7 +57,11 @@ const HostInfo = ({ actionState }: { actionState: ActionState }) => {
                         id='seller_email'
                         name="sellerInfo.email"
                         placeholder="Email"
-                        defaultValue={(actionState.formData?.get("sellerInfo.email") || session?.user.email) as string}
+                        defaultValue={
+                            (actionState.formData?.get("sellerInfo.email") || (
+                                property ? property.sellerInfo.email : session?.user.email
+                            )) as string
+                        }                    
                         aria-describedby="seller_email-error"
                     />
                     {actionState.formErrorMap?.sellerInfo?.email &&
@@ -70,7 +83,11 @@ const HostInfo = ({ actionState }: { actionState: ActionState }) => {
                         type="tel"
                         id='seller_phone'
                         name="sellerInfo.phone"
-                        defaultValue={(actionState.formData?.get("sellerInfo.phone") || "") as string}
+                        defaultValue={
+                            (actionState.formData?.get("sellerInfo.phone") || (
+                                property ? property.sellerInfo.phone : ""
+                            )) as string
+                        }                    
                         aria-describedby="seller_phone-error"
                     />
                     {actionState.formErrorMap?.sellerInfo?.phone &&

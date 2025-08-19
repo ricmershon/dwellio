@@ -1,9 +1,14 @@
 import { useStaticInputs } from "@/context/global-context";
+import { PropertyDocument } from "@/models";
 import { ActionState } from "@/types/types";
 import FormErrors from "@/ui/shared/form-errors";
 import DwellioSelect from "@/ui/shared/select";
 
-const PropertyInfo = ({ actionState }: { actionState: ActionState}) => {
+interface PropertyInfoProps {
+    actionState: ActionState;
+    property?: PropertyDocument
+}
+const PropertyInfo = ({ actionState, property }: PropertyInfoProps) => {
     const { propertyTypes } = useStaticInputs();
     
     return (
@@ -25,7 +30,10 @@ const PropertyInfo = ({ actionState }: { actionState: ActionState}) => {
                         id='name'
                         name="name"
                         placeholder="e.g., Beautiful Apartment in Miami"
-                        defaultValue={(actionState.formData?.get("name") || "") as string}
+                        defaultValue={
+                            (actionState.formData?.get("name") || (
+                                property ? property.name : ""
+                            )) as string}
                         aria-describedby="name-error"
                     />
                     {actionState.formErrorMap?.name &&
@@ -49,6 +57,10 @@ const PropertyInfo = ({ actionState }: { actionState: ActionState}) => {
                         id='type'
                         aria-describedby='type-error'
                         aria-labelledby="type"
+                        defaultValue={property && {
+                            label: property.type,
+                            value: property.type
+                        }}
                     />
                     {actionState.formErrorMap?.type &&
                         <FormErrors
@@ -71,7 +83,11 @@ const PropertyInfo = ({ actionState }: { actionState: ActionState}) => {
                     className="block w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
                     placeholder="Add a description of your property"
                     rows={4}
-                    defaultValue={(actionState.formData?.get("description") || "") as string}
+                    defaultValue={
+                        (actionState.formData?.get("description") || (
+                            property ? property.description : ""
+                        )) as string
+                    }                    
                     aria-describedby="description-error"
                 />
                 {actionState.formErrorMap?.description &&

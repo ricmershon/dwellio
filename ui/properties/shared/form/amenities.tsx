@@ -2,9 +2,13 @@ import { useStaticInputs } from "@/context/global-context";
 import { ActionState } from "@/types/types";
 import FormErrors from "@/ui/shared/form-errors";
 
-const Amenities = ({ actionState }: { actionState: ActionState}) => {
+interface AmenitiesProps {
+    actionState: ActionState;
+    selectedAmenities?: string[];
+}
+const Amenities = ({ actionState, selectedAmenities = [] }: AmenitiesProps) => {
     const { amenities } = useStaticInputs();
-        
+
     return (
         <div className="mb-4">
             <label className="block text-gray-700 font-bold">
@@ -22,7 +26,9 @@ const Amenities = ({ actionState }: { actionState: ActionState}) => {
                             name="amenities"
                             value={amenity.value}
                             className='mr-2'
-                            defaultChecked={actionState.formData?.getAll('amenities').includes(amenity.value)}
+                            defaultChecked={actionState.formData?.getAll('amenities').includes(amenity.value)
+                                || selectedAmenities?.includes(amenity.value)
+                            }
                         />
                         <label
                             htmlFor={`amenity_${amenity.id}`}

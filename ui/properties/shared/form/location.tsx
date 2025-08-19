@@ -1,13 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import FormErrors from "@/ui/shared/form-errors";
 import AddressSearch from "@/ui/properties/shared/form/address-search";
 import { ActionState } from "@/types/types";
+import { PropertyDocument } from "@/models";
 
-const Location = ({ actionState }: { actionState: ActionState}) => {
+interface LocationProps {
+    actionState: ActionState;
+    property?: PropertyDocument;
+}
+const Location = ({ actionState, property }: LocationProps) => {
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
     const [zipcode, setZipcode] = useState('');
+
+    
+    useEffect(() => {
+        if (property) {
+            setCity(property.location.city);
+            setState(property.location.state);
+            setZipcode(property.location.zipcode)
+        }
+    }, [])
     
     return (
         <div className="mb-4">
@@ -16,6 +30,7 @@ const Location = ({ actionState }: { actionState: ActionState}) => {
             </h2>
             <AddressSearch
                 actionState={actionState}
+                street={property?.location.street}
                 setCity={setCity}
                 setState={setState}
                 setZipcode={setZipcode}

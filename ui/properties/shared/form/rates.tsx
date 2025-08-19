@@ -1,7 +1,12 @@
+import { PropertyDocument } from "@/models";
 import { ActionState } from "@/types/types";
 import FormErrors from "@/ui/shared/form-errors";
 
-const Rates = ({ actionState }: { actionState: ActionState}) => (
+interface RatesProps {
+    actionState: ActionState;
+    property?: PropertyDocument
+}
+const Rates = ({ actionState, property }: RatesProps) => (
     <div className="mb-4">
         <h2 className="block text-gray-700 font-bold mb-1">
             Rates (enter at least one)
@@ -19,7 +24,11 @@ const Rates = ({ actionState }: { actionState: ActionState}) => (
                     id="nightly_rate"
                     name="rates.nightly"
                     className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
-                    defaultValue={(actionState.formData?.get("rates.nightly") || "") as string}
+                    defaultValue={
+                        (actionState.formData?.get("rates.nightly") || (
+                            property ? property.rates.nightly : ""
+                        )) as string
+                    }                    
                     aria-describedby="nightly_rate-error"
                 />
                 {actionState.formErrorMap?.rates?.nightly &&
@@ -36,7 +45,11 @@ const Rates = ({ actionState }: { actionState: ActionState}) => (
                     id="weekly_rate"
                     name="rates.weekly"
                     className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
-                    defaultValue={(actionState.formData?.get("rates.weekly") || "") as string}
+                    defaultValue={
+                        (actionState.formData?.get("rates.weekly") || (
+                            property ? property.rates.weekly : ""
+                        )) as string
+                    }                    
                     aria-describedby="weekly_rate-error"
                 />
                 {actionState.formErrorMap?.rates?.weekly &&
@@ -53,7 +66,11 @@ const Rates = ({ actionState }: { actionState: ActionState}) => (
                     id="monthly_rate"
                     name="rates.monthly"
                     className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
-                    defaultValue={(actionState.formData?.get("rates.monthly") || "") as string}
+                    defaultValue={
+                        (actionState.formData?.get("rates.monthly") || (
+                            property ? property.rates.monthly : ""
+                        )) as string
+                    }                    
                     aria-describedby="monthly_rate-error"
                 />
                 {actionState.formErrorMap?.rates?.monthly &&
