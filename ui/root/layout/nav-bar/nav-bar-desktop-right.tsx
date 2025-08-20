@@ -1,14 +1,14 @@
 'use client';
 
 import { useState } from "react";
-import { signOut, signIn, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { FaGoogle } from "react-icons/fa";
 import { HiOutlineBell } from "react-icons/hi2";
 import Link from "next/link";
 import Image from "next/image";
 
-import { useAuthProviders } from "@/hooks/use-auth-providers";
+import LoginButtons from "@/ui/auth/login-buttons";
 import profileDefaultImage from '@/assets/images/profile.png';
 import { useGlobalContext } from "@/context/global-context";
 import UnreadMessageCount from "@/ui/messages/unread-message-count";
@@ -20,7 +20,6 @@ const NavBarDesktopRight = ({ viewportWidth }: { viewportWidth: number }) => {
     
     const profileImage = session?.user?.image;
     const { unreadCount } = useGlobalContext();
-    const providers = useAuthProviders();
 
     const handleSignOutClick = () => {
         setIsProfileDropdownOpen(false);
@@ -113,16 +112,11 @@ const NavBarDesktopRight = ({ viewportWidth }: { viewportWidth: number }) => {
                 // Logged out
                 <div className="hidden md:block md:ml-6">
                     <div className="flex items-center">
-                        {providers && Object.values(providers).map((provider) => (
-                            <button
-                                key={provider.id}
-                                className="flex items-center btn btn-login-logout py-[6px] px-3"
-                                onClick={() => signIn(provider.id)}
-                            >
-                                <FaGoogle className='mr-2' />
-                                <span>Login</span>
-                            </button>
-                        ))}
+                        <LoginButtons
+                            buttonClassName="flex items-center btn btn-login-logout py-[6px] px-3"
+                            text="Login"
+                            icon={<FaGoogle className='mr-2' />}
+                        />
                     </div>
                 </div>
             )}
