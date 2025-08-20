@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from "react";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { FaGoogle } from "react-icons/fa";
 import { HiOutlineBell } from "react-icons/hi2";
@@ -12,10 +12,14 @@ import LoginButtons from "@/ui/auth/login-buttons";
 import profileDefaultImage from '@/assets/images/profile.png';
 import { useGlobalContext } from "@/context/global-context";
 import UnreadMessageCount from "@/ui/messages/unread-message-count";
+import { withSession, WithSessionProps } from "@/hocs/with-session";
 
-const NavBarDesktopRight = ({ viewportWidth }: { viewportWidth: number }) => {
+interface NavBarDesktopRightProps extends WithSessionProps {
+    viewportWidth: number;
+}
+
+const NavBarDesktopRight = ({ viewportWidth, session }: NavBarDesktopRightProps) => {
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-    const { data: session } = useSession();
     const pathname = usePathname();
     
     const profileImage = session?.user?.image;
@@ -124,4 +128,4 @@ const NavBarDesktopRight = ({ viewportWidth }: { viewportWidth: number }) => {
     )
 };
 
-export default NavBarDesktopRight;
+export default withSession(NavBarDesktopRight);

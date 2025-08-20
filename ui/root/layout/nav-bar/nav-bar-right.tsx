@@ -1,17 +1,17 @@
 'use client';
 
 import { useState } from "react";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import clsx from 'clsx';
 import { FaGoogle } from "react-icons/fa";
 
 import LoginButtons from "@/ui/auth/login-buttons";
+import { withSession, WithSessionProps } from "@/hocs/with-session";
 
-const NavBarRight = () => {
+const NavBarRight = ({ session }: WithSessionProps) => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const { data: session } = useSession();
     const pathname = usePathname();
 
     const handleSignOutClick = () => {
@@ -160,4 +160,4 @@ const NavBarRight = () => {
     );
 }
  
-export default NavBarRight;
+export default withSession(NavBarRight);
