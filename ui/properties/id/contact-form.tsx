@@ -21,6 +21,8 @@ interface PropertyContactFormProps {
 const PropertyContactForm = ({ property, userName, userEmail }: PropertyContactFormProps) => {
     const [actionState, formAction, isPending] = useActionState(createMessage, {} as ActionState);
 
+    console.log(actionState);
+
     /**
      * Toast message for success or error.
      */
@@ -94,7 +96,7 @@ const PropertyContactForm = ({ property, userName, userEmail }: PropertyContactF
                         defaultValue={(actionState.formData?.get("body") || "") as string}
                         errors={actionState.formErrorMap?.body}
                     />
-                    {Object.keys(actionState).length > 0 && <InputErrors />}
+                    {actionState.formErrorMap && Object.keys(actionState.formErrorMap).length > 0 && <InputErrors />}
                     <div>
                         <button
                         className={clsx(

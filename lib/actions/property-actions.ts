@@ -7,11 +7,11 @@ import { Types, startSession } from "mongoose";
 import dbConnect from "@/config/database-config";
 import { ActionStatus, type ActionState, type PropertyImageData } from "@/types/types";
 import { uploadImages, destroyImages } from "@/lib/data/images-data";
-import { getSessionUser } from "@/utils/get-session-user";
 import { toActionState } from "@/utils/to-action-state";
 import { buildFormErrorMap } from "@/utils/build-form-error-map";
 import { Property, PropertyDocument, User, UserDocument } from "@/models";
 import { PropertyInput } from "@/schemas/property-schema";
+import { requireSessionUser } from "@/utils/require-session-user";
 
 // FIXME: fix difference between property id types
 /**
@@ -23,10 +23,7 @@ import { PropertyInput } from "@/schemas/property-schema";
  * repopulate the form if there's an error.
  */
 export const createProperty = async (_prevState: ActionState, formData: FormData) => {
-    const sessionUser = await getSessionUser();
-    if (!sessionUser) {
-        throw new Error('User ID is required.')
-    }
+    const sessionUser = await requireSessionUser();
 
     const rawImages = formData.getAll('images') as File[];
     const images = rawImages.filter(file => file.size > 0);
@@ -120,10 +117,7 @@ export const createProperty = async (_prevState: ActionState, formData: FormData
  * @returns Promise<ActionState>
  */
 export const deleteProperty = async (propertyId: string) => {
-    const sessionUser = await getSessionUser();
-    if (!sessionUser || !sessionUser.id) {
-        throw new Error('User ID is required.')
-    }
+    await requireSessionUser();
 
     /**
      * Confirm properties existence and verify ownwerhip.
@@ -204,10 +198,7 @@ export const updateProperty = async (
     _prevState: ActionState,
     formData: FormData
 ) => {
-    const sessionUser = await getSessionUser();
-    if (!sessionUser || !sessionUser.id) {
-        throw new Error('User ID is required.')
-    }
+    const sessionUser = await requireSessionUser();
 
     /**
      * Confirm property's existence and verify ownership.
@@ -300,10 +291,7 @@ export const updateProperty = async (
 export const favoriteProperty = async (propertyId: string) => {
     const propertyObjectId = new Types.ObjectId(propertyId);
     
-    const sessionUser = await getSessionUser();
-    if (!sessionUser || !sessionUser.id) {
-        throw new Error('User ID is required.')
-    }
+    const sessionUser = await requireSessionUser();
     
     let user: UserDocument | null;
     let actionState: ActionState;
@@ -379,10 +367,7 @@ export const favoriteProperty = async (propertyId: string) => {
 export const getFavoriteStatus = async (propertyId: string) => {
     const propertyObjectId = new Types.ObjectId(propertyId);
     
-    const sessionUser = await getSessionUser();
-    if (!sessionUser || !sessionUser.id) {
-        throw new Error('User ID is required.')
-    }
+    const sessionUser = await requireSessionUser();
     
     let user: UserDocument | null;
     

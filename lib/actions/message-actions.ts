@@ -4,11 +4,11 @@ import { revalidatePath } from "next/cache";
 
 import dbConnect from "@/config/database-config";
 import { Message, MessageDocument } from "@/models";
-import { getSessionUser } from "@/utils/get-session-user";
 import { toActionState } from "@/utils/to-action-state";
 import { ActionState, ActionStatus } from "@/types/types";
 import { MessageInput } from "@/schemas/message-schema";
 import { buildFormErrorMap } from "@/utils/build-form-error-map";
+import { requireSessionUser } from "@/utils/require-session-user";
 
 /**
  * Creates a message to the owner of a property.
@@ -19,10 +19,7 @@ import { buildFormErrorMap } from "@/utils/build-form-error-map";
  * repopulate the form if there's an error.
  */
 export const createMessage = async (_prevState: ActionState, formData: FormData) => {
-    const sessionUser = await getSessionUser();
-    if (!sessionUser || !sessionUser.id) {
-        throw new Error('User ID is required.')
-    }
+    const sessionUser = await requireSessionUser();
 
     const validationResults = MessageInput.safeParse({
         name: formData.get('name'),
@@ -79,10 +76,7 @@ export const createMessage = async (_prevState: ActionState, formData: FormData)
  * @returns Promise<ActionState>
  */
 export const toggleMessageRead = async (messageId: string) => {
-    const sessionUser = await getSessionUser();
-    if (!sessionUser || !sessionUser.id) {
-        throw new Error('User ID is required.')
-    }
+    const sessionUser = await requireSessionUser();
 
     /**
      * Confirm message's existence and verify ownership.
@@ -141,10 +135,7 @@ export const toggleMessageRead = async (messageId: string) => {
  * @returns Promise<ActionState>
  */
 export const deleteMessage = async (messageId: string) => {
-    const sessionUser = await getSessionUser();
-    if (!sessionUser || !sessionUser.id) {
-        throw new Error('User ID is required.')
-    }
+    const sessionUser = await requireSessionUser();
 
     /**
      * Confirm message's existence and verify ownership.
@@ -199,10 +190,7 @@ export const deleteMessage = async (messageId: string) => {
  * @returns Promise<{unreadCount: number}> 
  */
 export const getUnreadMessageCount = async () => {
-    const sessionUser = await getSessionUser();
-    if (!sessionUser || !sessionUser.id) {
-        throw new Error('User ID is required.')
-    }
+    const sessionUser = await requireSessionUser();
     
     try {
         await dbConnect();

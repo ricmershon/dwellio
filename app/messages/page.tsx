@@ -1,29 +1,25 @@
 import { Metadata } from "next";
 
-import { getSessionUser } from "@/utils/get-session-user";
 import { fetchMessages } from "@/lib/data/message-data";
 import MessageCard from "@/ui/messages/message-card";
 import { MessageDocument } from "@/models";
 import Breadcrumbs from "@/ui/shared/breadcrumbs";
+import { requireSessionUser } from "@/utils/require-session-user";
 
 export const metadata: Metadata = {
-    title: 'Messages'
+    title: "Messages"
 }
 
 const MessagesPage = async () => {
-    const sessionUser = await getSessionUser();
-    if (!sessionUser || !sessionUser.id) {
-        throw new Error('User ID is required.')
-    }
-
-    const messages: MessageDocument[] | null = await fetchMessages(sessionUser.id);
+    const sessionUser = await requireSessionUser();
+    const messages: MessageDocument[] | null = await fetchMessages(sessionUser.id!);
 
     return (
         <main>
             <Breadcrumbs
                 breadcrumbs={[
-                    { label: 'Home', href: '/' },
-                    { label: 'Your Messages', href: '/messages', active: true }
+                    { label: "Home", href: "/" },
+                    { label: "Your Messages", href: "/messages", active: true }
                 ]}
             />
             <div className="m-auto">
