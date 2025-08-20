@@ -35,7 +35,6 @@ interface GlobalContextProviderProps {
 }
 
 export const GlobalContextProvider = ({ children, initialStaticInputs }: GlobalContextProviderProps) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [unreadCount, setUnreadCount] = useState(0);
 
     const { data: session } = useSession();
@@ -45,7 +44,6 @@ export const GlobalContextProvider = ({ children, initialStaticInputs }: GlobalC
      */
     useEffect(() => {
         if (session && session.user) {
-            setIsLoggedIn(true);
             getUnreadMessageCount().then((result) => {
                 if (result.unreadCount) {
                     setUnreadCount(result.unreadCount);
@@ -54,6 +52,8 @@ export const GlobalContextProvider = ({ children, initialStaticInputs }: GlobalC
         }
     }, [session]);
 
+    const isLoggedIn = Boolean(session?.user);
+    
     const value = useMemo(() => ({
         isLoggedIn,
         unreadCount,

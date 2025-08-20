@@ -1,7 +1,9 @@
 import { MouseEventHandler } from "react";
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import clsx from "clsx";
-import { Item, useGallery } from 'react-photoswipe-gallery';
+const Item = dynamic(() => import('react-photoswipe-gallery').then(m => m.Item), { ssr: false });
+import { useGallery } from 'react-photoswipe-gallery';
 import { RiGalleryView2 } from 'react-icons/ri';
 
 import { PropertyImageData } from "@/types/types";
@@ -47,7 +49,7 @@ const PropertyImagesGallery = ({ imagesData }: { imagesData: PropertyImageData[]
                                         alt=""
                                         fill
                                         className="object-cover rounded-md cursor-pointer"
-                                        priority={true}
+                                        priority={index === 0}
                                     />
                                     {index === 4 && imagesData.length > 5 &&
                                         <RiGalleryView2

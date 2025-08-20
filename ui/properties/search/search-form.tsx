@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState, useMemo, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { OptionType } from "@/types/types";
@@ -14,13 +14,15 @@ const PropertySearchForm = () => {
 
     const { propertyTypes } = useStaticInputs();
     
-    const propertyTypeOptions = [
+    const propertyTypeOptions = useMemo(() => [
         ...propertyTypes,
         { label: 'All', value: 'All' },
-    ];
+    ], [propertyTypes]);
 
     const router = useRouter();
     const searchParams = useSearchParams();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [isPending, startTransition] = useTransition();
 
     const handlePropertyTypeChange = (selectedOption: OptionType | null) => {
         if (selectedOption) {
@@ -28,21 +30,24 @@ const PropertySearchForm = () => {
         }
     };
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        if (query === '' && propertyType && propertyType.value === 'All') {
-            router.push('/properties');
-        } else {
-            const queryParams = new URLSearchParams(searchParams);
-            queryParams.set('query', query);
-            if (propertyType) {
-                queryParams.set('propertyType', propertyType.value);
-            }
+        startTransition(() => {
+            if (query === '' && propertyType && propertyType.value === 'All') {
+                router.push('/properties');
+            } else {
+                const queryParams = new URLSearchParams(searchParams);
+                queryParams.set('query', query);
+                if (propertyType) {
+                    queryParams.set('propertyType', propertyType.value);
+                }
 
-            router.push(`/properties/search/?${queryParams.toString()}`)
-        }
+                router.push(`/properties/search/?${queryParams.toString()}`)
+            }
+        });
     }
+
 
     return (
         <form 
