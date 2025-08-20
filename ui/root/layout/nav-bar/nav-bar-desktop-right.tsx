@@ -1,30 +1,37 @@
 'use client';
 
 import { useState } from "react";
-import { signOut, signIn, useSession } from "next-auth/react";
+import { signOut as nextAuthSignOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { FaGoogle } from "react-icons/fa";
 import { HiOutlineBell } from "react-icons/hi2";
 import Link from "next/link";
 import Image from "next/image";
 
-import { useAuthProviders } from "@/hooks/use-auth-providers";
+import type { Session as NextAuthSession } from 'next-auth';
 import profileDefaultImage from '@/assets/images/profile.png';
 import { useGlobalContext } from "@/context/global-context";
 import UnreadMessageCount from "@/ui/messages/unread-message-count";
+import { withSession } from "@/ui/auth/session";
+import { ProvidersRecord, withAuthProviders } from "@/ui/auth/auth-providers";
 
-const NavBarDesktopRight = () => {
+interface NavBarDesktopRightProps {
+    session: NextAuthSession | null;
+    signIn: typeof import('next-auth/react').signIn;
+    signOut: typeof import('next-auth/react').signOut;
+    providers: ProvidersRecord;
+}
+
+const NavBarDesktopRight = ({ session, signIn, signOut, providers }: NavBarDesktopRightProps) => {
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
-    const { data: session } = useSession();
     const pathname = usePathname();
     
     const profileImage = session?.user?.image;
     const { unreadCount } = useGlobalContext();
-    const providers = useAuthProviders();
 
     const handleSignOutClick = () => {
         setIsProfileDropdownOpen(false);
-        signOut();
+        nextAuthSignOut();
     }
 
     return (
@@ -125,4 +132,4 @@ const NavBarDesktopRight = () => {
     )
 };
 
-export default NavBarDesktopRight;
+export default withSession(withAuthProviders(NavBarDesktopRight));

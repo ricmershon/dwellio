@@ -1,19 +1,24 @@
 'use client';
 
 import { useState } from "react";
-import { signIn, signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { FaGoogle } from "react-icons/fa";
 
-import { useAuthProviders } from "@/hooks/use-auth-providers";
+import type { Session as NextAuthSession } from 'next-auth';
+import { withSession } from "@/ui/auth/session";
+import { withAuthProviders, ProvidersRecord } from "@/ui/auth/auth-providers";
 
-const NavBarRight = () => {
+interface NavBarRightProps {
+    session: NextAuthSession | null;
+    signIn: typeof import('next-auth/react').signIn;
+    signOut: typeof import('next-auth/react').signOut;
+    providers: ProvidersRecord;
+}
+
+const NavBarRight = ({ session, signIn, signOut, providers }: NavBarRightProps) => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const { data: session } = useSession();
     const pathname = usePathname();
-
-    const providers = useAuthProviders();
 
     const handleSignOutClick = () => {
         setIsMobileMenuOpen(false);
@@ -139,4 +144,4 @@ const NavBarRight = () => {
     );
 }
  
-export default NavBarRight;
+export default withSession(withAuthProviders(NavBarRight));
