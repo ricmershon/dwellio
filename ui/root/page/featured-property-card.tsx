@@ -12,9 +12,9 @@ const FeaturedPropertyCard = ({ property }: { property: PropertyDocument}) => {
             <Image
                 src={property.imagesData![0].secureUrl}
                 alt={property.name}
-                width='0'
-                height='0'
-                sizes='100vw'
+                width="0"
+                height="0"
+                sizes="100vw"
                 className="w-full h-auto rounded-t-xl md:rounded-tr-none md:rounded-l-xl md:w-2/5" />
             <div className="p-6">
                 <h3 className="text-xl font-bold">{property.name}</h3>
@@ -25,17 +25,17 @@ const FeaturedPropertyCard = ({ property }: { property: PropertyDocument}) => {
                 <div className="flex justify-center gap-4 text-gray-500 mb-4">
                     <p>
                         <FaBed className="inline-block mr-2"/>
-                        {property.beds}{' '}
+                        {property.beds}{" "}
                         <span className="md:hidden lg:inline">Beds</span>
                     </p>
                     <p>
                         <FaBath className="inline-block mr-2"/>
-                        {property.baths}{' '}
+                        {property.baths}{" "}
                         <span className="md:hidden lg:inline">Baths</span>
                     </p>
                     <p>
                         <FaRulerCombined className="inline-block mr-2"/>
-                        {property.squareFeet}{' '}
+                        {property.squareFeet}{" "}
                         <span className="md:hidden lg:inline">sqft</span>
                     </p>
                 </div>
@@ -55,7 +55,7 @@ const FeaturedPropertyCard = ({ property }: { property: PropertyDocument}) => {
 
                 <div className="flex flex-col lg:flex-row justify-between">
                     <div className="flex align-middle gap-2 mb-4 lg:mb-0">
-                        <FaMapMarkerAlt className='text-orange-700 mt-1' />
+                        <FaMapMarkerAlt className="text-orange-700 mt-1" />
                         <span className="text-orange-700">{property.location.city} {property.location.state}</span>
                     </div>
                     <Link

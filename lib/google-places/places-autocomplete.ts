@@ -102,7 +102,7 @@ const fetchPlaceDetails = async (
     placeId: string,
     apiKey: string,
     signal?: AbortSignal
-): Promise<Omit<AutocompletePrediction, 'placeId' | 'text' | 'structuredFormat'>> => {
+): Promise<Omit<AutocompletePrediction, "placeId" | "text" | "structuredFormat">> => {
     const response = await fetch(`https://places.googleapis.com/v1/places/${encodeURIComponent(placeId)}`, {
         method: "GET",
         signal,

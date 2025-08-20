@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -12,7 +12,7 @@ const BREAKPOINTS = [0, 640, 768, 1024, 1280, 1536];
 
 const getCookie = (name: string) => {
     const match = document.cookie.match(
-        new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
+        new RegExp("(?:^|; )" + name.replace(/([.$?*|{}()\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)")
     );
     
     return match ? decodeURIComponent(match[1]) : null;
@@ -76,10 +76,10 @@ const ViewportCookieWriter = () => {
             }, 300)
         }
 
-        window.addEventListener('resize', onResize);
+        window.addEventListener("resize", onResize);
 
         return () => {
-            window.removeEventListener('resize', onResize);
+            window.removeEventListener("resize", onResize);
 
             if (debounceTimer.current) {
                 window.clearTimeout(debounceTimer.current)

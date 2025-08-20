@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
 import { useState } from "react";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import clsx from 'clsx';
+import clsx from "clsx";
 import { FaGoogle } from "react-icons/fa";
 
 import LoginButtons from "@/ui/auth/login-buttons";
+import { withSession, WithSessionProps } from "@/hocs/with-session";
 
-const NavBarRight = () => {
+const NavBarRight = ({ session }: WithSessionProps) => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const { data: session } = useSession();
     const pathname = usePathname();
 
     const handleSignOutClick = () => {
@@ -22,13 +22,13 @@ const NavBarRight = () => {
     return (
         <>
             {/* Mobile menu button */}
-            <div className='md:hidden flex items-center'>
+            <div className="md:hidden flex items-center">
                 <button
-                    type='button'
-                    id='mobile-menu-button'
-                    className={`md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 ${isMobileMenuOpen && 'mobile-menu-open'}`}
-                    aria-controls='mobile-menu'
-                    aria-expanded='false'
+                    type="button"
+                    id="mobile-menu-button"
+                    className={`md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 ${isMobileMenuOpen && "mobile-menu-open"}`}
+                    aria-controls="mobile-menu"
+                    aria-expanded="false"
                     onClick={() => setIsMobileMenuOpen((prevState) => !prevState)}
                 >
                     <span className="mobile-menu-top"></span>
@@ -48,12 +48,12 @@ const NavBarRight = () => {
                     tabIndex={-1}
                 >
                     <Link
-                        href='/'
+                        href="/"
                         className={clsx(
-                            'menu-btn',
+                            "menu-btn",
                             {
-                                'menu-btn-current-path': pathname === '/',
-                                'menu-btn-not-current-path': pathname !== '/'
+                                "menu-btn-current-path": pathname === "/",
+                                "menu-btn-not-current-path": pathname !== "/"
                             }
                         )}
                         onClick={() => setIsMobileMenuOpen(false)}
@@ -64,12 +64,12 @@ const NavBarRight = () => {
                         Home
                     </Link>
                     <Link
-                        href='/properties'
+                        href="/properties"
                         className={clsx(
-                            'menu-btn',
+                            "menu-btn",
                             {
-                                'menu-btn-current-path': pathname === '/properties',
-                                'menu-btn-not-current-path': pathname !== '/properties'
+                                "menu-btn-current-path": pathname === "/properties",
+                                "menu-btn-not-current-path": pathname !== "/properties"
                             }
                         )}
                         onClick={() => setIsMobileMenuOpen(false)}
@@ -81,12 +81,12 @@ const NavBarRight = () => {
                     </Link>
                     {session ? (
                         <Link
-                            href='/properties/add'
+                            href="/properties/add"
                             className={clsx(
-                                'menu-btn',
+                                "menu-btn",
                                 {
-                                    'menu-btn-current-path': pathname === '/properties/add',
-                                    'menu-btn-not-current-path': pathname !== '/properties/add'
+                                    "menu-btn-current-path": pathname === "/properties/add",
+                                    "menu-btn-not-current-path": pathname !== "/properties/add"
                                 }
                             )}
                             onClick={() => setIsMobileMenuOpen(false)}
@@ -102,7 +102,7 @@ const NavBarRight = () => {
                             <LoginButtons
                                 buttonClassName="flex items-center justify-center btn btn-login-logout w-full"
                                 text="Login"
-                                icon={<FaGoogle className='mr-2' />}
+                                icon={<FaGoogle className="mr-2" />}
                             />
                         </>
                     )}
@@ -110,12 +110,12 @@ const NavBarRight = () => {
                         <>
                             <hr className="w-full border-t border-gray-200"/>
                             <Link
-                                href='/profile'
+                                href="/profile"
                                 className={clsx(
-                                    'menu-btn',
+                                    "menu-btn",
                                     {
-                                        'menu-btn-current-path': pathname === '/profile',
-                                        'menu-btn-not-current-path': pathname !== '/profile'
+                                        "menu-btn-current-path": pathname === "/profile",
+                                        "menu-btn-not-current-path": pathname !== "/profile"
                                     }
                                 )}
                                 onClick={() => setIsMobileMenuOpen(false)}
@@ -126,12 +126,12 @@ const NavBarRight = () => {
                                 Profile
                             </Link>
                             <Link
-                                href='/properties/favorites'
+                                href="/properties/favorites"
                                 className={clsx(
-                                    'menu-btn',
+                                    "menu-btn",
                                     {
-                                        'menu-btn-current-path': pathname === '/properties/favorites',
-                                        'menu-btn-not-current-path': pathname !== '/properties/favorites'
+                                        "menu-btn-current-path": pathname === "/properties/favorites",
+                                        "menu-btn-not-current-path": pathname !== "/properties/favorites"
                                     }
                                 )}
                                 onClick={() => setIsMobileMenuOpen(false)}
@@ -160,4 +160,4 @@ const NavBarRight = () => {
     );
 }
  
-export default NavBarRight;
+export default withSession(NavBarRight);

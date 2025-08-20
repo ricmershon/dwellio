@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Slide, ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css'
-import 'react-loading-skeleton/dist/skeleton.css';
-import 'photoswipe/dist/photoswipe.css'
+import "react-toastify/dist/ReactToastify.css"
+import "react-loading-skeleton/dist/skeleton.css";
+import "photoswipe/dist/photoswipe.css"
 
 import ViewportCookieWriter from "@/ui/root/viewport-cookie-writer";
 import { fetchStaticInputs } from "@/lib/data/static-inputs-data";
@@ -14,11 +14,11 @@ import "@/app/globals.css";
 
 export const metadata: Metadata = {
     title: {
-        template: '%s | Dwellio',
-        default: 'Dwellio'
+        template: "%s | Dwellio",
+        default: "Dwellio"
     },
     description: "Find an awesome vacation property",
-    keywords: 'rental, property, real estate'
+    keywords: "rental, property, real estate"
 };
 
 // TODO: Get property pictures from somewhere else
@@ -41,7 +41,7 @@ const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>)
                         <div className="flex-grow md:overflow-y-auto px-4 md:px-6 lg:px-8 py-6 lg:py-8">{children}</div>
                         <Footer />
                         <ToastContainer
-                            position='top-right'
+                            position="top-right"
                             transition={Slide}
                             hideProgressBar={true}
                             theme="colored"

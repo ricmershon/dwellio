@@ -1,31 +1,27 @@
 import Image from "next/image";
 import { Metadata } from "next";
 
-import profileDefaultImage from '@/assets/images/profile.png';
-import { getSessionUser } from "@/utils/get-session-user";
+import profileDefaultImage from "@/assets/images/profile.png";
 import { fetchPropertiesByUserId } from "@/lib/data/property-data";
 import ProfileProperties from "@/ui/profile/profile-properties";
 import { PropertyDocument } from "@/models";
 import Breadcrumbs from "@/ui/shared/breadcrumbs";
+import { requireSessionUser } from "@/utils/require-session-user";
 
 export const metadata: Metadata = {
-    title: 'Profile'
+    title: "Profile"
 }
 
 const ProfilePage = async () => {
-    const sessionUser = await getSessionUser();
-    if (!sessionUser || !sessionUser.id) {
-        throw new Error('User ID is required.')
-    }
-
-    const properties: PropertyDocument[] = await fetchPropertiesByUserId(sessionUser.id);
+    const sessionUser = await requireSessionUser();
+    const properties: PropertyDocument[] = await fetchPropertiesByUserId(sessionUser.id!);
         
     return (
         <main>
             <Breadcrumbs
                 breadcrumbs={[
-                    { label: 'Home', href: '/' },
-                    { label: 'Profile', href: '/profile', active: true }
+                    { label: "Home", href: "/" },
+                    { label: "Profile", href: "/profile", active: true }
                 ]}
             />
             <div className="mt-5">

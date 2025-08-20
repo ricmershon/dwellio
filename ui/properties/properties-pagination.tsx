@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
 
@@ -23,7 +23,7 @@ const PropertiesPagination = ({ currentPage, totalPages }: PropertiesPaginationP
 
     const createPageURL = useCallback((pageNumber: number | string) => {
         const params = new URLSearchParams(searchParams);
-        params.set('page', pageNumber.toString());
+        params.set("page", pageNumber.toString());
         return `${pathname}?${params.toString()}`
     }, [pathname, searchParams])
     
@@ -37,22 +37,22 @@ const PropertiesPagination = ({ currentPage, totalPages }: PropertiesPaginationP
 
             <div className="flex -space-x-px">
                 {pagination.map((page, index) => {
-                    let position: 'first' | 'last' | 'single' | 'middle' | undefined;
+                    let position: "first" | "last" | "single" | "middle" | undefined;
 
                     if (index === 0) {
-                        position = 'first';
+                        position = "first";
                     }
 
                     if (index === pagination.length - 1) {
-                        position = 'last';
+                        position = "last";
                     }
 
                     if (pagination.length === 1) {
-                        position = 'single';
+                        position = "single";
                     }
 
-                    if (page === '...') {
-                        position = 'middle';
+                    if (page === "...") {
+                        position = "middle";
                     }
 
                     return (

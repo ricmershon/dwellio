@@ -10,9 +10,9 @@ interface LocationProps {
     property?: PropertyDocument;
 }
 const Location = ({ actionState, property }: LocationProps) => {
-    const [city, setCity] = useState('');
-    const [state, setState] = useState('');
-    const [zipcode, setZipcode] = useState('');
+    const [city, setCity] = useState("");
+    const [state, setState] = useState("");
+    const [zipcode, setZipcode] = useState("");
 
     
     useEffect(() => {
@@ -55,7 +55,7 @@ const Location = ({ actionState, property }: LocationProps) => {
                     {actionState.formErrorMap?.location?.city &&
                         <FormErrors
                         errors={actionState.formErrorMap?.location?.city}
-                            id='city'
+                            id="city"
                         />
                     }
                 </div>
@@ -78,7 +78,7 @@ const Location = ({ actionState, property }: LocationProps) => {
                     {actionState.formErrorMap?.location?.state &&
                         <FormErrors
                             errors={actionState.formErrorMap?.location?.state}
-                            id='state'
+                            id="state"
                         />
                     }
                 </div>

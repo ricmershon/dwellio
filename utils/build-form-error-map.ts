@@ -2,11 +2,11 @@ import { ZodError } from "zod";
 import { FormErrorsType } from "@/types/types";
 
 // TODO: document functions in this file.
-export const buildFormErrorMap = (issues: ZodError['issues']) => {
+export const buildFormErrorMap = (issues: ZodError["issues"]) => {
     const errorMap: Record<string, string[]> = {};
 
     for (const issue of issues) {
-        const path = issue.path.join('.');
+        const path = issue.path.join(".");
         if (!errorMap[path]) {
             errorMap[path] = [];
         }

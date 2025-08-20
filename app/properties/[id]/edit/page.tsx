@@ -19,8 +19,8 @@ const EditPropertyPage = async ({ params }: { params: Promise<{ id: string }> })
         <main>
             <Breadcrumbs
                 breadcrumbs={[
-                    { label: 'Profile', href: '/profile' },
-                    { label: 'Edit Property', href: `/properties/${property._id}/edit`, active: true }
+                    { label: "Profile", href: "/profile" },
+                    { label: "Edit Property", href: `/properties/${property._id}/edit`, active: true }
                 ]}
             />
             <EditPropertyForm property={property} />

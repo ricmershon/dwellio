@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -35,7 +35,7 @@ const ToggleMessageReadButton = ({ messageId, read }: ToggleMessageReadButtonPro
                 className="btn btn-primary mt-4 mr-2"
                 type="submit"
             >
-                {isRead ? 'Mark as Unread' : 'Mark as Read'}
+                {isRead ? "Mark as Unread" : "Mark as Read"}
             </button>
         </form>
     );

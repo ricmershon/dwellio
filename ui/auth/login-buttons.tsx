@@ -1,9 +1,10 @@
-'use client';
+"use client";
 
-import { ReactNode } from 'react';
-import { signIn } from 'next-auth/react';
+import { ReactNode } from "react";
+import { signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 
-import { useAuthProviders } from '@/hooks/use-auth-providers';
+import { useAuthProviders } from "@/hooks/use-auth-providers";
 
 interface LoginButtonsProps {
     buttonClassName?: string;
@@ -11,7 +12,10 @@ interface LoginButtonsProps {
     icon?: ReactNode;
 }
 
-const LoginButtons = ({ buttonClassName = '', text = 'Login', icon }: LoginButtonsProps) => {
+const LoginButtons = ({ buttonClassName = "", text = "Login", icon }: LoginButtonsProps) => {
+    const searchParams = useSearchParams();
+    const returnTo = searchParams.get("returnTo") || "/profile"
+
     const providers = useAuthProviders();
 
     if (!providers) return null;
@@ -22,7 +26,7 @@ const LoginButtons = ({ buttonClassName = '', text = 'Login', icon }: LoginButto
                 <button
                     key={provider.id}
                     className={buttonClassName}
-                    onClick={() => signIn(provider.id)}
+                    onClick={() => signIn(provider.id, { callbackUrl: returnTo })}
                 >
                     {icon}
                     <span>{text}</span>

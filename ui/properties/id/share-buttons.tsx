@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
     FacebookShareButton, FacebookIcon,
@@ -13,10 +13,10 @@ const ShareButtons = ({ property }: { property: PropertyDocument}) => {
     return (
         <>
             <div className="flex gap-1 justify-center mr-2">
-                <FacebookShareButton url={shareUrl} hashtag={`#${property.type.replace(/\s/g, '')}ForRent`}>
+                <FacebookShareButton url={shareUrl} hashtag={`#${property.type.replace(/\s/g, "")}ForRent`}>
                     <FacebookIcon size={20} round={true} />
                 </FacebookShareButton>
-                <TwitterShareButton url={shareUrl} hashtags={[`${property.type.replace(/\s/g, '')}ForRent`]}>
+                <TwitterShareButton url={shareUrl} hashtags={[`${property.type.replace(/\s/g, "")}ForRent`]}>
                     <TwitterIcon size={20} round={true} />
                 </TwitterShareButton>
                 <LinkedinShareButton url={shareUrl}>

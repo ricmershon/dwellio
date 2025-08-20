@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const NavBarDesktopMiddle = () => {
-    const { data: session } = useSession();
+import { withSession, WithSessionProps } from "@/hocs/with-session";
+
+const NavBarDesktopMiddle = ({ session }: WithSessionProps) => {
     const pathname = usePathname();
 
     return (
@@ -13,29 +13,29 @@ const NavBarDesktopMiddle = () => {
             <div className="hidden md:block">
                 <div className="flex space-x-3">
                     <Link
-                        href='/'
-                        className={`${pathname === '/'
-                            ? 'menu-btn-desktop-current-path'
-                            : 'menu-btn-not-current-path'
+                        href="/"
+                        className={`${pathname === "/"
+                            ? "menu-btn-desktop-current-path"
+                            : "menu-btn-not-current-path"
                         } menu-btn w-auto`}
                     >
                         Home
                     </Link>
                     <Link
-                        href='/properties'
-                        className={`${pathname === '/properties'
-                            ? 'menu-btn-desktop-current-path'
-                            : 'menu-btn-not-current-path'
+                        href="/properties"
+                        className={`${pathname === "/properties"
+                            ? "menu-btn-desktop-current-path"
+                            : "menu-btn-not-current-path"
                         } menu-btn w-auto`}
                     >
                         Properties
                     </Link>
                     {session && (
                         <Link
-                            href='/properties/add'
-                        className={`${pathname === '/properties/add'
-                                ? 'menu-btn-desktop-current-path'
-                                : 'menu-btn-not-current-path'
+                            href="/properties/add"
+                        className={`${pathname === "/properties/add"
+                                ? "menu-btn-desktop-current-path"
+                                : "menu-btn-not-current-path"
                             } menu-btn w-auto`}
                         >
                             Add Property
@@ -47,4 +47,4 @@ const NavBarDesktopMiddle = () => {
     );
 }
 
-export default NavBarDesktopMiddle;
+export default withSession(NavBarDesktopMiddle);

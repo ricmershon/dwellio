@@ -1,8 +1,8 @@
 import { Metadata } from "next";
-import clsx from 'clsx';
+import clsx from "clsx";
 
 import { fetchProperty } from "@/lib/data/property-data";
-import PropertyDetails from '@/ui/properties/id/details';
+import PropertyDetails from "@/ui/properties/id/details";
 import PropertyImages from "@/ui/properties/id/images";
 import PropertyPageAside from "@/ui/properties/id/aside";
 import Breadcrumbs from "@/ui/shared/breadcrumbs";
@@ -12,7 +12,7 @@ import { toSerializedOjbect } from "@/utils/to-serialized-object";
 import ShareButtons from "@/ui/properties/id/share-buttons";
 
 export const metadata: Metadata = {
-    title: 'Property'
+    title: "Property"
 }
 
 // FIXME: Add label to favorite button
@@ -30,7 +30,7 @@ const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) =>
             <div className="flex flex-col md:flex-row md:justify-between md:items-center">
                 <Breadcrumbs
                     breadcrumbs={[
-                        { label: 'Properties', href: '/properties' },
+                        { label: "Properties", href: "/properties" },
                         { label: `${property.type} in ${property.location.city}`, href: `/properties/${id}`, active: true }
                     ]}
                 />
@@ -61,8 +61,8 @@ const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) =>
                 <div>
                     <div
                         className={clsx(
-                            'grid grid-cols-1 w-full gap-[20px]',
-                            { 'md:grid-cols-70/30': notPropertyOwner }
+                            "grid grid-cols-1 w-full gap-[20px]",
+                            { "md:grid-cols-70/30": notPropertyOwner }
                         )}
                     >
                         <PropertyDetails property={property} />

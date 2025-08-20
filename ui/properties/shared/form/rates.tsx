@@ -84,7 +84,7 @@ const Rates = ({ actionState, property }: RatesProps) => (
         {actionState.formErrorMap?.rates &&
             <FormErrors
                 errors={actionState.formErrorMap.rates}
-                id='rates'
+                id="rates"
             />
         }
     </div>

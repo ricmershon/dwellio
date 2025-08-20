@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { LuRefreshCw } from "react-icons/lu";
-import clsx from 'clsx';
+import clsx from "clsx";
 
 interface PropertyFormButtonsProps {
     cancelButtonHref: string;
@@ -18,16 +18,16 @@ const PropertyFormButtons = ({ cancelButtonHref, isPending, primaryButtonText  }
             </Link>
             <button
                 className={clsx(
-                    'flex gap-1 btn btn-primary',
+                    "flex gap-1 btn btn-primary",
                     {
-                        'hover:cursor-not-allowed': isPending,
-                        'hover:cursor-pointer': !isPending
+                        "hover:cursor-not-allowed": isPending,
+                        "hover:cursor-pointer": !isPending
                     }
                 )}
                 type="submit"
                 disabled={isPending}
             >
-                {isPending && <LuRefreshCw className='btn-pending-icon icon-spin'/>}
+                {isPending && <LuRefreshCw className="btn-pending-icon icon-spin"/>}
                 <span>{primaryButtonText}</span>
             </button>
         </div>        

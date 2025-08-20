@@ -25,8 +25,8 @@ const Amenities = ({ actionState, selectedAmenities = [] }: AmenitiesProps) => {
                             id={`amenity_${amenity.id}`}
                             name="amenities"
                             value={amenity.value}
-                            className='mr-2'
-                            defaultChecked={actionState.formData?.getAll('amenities').includes(amenity.value)
+                            className="mr-2"
+                            defaultChecked={actionState.formData?.getAll("amenities").includes(amenity.value)
                                 || selectedAmenities?.includes(amenity.value)
                             }
                         />
@@ -42,7 +42,7 @@ const Amenities = ({ actionState, selectedAmenities = [] }: AmenitiesProps) => {
             {actionState.formErrorMap?.amenities &&
                 <FormErrors
                     errors={actionState.formErrorMap.amenities}
-                    id='amenities'
+                    id="amenities"
                 />
             }
         </div>

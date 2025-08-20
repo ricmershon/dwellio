@@ -4,8 +4,8 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 const MapSkeleton = ({ height }: { height: number }) => (
     <SkeletonTheme
-        baseColor='#f7f8fb'
-        highlightColor='white'
+        baseColor="#f7f8fb"
+        highlightColor="white"
     >
         <div className={`relative w-full h-[${height.toString()}px] overflow-hidden bg-gray-100`}>
             {/* Main map base */}

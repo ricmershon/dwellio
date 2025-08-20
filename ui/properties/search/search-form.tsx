@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { ChangeEvent, FormEvent, useState, useMemo, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -10,13 +10,13 @@ import { useStaticInputs } from "@/context/global-context";
 
 const PropertySearchForm = () => {
     const [propertyType, setPropertyType] = useState<OptionType>();
-    const [query, setQuery] = useState('');
+    const [query, setQuery] = useState("");
 
     const { propertyTypes } = useStaticInputs();
     
     const propertyTypeOptions = useMemo(() => [
         ...propertyTypes,
-        { label: 'All', value: 'All' },
+        { label: "All", value: "All" },
     ], [propertyTypes]);
 
     const router = useRouter();
@@ -34,13 +34,13 @@ const PropertySearchForm = () => {
         event.preventDefault();
 
         startTransition(() => {
-            if (query === '' && propertyType && propertyType.value === 'All') {
-                router.push('/properties');
+            if (query === "" && propertyType && propertyType.value === "All") {
+                router.push("/properties");
             } else {
                 const queryParams = new URLSearchParams(searchParams);
-                queryParams.set('query', query);
+                queryParams.set("query", query);
                 if (propertyType) {
-                    queryParams.set('propertyType', propertyType.value);
+                    queryParams.set("propertyType", propertyType.value);
                 }
 
                 router.push(`/properties/search/?${queryParams.toString()}`)
@@ -57,7 +57,7 @@ const PropertySearchForm = () => {
             <div className="w-full md:w-3/5 md:pr-2 mb-4 md:mb-0">
                 <Input
                     inputType="input"
-                    id='location'
+                    id="location"
                     placeholder="Name, description, location or amenity"
                     onChange={(event: ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)}
                     noClasses={true}

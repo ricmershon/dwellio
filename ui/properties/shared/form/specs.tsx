@@ -61,7 +61,7 @@ const Specs = ({ actionState, property }: SpecsProps) => (
                 {actionState.formErrorMap?.baths &&
                     <FormErrors
                         errors={actionState.formErrorMap.baths}
-                        id='baths'
+                        id="baths"
                     />
                 }
             </div>

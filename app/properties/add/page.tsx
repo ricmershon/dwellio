@@ -12,8 +12,8 @@ const AddPropertyPage = () => {
         <main>
             <Breadcrumbs
                 breadcrumbs={[
-                    { label: 'Properties', href: '/properties' },
-                    { label: 'Add Property', href: '/properties/add', active: true }
+                    { label: "Properties", href: "/properties" },
+                    { label: "Add Property", href: "/properties/add", active: true }
                 ]}
             />
             <AddPropertyForm />
