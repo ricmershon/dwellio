@@ -21,8 +21,6 @@ interface PropertyContactFormProps {
 const PropertyContactForm = ({ property, userName, userEmail }: PropertyContactFormProps) => {
     const [actionState, formAction, isPending] = useActionState(createMessage, {} as ActionState);
 
-    console.log(actionState);
-
     /**
      * Toast message for success or error.
      */
