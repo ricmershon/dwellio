@@ -5,9 +5,9 @@ const ListNameAndDescription = ({ actionState }: { actionState: ActionState }) =
     <>
         <Input
             inputType="input"
-            id='name'
+            id="name"
             name="name"
-            type='text'
+            type="text"
             label="Listing Name"
             placeholder="e.g., Beautiful Apartment in Miami"
             defaultValue={(actionState.formData?.get("name") || "") as string}
@@ -15,7 +15,7 @@ const ListNameAndDescription = ({ actionState }: { actionState: ActionState }) =
         />
         <Input
             inputType="textarea"
-            id='description'
+            id="description"
             name="description"
             label="Description"
             placeholder="Add a description of your property"

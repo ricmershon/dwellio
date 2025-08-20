@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import { signOut } from "next-auth/react";
@@ -9,7 +9,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import LoginButtons from "@/ui/auth/login-buttons";
-import profileDefaultImage from '@/assets/images/profile.png';
+import profileDefaultImage from "@/assets/images/profile.png";
 import { useGlobalContext } from "@/context/global-context";
 import UnreadMessageCount from "@/ui/messages/unread-message-count";
 import { withSession, WithSessionProps } from "@/hocs/with-session";
@@ -35,8 +35,8 @@ const NavBarDesktopRight = ({ viewportWidth, session }: NavBarDesktopRightProps)
             {session ? (
                 // Logged in
                 <div className="flex items-center pr-2">
-                    <Link className='relative group' href='/messages'>
-                        <HiOutlineBell className='size-8 rounded-full btn btn-login-logout p-1'/>
+                    <Link className="relative group" href="/messages">
+                        <HiOutlineBell className="size-8 rounded-full btn btn-login-logout p-1"/>
                         {unreadCount > 0 &&
                             <UnreadMessageCount
                                 unreadCount={unreadCount}
@@ -81,7 +81,7 @@ const NavBarDesktopRight = ({ viewportWidth, session }: NavBarDesktopRightProps)
                             >
                                 <Link
                                     href="/profile"
-                                    className={`${pathname === '/profile' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
+                                    className={`${pathname === "/profile" ? "menu-btn-current-path" : "menu-btn-not-current-path"} menu-btn`}
                                     role="menuitem"
                                     tabIndex={-1}
                                     id="user-menu-item-0"
@@ -91,7 +91,7 @@ const NavBarDesktopRight = ({ viewportWidth, session }: NavBarDesktopRightProps)
                                 </Link>
                                 <Link
                                     href="/properties/favorites"
-                                    className={`${pathname === '/properties/favorites' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
+                                    className={`${pathname === "/properties/favorites" ? "menu-btn-current-path" : "menu-btn-not-current-path"} menu-btn`}
                                     role="menuitem"
                                     tabIndex={-1}
                                     id="user-menu-item-1"
@@ -119,7 +119,7 @@ const NavBarDesktopRight = ({ viewportWidth, session }: NavBarDesktopRightProps)
                         <LoginButtons
                             buttonClassName="flex items-center btn btn-login-logout py-[6px] px-3"
                             text="Login"
-                            icon={<FaGoogle className='mr-2' />}
+                            icon={<FaGoogle className="mr-2" />}
                         />
                     </div>
                 </div>

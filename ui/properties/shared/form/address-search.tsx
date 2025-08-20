@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { useDebounce } from "use-debounce";
-import clsx from 'clsx';
+import clsx from "clsx";
 
 import { usePlacesAutocomplete } from "@/hooks/use-google-places-autocomplete";
 import { ActionState, AutocompletePrediction } from "@/types/types";
@@ -15,9 +15,9 @@ interface AddressSearchProps {
     setZipcode: Dispatch<SetStateAction<string>>;
 }
 
-// FIXME: can't edit street when editing a property.
+// FIXME: can"t edit street when editing a property.
 const AddressSearch = ({ actionState, street = null, setCity, setState, setZipcode }: AddressSearchProps) => {
-    const [placeQuery, setPlaceQuery] = useState('');
+    const [placeQuery, setPlaceQuery] = useState("");
     const [isPlaceSelected, setIsPlaceSelected] = useState(false);
     const [debouncedQuery] = useDebounce(placeQuery, 500);
 
@@ -27,7 +27,7 @@ const AddressSearch = ({ actionState, street = null, setCity, setState, setZipco
         setPlaceQuery(value);
 
         // Reset search
-        if (value === '') {
+        if (value === "") {
             setIsPlaceSelected(false);
         }
     }
@@ -37,9 +37,9 @@ const AddressSearch = ({ actionState, street = null, setCity, setState, setZipco
             (prediction.structuredFormat?.mainText?.text ?? prediction.text)
         );
 
-        setCity(prediction.city ?? '')
-        setState(prediction.state ?? '')
-        setZipcode(prediction.zipcode ?? '')
+        setCity(prediction.city ?? "")
+        setState(prediction.state ?? "")
+        setZipcode(prediction.zipcode ?? "")
         
         setIsPlaceSelected(true);
     };
@@ -55,7 +55,7 @@ const AddressSearch = ({ actionState, street = null, setCity, setState, setZipco
             <div>
                 <div className="relative flex flex-1 flex-shrink-0">
                     <input
-                        id='street'
+                        id="street"
                         type="text"
                         name="location.street"
                         value={(actionState.formData?.get("location.street") || (street ? street : placeQuery) || "") as string}
@@ -70,15 +70,15 @@ const AddressSearch = ({ actionState, street = null, setCity, setState, setZipco
                 {actionState.formErrorMap?.location?.street &&
                     <FormErrors
                     errors={actionState.formErrorMap?.location?.street}
-                    id='street'
+                    id="street"
                     />
                 }
             </div>
             <ul
                 className={clsx(
-                    'list-none p-3 mt-2 border border-gray-200 rounded text-sm space-y-3 cursor-pointer bg-white z-10 absolute top-14 left-0',
+                    "list-none p-3 mt-2 border border-gray-200 rounded text-sm space-y-3 cursor-pointer bg-white z-10 absolute top-14 left-0",
                     {
-                        'hidden': predictions.length === 0 || isPlaceSelected
+                        "hidden": predictions.length === 0 || isPlaceSelected
                     }
                 )}
             >
@@ -90,7 +90,7 @@ const AddressSearch = ({ actionState, street = null, setCity, setState, setZipco
                         {!isPlaceSelected && (
                             <>
                                 {prediction.structuredFormat?.mainText?.text ?? prediction.text}
-                                {' '}
+                                {" "}
                                 {prediction.structuredFormat?.secondaryText?.text && (
                                     <span>
                                         {prediction.structuredFormat.secondaryText.text}

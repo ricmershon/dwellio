@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
-import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
-import { HeartIcon as HeartOutlineIcon } from '@heroicons/react/24/outline';
+import { HeartIcon as HeartSolidIcon } from "@heroicons/react/24/solid";
+import { HeartIcon as HeartOutlineIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
 
 import { favoriteProperty } from "@/lib/actions/property-actions";
@@ -43,9 +43,9 @@ const PropertyFavoriteButton = ({ propertyId }: { propertyId: string }) => {
             <form action={favoritePropertyAction} className="size-[18px]">
                 <button className="size-4 hover:cursor-pointer">
                     {isFavorite ? (
-                        <HeartSolidIcon className='text-red-600' />
+                        <HeartSolidIcon className="text-red-600" />
                     ) : (
-                        <HeartOutlineIcon className='text-gray-600' />
+                        <HeartOutlineIcon className="text-gray-600" />
                     )}
                 </button>
             </form>

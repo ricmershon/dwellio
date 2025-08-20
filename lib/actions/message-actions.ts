@@ -1,4 +1,4 @@
-'use server';
+"use server";
 
 import { revalidatePath } from "next/cache";
 
@@ -16,16 +16,16 @@ import { requireSessionUser } from "@/utils/require-session-user";
  * @param {ActionState} _prevState - required by useActionState 
  * @param {FormData }formData 
  * @returns Promise<ActionState> - ActionState may include form data in order to
- * repopulate the form if there's an error.
+ * repopulate the form if there"s an error.
  */
 export const createMessage = async (_prevState: ActionState, formData: FormData) => {
     const sessionUser = await requireSessionUser();
 
     const validationResults = MessageInput.safeParse({
-        name: formData.get('name'),
-        email: formData.get('email'),
-        phone: formData.get('phone'),
-        body: formData.get('body')
+        name: formData.get("name"),
+        email: formData.get("email"),
+        phone: formData.get("phone"),
+        body: formData.get("body")
     });
 
     /**
@@ -45,13 +45,13 @@ export const createMessage = async (_prevState: ActionState, formData: FormData)
         const newMessage = new Message({
             ...validationResults.data,
             sender: sessionUser.id,
-            recipient: formData.get('recipient'),
-            property: formData.get('property'),
+            recipient: formData.get("recipient"),
+            property: formData.get("property"),
         });
         await newMessage.save();
         return toActionState({
             status: ActionStatus.SUCCESS,
-            message: 'Message sent.'
+            message: "Message sent."
         });
 
     } catch (error) {
@@ -79,7 +79,7 @@ export const toggleMessageRead = async (messageId: string) => {
     const sessionUser = await requireSessionUser();
 
     /**
-     * Confirm message's existence and verify ownership.
+     * Confirm message"s existence and verify ownership.
      */
     let message: MessageDocument | null;
     try {
@@ -96,14 +96,14 @@ export const toggleMessageRead = async (messageId: string) => {
     if (!message) {
         return toActionState({
             status: ActionStatus.ERROR,
-            message: 'Message not found.'
+            message: "Message not found."
         });
     }
 
     if (message.recipient.toString() !== sessionUser.id) {
         return toActionState({
             status: ActionStatus.ERROR,
-            message: 'Not authorized to change message.'
+            message: "Not authorized to change message."
         });
     }
 
@@ -120,10 +120,10 @@ export const toggleMessageRead = async (messageId: string) => {
         });
     }
 
-    revalidatePath('/messages');
+    revalidatePath("/messages");
     return toActionState({
         status: ActionStatus.SUCCESS,
-        message: `Message marked ${message.read ? 'read.' : 'new.'}`,
+        message: `Message marked ${message.read ? "read." : "new."}`,
         isRead: message.read
     });
 }
@@ -138,7 +138,7 @@ export const deleteMessage = async (messageId: string) => {
     const sessionUser = await requireSessionUser();
 
     /**
-     * Confirm message's existence and verify ownership.
+     * Confirm message"s existence and verify ownership.
      */
     let message: MessageDocument | null;
     try {
@@ -155,14 +155,14 @@ export const deleteMessage = async (messageId: string) => {
     if (!message) {
         return toActionState({
             status: ActionStatus.ERROR,
-            message: 'Message not found.'
+            message: "Message not found."
         });
     }
 
     if (message.recipient.toString() !== sessionUser.id) {
         return toActionState({
             status: ActionStatus.ERROR,
-            message: 'Not authorized to change message.'
+            message: "Not authorized to change message."
         });
     }
 
@@ -177,7 +177,7 @@ export const deleteMessage = async (messageId: string) => {
         })
     }
 
-    revalidatePath('/messages');
+    revalidatePath("/messages");
     return toActionState({
         status: ActionStatus.SUCCESS,
         message: "Message deleted."

@@ -1,10 +1,10 @@
 import { StructuredFormErrorMap } from "@/utils/build-form-error-map";
 
 export const ActionStatus = {
-    INFO: 'info',
-    SUCCESS: 'success',
-    WARNING: 'warning',
-    ERROR: 'error',
+    INFO: "info",
+    SUCCESS: "success",
+    WARNING: "warning",
+    ERROR: "error",
 } as const;
 
 type ActionStatus = (typeof ActionStatus)[keyof typeof ActionStatus];
@@ -24,10 +24,10 @@ export interface PropertiesQuery {
         { description: RegExp },
         { amenities: RegExp },
         { type: RegExp },
-        { 'location.street': RegExp },
-        { 'location.city': RegExp },
-        { 'location.state': RegExp },
-        { 'location.zip': RegExp }
+        { "location.street": RegExp },
+        { "location.city": RegExp },
+        { "location.state": RegExp },
+        { "location.zip": RegExp }
     ]
 }
 
@@ -98,4 +98,4 @@ export interface AddressComponent {
     shortText?: string;
 };
 
-export const VIEWPORT_WIDTH_COOKIE_NAME = 'viewport_width';
+export const VIEWPORT_WIDTH_COOKIE_NAME = "viewport_width";

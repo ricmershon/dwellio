@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, {
     createContext,
@@ -9,11 +9,11 @@ import React, {
     ReactNode,
     useEffect,
     useMemo
-} from 'react';
-import { useSession } from 'next-auth/react';
+} from "react";
+import { useSession } from "next-auth/react";
 
-import { getUnreadMessageCount } from '@/lib/actions/message-actions';
-import { StaticInputsDocument } from '@/models';
+import { getUnreadMessageCount } from "@/lib/actions/message-actions";
+import { StaticInputsDocument } from "@/models";
 
 interface GlobalContextProps {
     isLoggedIn: boolean;

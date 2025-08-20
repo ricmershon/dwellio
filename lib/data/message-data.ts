@@ -17,16 +17,16 @@ export const fetchMessages = async (userId: string) => {
             read: false
         })
             .sort({ createdAt: -1 })
-            .populate('sender', 'username')
-            .populate('property', 'name')
+            .populate("sender", "username")
+            .populate("property", "name")
 
         const readMessages: MessageDocument[] | null = await Message.find({
             recipient: userId,
             read: true
         })
             .sort({ createdAt: -1 })
-            .populate('sender', 'username')
-            .populate('property', 'name')
+            .populate("sender", "username")
+            .populate("property", "name")
 
         const messages: MessageDocument[] = [...unreadMessages, ...readMessages].map((messageDoc) => (
             toSerializedOjbect(messageDoc)

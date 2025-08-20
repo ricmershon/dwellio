@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -13,29 +13,29 @@ const NavBarDesktopMiddle = ({ session }: WithSessionProps) => {
             <div className="hidden md:block">
                 <div className="flex space-x-3">
                     <Link
-                        href='/'
-                        className={`${pathname === '/'
-                            ? 'menu-btn-desktop-current-path'
-                            : 'menu-btn-not-current-path'
+                        href="/"
+                        className={`${pathname === "/"
+                            ? "menu-btn-desktop-current-path"
+                            : "menu-btn-not-current-path"
                         } menu-btn w-auto`}
                     >
                         Home
                     </Link>
                     <Link
-                        href='/properties'
-                        className={`${pathname === '/properties'
-                            ? 'menu-btn-desktop-current-path'
-                            : 'menu-btn-not-current-path'
+                        href="/properties"
+                        className={`${pathname === "/properties"
+                            ? "menu-btn-desktop-current-path"
+                            : "menu-btn-not-current-path"
                         } menu-btn w-auto`}
                     >
                         Properties
                     </Link>
                     {session && (
                         <Link
-                            href='/properties/add'
-                        className={`${pathname === '/properties/add'
-                                ? 'menu-btn-desktop-current-path'
-                                : 'menu-btn-not-current-path'
+                            href="/properties/add"
+                        className={`${pathname === "/properties/add"
+                                ? "menu-btn-desktop-current-path"
+                                : "menu-btn-not-current-path"
                             } menu-btn w-auto`}
                         >
                             Add Property

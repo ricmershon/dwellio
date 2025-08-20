@@ -1,5 +1,5 @@
 import GoogleProvider from "next-auth/providers/google";
-import type { DefaultUser, Session } from 'next-auth';
+import type { DefaultUser, Session } from "next-auth";
 
 import dbConnect from "@/config/database-config";
 import { User } from "@/models";
@@ -11,9 +11,9 @@ export const authOptions = {
             clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
             authorization: {
                 params: {
-                    prompt: 'consent',
-                    access_type: 'offline',
-                    response_type: 'code'
+                    prompt: "consent",
+                    access_type: "offline",
+                    response_type: "code"
                 }
             }
         })

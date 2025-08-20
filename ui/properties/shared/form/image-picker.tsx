@@ -47,13 +47,13 @@ const ImagePicker = ({ actionState }: { actionState: ActionState }) => {
                     Select Images
                 </button>
                 <span className="text-sm absolute left-37  top-1/2 -translate-y-1/2">
-                    {numImagesSelected > 0 ? `${numImagesSelected} images selected` : 'First image selected is main photo'}
+                    {numImagesSelected > 0 ? `${numImagesSelected} images selected` : "First image selected is main photo"}
                 </span>
             </div>
             {actionState.formErrorMap?.imagesData &&
                 <FormErrors
                     errors={actionState.formErrorMap.imagesData}
-                    id='images'
+                    id="images"
                 />
             }
         </div>

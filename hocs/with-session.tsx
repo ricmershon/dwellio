@@ -1,6 +1,6 @@
-import { ComponentType } from 'react';
-import { useSession } from 'next-auth/react';
-import { Session } from 'next-auth';
+import { ComponentType } from "react";
+import { useSession } from "next-auth/react";
+import { Session } from "next-auth";
 
 export interface WithSessionProps {
     session: Session | null;

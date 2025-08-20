@@ -8,7 +8,7 @@ const CheckAuthStatus = () => {
     const [showAlert, setShowAlert] = useState(false);
 
     useEffect(() => {
-        if (searchParams.get('authRequired') === 'true') {
+        if (searchParams.get("authRequired") === "true") {
             setShowAlert(true);
         }
     }, [searchParams]);

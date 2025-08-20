@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { toast } from "react-toastify";
 
@@ -22,7 +22,7 @@ const DeleteMessageButton = ({ messageId }: { messageId: string } ) => {
     return (
         <form action={deleteMessageAction} className="inline-block">
             <button
-                className='btn btn-danger'
+                className="btn btn-danger"
                 type="submit"
             >
                 Delete

@@ -21,10 +21,10 @@ const PropertyDetails = async ({ property }: { property: PropertyDocument }) => 
             <h1 className="text-xl">{property.name} in {property.location.city}</h1>
             <p className="text-sm mb-4">
                 {property.beds}
-                {property.beds === 1 ? ' bed': ' beds'}
+                {property.beds === 1 ? " bed": " beds"}
                 <span className="text-[10px]"> • </span>
                 {property.baths}
-                {property.baths === 1 ? ' bath': ' baths'}
+                {property.baths === 1 ? " bath": " baths"}
                 <span className="text-[10px]"> • </span>
                 {property.squareFeet} square feet
             </p>
@@ -54,7 +54,7 @@ const PropertyDetails = async ({ property }: { property: PropertyDocument }) => 
                 <ul className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 text-xs list-none">
                     {property.amenities && (
                         property.amenities.map((amenity) => (
-                            <li className='mt-2' key={amenity}>
+                            <li className="mt-2" key={amenity}>
                                 <FaCheck className="inline-block text-green-600 mr-2 mb-2" />
                                 <span>{amenity}</span>
                             </li>
@@ -64,7 +64,7 @@ const PropertyDetails = async ({ property }: { property: PropertyDocument }) => 
             </div>
 
             {/* Property rates and options */}
-            <div className='pb-4 mb-6 border-b border-gray-200'>
+            <div className="pb-4 mb-6 border-b border-gray-200">
                 <h3 className="mb-2">Rates</h3>
                 <div className="flex flex-col md:flex-row justify-start items-start">
                     {rates.nightly && (

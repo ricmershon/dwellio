@@ -22,7 +22,7 @@ const HostInfo = ({ actionState, property, session }: HostInfoProps) => (
             <input
                 className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
                 type="text"
-                id='seller_name'
+                id="seller_name"
                 name="sellerInfo.name"
                 placeholder="Name"
                 defaultValue={
@@ -35,7 +35,7 @@ const HostInfo = ({ actionState, property, session }: HostInfoProps) => (
             {actionState.formErrorMap?.sellerInfo?.name &&
                 <FormErrors
                     errors={actionState.formErrorMap?.sellerInfo?.name}
-                    id='seller_name'
+                    id="seller_name"
                 />
             }
         </div>
@@ -50,7 +50,7 @@ const HostInfo = ({ actionState, property, session }: HostInfoProps) => (
                 <input
                     className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
                     type="email"
-                    id='seller_email'
+                    id="seller_email"
                     name="sellerInfo.email"
                     placeholder="Email"
                     defaultValue={
@@ -63,7 +63,7 @@ const HostInfo = ({ actionState, property, session }: HostInfoProps) => (
                 {actionState.formErrorMap?.sellerInfo?.email &&
                     <FormErrors
                         errors={actionState.formErrorMap?.sellerInfo?.email}
-                        id='seller_email'
+                        id="seller_email"
                     />
                 }
             </div>
@@ -77,7 +77,7 @@ const HostInfo = ({ actionState, property, session }: HostInfoProps) => (
                 <input
                     className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
                     type="tel"
-                    id='seller_phone'
+                    id="seller_phone"
                     name="sellerInfo.phone"
                     defaultValue={
                         (actionState.formData?.get("sellerInfo.phone") || (
@@ -89,7 +89,7 @@ const HostInfo = ({ actionState, property, session }: HostInfoProps) => (
                 {actionState.formErrorMap?.sellerInfo?.phone &&
                     <FormErrors
                         errors={actionState.formErrorMap?.sellerInfo?.phone}
-                        id='seller_phone'
+                        id="seller_phone"
                     />
                 }
             </div>

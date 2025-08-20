@@ -1,6 +1,6 @@
-import { Document, Schema, Types, model, models } from 'mongoose';
+import { Document, Schema, Types, model, models } from "mongoose";
 
-import { PropertyDocument } from '@/models/property-model';
+import { PropertyDocument } from "@/models/property-model";
 
 export interface UserDocument extends Document {
     username: string;
@@ -10,17 +10,17 @@ export interface UserDocument extends Document {
 }
 
 const UserSchema = new Schema({
-    username: { type: String, required: [true, 'Username is required'], unique: true },
+    username: { type: String, required: [true, "Username is required"], unique: true },
     email: {
         type: String,
-        unique: [true, 'Email already exists'],
-        required: [true, 'Email is required']
+        unique: [true, "Email already exists"],
+        required: [true, "Email is required"]
     },
     image: { type: String },
-    favorites: [{ type: Schema.Types.ObjectId, ref: 'Property' }]
+    favorites: [{ type: Schema.Types.ObjectId, ref: "Property" }]
 }, {
     timestamps: true
 });
 
-const User = models.User || model<UserDocument>('User', UserSchema);
+const User = models.User || model<UserDocument>("User", UserSchema);
 export default User;

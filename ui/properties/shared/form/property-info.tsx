@@ -27,7 +27,7 @@ const PropertyInfo = ({ actionState, property }: PropertyInfoProps) => {
                     <input
                         className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
                         type="text"
-                        id='name'
+                        id="name"
                         name="name"
                         placeholder="e.g., Beautiful Apartment in Miami"
                         defaultValue={
@@ -39,7 +39,7 @@ const PropertyInfo = ({ actionState, property }: PropertyInfoProps) => {
                     {actionState.formErrorMap?.name &&
                         <FormErrors
                             errors={actionState.formErrorMap?.name}
-                            id='name-error'
+                            id="name-error"
                         />
                     }
                 </div>
@@ -53,9 +53,9 @@ const PropertyInfo = ({ actionState, property }: PropertyInfoProps) => {
                     <DwellioSelect
                         options={propertyTypes}
                         placeholder="Select a property type"
-                        name='type'
-                        id='type'
-                        aria-describedby='type-error'
+                        name="type"
+                        id="type"
+                        aria-describedby="type-error"
                         aria-labelledby="type"
                         defaultValue={property && {
                             label: property.type,
@@ -93,7 +93,7 @@ const PropertyInfo = ({ actionState, property }: PropertyInfoProps) => {
                 {actionState.formErrorMap?.description &&
                     <FormErrors
                         errors={actionState.formErrorMap?.description}
-                        id='description-error'
+                        id="description-error"
                     />
                 }
             </div>

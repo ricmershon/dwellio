@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import PropertyContactForm from "@/ui/properties/id/contact-form";
 import { PropertyDocument } from "@/models";

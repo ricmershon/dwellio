@@ -2,9 +2,9 @@ import { MouseEventHandler } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import clsx from "clsx";
-const Item = dynamic(() => import('react-photoswipe-gallery').then(m => m.Item), { ssr: false });
-import { useGallery } from 'react-photoswipe-gallery';
-import { RiGalleryView2 } from 'react-icons/ri';
+const Item = dynamic(() => import("react-photoswipe-gallery").then(m => m.Item), { ssr: false });
+import { useGallery } from "react-photoswipe-gallery";
+import { RiGalleryView2 } from "react-icons/ri";
 
 import { PropertyImageData } from "@/types/types";
 
@@ -23,14 +23,14 @@ const PropertyImagesGallery = ({ imagesData }: { imagesData: PropertyImageData[]
                     <div
                         key={imageData.secureUrl}
                         className={clsx(
-                            'object-cover h-full w-full rounded-md cursor-pointer aspect-square',
+                            "object-cover h-full w-full rounded-md cursor-pointer aspect-square",
                             {
-                                'col-span-2 row-span-2': index === 0,
-                                'col-start-3': index === 1,
-                                'col-start-4 row-start-1': index === 2,
-                                'col-start-3 row-start-2': index === 3,
-                                'col-start-4 row-start-2': index === 4,
-                                'hidden': index > 4,
+                                "col-span-2 row-span-2": index === 0,
+                                "col-start-3": index === 1,
+                                "col-start-4 row-start-1": index === 2,
+                                "col-start-3 row-start-2": index === 3,
+                                "col-start-4 row-start-2": index === 4,
+                                "hidden": index > 4,
                             }
                         )}
                     >

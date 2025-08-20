@@ -1,4 +1,4 @@
-'use server';
+"use server";
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -20,37 +20,37 @@ import { requireSessionUser } from "@/utils/require-session-user";
  * @param {ActionState} _prevState - required by useActionState
  * @param {FormData} formData 
  * @returns Promise<ActionState> - ActionState may include form data in order to
- * repopulate the form if there's an error.
+ * repopulate the form if there"s an error.
  */
 export const createProperty = async (_prevState: ActionState, formData: FormData) => {
     const sessionUser = await requireSessionUser();
 
-    const rawImages = formData.getAll('images') as File[];
+    const rawImages = formData.getAll("images") as File[];
     const images = rawImages.filter(file => file.size > 0);
 
     const validationResults = PropertyInput.safeParse({
-        type: formData.get('type'),
-        name: formData.get('name'),
-        description: formData.get('description'),
+        type: formData.get("type"),
+        name: formData.get("name"),
+        description: formData.get("description"),
         location: {
-            street: formData.get('location.street'),
-            city: formData.get('location.city'),
-            state: formData.get('location.state'),
-            zipcode: formData.get('location.zipcode'),
+            street: formData.get("location.street"),
+            city: formData.get("location.city"),
+            state: formData.get("location.state"),
+            zipcode: formData.get("location.zipcode"),
         },
-        beds: formData.get('beds'),
-        baths: formData.get('baths'),
-        squareFeet: formData.get('squareFeet'),
-        amenities: formData.getAll('amenities'),
+        beds: formData.get("beds"),
+        baths: formData.get("baths"),
+        squareFeet: formData.get("squareFeet"),
+        amenities: formData.getAll("amenities"),
         rates: {
-            nightly: formData.get('rates.nightly'),
-            weekly: formData.get('rates.weekly'),
-            monthly: formData.get('rates.monthly')
+            nightly: formData.get("rates.nightly"),
+            weekly: formData.get("rates.weekly"),
+            monthly: formData.get("rates.monthly")
         },
         sellerInfo: {
-            name: formData.get('sellerInfo.name'),
-            email: formData.get('sellerInfo.email'),
-            phone: formData.get('sellerInfo.phone'),            
+            name: formData.get("sellerInfo.name"),
+            email: formData.get("sellerInfo.email"),
+            phone: formData.get("sellerInfo.phone"),            
         },
         imagesData: images
     });
@@ -126,7 +126,7 @@ export const deleteProperty = async (propertyId: string) => {
     if (!property) {
         return toActionState({
             status: ActionStatus.ERROR,
-            message: 'Property not found.'
+            message: "Property not found."
         });
     }
 
@@ -140,7 +140,7 @@ export const deleteProperty = async (propertyId: string) => {
         if (!property) {
             return toActionState({
                 status: ActionStatus.ERROR,
-                message: 'Property not found.'
+                message: "Property not found."
             });
         }
         destroyImages(property.imagesData!);
@@ -152,10 +152,10 @@ export const deleteProperty = async (propertyId: string) => {
         // Delete property
         const deleted = await Property.findByIdAndDelete(_id, { session });
         if (!deleted) {
-            throw new Error('Property not found');
+            throw new Error("Property not found");
         }
 
-        // Remove property ID from all users' favorites
+        // Remove property ID from all users" favorites
         await User.updateMany(
             { favorites: _id },
             { $pull: { favorites: _id } },
@@ -177,10 +177,10 @@ export const deleteProperty = async (propertyId: string) => {
         session.endSession();
     }
 
-    revalidatePath('/profile');
+    revalidatePath("/profile");
     return toActionState({
         status: ActionStatus.SUCCESS,
-        message: 'Property successfully deleted.'
+        message: "Property successfully deleted."
     });
 }
 
@@ -191,7 +191,7 @@ export const deleteProperty = async (propertyId: string) => {
  * @param {ActionState} _prevState - required by useActionState
  * @param {FormData} formData 
  * @returns Promise<ActionState> - ActionState may include form data in order to
- * repopulate the form if there's an error.
+ * repopulate the form if there"s an error.
  */
 export const updateProperty = async (
     propertyId: string,
@@ -201,20 +201,20 @@ export const updateProperty = async (
     const sessionUser = await requireSessionUser();
 
     /**
-     * Confirm property's existence and verify ownership.
+     * Confirm property"s existence and verify ownership.
      */
     const property: PropertyDocument | null = await Property.findById(propertyId);
     if (!property) {
         return toActionState({
             status: ActionStatus.ERROR,
-            message: 'Property not found.'
+            message: "Property not found."
         });
     }
 
     if (property.owner.toString() !== sessionUser.id) {
         return toActionState({
             status: ActionStatus.ERROR,
-            message: 'Not authorized to update property.'
+            message: "Not authorized to update property."
         });
     }
 
@@ -224,28 +224,28 @@ export const updateProperty = async (
      */
     const UpdateProperty = PropertyInput.omit({ imagesData: true });
     const validationResults = UpdateProperty.safeParse({
-        type: formData.get('type'),
-        name: formData.get('name'),
-        description: formData.get('description'),
+        type: formData.get("type"),
+        name: formData.get("name"),
+        description: formData.get("description"),
         location: {
-            street: formData.get('location.street'),
-            city: formData.get('location.city'),
-            state: formData.get('location.state'),
-            zipcode: formData.get('location.zipcode'),
+            street: formData.get("location.street"),
+            city: formData.get("location.city"),
+            state: formData.get("location.state"),
+            zipcode: formData.get("location.zipcode"),
         },
-        beds: formData.get('beds'),
-        baths: formData.get('baths'),
-        squareFeet: formData.get('squareFeet'),
-        amenities: formData.getAll('amenities'),
+        beds: formData.get("beds"),
+        baths: formData.get("baths"),
+        squareFeet: formData.get("squareFeet"),
+        amenities: formData.getAll("amenities"),
         rates: {
-            nightly: formData.get('rates.nightly'),
-            weekly: formData.get('rates.weekly'),
-            monthly: formData.get('rates.monthly')
+            nightly: formData.get("rates.nightly"),
+            weekly: formData.get("rates.weekly"),
+            monthly: formData.get("rates.monthly")
         },
         sellerInfo: {
-            name: formData.get('sellerInfo.name'),
-            email: formData.get('sellerInfo.email'),
-            phone: formData.get('sellerInfo.phone'),            
+            name: formData.get("sellerInfo.name"),
+            email: formData.get("sellerInfo.email"),
+            phone: formData.get("sellerInfo.phone"),            
         }
     });
 
@@ -278,7 +278,7 @@ export const updateProperty = async (
         });
     }
 
-    revalidatePath('/', 'layout');
+    revalidatePath("/", "layout");
     redirect(`/properties/${propertyId}`);
 }
 
@@ -302,7 +302,7 @@ export const favoriteProperty = async (propertyId: string) => {
         if (!user) {
             return toActionState({
                 status: ActionStatus.ERROR,
-                message: 'User not found.'
+                message: "User not found."
             });
         } 
     } catch (error) {
@@ -324,7 +324,7 @@ export const favoriteProperty = async (propertyId: string) => {
                 { $pull: { favorites: propertyId } }
             );
             actionState = {
-                message: 'Removed from favorites',
+                message: "Removed from favorites",
                 status: ActionStatus.SUCCESS,
                 isFavorite: false
             }
@@ -334,7 +334,7 @@ export const favoriteProperty = async (propertyId: string) => {
                 { $push: { favorites: propertyId } }
             );
             actionState = {
-                message: 'Added to favorites',
+                message: "Added to favorites",
                 status: ActionStatus.SUCCESS,
                 isFavorite: true
             }
@@ -343,7 +343,7 @@ export const favoriteProperty = async (propertyId: string) => {
             console.error(`>>> Database error favoriting property`);
             return toActionState({
                 status: ActionStatus.ERROR,
-                message: 'Error favoriting property'
+                message: "Error favoriting property"
             });
         }
     } catch (error) {
@@ -354,7 +354,7 @@ export const favoriteProperty = async (propertyId: string) => {
         });
     }
 
-    revalidatePath('/properties/favorites', 'page');
+    revalidatePath("/properties/favorites", "page");
     return actionState;
 }
 
@@ -377,7 +377,7 @@ export const getFavoriteStatus = async (propertyId: string) => {
         if (!user) {
             return toActionState({
                 status: ActionStatus.ERROR,
-                message: 'User not found.'
+                message: "User not found."
             });
         } 
     } catch (error) {
@@ -392,7 +392,7 @@ export const getFavoriteStatus = async (propertyId: string) => {
 
     return toActionState({
         status: ActionStatus.SUCCESS,
-        message: 'Successfully fetched favorites status',
+        message: "Successfully fetched favorites status",
         isFavorite: isFavorite
     });
 }

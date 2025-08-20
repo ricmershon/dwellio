@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from "next/link";
 
 interface Breadcrumb {
     label: string;
@@ -8,12 +8,12 @@ interface Breadcrumb {
 
 const Breadcrumbs = ({ breadcrumbs }: { breadcrumbs: Array<Breadcrumb> }) => (
     <nav aria-label="Breadcrumb" className="mb-6 block">
-        <ol className='flex text-lg md:text-xl'>
+        <ol className="flex text-lg md:text-xl">
             {breadcrumbs.map((breadcrumb, index) => (
                 <li
                     key={breadcrumb.href}
                     aria-current={breadcrumb.active}
-                    className={`${breadcrumb.active ? 'text-gray-900 pointer-events-none' : 'text-gray-500'}`}
+                    className={`${breadcrumb.active ? "text-gray-900 pointer-events-none" : "text-gray-500"}`}
                 >
                     <Link href={breadcrumb.href}>{breadcrumb.label}</Link>
                     {index < breadcrumbs.length - 1 ? (
