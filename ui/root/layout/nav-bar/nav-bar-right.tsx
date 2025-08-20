@@ -1,20 +1,18 @@
 'use client';
 
 import { useState } from "react";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import clsx from 'clsx';
 import { FaGoogle } from "react-icons/fa";
 
-import { useAuthProviders } from "@/hooks/use-auth-providers";
+import LoginButtons from "@/ui/auth/login-buttons";
 
 const NavBarRight = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const { data: session } = useSession();
     const pathname = usePathname();
-
-    const providers = useAuthProviders();
 
     const handleSignOutClick = () => {
         setIsMobileMenuOpen(false);
@@ -101,19 +99,11 @@ const NavBarRight = () => {
                     ) : (
                         <>
                             <hr className="w-full border-t border-gray-200"/>
-                            {providers && Object.values(providers).map((provider) => (
-                                <button
-                                    key={provider.id}
-                                    className="flex items-center justify-center btn btn-login-logout w-full"
-                                    role="menuitem"
-                                    id="mobile-menu-item-3"
-                                    tabIndex={-1}
-                                    onClick={() => signIn(provider.id)}
-                                >
-                                    <FaGoogle className='mr-2' />
-                                    <span>Login</span>
-                                </button>
-                            ))}
+                            <LoginButtons
+                                buttonClassName="flex items-center justify-center btn btn-login-logout w-full"
+                                text="Login"
+                                icon={<FaGoogle className='mr-2' />}
+                            />
                         </>
                     )}
                     {session && (

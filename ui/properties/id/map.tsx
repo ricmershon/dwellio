@@ -1,8 +1,14 @@
 'use client';
 
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { setDefaults, fromAddress, OutputFormat } from "react-geocode";
-import Map, { Marker, NavigationControl } from "react-map-gl/mapbox";
+const DynamicMap = dynamic(() => import('react-map-gl/mapbox').then(mod => mod.default), {
+    ssr: false,
+    loading: () => <MapSkeleton height={100} />
+});
+const DynamicMarker = dynamic(() => import('react-map-gl/mapbox').then(mod => mod.Marker), { ssr: false });
+const DynamicNavigationControl = dynamic(() => import('react-map-gl/mapbox').then(mod => mod.NavigationControl), { ssr: false });
 import Image from 'next/image';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
@@ -30,6 +36,7 @@ const PropertyMap = ({ property, viewportWidth }: PropertyMapProps) => {
         height = 800;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [viewport, setViewport] = useState({
         latitude: 0,
         longitude: 0,
@@ -48,12 +55,14 @@ const PropertyMap = ({ property, viewportWidth }: PropertyMapProps) => {
         </p>
     );
 
-    setDefaults({
-        key: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-        language: 'en',
-        region: 'us',
-        outputFormat: OutputFormat.JSON
-    });
+    useEffect(() =>{
+        setDefaults({
+            key: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+            language: 'en',
+            region: 'us',
+            outputFormat: OutputFormat.JSON
+        });
+    }, [])
 
     useEffect(() => {
         fromAddress(`${street} ${city} ${state} ${zipcode}`).then((response) => {
@@ -67,11 +76,11 @@ const PropertyMap = ({ property, viewportWidth }: PropertyMapProps) => {
             setLatitude(lat);
             setLongitude(lng);
 
-            setViewport({
-                ...viewport,
+            setViewport((prevViewport) => ({
+                ...prevViewport,
                 latitude: latitude!,
                 longitude: longitude!
-            });
+            }));
         })
         .catch((error) => {
             setHasGeocodeError(true);
@@ -97,7 +106,7 @@ const PropertyMap = ({ property, viewportWidth }: PropertyMapProps) => {
             {locationInfo}
             {!isLoading ? (
                 <>
-                    <Map
+                    <DynamicMap
                         mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
                         mapLib={import('mapbox-gl')}
                         initialViewState={{
@@ -108,14 +117,14 @@ const PropertyMap = ({ property, viewportWidth }: PropertyMapProps) => {
                         style={{ width: '100%', height: height }}
                         mapStyle='mapbox://styles/mapbox/streets-v9'
                     >
-                        <Marker longitude={longitude!} latitude={latitude!} anchor="bottom">
+                        <DynamicMarker longitude={longitude!} latitude={latitude!} anchor="bottom">
                             <Image src={pin} alt='location' width={40} height={40} />
-                        </Marker>
-                        <NavigationControl
+                        </DynamicMarker>
+                        <DynamicNavigationControl
                             showCompass={false}
                             position="top-right"
                         />
-                    </Map>
+                    </DynamicMap>
                 </>
             ) : (
                 <MapSkeleton
