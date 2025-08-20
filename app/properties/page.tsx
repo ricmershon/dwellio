@@ -12,7 +12,7 @@ import PropertyFilterForm from "@/ui/properties/properties-filter-form";
 import { getViewportWidth } from "@/utils/get-viewport-width";
 
 export const metadata: Metadata = {
-    title: 'Properties'
+    title: "Properties"
 }
 
 interface PropertiesPageProps {
@@ -26,9 +26,9 @@ const PropertiesPage = async (props: PropertiesPageProps) => {
     const viewportWidth = await getViewportWidth();
 
     const searchParams = await props.searchParams;
-    const query = searchParams?.query || '';
+    const query = searchParams?.query || "";
     const currentPage = Number(searchParams?.page) || 1;
-    const queryRegex = new RegExp(query, 'i');
+    const queryRegex = new RegExp(query, "i");
     
     const propertiesQuery: PropertiesQuery = {
         $or: [
@@ -36,10 +36,10 @@ const PropertiesPage = async (props: PropertiesPageProps) => {
             { description: queryRegex },
             { amenities: queryRegex },
             { type: queryRegex },
-            { 'location.street': queryRegex },
-            { 'location.city': queryRegex },
-            { 'location.state': queryRegex },
-            { 'location.zip': queryRegex },
+            { "location.street": queryRegex },
+            { "location.city": queryRegex },
+            { "location.state": queryRegex },
+            { "location.zip": queryRegex },
         ],
     };
 
@@ -49,8 +49,8 @@ const PropertiesPage = async (props: PropertiesPageProps) => {
         <main>
             <Breadcrumbs
                 breadcrumbs={[
-                    { label: 'Home', href: '/' },
-                    { label: 'Properties', href: '/properties', active: true }
+                    { label: "Home", href: "/" },
+                    { label: "Properties", href: "/properties", active: true }
                 ]}
             />
             <PropertyFilterForm />

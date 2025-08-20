@@ -18,8 +18,8 @@ const FavoritePropertiesPage = async () => {
         <main>
             <Breadcrumbs
                 breadcrumbs={[
-                    { label: 'Profile', href: '/profile' },
-                    { label: 'Favorite Properties', href: '/properties/favorites', active: true }
+                    { label: "Profile", href: "/profile" },
+                    { label: "Favorite Properties", href: "/properties/favorites", active: true }
                 ]}
             />
             <PropertiesList properties={savedProperties} />

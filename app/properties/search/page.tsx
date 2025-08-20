@@ -1,14 +1,14 @@
-import { Metadata } from 'next';
-import { Types } from 'mongoose';
+import { Metadata } from "next";
+import { Types } from "mongoose";
 
-import PropertyCard from '@/ui/properties/property-card';
-import PropertySearchForm from '@/ui/properties/search/search-form';
-import { PropertiesQuery } from '@/types/types';
-import { searchProperties } from '@/lib/data/property-data';
-import Breadcrumbs from '@/ui/shared/breadcrumbs';
+import PropertyCard from "@/ui/properties/property-card";
+import PropertySearchForm from "@/ui/properties/search/search-form";
+import { PropertiesQuery } from "@/types/types";
+import { searchProperties } from "@/lib/data/property-data";
+import Breadcrumbs from "@/ui/shared/breadcrumbs";
 
 export const metadata: Metadata = {
-    title: 'Search Properties'
+    title: "Search Properties"
 }
 
 interface SearchResultsPageProps {
@@ -21,7 +21,7 @@ interface SearchResultsPageProps {
 const SearchResultsPage = async (props: SearchResultsPageProps) => {
     const searchParams = await props.searchParams;
     const { query, propertyType } = searchParams;
-    const queryRegex = new RegExp(query, 'i');
+    const queryRegex = new RegExp(query, "i");
 
     
     const propertiesQuery: PropertiesQuery = {
@@ -30,10 +30,10 @@ const SearchResultsPage = async (props: SearchResultsPageProps) => {
             { description: queryRegex },
             { amenities: queryRegex },
             { type: queryRegex },
-            { 'location.street': queryRegex },
-            { 'location.city': queryRegex },
-            { 'location.state': queryRegex },
-            { 'location.zip': queryRegex },
+            { "location.street": queryRegex },
+            { "location.city": queryRegex },
+            { "location.state": queryRegex },
+            { "location.zip": queryRegex },
         ],
     }
     
@@ -41,8 +41,8 @@ const SearchResultsPage = async (props: SearchResultsPageProps) => {
      * If the property type is not `All`, add the `type` key and the regex for
      * `properType` to the query object.
      */
-    if (propertyType && propertyType !== 'All') {
-        const propertyTypeRegex = new RegExp(propertyType, 'i');
+    if (propertyType && propertyType !== "All") {
+        const propertyTypeRegex = new RegExp(propertyType, "i");
         Object.assign(propertiesQuery, { type: propertyTypeRegex });
     }
 
@@ -52,8 +52,8 @@ const SearchResultsPage = async (props: SearchResultsPageProps) => {
         <main>
             <Breadcrumbs
                 breadcrumbs={[
-                    { label: 'Properties', href: '/properties' },
-                    { label: 'Search Properties', href: '/properties/search', active: true }
+                    { label: "Properties", href: "/properties" },
+                    { label: "Search Properties", href: "/properties/search", active: true }
                 ]}
             />
             <div className="max-width-7xl mx-auto px-4 flex flex-col tems-start sm:px-6 lg:px-8">
