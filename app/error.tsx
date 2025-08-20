@@ -3,31 +3,26 @@
 import Link from "next/link";
 import { FaExclamationCircle } from "react-icons/fa";
 
-const Error = ({ error }: {error: Error & { digest?: string }}) => {
-    return (
-        <section className="bg-blue-50 min-h-screen flex-grow">
-            <div className="container m-auto max-w-2xl py-24">
-                <div className="bg-white px-6 py-24 mb-4 shadow-md rounded-md border m-4 md:m-0">
-                    <div className="flex justify-center">
-                        <FaExclamationCircle className="text-8xl text-yellow-400 fa-5x" />
-                    </div>
-                    <div className="text-center">
-                        <h1 className="text-3xl font-bold mt-4 mb-2">Something Went Wrong</h1>
-                        <p className="text-gray-500 text-xl mb-10">
-                            {error.toString()}
-                        </p>
-                        <Link
-                            href="/"
-                            className="bg-blue-700 hover:bg-blue-800 text-white font-bold py-4 px-6 rounded"
-                        >
-                            Return to Home
-                        </Link>
-                    </div>
+const Error = ({ error }: { error: Error & { digest?: string }}) => (
+    <section className="h-screen text-center flex flex-col jusitfy-center items-center">
+        <div className="mt-10">
+                <div className="flex justify-center">
+                    <FaExclamationCircle className="text-3xl text-yellow-400" />
+                </div>
+                <div className="text-center mt-2">
+                    <p className="font-medium text-lg mb-5">
+                        {error.toString()}
+                    </p>
+                    <Link
+                        href="/"
+                        className="btn btn-primary"
+                    >
+                        Return Home
+                    </Link>
                 </div>
             </div>
-            <div className="flex-grow"></div>
-        </section>
-    );
-}
+        <div className="flex-grow"></div>
+    </section>
+);
 
 export default Error;
