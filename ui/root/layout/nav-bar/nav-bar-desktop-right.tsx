@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { signOut } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { FaGoogle } from "react-icons/fa";
 import { HiOutlineBell } from "react-icons/hi2";
@@ -12,23 +11,19 @@ import LoginButtons from "@/ui/auth/login-buttons";
 import profileDefaultImage from "@/assets/images/profile.png";
 import { useGlobalContext } from "@/context/global-context";
 import UnreadMessageCount from "@/ui/messages/unread-message-count";
-import { withSession, WithSessionProps } from "@/hocs/with-session";
+import { withAuth, WithAuthProps } from "@/hocs/with-session";
+import LogoutButton from "@/ui/auth/logout-button";
 
-interface NavBarDesktopRightProps extends WithSessionProps {
+interface NavBarDesktopRightProps extends WithAuthProps {
     viewportWidth: number;
 }
 
 const NavBarDesktopRight = ({ viewportWidth, session }: NavBarDesktopRightProps) => {
-    const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const pathname = usePathname();
     
     const profileImage = session?.user?.image;
     const { unreadCount } = useGlobalContext();
-
-    const handleSignOutClick = () => {
-        setIsProfileDropdownOpen(false);
-        signOut();
-    }
 
     return (
         <>
@@ -55,7 +50,7 @@ const NavBarDesktopRight = ({ viewportWidth, session }: NavBarDesktopRightProps)
                                 id="user-menu-button"
                                 aria-expanded="false"
                                 aria-haspopup="true"
-                                onClick={() => setIsProfileDropdownOpen((prevState) => !prevState)}
+                                onClick={() => setIsMenuOpen((prevState) => !prevState)}
                             >
                             <span className="absolute inset-1.5"></span>
                             <span className="sr-only">Open user menu</span>
@@ -70,7 +65,7 @@ const NavBarDesktopRight = ({ viewportWidth, session }: NavBarDesktopRightProps)
                         </div>
 
                         {/* Profile dropdown menu */}
-                        {isProfileDropdownOpen && (
+                        {isMenuOpen && (
                             <div
                                 id="user-menu"
                                 className="absolute right-0 top-10 z-10 p-2 w-50 origin-top-right rounded-sm bg-white border-gray-100 shadow-md flex flex-col items-center justify-center space-y-2"
@@ -85,7 +80,7 @@ const NavBarDesktopRight = ({ viewportWidth, session }: NavBarDesktopRightProps)
                                     role="menuitem"
                                     tabIndex={-1}
                                     id="user-menu-item-0"
-                                    onClick={() => setIsProfileDropdownOpen(false)}
+                                    onClick={() => setIsMenuOpen(false)}
                                 >
                                     Profile
                                 </Link>
@@ -95,19 +90,14 @@ const NavBarDesktopRight = ({ viewportWidth, session }: NavBarDesktopRightProps)
                                     role="menuitem"
                                     tabIndex={-1}
                                     id="user-menu-item-1"
-                                    onClick={() => setIsProfileDropdownOpen(false)}
+                                    onClick={() => setIsMenuOpen(false)}
                                 >
                                     Favorite Properties
                                 </Link>
-                                <button
-                                    className="btn btn-login-logout w-full"
-                                    role="menuitem"
-                                    tabIndex={-1}
+                                <LogoutButton
+                                    setIsMenuOpen={setIsMenuOpen}
                                     id="user-menu-item-2"
-                                    onClick={handleSignOutClick}
-                                >
-                                    Sign Out
-                                </button>
+                                />
                             </div>
                         )}
                     </div>
@@ -128,4 +118,4 @@ const NavBarDesktopRight = ({ viewportWidth, session }: NavBarDesktopRightProps)
     )
 };
 
-export default withSession(NavBarDesktopRight);
+export default withAuth(NavBarDesktopRight);

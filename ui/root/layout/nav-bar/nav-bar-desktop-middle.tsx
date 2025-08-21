@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { withSession, WithSessionProps } from "@/hocs/with-session";
+import { withAuth, WithAuthProps } from "@/hocs/with-session";
 
-const NavBarDesktopMiddle = ({ session }: WithSessionProps) => {
+const NavBarDesktopMiddle = ({ session }: WithAuthProps) => {
     const pathname = usePathname();
 
     return (
@@ -47,4 +47,4 @@ const NavBarDesktopMiddle = ({ session }: WithSessionProps) => {
     );
 }
 
-export default withSession(NavBarDesktopMiddle);
+export default withAuth(NavBarDesktopMiddle);

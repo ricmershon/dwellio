@@ -8,16 +8,12 @@ import clsx from "clsx";
 import { FaGoogle } from "react-icons/fa";
 
 import LoginButtons from "@/ui/auth/login-buttons";
-import { withSession, WithSessionProps } from "@/hocs/with-session";
+import { withAuth, WithAuthProps } from "@/hocs/with-session";
+import LogoutButton from "@/ui/auth/logout-button";
 
-const NavBarRight = ({ session }: WithSessionProps) => {
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+const NavBarRight = ({ session }: WithAuthProps) => {
+    const [isMenuopen, setIsMenuOpen] = useState(false);
     const pathname = usePathname();
-
-    const handleSignOutClick = () => {
-        setIsMobileMenuOpen(false);
-        signOut();
-    }
 
     return (
         <>
@@ -26,10 +22,10 @@ const NavBarRight = ({ session }: WithSessionProps) => {
                 <button
                     type="button"
                     id="mobile-menu-button"
-                    className={`md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 ${isMobileMenuOpen && "mobile-menu-open"}`}
+                    className={`md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 ${isMenuopen && "mobile-menu-open"}`}
                     aria-controls="mobile-menu"
                     aria-expanded="false"
-                    onClick={() => setIsMobileMenuOpen((prevState) => !prevState)}
+                    onClick={() => setIsMenuOpen((prevState) => !prevState)}
                 >
                     <span className="mobile-menu-top"></span>
                     <span className="mobile-menu-middle"></span>
@@ -38,7 +34,7 @@ const NavBarRight = ({ session }: WithSessionProps) => {
             </div>
             
             {/* Mobile menu */}
-            {isMobileMenuOpen && (
+            {isMenuopen && (
                 <div
                     id="mobile-menu"
                     className="md:hidden absolute w-screen -mr-4 p-3 rounded-sm bg-white text-sm right-0 top-10 z-10 border border-gray-100 shadow-md flex flex-col items-center justify-center space-y-3"
@@ -56,7 +52,7 @@ const NavBarRight = ({ session }: WithSessionProps) => {
                                 "menu-btn-not-current-path": pathname !== "/"
                             }
                         )}
-                        onClick={() => setIsMobileMenuOpen(false)}
+                        onClick={() => setIsMenuOpen(false)}
                         role="menuitem"
                         id="mobile-menu-item-0"
                         tabIndex={-1}
@@ -72,7 +68,7 @@ const NavBarRight = ({ session }: WithSessionProps) => {
                                 "menu-btn-not-current-path": pathname !== "/properties"
                             }
                         )}
-                        onClick={() => setIsMobileMenuOpen(false)}
+                        onClick={() => setIsMenuOpen(false)}
                         role="menuitem"
                         id="mobile-menu-item-1"
                         tabIndex={-1}
@@ -89,7 +85,7 @@ const NavBarRight = ({ session }: WithSessionProps) => {
                                     "menu-btn-not-current-path": pathname !== "/properties/add"
                                 }
                             )}
-                            onClick={() => setIsMobileMenuOpen(false)}
+                            onClick={() => setIsMenuOpen(false)}
                             role="menuitem"
                             id="mobile-menu-item-2"
                             tabIndex={-1}
@@ -118,7 +114,7 @@ const NavBarRight = ({ session }: WithSessionProps) => {
                                         "menu-btn-not-current-path": pathname !== "/profile"
                                     }
                                 )}
-                                onClick={() => setIsMobileMenuOpen(false)}
+                                onClick={() => setIsMenuOpen(false)}
                                 role="menuitem"
                                 id="mobile-menu-item-4"
                                 tabIndex={-1}
@@ -134,16 +130,22 @@ const NavBarRight = ({ session }: WithSessionProps) => {
                                         "menu-btn-not-current-path": pathname !== "/properties/favorites"
                                     }
                                 )}
-                                onClick={() => setIsMobileMenuOpen(false)}
+                                onClick={() => setIsMenuOpen(false)}
                                 role="menuitem"
                                 id="mobile-menu-item-5"
                                 tabIndex={-1}
                             >
                                 Favorite Properties
                             </Link>
+
                             <hr className="w-full border-t border-gray-200"/>
 
-                            <button
+                                <LogoutButton
+                                    setIsMenuOpen={setIsMenuOpen}
+                                    id="user-menu-item-2"
+                                />
+
+                            {/* <button
                                 className="btn btn-login-logout w-full"
                                 role="menuitem"
                                 tabIndex={-1}
@@ -151,7 +153,7 @@ const NavBarRight = ({ session }: WithSessionProps) => {
                                 onClick={handleSignOutClick}
                             >
                                 Sign Out
-                            </button>
+                            </button> */}
                         </>
                     )}
                 </div>
@@ -160,4 +162,4 @@ const NavBarRight = ({ session }: WithSessionProps) => {
     );
 }
  
-export default withSession(NavBarRight);
+export default withAuth(NavBarRight);

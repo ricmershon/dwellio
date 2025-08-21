@@ -2,9 +2,9 @@
 
 import PropertyContactForm from "@/ui/properties/id/contact-form";
 import { PropertyDocument } from "@/models";
-import { withSession, WithSessionProps } from "@/hocs/with-session";
+import { withAuth, WithAuthProps } from "@/hocs/with-session";
 
-interface PropertyPageAsidePros extends WithSessionProps {
+interface PropertyPageAsidePros extends WithAuthProps {
     property: PropertyDocument;
 }
 
@@ -24,4 +24,4 @@ const PropertyPageAside = ({ property, session }: PropertyPageAsidePros) => (
     </aside>
 );
  
-export default withSession(PropertyPageAside);
+export default withAuth(PropertyPageAside);

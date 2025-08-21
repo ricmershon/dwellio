@@ -1,9 +1,9 @@
 import { ActionState } from "@/types/types";
 import FormErrors from "@/ui/shared/form-errors";
 import { PropertyDocument } from "@/models";
-import { withSession, WithSessionProps } from "@/hocs/with-session";
+import { withAuth, WithAuthProps } from "@/hocs/with-session";
 
-interface HostInfoProps extends WithSessionProps {
+interface HostInfoProps extends WithAuthProps {
     actionState: ActionState;
     property?: PropertyDocument;
 }
@@ -97,4 +97,4 @@ const HostInfo = ({ actionState, property, session }: HostInfoProps) => (
     </div>        
 );
 
-export default withSession(HostInfo);
+export default withAuth(HostInfo);

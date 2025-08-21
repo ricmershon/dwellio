@@ -2,14 +2,14 @@ import { ComponentType } from "react";
 import { useSession } from "next-auth/react";
 import { Session } from "next-auth";
 
-export interface WithSessionProps {
+export interface WithAuthProps {
     session: Session | null;
 }
 
-export function withSession<P extends WithSessionProps>(
+export function withAuth<P extends WithAuthProps>(
     WrappedComponent: ComponentType<P>
 ) {
-    return function WithSession(props: Omit<P, keyof WithSessionProps>) {
+    return function WithAuth(props: Omit<P, keyof WithAuthProps>) {
         const { data: session } = useSession();
 
         return (
