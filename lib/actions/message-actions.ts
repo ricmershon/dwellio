@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 
-import dbConnect from "@/config/database-config";
+import dbConnect from "@/lib/db-connect";
 import { Message, MessageDocument } from "@/models";
 import { toActionState } from "@/utils/to-action-state";
 import { ActionState, ActionStatus } from "@/types/types";

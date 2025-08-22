@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { Types, startSession } from "mongoose";
 
-import dbConnect from "@/config/database-config";
+import dbConnect from "@/lib/db-connect";
 import { ActionStatus, type ActionState, type PropertyImageData } from "@/types/types";
 import { uploadImages, destroyImages } from "@/lib/data/images-data";
 import { toActionState } from "@/utils/to-action-state";
@@ -122,6 +122,7 @@ export const deleteProperty = async (propertyId: string) => {
     /**
      * Confirm properties existence and verify ownwerhip.
      */
+    await dbConnect();
     const property: PropertyDocument | null = await Property.findById(propertyId);
     if (!property) {
         return toActionState({
@@ -203,6 +204,7 @@ export const updateProperty = async (
     /**
      * Confirm property"s existence and verify ownership.
      */
+    await dbConnect();
     const property: PropertyDocument | null = await Property.findById(propertyId);
     if (!property) {
         return toActionState({
@@ -261,8 +263,6 @@ export const updateProperty = async (
     }
 
     try {
-        await dbConnect();
-
         await Property.findByIdAndUpdate(propertyId, validationResults.data);
     } catch (error) {
         console.error(`>>> Database error updating a property: ${error}`);

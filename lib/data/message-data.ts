@@ -1,4 +1,4 @@
-import dbConnect from "@/config/database-config";
+import dbConnect from "@/lib/db-connect";
 import { Message, MessageDocument } from "@/models"
 import { toSerializedOjbect } from "@/utils/to-serialized-object";
 
