@@ -12,6 +12,7 @@ export const metadata: Metadata = {
 
 const MessagesPage = async () => {
     const sessionUser = await requireSessionUser();
+    console.log(`>>> MESSAGES PAGE: ${sessionUser.email}`);
     const messages: MessageDocument[] | null = await fetchMessages(sessionUser.id!);
 
     return (

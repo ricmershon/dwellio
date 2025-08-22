@@ -2,12 +2,16 @@ import { Metadata } from "next";
 
 import AddPropertyForm from "@/ui/properties/add/add-property-form";
 import Breadcrumbs from "@/ui/shared/breadcrumbs";
+import { requireSessionUser } from "@/utils/require-session-user";
 
 export const metadata: Metadata = {
     title: "Add New Property"
 }
 
-const AddPropertyPage = () => {
+const AddPropertyPage = async () => {
+    const sessionUser = await requireSessionUser();
+    console.log(`>>> ADD PROPERTY PAGE: ${sessionUser.email}`);
+
     return (
         <main>
             <Breadcrumbs

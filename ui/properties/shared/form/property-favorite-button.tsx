@@ -40,7 +40,7 @@ const PropertyFavoriteButton = ({ propertyId }: { propertyId: string }) => {
 
     return (
         <>
-            <form action={favoritePropertyAction} className="size-[18px]">
+            <form action={favoritePropertyAction} className="size-[18px] z-20">
                 <button className="size-4 hover:cursor-pointer">
                     {isFavorite ? (
                         <HeartSolidIcon className="text-red-600" />

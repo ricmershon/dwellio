@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 
 const ProfilePage = async () => {
     const sessionUser = await requireSessionUser();
+    console.log(`>>> PROFILE PAGE: ${sessionUser.email}`);
     const properties: PropertyDocument[] = await fetchPropertiesByUserId(sessionUser.id!);
         
     return (
@@ -25,9 +26,9 @@ const ProfilePage = async () => {
                 ]}
             />
             <div className="mt-5">
-                <div className="container-xl lg:container m-auto">
+                <div className="m-auto">
                     <div className="flex flex-col md:flex-row">
-                        <div className="md:w-1/4 md:mx-5">
+                        <div className="md:w-1/4 md:mr-5">
                             <h1 className="heading">About me</h1>
                             <div className="rounded-3xl bg-white p-6 shadow-xl mb-4 flex flex-col items-center">
                                 <Image
@@ -47,7 +48,7 @@ const ProfilePage = async () => {
 
                         </div>
 
-                        <div className="md:w-3/4 md:mx-5">
+                        <div className="md:w-3/4 md:ml-5">
                             <h1 className="heading mt-5 md:mt-0">My listings</h1>
                             {<ProfileProperties properties={properties} />}
                         </div>
