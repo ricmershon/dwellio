@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { signOut } from "next-auth/react";
+import { useCallback, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import clsx from "clsx";
@@ -10,10 +9,16 @@ import { FaGoogle } from "react-icons/fa";
 import LoginButtons from "@/ui/auth/login-buttons";
 import { withAuth, WithAuthProps } from "@/hocs/with-auth";
 import LogoutButton from "@/ui/auth/logout-button";
+import { useClickOutside } from "@/hooks/use-click-outside";
 
 const NavBarRight = ({ session }: WithAuthProps) => {
-    const [isMenuopen, setIsMenuOpen] = useState(false);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
+
+    const close = useCallback(() => setIsMenuOpen(false), []);
+
+    useClickOutside(dropdownRef, close, isMenuOpen)
 
     return (
         <>
@@ -22,7 +27,7 @@ const NavBarRight = ({ session }: WithAuthProps) => {
                 <button
                     type="button"
                     id="mobile-menu-button"
-                    className={`md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 ${isMenuopen && "mobile-menu-open"}`}
+                    className={`md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 ${isMenuOpen && "mobile-menu-open"}`}
                     aria-controls="mobile-menu"
                     aria-expanded="false"
                     onClick={() => setIsMenuOpen((prevState) => !prevState)}
@@ -34,8 +39,9 @@ const NavBarRight = ({ session }: WithAuthProps) => {
             </div>
             
             {/* Mobile menu */}
-            {isMenuopen && (
+            {isMenuOpen && (
                 <div
+                    ref={dropdownRef}
                     id="mobile-menu"
                     className="md:hidden absolute w-screen -mr-4 p-3 rounded-sm bg-white text-sm right-0 top-10 z-10 border border-gray-100 shadow-md flex flex-col items-center justify-center space-y-3"
                     role="menu"
