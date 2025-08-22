@@ -1,7 +1,7 @@
 import GoogleProvider from "next-auth/providers/google";
 import type { DefaultUser, Session } from "next-auth";
 
-import dbConnect from "@/config/database-config";
+import dbConnect from "@/lib/db-connect";
 import { User } from "@/models";
 
 export const authOptions = {
@@ -23,7 +23,7 @@ export const authOptions = {
         async signIn({ user }: { user: DefaultUser }) {
             console.log(`>>> SIGNING IN: ${user}`);
 
-            // Connect to database
+            // Connect to database and query for user
             await dbConnect();
             const dbUser  = await User.findOne({ email: user.email })
 
@@ -31,6 +31,7 @@ export const authOptions = {
             if (!dbUser) {
                 console.log(`>>> CREATING NEW USER: ${user}`)
                 const username = user.name!.slice(0, 20);
+                await dbConnect();
                 await User.create({
                     email: user.email,
                     username: username,
@@ -45,6 +46,7 @@ export const authOptions = {
         async session({ session }: { session: Session }) {
             console.log(`>>> SESSION CALLBACK: ${session.user.email}`)
             // Get user from database and assign id to the session and return the session
+            await dbConnect();
             const user = await User.findOne({ email: session.user!.email });
             session.user!.id = user._id?.toString();
             return session;

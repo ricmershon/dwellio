@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { fetchPlacesAutocomplete } from "@/lib/google-places/places-autocomplete";
+import { fetchPlacesAutocomplete } from "@/lib/places-autocomplete";
 import { AutocompleteFetchOptions, AutocompletePrediction } from "@/types/types";
 
 export function usePlacesAutocomplete(query: string) {
