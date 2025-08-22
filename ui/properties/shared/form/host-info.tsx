@@ -1,7 +1,7 @@
 import { ActionState } from "@/types/types";
 import FormErrors from "@/ui/shared/form-errors";
 import { PropertyDocument } from "@/models";
-import { withAuth, WithAuthProps } from "@/hocs/with-session";
+import { withAuth, WithAuthProps } from "@/hocs/with-auth";
 
 interface HostInfoProps extends WithAuthProps {
     actionState: ActionState;

@@ -2,7 +2,7 @@
 
 import PropertyContactForm from "@/ui/properties/id/contact-form";
 import { PropertyDocument } from "@/models";
-import { withAuth, WithAuthProps } from "@/hocs/with-session";
+import { withAuth, WithAuthProps } from "@/hocs/with-auth";
 
 interface PropertyPageAsidePros extends WithAuthProps {
     property: PropertyDocument;

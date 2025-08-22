@@ -14,10 +14,9 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(url);
     }
 
-    // Auth OK
     return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/properties/add", "/profile", "/properties/favorites", "/messages"],
+    matcher: ["/properties/add", "/profile", "/properties/favorites", "/messages"],
 };

@@ -11,7 +11,7 @@ import LoginButtons from "@/ui/auth/login-buttons";
 import profileDefaultImage from "@/assets/images/profile.png";
 import { useGlobalContext } from "@/context/global-context";
 import UnreadMessageCount from "@/ui/messages/unread-message-count";
-import { withAuth, WithAuthProps } from "@/hocs/with-session";
+import { withAuth, WithAuthProps } from "@/hocs/with-auth";
 import LogoutButton from "@/ui/auth/logout-button";
 
 interface NavBarDesktopRightProps extends WithAuthProps {

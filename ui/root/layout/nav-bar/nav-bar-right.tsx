@@ -8,7 +8,7 @@ import clsx from "clsx";
 import { FaGoogle } from "react-icons/fa";
 
 import LoginButtons from "@/ui/auth/login-buttons";
-import { withAuth, WithAuthProps } from "@/hocs/with-session";
+import { withAuth, WithAuthProps } from "@/hocs/with-auth";
 import LogoutButton from "@/ui/auth/logout-button";
 
 const NavBarRight = ({ session }: WithAuthProps) => {

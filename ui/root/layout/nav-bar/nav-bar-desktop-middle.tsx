@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { withAuth, WithAuthProps } from "@/hocs/with-session";
+import { withAuth, WithAuthProps } from "@/hocs/with-auth";
 
 const NavBarDesktopMiddle = ({ session }: WithAuthProps) => {
     const pathname = usePathname();
