@@ -56,12 +56,12 @@ const SearchResultsPage = async (props: SearchResultsPageProps) => {
                     { label: "Search Properties", href: "/properties/search", active: true }
                 ]}
             />
-            <div className="max-width-7xl mx-auto px-4 flex flex-col tems-start sm:px-6 lg:px-8">
+            <div className="mx-auto flex flex-col">
                 <PropertySearchForm />
             </div>
 
             <section className="py-6">
-                <div className="container-xl lg:container m-auto">
+                <div className="m-auto">
                     <h1 className="heading">Search Results</h1>
                     {propertiesQueryResults.length === 0 ? (
                         <p>No search results</p>
