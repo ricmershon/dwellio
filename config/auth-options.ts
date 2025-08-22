@@ -21,12 +21,15 @@ export const authOptions = {
     callbacks: {
         // Invoked on successful sign in
         async signIn({ user }: { user: DefaultUser }) {
+            console.log(`>>> SIGNING IN: ${user}`);
+
             // Connect to database
             await dbConnect();
             const dbUser  = await User.findOne({ email: user.email })
 
             // Check if user exists, if not create user
             if (!dbUser) {
+                console.log(`>>> CREATING NEW USER: ${user}`)
                 const username = user.name!.slice(0, 20);
                 await User.create({
                     email: user.email,
@@ -40,6 +43,7 @@ export const authOptions = {
 
         // Session callback function that modifies the session object
         async session({ session }: { session: Session }) {
+            console.log(`>>> SESSION CALLBACK: ${session.user.email}`)
             // Get user from database and assign id to the session and return the session
             const user = await User.findOne({ email: session.user!.email });
             session.user!.id = user._id?.toString();
