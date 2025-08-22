@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 
 const ProfilePage = async () => {
     const sessionUser = await requireSessionUser();
+    console.log(`>>> PROFILE PAGE: ${sessionUser.email}`);
     const properties: PropertyDocument[] = await fetchPropertiesByUserId(sessionUser.id!);
         
     return (
