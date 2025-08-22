@@ -51,7 +51,7 @@ const PropertySearchForm = () => {
 
     return (
         <form 
-            className="mt-3 mx-auto max-w-2xl w-full flex flex-col md:flex-row items-center"
+            className="mt-3 mx-auto w-full flex flex-col md:flex-row items-center"
             onSubmit={handleSubmit}
         >
             <div className="w-full md:w-3/5 md:pr-2 mb-4 md:mb-0">

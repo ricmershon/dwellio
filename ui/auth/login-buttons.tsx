@@ -14,7 +14,7 @@ interface LoginButtonsProps {
 
 const LoginButtons = ({ buttonClassName = "", text = "Login", icon }: LoginButtonsProps) => {
     const searchParams = useSearchParams();
-    const returnTo = searchParams.get("returnTo") || "/profile"
+    const returnTo = searchParams.get("returnTo") || "/"
 
     const providers = useAuthProviders();
 
