@@ -1,25 +1,50 @@
-import { useRef, useState, MouseEvent } from "react";
+import { useRef, useState, MouseEvent, useEffect } from "react";
 
-import { ActionState } from "@/types/types";
+import { ActionState, ActionStatus } from "@/types/types";
 import FormErrors from "@/ui/shared/form-errors";
 
 const ImagePicker = ({ actionState }: { actionState: ActionState }) => {
+    const [imageFiles, setImageFiles] = useState<File[]>()
     const [numImagesSelected, setNumImagesSelected] = useState(0);
     const imagePickerRef = useRef<HTMLInputElement>(null);
 
     const handleOpenImagePicker = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        if (imagePickerRef.current) {
-            imagePickerRef.current.click();
-        }
+        imagePickerRef.current?.click();
     }
 
     const handlePickImages = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const imageFiles = event.target.files;
-        if (imageFiles && imageFiles.length > 0) {
-            setNumImagesSelected(imageFiles.length);
+        const imageFilesList = event.target.files;
+        if (!imageFilesList || imageFilesList.length === 0) {
+            return;
         }
+
+        setImageFiles(Array.from(imageFilesList))
+        setNumImagesSelected(imageFilesList.length);
     }
+
+    useEffect(() => {
+        const isError = 
+            actionState?.status === ActionStatus.ERROR ||
+            Boolean(actionState?.formErrorMap);
+
+        if (!isError || !imagePickerRef.current || !imageFiles || imageFiles?.length === 0) {
+            return;
+        }
+
+        /**
+         * Repopulate input with saved File[] DataTransfer
+         */
+        const dataTransfer = new DataTransfer();
+        for (const file of imageFiles) {
+            dataTransfer.items.add(file);
+        }
+
+        (imagePickerRef.current as HTMLInputElement & {imageFiles: FileList}).files =
+            dataTransfer.files;
+
+        setNumImagesSelected(imageFiles.length);
+    }, [])
 
 
     return (

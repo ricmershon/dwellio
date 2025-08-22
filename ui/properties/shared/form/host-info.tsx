@@ -12,7 +12,7 @@ const HostInfo = ({ actionState, property, session }: HostInfoProps) => (
         <h2 className="block text-gray-700 font-bold mb-1">
             Host Information
         </h2>
-        <div className="mb-3">
+        <div className="mb-2">
             <label
                 htmlFor="seller_name"
                 className="block text-sm text-gray-500 medium"
