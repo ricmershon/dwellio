@@ -26,7 +26,6 @@ if (!global._mongoose) {
 
 const dbConnect = async () => {
     if (global._mongoose!.conn) {
-        console.log(">>> MongoDB already connected.");
         return global._mongoose!.conn;
     }
 
