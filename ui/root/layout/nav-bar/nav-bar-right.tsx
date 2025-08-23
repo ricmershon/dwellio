@@ -125,7 +125,7 @@ const NavBarRight = ({ session }: WithAuthProps) => {
                                 id="mobile-menu-item-4"
                                 tabIndex={-1}
                             >
-                                Profile
+                                My Listings
                             </Link>
                             <Link
                                 href="/properties/favorites"
