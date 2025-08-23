@@ -36,8 +36,13 @@ export const uploadImages = async (images: File[]) => {
                 width: result.width
             });
         } catch (error) {
-            console.error(`>>> Error uploading images: ${error}`);
-            throw new Error(`Error uploading images: ${error}`);
+            if (typeof error === "object" && error !== null && "message" in error) {
+                console.error(`>>> Error uploading images: ${String((error as { message: unknown }).message)}`);
+                throw new Error(`>>> Error uploading images: ${String((error as { message: unknown }).message)}`)
+            } else {
+                console.error(`>>> Error uploading images: ${String(error)}`);
+                throw new Error(`>>> Error uploading images: ${String(error)}`);
+            }
         }
     }
     return imagesData;

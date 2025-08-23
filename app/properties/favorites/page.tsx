@@ -12,7 +12,6 @@ export const metadata: Metadata = {
 
 const FavoritePropertiesPage = async () => {
     const sessionUser = await requireSessionUser();
-    console.log(`>>> FAVORITES PAGE: ${sessionUser.email}`);
     const savedProperties: PropertyDocument[] = await fetchFavoritedProperties(sessionUser.id!);
 
     return (
