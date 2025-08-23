@@ -88,4 +88,15 @@ export const PropertyInput = z.object({
         .max(10, { message: "You can upload a maximum of 10 images."})
 });
 
+// Property Info specific schema for react-hook-form
+export const PropertyInfoSchema = z.object({
+    name: z.string()
+        .min(10, { message: "Name must be at least 10 characters long." }),
+    type: PropertyTypesEnum,
+    description: z.string()
+        .min(20, { message: "Description must be at least 20 characters long." })
+        .optional(),
+});
+
 export type PropertyInputType = z.infer<typeof PropertyInput>;
+export type PropertyInfoType = z.infer<typeof PropertyInfoSchema>;
