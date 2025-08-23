@@ -98,5 +98,16 @@ export const PropertyInfoSchema = z.object({
         .optional(),
 });
 
+// Specs specific schema for react-hook-form
+export const SpecsSchema = z.object({
+    beds: z.coerce.number()
+        .gt(0, { message: "Property must have at least one bed." }),
+    baths: z.coerce.number()
+        .gt(0, { message: "Property must have at least one bath." }),
+    squareFeet: z.coerce.number()
+        .gt(249, { message: "Property must have at least 250 square feet." }),
+});
+
 export type PropertyInputType = z.infer<typeof PropertyInput>;
 export type PropertyInfoType = z.infer<typeof PropertyInfoSchema>;
+export type SpecsType = z.infer<typeof SpecsSchema>;
