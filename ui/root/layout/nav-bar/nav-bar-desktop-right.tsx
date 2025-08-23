@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { FaGoogle } from "react-icons/fa";
 import { HiOutlineBell } from "react-icons/hi2";
@@ -13,6 +13,7 @@ import { useGlobalContext } from "@/context/global-context";
 import UnreadMessageCount from "@/ui/messages/unread-message-count";
 import { withAuth, WithAuthProps } from "@/hocs/with-auth";
 import LogoutButton from "@/ui/auth/logout-button";
+import { useClickOutside } from "@/hooks/use-click-outside";
 
 interface NavBarDesktopRightProps extends WithAuthProps {
     viewportWidth: number;
@@ -20,10 +21,15 @@ interface NavBarDesktopRightProps extends WithAuthProps {
 
 const NavBarDesktopRight = ({ viewportWidth, session }: NavBarDesktopRightProps) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
     
     const profileImage = session?.user?.image;
     const { unreadCount } = useGlobalContext();
+
+    const close = useCallback(() => setIsMenuOpen(false), []);
+    
+    useClickOutside(dropdownRef, close, isMenuOpen);
 
     return (
         <>
@@ -67,6 +73,7 @@ const NavBarDesktopRight = ({ viewportWidth, session }: NavBarDesktopRightProps)
                         {/* Profile dropdown menu */}
                         {isMenuOpen && (
                             <div
+                                ref={dropdownRef}
                                 id="user-menu"
                                 className="absolute right-0 top-10 z-10 p-2 w-50 origin-top-right rounded-sm bg-white border-gray-100 shadow-md flex flex-col items-center justify-center space-y-2"
                                 role="menu"
