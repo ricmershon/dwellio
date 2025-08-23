@@ -88,4 +88,26 @@ export const PropertyInput = z.object({
         .max(10, { message: "You can upload a maximum of 10 images."})
 });
 
+// Property Info specific schema for react-hook-form
+export const PropertyInfoSchema = z.object({
+    name: z.string()
+        .min(10, { message: "Name must be at least 10 characters long." }),
+    type: PropertyTypesEnum,
+    description: z.string()
+        .min(20, { message: "Description must be at least 20 characters long." })
+        .optional(),
+});
+
+// Specs specific schema for react-hook-form
+export const SpecsSchema = z.object({
+    beds: z.coerce.number()
+        .gt(0, { message: "Property must have at least one bed." }),
+    baths: z.coerce.number()
+        .gt(0, { message: "Property must have at least one bath." }),
+    squareFeet: z.coerce.number()
+        .gt(249, { message: "Property must have at least 250 square feet." }),
+});
+
 export type PropertyInputType = z.infer<typeof PropertyInput>;
+export type PropertyInfoType = z.infer<typeof PropertyInfoSchema>;
+export type SpecsType = z.infer<typeof SpecsSchema>;
