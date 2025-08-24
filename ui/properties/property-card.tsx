@@ -40,7 +40,7 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
             </Link>
 
             <div className='text-xs md:text-sm p-[10px]'>
-                <div className="flex justify-between items-center mb-2">
+                <div className="flex justify-between items-start mb-2">
                     <Link href={`/properties/${property._id}`}>
                         <p className='text-gray-700 mr-3'>{property.name}</p>
                     </Link>
