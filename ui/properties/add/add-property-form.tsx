@@ -12,8 +12,8 @@ import Specs from "@/ui/properties/shared/form/specs";
 import Amenities from "@/ui/properties/shared/form/amenities";
 import Rates from "@/ui/properties/shared/form/rates";
 import HostInfo from "@/ui/properties/shared/form/host-info";
-import PropertyFormButtons from "../shared/form/buttons";
-import PropertyInfo from "../shared/form/property-info";
+import PropertyFormButtons from "@/ui/properties/shared/form/buttons";
+import PropertyInfo from "@/ui/properties/shared/form/property-info";
 
 const AddPropertyForm = () => {
     const [actionState, formAction, isPending] = useActionState(createProperty, {} as ActionState);

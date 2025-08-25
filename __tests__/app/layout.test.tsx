@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, MockViewportCookieWriter, MockAuthProvider, MockGlobalContextProvider, MockNavBar, MockFooter, MockToastContainer } from '../test-utils';
+import { MockViewportCookieWriter, MockAuthProvider, MockGlobalContextProvider, MockNavBar, MockFooter, MockToastContainer } from '@/__tests__/test-utils';
 
 // Mock all CSS imports  
 jest.mock('@/app/globals.css', () => ({}));

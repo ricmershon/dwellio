@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 
 import LoginButtons from '@/ui/auth/login-buttons';
 import { useAuthProviders } from '@/hooks/use-auth-providers';
-import { render, createMockSearchParams } from '../../test-utils';
+import { render, createMockSearchParams } from '@/__tests__/test-utils';
 
 // Mock NextAuth
 jest.mock('next-auth/react', () => ({
@@ -51,6 +51,7 @@ describe('LoginButtons', () => {
 		jest.clearAllMocks();
 		mockUseSearchParams.mockReturnValue(mockSearchParams);
 		(mockSearchParams.get as jest.Mock).mockReturnValue(null); // Default: no returnTo param
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		mockUseAuthProviders.mockReturnValue(mockProviders as any);
 	});
 
@@ -159,6 +160,7 @@ describe('LoginButtons', () => {
 			const singleProvider = {
 				google: mockProviders.google,
 			};
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			mockUseAuthProviders.mockReturnValue(singleProvider as any);
 
 			render(<LoginButtons />);
@@ -179,6 +181,7 @@ describe('LoginButtons', () => {
 				} as ClientSafeProvider,
 			};
 			
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			mockUseAuthProviders.mockReturnValue(extendedProviders as any);
 
 			render(<LoginButtons />);
@@ -217,6 +220,7 @@ describe('LoginButtons', () => {
 			const singleProvider = {
 				google: mockProviders.google,
 			};
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			mockUseAuthProviders.mockReturnValue(singleProvider as any);
 
 			const { container } = render(<LoginButtons />);
