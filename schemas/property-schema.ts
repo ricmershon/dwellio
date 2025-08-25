@@ -84,7 +84,7 @@ export const PropertyInput = z.object({
         phone: z.string().nonempty({ message: "Phone number is required." })
     }),
     imagesData: z.array(z.instanceof(File))
-        .min(5, { message: "Select at least five images." })
+        .min(3, { message: "Select at least three images." })
         .max(10, { message: "You can upload a maximum of 10 images."})
 });
 

@@ -16,21 +16,30 @@ const PropertyImagesGallery = ({ imagesData }: { imagesData: PropertyImageData[]
         open(5);
     }
 
+    const numImages = imagesData.length;
+
     return (
         <div className="relative">
-            <div className="grid grid-cols-4 grid-rows-2 gap-2 md:gap-3">
+            <div className={clsx(
+                "grid grid-rows-2 gap-2 md:gap-3",
+                {
+                    "grid-cols-3": numImages === 3,
+                    "grid-cols-2": numImages === 4,
+                    "grid-cols-4": numImages === 5
+                }
+            )}>
                 {imagesData.map((imageData, index) => (
                     <div
                         key={imageData.secureUrl}
                         className={clsx(
                             "object-cover h-full w-full rounded-md cursor-pointer aspect-square",
                             {
-                                "col-span-2 row-span-2": index === 0,
-                                "col-start-3": index === 1,
-                                "col-start-4 row-start-1": index === 2,
-                                "col-start-3 row-start-2": index === 3,
-                                "col-start-4 row-start-2": index === 4,
-                                "hidden": index > 4,
+                                "col-span-2 row-span-2": (index === 0 && numImages > 4) || (index === 0 && numImages === 3),
+                                "col-start-3": (index === 1 && numImages > 4) || (index === 1 && numImages === 3),
+                                "col-start-4 row-start-1": index === 2 && numImages > 4,
+                                "col-start-3 row-start-2": (index === 3 && numImages > 4) || (index === 2 && numImages === 3),
+                                "col-start-4 row-start-2": index === 4 && numImages > 4,
+                                "hidden": numImages > 4 && index > 4
                             }
                         )}
                     >
