@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`RootLayout Snapshots should match snapshot for body content 1`] = `
+{
+  "$$typeof": Symbol(react.transitional.element),
+  "_owner": null,
+  "_store": {},
+  "key": null,
+  "props": {
+    "children": [
+      {
+        "$$typeof": Symbol(react.transitional.element),
+        "_owner": null,
+        "_store": {},
+        "key": null,
+        "props": {},
+        "type": [Function],
+      },
+      {
+        "$$typeof": Symbol(react.transitional.element),
+        "_owner": null,
+        "_store": {},
+        "key": null,
+        "props": {},
+        "type": [Function],
+      },
+      {
+        "$$typeof": Symbol(react.transitional.element),
+        "_owner": null,
+        "_store": {},
+        "key": null,
+        "props": {
+          "children": {
+            "$$typeof": Symbol(react.transitional.element),
+            "_owner": null,
+            "_store": {},
+            "key": null,
+            "props": {
+              "children": "Page Content",
+              "data-testid": "page-content",
+            },
+            "type": "div",
+          },
+          "className": "flex-grow md:overflow-y-auto px-4 md:px-6 lg:px-8 py-6 lg:py-8",
+        },
+        "type": "div",
+      },
+      {
+        "$$typeof": Symbol(react.transitional.element),
+        "_owner": null,
+        "_store": {},
+        "key": null,
+        "props": {},
+        "type": [Function],
+      },
+      {
+        "$$typeof": Symbol(react.transitional.element),
+        "_owner": null,
+        "_store": {},
+        "key": null,
+        "props": {
+          "hideProgressBar": true,
+          "position": "top-right",
+          "theme": "colored",
+          "transition": "slide",
+        },
+        "type": [Function],
+      },
+    ],
+  },
+  "type": "body",
+}
+`;

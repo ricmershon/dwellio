@@ -23,7 +23,8 @@ const config: Config = {
 	transformIgnorePatterns: [
 		'node_modules/(?!.*\\.(js|jsx|ts|tsx|css)$)'
 	],
-	testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
+	testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/', '<rootDir>/__tests__/coverage/'],
+	testMatch: ['**/__tests__/**/*.(test|spec).(ts|tsx|js)'],
 	collectCoverageFrom: [
 		'app/**/*.{ts,tsx}',
 		'ui/**/*.{ts,tsx}',

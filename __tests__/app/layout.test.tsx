@@ -1,4 +1,5 @@
 import React from 'react';
+import { render } from '@testing-library/react';
 
 // Mock all CSS imports
 jest.mock('@/app/globals.css', () => ({}));
@@ -211,6 +212,18 @@ describe('RootLayout', () => {
 			);
 			
 			expect((mainContentDiv?.props as { className?: string })?.className).toBe('flex-grow md:overflow-y-auto px-4 md:px-6 lg:px-8 py-6 lg:py-8');
+		});
+	});
+
+	describe('Snapshots', () => {
+		it('should match snapshot for body content', async () => {
+			const layoutElement = await RootLayout({ children: mockChildren });
+			
+			// Extract body content to avoid HTML nesting warnings
+			const htmlElement = layoutElement.props.children.props.children;
+			const bodyElement = htmlElement.props.children;
+			
+			expect(bodyElement).toMatchSnapshot();
 		});
 	});
 });
