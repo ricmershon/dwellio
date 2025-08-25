@@ -1,7 +1,7 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, MockViewportCookieWriter, MockAuthProvider, MockGlobalContextProvider, MockNavBar, MockFooter, MockToastContainer } from '../test-utils';
 
-// Mock all CSS imports
+// Mock all CSS imports  
 jest.mock('@/app/globals.css', () => ({}));
 jest.mock('react-toastify/dist/ReactToastify.css', () => ({}));
 jest.mock('react-loading-skeleton/dist/skeleton.css', () => ({}));
@@ -17,73 +17,34 @@ jest.mock('@/lib/data/static-inputs-data', () => ({
 	})
 }));
 
-jest.mock('@/ui/root/viewport-cookie-writer', () => {
-	return {
-		__esModule: true,
-		default: function MockViewportCookieWriter() {
-			return <div data-testid="viewport-cookie-writer" />;
-		}
-	};
-});
+jest.mock('@/ui/root/viewport-cookie-writer', () => ({
+	__esModule: true,
+	default: MockViewportCookieWriter,
+}));
 
-jest.mock('@/ui/root/auth-provider', () => {
-	return {
-		__esModule: true,
-		default: function MockAuthProvider({ children }: { children: React.ReactNode }) {
-			return <div data-testid="auth-provider">{children}</div>;
-		}
-	};
-});
+jest.mock('@/ui/root/auth-provider', () => ({
+	__esModule: true,
+	default: MockAuthProvider,
+}));
 
 jest.mock('@/context/global-context', () => ({
 	__esModule: true,
-	GlobalContextProvider: function MockGlobalContextProvider({ 
-		children, 
-		initialStaticInputs 
-	}: { 
-		children: React.ReactNode;
-		initialStaticInputs: Record<string, unknown>;
-	}) {
-		return (
-			<div 
-				data-testid="global-context-provider"
-				data-initial-inputs={JSON.stringify(initialStaticInputs)}
-			>
-				{children}
-			</div>
-		);
-	}
+	GlobalContextProvider: MockGlobalContextProvider,
 }));
 
-jest.mock('@/ui/root/layout/nav-bar/nav-bar', () => {
-	return {
-		__esModule: true,
-		default: function MockNavBar() {
-			return <nav data-testid="navbar">Navigation</nav>;
-		}
-	};
-});
+jest.mock('@/ui/root/layout/nav-bar/nav-bar', () => ({
+	__esModule: true,
+	default: MockNavBar,
+}));
 
-jest.mock('@/ui/root/layout/footer', () => {
-	return {
-		__esModule: true,
-		default: function MockFooter() {
-			return <footer data-testid="footer">Footer</footer>;
-		}
-	};
-});
+jest.mock('@/ui/root/layout/footer', () => ({
+	__esModule: true,
+	default: MockFooter,
+}));
 
 // Mock react-toastify
 jest.mock('react-toastify', () => ({
-	ToastContainer: function MockToastContainer(props: { position?: string; theme?: string }) {
-		return (
-			<div 
-				data-testid="toast-container"
-				data-position={props.position}
-				data-theme={props.theme}
-			/>
-		);
-	},
+	ToastContainer: MockToastContainer,
 	Slide: 'slide'
 }));
 

@@ -1,9 +1,10 @@
 import React from 'react';
-import { render, act } from '@testing-library/react';
+import { act } from '@testing-library/react';
 import { useRouter } from 'next/navigation';
 
 import ViewportCookieWriter from '@/ui/root/viewport-cookie-writer';
 import { VIEWPORT_WIDTH_COOKIE_NAME } from '@/types/types';
+import { render, createMockRouter, createMockViewportUtils, setupCommonMocks } from '../../test-utils';
 
 // Mock Next.js router
 jest.mock('next/navigation', () => ({
@@ -14,27 +15,13 @@ jest.mock('next/navigation', () => ({
 jest.useFakeTimers();
 
 describe('ViewportCookieWriter', () => {
-    const mockRouter = {
-        refresh: jest.fn(),
-    };
-
+    const mockRouter = createMockRouter();
+    const { cookieStore, setViewportSize, setupMockDocument, clearCookies } = createMockViewportUtils();
+    
     // Store original implementations
     const originalInnerWidth = global.window.innerWidth;
     const originalClientWidth = global.document.documentElement.clientWidth;
     const originalCookie = global.document.cookie;
-    
-    // Cookie store for mocking
-    let cookieStore: Record<string, string> = {};
-    
-    // Helper function to set viewport dimensions
-    const setViewportSize = (width: number) => {
-        global.window.innerWidth = width;
-        Object.defineProperty(global.document.documentElement, 'clientWidth', {
-            value: width,
-            configurable: true,
-            writable: true,
-        });
-    };
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -42,25 +29,9 @@ describe('ViewportCookieWriter', () => {
         
         (useRouter as jest.Mock).mockReturnValue(mockRouter);
         
-        // Clear and reset cookie store
-        cookieStore = {};
-        
-        // Mock document.cookie with getter/setter
-        Object.defineProperty(global.document, 'cookie', {
-            get: () => {
-                return Object.entries(cookieStore)
-                    .map(([key, value]) => `${key}=${value}`)
-                    .join('; ');
-            },
-            set: (cookieString: string) => {
-                const [keyValue] = cookieString.split(';');
-                const [key, value] = keyValue.split('=');
-                if (key && value) {
-                    cookieStore[key.trim()] = value.trim();
-                }
-            },
-            configurable: true,
-        });
+        // Setup mock document and clear cookies
+        setupMockDocument();
+        clearCookies();
         
         // Set default window dimensions  
         setViewportSize(1024);
@@ -90,7 +61,7 @@ describe('ViewportCookieWriter', () => {
     describe('Cookie Operations', () => {
         it('should get existing cookie value', () => {
             // Set initial cookie in same breakpoint
-            cookieStore[VIEWPORT_WIDTH_COOKIE_NAME] = '1280';
+            cookieStore.current[VIEWPORT_WIDTH_COOKIE_NAME] = '1280';
             
             // Set window width to same breakpoint as existing cookie to avoid refresh
             setViewportSize(1280);
@@ -226,7 +197,7 @@ describe('ViewportCookieWriter', () => {
             
             testBreakpoints.forEach((breakpoint) => {
                 // Clear cookies and set window width
-                cookieStore = {};
+                clearCookies();
                 setViewportSize(breakpoint);
                 
                 const { unmount } = render(<ViewportCookieWriter />);
@@ -350,7 +321,7 @@ describe('ViewportCookieWriter', () => {
 
         it('should not call router.refresh when staying in same breakpoint', () => {
             // Set initial cookie in same breakpoint
-            cookieStore[VIEWPORT_WIDTH_COOKIE_NAME] = '1000'; // breakpoint index 2 (768-1023)
+            cookieStore.current[VIEWPORT_WIDTH_COOKIE_NAME] = '1000'; // breakpoint index 2 (768-1023)
             
             // Mount with same breakpoint  
             setViewportSize(900); // also breakpoint index 2 (768-1023)

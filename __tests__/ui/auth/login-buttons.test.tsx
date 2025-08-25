@@ -1,11 +1,12 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { screen, fireEvent } from '@testing-library/react';
 import { signIn, ClientSafeProvider, LiteralUnion } from 'next-auth/react';
 import { BuiltInProviderType } from 'next-auth/providers/index';
 import { useSearchParams } from 'next/navigation';
 
 import LoginButtons from '@/ui/auth/login-buttons';
 import { useAuthProviders } from '@/hooks/use-auth-providers';
+import { render, createMockSearchParams } from '../../test-utils';
 
 // Mock NextAuth
 jest.mock('next-auth/react', () => ({
@@ -27,9 +28,7 @@ describe('LoginButtons', () => {
 	const mockUseSearchParams = useSearchParams as jest.MockedFunction<typeof useSearchParams>;
 	const mockUseAuthProviders = useAuthProviders as jest.MockedFunction<typeof useAuthProviders>;
 
-	const mockSearchParams = {
-		get: jest.fn(),
-	} as unknown as ReturnType<typeof useSearchParams>;
+	const mockSearchParams = createMockSearchParams();
 
 	const mockProviders: Partial<Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>> = {
 		google: {
