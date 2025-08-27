@@ -89,7 +89,7 @@ const NavBarDesktopRight = ({ viewportWidth, session }: NavBarDesktopRightProps)
                                     id="user-menu-item-0"
                                     onClick={() => setIsMenuOpen(false)}
                                 >
-                                    Profile
+                                    My Listings
                                 </Link>
                                 <Link
                                     href="/properties/favorites"

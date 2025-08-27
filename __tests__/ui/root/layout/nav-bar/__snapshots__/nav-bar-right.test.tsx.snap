@@ -1,0 +1,121 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`NavBarRight Snapshots should match snapshot when authenticated with menu closed 1`] = `
+<div
+  class="md:hidden flex items-center"
+>
+  <button
+    aria-controls="mobile-menu"
+    aria-expanded="false"
+    class="md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 false"
+    id="mobile-menu-button"
+    type="button"
+  >
+    <span
+      class="mobile-menu-top"
+    />
+    <span
+      class="mobile-menu-middle"
+    />
+    <span
+      class="mobile-menu-bottom"
+    />
+  </button>
+</div>
+`;
+
+exports[`NavBarRight Snapshots should match snapshot when authenticated with menu open 1`] = `
+<div
+  class="md:hidden flex items-center"
+>
+  <button
+    aria-controls="mobile-menu"
+    aria-expanded="false"
+    class="md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 mobile-menu-open"
+    id="mobile-menu-button"
+    type="button"
+  >
+    <span
+      class="mobile-menu-top"
+    />
+    <span
+      class="mobile-menu-middle"
+    />
+    <span
+      class="mobile-menu-bottom"
+    />
+  </button>
+</div>
+`;
+
+exports[`NavBarRight Snapshots should match snapshot when unauthenticated with menu closed 1`] = `
+<div
+  class="md:hidden flex items-center"
+>
+  <button
+    aria-controls="mobile-menu"
+    aria-expanded="false"
+    class="md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 false"
+    id="mobile-menu-button"
+    type="button"
+  >
+    <span
+      class="mobile-menu-top"
+    />
+    <span
+      class="mobile-menu-middle"
+    />
+    <span
+      class="mobile-menu-bottom"
+    />
+  </button>
+</div>
+`;
+
+exports[`NavBarRight Snapshots should match snapshot when unauthenticated with menu open 1`] = `
+<div
+  class="md:hidden flex items-center"
+>
+  <button
+    aria-controls="mobile-menu"
+    aria-expanded="false"
+    class="md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 mobile-menu-open"
+    id="mobile-menu-button"
+    type="button"
+  >
+    <span
+      class="mobile-menu-top"
+    />
+    <span
+      class="mobile-menu-middle"
+    />
+    <span
+      class="mobile-menu-bottom"
+    />
+  </button>
+</div>
+`;
+
+exports[`NavBarRight Snapshots should match snapshot with different active paths 1`] = `
+<div
+  class="md:hidden flex items-center"
+>
+  <button
+    aria-controls="mobile-menu"
+    aria-expanded="false"
+    class="md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 mobile-menu-open"
+    id="mobile-menu-button"
+    type="button"
+  >
+    <span
+      class="mobile-menu-top"
+    />
+    <span
+      class="mobile-menu-middle"
+    />
+    <span
+      class="mobile-menu-bottom"
+    />
+  </button>
+</div>
+`;
