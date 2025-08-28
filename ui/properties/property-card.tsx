@@ -7,7 +7,7 @@ import { PropertyDocument } from '@/models';
 import { getRateDisplay } from '@/utils/get-rate-display';
 import { getSessionUser } from '@/utils/get-session-user';
 import { toSerializedOjbect } from '@/utils/to-serialized-object';
-import { isWithinLastWeek } from '@/utils/is-within-last-seven-days';
+import { isWithinLastWeek } from '@/utils/is-within-last-three-days';
 
 // FIXME: Make PropertyFavoriteButton accept initialIsFavorite and remove its mount-time fetch; lazy-load it.
 const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
@@ -33,7 +33,7 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
                 </div>
                 {/* Recently created or added */}
                 {(isCreatedWithinLastWeek || isUpdatedWithinLastWeek) && (
-                    <p className='absolute top-2 left-2 bg-white px-[18px] py-1 rounded-md text-gray-800 text-xs text-center'>
+                    <p className='absolute top-[6px] left-[6px] bg-white px-3 py-1 rounded-md text-gray-800 text-xs text-center'>
                         {isCreatedWithinLastWeek ? 'Recently Added' : 'Recently Updated'}
                     </p>
                 )}
