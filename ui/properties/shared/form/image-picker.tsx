@@ -25,7 +25,7 @@ const ImagePicker = ({ actionState }: { actionState: ActionState }) => {
     return (
         <div>
             <label htmlFor="images" className="mb-2 block font-medium text-gray-700">
-                Images (minimum 5)
+                Images (minimum 3)
             </label>
             <div className="relative flex flex-1 flex-shrink-0">
                 <input
