@@ -6,7 +6,10 @@
       "Bash(npm run test:coverage:*)",
       "Bash(npx eslint:*)",
       "Bash(grep:*)",
-      "Bash(npm run lint:*)"
+      "Bash(npm run lint:*)",
+      "Bash(chmod:*)",
+      "Bash(./__tests__/detect-duplicate-mocks.sh:*)",
+      "Bash(__tests__/detect-duplicate-mocks.sh:*)"
     ],
     "deny": [],
     "ask": []

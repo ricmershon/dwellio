@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`InfoBoxes Snapshots should match snapshot 1`] = `
+<section
+  class="mt-8"
+>
+  <div
+    class="m-auto"
+  >
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 gap-4"
+    >
+      <div
+        data-background="bg-gray-100"
+        data-button-link="/properties"
+        data-button-styles="bg-black hover:bg-gray-700"
+        data-button-text="Browse Properties"
+        data-heading="For Renters"
+        data-testid="info-box"
+      >
+        <h1>
+          For Renters
+        </h1>
+        <p
+          class="text-sm"
+        >
+          Find your dream rental property. Favorite properties and contact owners.
+        </p>
+        <a
+          href="/properties"
+        >
+          Browse Properties
+        </a>
+      </div>
+      <div
+        data-background="bg-blue-100"
+        data-button-link="/properties/add"
+        data-button-styles="bg-blue-500 hover:bg-blue-600"
+        data-button-text="Add Property"
+        data-heading="For Property Owners"
+        data-testid="info-box"
+      >
+        <h1>
+          For Property Owners
+        </h1>
+        <p
+          class="text-sm"
+        >
+          Log in and rent your property.
+        </p>
+        <a
+          href="/properties/add"
+        >
+          Add Property
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+`;

@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`FeaturedProperties Snapshots should match snapshot 1`] = `
+<h1
+  class="heading"
+>
+  Featured Properties
+</h1>
+`;

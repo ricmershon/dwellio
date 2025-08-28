@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Error Snapshots should match snapshot with basic error 1`] = `
+<section
+  class="h-screen text-center flex flex-col jusitfy-center items-center"
+>
+  <div
+    class="mt-10"
+  >
+    <div
+      class="flex justify-center"
+    >
+      <div
+        class="text-3xl text-yellow-400"
+        data-testid="exclamation-icon"
+      >
+        Exclamation Icon
+      </div>
+    </div>
+    <div
+      class="text-center mt-2"
+    >
+      <p
+        class="font-medium text-lg mb-5"
+      >
+        Error: Test error message
+      </p>
+      <a
+        class="btn btn-primary"
+        href="/"
+      >
+        Return Home
+      </a>
+    </div>
+  </div>
+  <div
+    class="flex-grow"
+  />
+</section>
+`;
+
+exports[`Error Snapshots should match snapshot with empty error message 1`] = `
+<section
+  class="h-screen text-center flex flex-col jusitfy-center items-center"
+>
+  <div
+    class="mt-10"
+  >
+    <div
+      class="flex justify-center"
+    >
+      <div
+        class="text-3xl text-yellow-400"
+        data-testid="exclamation-icon"
+      >
+        Exclamation Icon
+      </div>
+    </div>
+    <div
+      class="text-center mt-2"
+    >
+      <p
+        class="font-medium text-lg mb-5"
+      >
+        Error
+      </p>
+      <a
+        class="btn btn-primary"
+        href="/"
+      >
+        Return Home
+      </a>
+    </div>
+  </div>
+  <div
+    class="flex-grow"
+  />
+</section>
+`;
+
+exports[`Error Snapshots should match snapshot with error containing digest 1`] = `
+<section
+  class="h-screen text-center flex flex-col jusitfy-center items-center"
+>
+  <div
+    class="mt-10"
+  >
+    <div
+      class="flex justify-center"
+    >
+      <div
+        class="text-3xl text-yellow-400"
+        data-testid="exclamation-icon"
+      >
+        Exclamation Icon
+      </div>
+    </div>
+    <div
+      class="text-center mt-2"
+    >
+      <p
+        class="font-medium text-lg mb-5"
+      >
+        Error: Database connection failed
+      </p>
+      <a
+        class="btn btn-primary"
+        href="/"
+      >
+        Return Home
+      </a>
+    </div>
+  </div>
+  <div
+    class="flex-grow"
+  />
+</section>
+`;
