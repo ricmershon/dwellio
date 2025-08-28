@@ -1,0 +1,272 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`PropertiesPagination Snapshots should match snapshot for first page 1`] = `
+<div
+  class="inline-flex"
+>
+  <div
+    aria-disabled="true"
+    data-disabled="true"
+    data-href="/properties?page=0"
+    data-testid="pagination-arrow-left"
+  >
+    ←
+  </div>
+  <div
+    class="flex -space-x-px"
+  >
+    <div
+      data-active="true"
+      data-href="/properties?page=1"
+      data-page="1"
+      data-position="first"
+      data-testid="pagination-number"
+    >
+      1
+    </div>
+    <div
+      data-active="false"
+      data-href="/properties?page=2"
+      data-page="2"
+      data-testid="pagination-number"
+    >
+      2
+    </div>
+    <div
+      data-active="false"
+      data-href="/properties?page=3"
+      data-page="3"
+      data-testid="pagination-number"
+    >
+      3
+    </div>
+    <div
+      data-active="false"
+      data-href="/properties?page=..."
+      data-page="..."
+      data-position="middle"
+      data-testid="pagination-number"
+    >
+      ...
+    </div>
+    <div
+      data-active="false"
+      data-href="/properties?page=10"
+      data-page="10"
+      data-position="last"
+      data-testid="pagination-number"
+    >
+      10
+    </div>
+  </div>
+  <div
+    aria-disabled="false"
+    data-disabled="false"
+    data-href="/properties?page=2"
+    data-testid="pagination-arrow-right"
+  >
+    →
+  </div>
+</div>
+`;
+
+exports[`PropertiesPagination Snapshots should match snapshot for last page 1`] = `
+<div
+  class="inline-flex"
+>
+  <div
+    aria-disabled="false"
+    data-disabled="false"
+    data-href="/properties?page=9"
+    data-testid="pagination-arrow-left"
+  >
+    ←
+  </div>
+  <div
+    class="flex -space-x-px"
+  >
+    <div
+      data-active="false"
+      data-href="/properties?page=1"
+      data-page="1"
+      data-position="first"
+      data-testid="pagination-number"
+    >
+      1
+    </div>
+    <div
+      data-active="false"
+      data-href="/properties?page=2"
+      data-page="2"
+      data-testid="pagination-number"
+    >
+      2
+    </div>
+    <div
+      data-active="false"
+      data-href="/properties?page=..."
+      data-page="..."
+      data-position="middle"
+      data-testid="pagination-number"
+    >
+      ...
+    </div>
+    <div
+      data-active="false"
+      data-href="/properties?page=8"
+      data-page="8"
+      data-testid="pagination-number"
+    >
+      8
+    </div>
+    <div
+      data-active="false"
+      data-href="/properties?page=9"
+      data-page="9"
+      data-testid="pagination-number"
+    >
+      9
+    </div>
+    <div
+      data-active="true"
+      data-href="/properties?page=10"
+      data-page="10"
+      data-position="last"
+      data-testid="pagination-number"
+    >
+      10
+    </div>
+  </div>
+  <div
+    aria-disabled="true"
+    data-disabled="true"
+    data-href="/properties?page=11"
+    data-testid="pagination-arrow-right"
+  >
+    →
+  </div>
+</div>
+`;
+
+exports[`PropertiesPagination Snapshots should match snapshot for middle page 1`] = `
+<div
+  class="inline-flex"
+>
+  <div
+    aria-disabled="false"
+    data-disabled="false"
+    data-href="/properties?page=4"
+    data-testid="pagination-arrow-left"
+  >
+    ←
+  </div>
+  <div
+    class="flex -space-x-px"
+  >
+    <div
+      data-active="false"
+      data-href="/properties?page=1"
+      data-page="1"
+      data-position="first"
+      data-testid="pagination-number"
+    >
+      1
+    </div>
+    <div
+      data-active="false"
+      data-href="/properties?page=..."
+      data-page="..."
+      data-position="middle"
+      data-testid="pagination-number"
+    >
+      ...
+    </div>
+    <div
+      data-active="false"
+      data-href="/properties?page=4"
+      data-page="4"
+      data-testid="pagination-number"
+    >
+      4
+    </div>
+    <div
+      data-active="true"
+      data-href="/properties?page=5"
+      data-page="5"
+      data-testid="pagination-number"
+    >
+      5
+    </div>
+    <div
+      data-active="false"
+      data-href="/properties?page=6"
+      data-page="6"
+      data-testid="pagination-number"
+    >
+      6
+    </div>
+    <div
+      data-active="false"
+      data-href="/properties?page=..."
+      data-page="..."
+      data-position="middle"
+      data-testid="pagination-number"
+    >
+      ...
+    </div>
+    <div
+      data-active="false"
+      data-href="/properties?page=10"
+      data-page="10"
+      data-position="last"
+      data-testid="pagination-number"
+    >
+      10
+    </div>
+  </div>
+  <div
+    aria-disabled="false"
+    data-disabled="false"
+    data-href="/properties?page=6"
+    data-testid="pagination-arrow-right"
+  >
+    →
+  </div>
+</div>
+`;
+
+exports[`PropertiesPagination Snapshots should match snapshot for single page 1`] = `
+<div
+  class="inline-flex"
+>
+  <div
+    aria-disabled="true"
+    data-disabled="true"
+    data-href="/properties?page=0"
+    data-testid="pagination-arrow-left"
+  >
+    ←
+  </div>
+  <div
+    class="flex -space-x-px"
+  >
+    <div
+      data-active="true"
+      data-href="/properties?page=1"
+      data-page="1"
+      data-position="single"
+      data-testid="pagination-number"
+    >
+      1
+    </div>
+  </div>
+  <div
+    aria-disabled="true"
+    data-disabled="true"
+    data-href="/properties?page=2"
+    data-testid="pagination-arrow-right"
+  >
+    →
+  </div>
+</div>
+`;

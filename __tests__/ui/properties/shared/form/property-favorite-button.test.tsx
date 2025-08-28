@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@/__tests__/test-utils';
+import { render, screen, fireEvent, waitFor, createReactToastifyMock } from '@/__tests__/test-utils';
 import PropertyFavoriteButton from '@/ui/properties/shared/form/property-favorite-button';
 import { ActionStatus } from '@/types/types';
 
@@ -9,23 +9,8 @@ jest.mock('@/lib/actions/property-actions', () => ({
     favoriteProperty: jest.fn(),
 }));
 
-// Create a complete mock that includes what layout.test.tsx needs plus what we need
-const MockToastContainer = (props: { position?: string; theme?: string }) => (
-    <div 
-        data-testid="toast-container"
-        data-position={props.position}
-        data-theme={props.theme}
-    />
-);
-
-jest.mock('react-toastify', () => ({
-    ToastContainer: MockToastContainer,
-    Slide: 'slide',
-    toast: {
-        error: jest.fn(),
-        success: jest.fn(),
-    },
-}));
+// Use unified react-toastify mock
+jest.mock('react-toastify', () => createReactToastifyMock());
 
 jest.mock('@heroicons/react/24/solid', () => ({
     HeartIcon: ({ className }: { className?: string }) => (
@@ -51,11 +36,17 @@ const { toast } = jest.mocked(jest.requireMock('react-toastify'));
 
 beforeEach(() => {
     jest.clearAllMocks();
-    // Reset all mock implementations
+    // Completely reset all mock implementations
     getFavoriteStatus.mockReset();
     favoriteProperty.mockReset();
     toast.error.mockReset();
     toast.success.mockReset();
+    
+    // Restore default resolved implementation to prevent contamination
+    getFavoriteStatus.mockImplementation(() => Promise.resolve({
+        status: ActionStatus.SUCCESS,
+        isFavorite: false,
+    }));
 });
 
 describe('PropertyFavoriteButton', () => {
@@ -132,7 +123,7 @@ describe('PropertyFavoriteButton', () => {
             });
         });
 
-        // TODO: Fix mock isolation issue - this test interferes with others
+        // TODO: This test causes mock contamination - mockRejectedValue persists across tests
         it.skip('should throw error when getFavoriteStatus promise rejects', async () => {
             const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
             getFavoriteStatus.mockRejectedValue(new Error('Network error'));
@@ -142,6 +133,12 @@ describe('PropertyFavoriteButton', () => {
             }).not.toThrow(); // Component should render, but useEffect error should be thrown
 
             consoleErrorSpy.mockRestore();
+            
+            // Force reset this mock after the test to prevent contamination
+            getFavoriteStatus.mockImplementation(() => Promise.resolve({
+                status: ActionStatus.SUCCESS,
+                isFavorite: false,
+            }));
         });
     });
 
