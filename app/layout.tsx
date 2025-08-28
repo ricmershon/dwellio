@@ -10,7 +10,7 @@ import AuthProvider from "@/ui/root/auth-provider";
 import NavBar from "@/ui/root/layout/nav-bar/nav-bar";
 import Footer from "@/ui/root/layout/footer";
 import { GlobalContextProvider } from "@/context/global-context";
-import "@/app/globals.css";
+import "./globals.css"
 
 export const metadata: Metadata = {
     title: {
