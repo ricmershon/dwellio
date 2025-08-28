@@ -16,7 +16,7 @@ exports[`Hero Snapshots should match snapshot 1`] = `
         Find The Perfect Rental
       </h1>
       <p
-        class="my-4 text-xl text-gray-700"
+        class="mt-4 text-xl text-gray-700"
       >
         Discover the perfect property.
       </p>

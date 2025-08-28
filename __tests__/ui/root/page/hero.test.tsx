@@ -3,7 +3,7 @@ import { render, screen } from '@/__tests__/test-utils';
 import Hero from '@/ui/root/page/hero';
 
 // Mock dependencies
-jest.mock('@/ui/properties/search/search-form', () => {
+jest.mock('@/ui/properties/search-form', () => {
     const MockSearchForm = () => (
         <div data-testid="property-search-form">Property Search Form</div>
     );
@@ -121,7 +121,7 @@ describe('Hero', () => {
             render(<Hero />);
             
             const subtitle = screen.getByText('Discover the perfect property.');
-            expect(subtitle).toHaveClass('my-4', 'text-xl', 'text-gray-700');
+            expect(subtitle).toHaveClass('mt-4', 'text-xl', 'text-gray-700');
         });
 
         it('should have container styling', () => {

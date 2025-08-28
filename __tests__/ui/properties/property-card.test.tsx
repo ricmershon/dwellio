@@ -75,7 +75,7 @@ jest.mock('@/utils/to-serialized-object', () => ({
     })),
 }));
 
-jest.mock('@/utils/is-within-last-seven-days', () => ({
+jest.mock('@/utils/is-within-last-three-days', () => ({
     isWithinLastWeek: jest.fn(),
 }));
 
@@ -116,7 +116,7 @@ describe('PropertyCard', () => {
     const mockGetSessionUser = jest.mocked(jest.requireMock('@/utils/get-session-user').getSessionUser);
     const mockGetRateDisplay = jest.mocked(jest.requireMock('@/utils/get-rate-display').getRateDisplay);
     const mockToSerializedObject = jest.mocked(jest.requireMock('@/utils/to-serialized-object').toSerializedOjbect);
-    const mockIsWithinLastWeek = jest.mocked(jest.requireMock('@/utils/is-within-last-seven-days').isWithinLastWeek);
+    const mockIsWithinLastWeek = jest.mocked(jest.requireMock('@/utils/is-within-last-three-days').isWithinLastWeek);
 
     beforeEach(() => {
         jest.clearAllMocks();
