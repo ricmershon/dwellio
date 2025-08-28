@@ -1,5 +1,5 @@
 import React from 'react';
-import { MockViewportCookieWriter, MockAuthProvider, MockGlobalContextProvider, MockNavBar, MockFooter, MockToastContainer } from '@/__tests__/test-utils';
+import { MockViewportCookieWriter, MockAuthProvider, MockGlobalContextProvider, MockNavBar, MockFooter, createReactToastifyMock } from '@/__tests__/test-utils';
 
 // Mock all CSS imports  
 jest.mock('@/app/globals.css', () => ({}));
@@ -42,11 +42,8 @@ jest.mock('@/ui/root/layout/footer', () => ({
 	default: MockFooter,
 }));
 
-// Mock react-toastify
-jest.mock('react-toastify', () => ({
-	ToastContainer: MockToastContainer,
-	Slide: 'slide'
-}));
+// Mock react-toastify with unified mock
+jest.mock('react-toastify', () => createReactToastifyMock());
 
 describe('RootLayout', () => {
 	const mockChildren = <div data-testid="page-content">Page Content</div>;

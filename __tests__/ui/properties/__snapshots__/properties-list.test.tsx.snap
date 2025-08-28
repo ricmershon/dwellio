@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`PropertiesList Snapshots should match snapshot with direct properties 1`] = `
+<section
+  role="region"
+>
+  <div
+    class="m-auto"
+  >
+    <div
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6"
+    >
+      <div
+        data-property-id="snap-1"
+        data-property-name="Snapshot Property 1"
+        data-testid="property-card"
+      >
+        PropertyCard: 
+        Snapshot Property 1
+      </div>
+      <div
+        data-property-id="snap-2"
+        data-property-name="Snapshot Property 2"
+        data-testid="property-card"
+      >
+        PropertyCard: 
+        Snapshot Property 2
+      </div>
+    </div>
+  </div>
+</section>
+`;
+
+exports[`PropertiesList Snapshots should match snapshot with featured properties 1`] = `
+<section
+  role="region"
+>
+  <div
+    class="m-auto"
+  >
+    <div
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6"
+    >
+      <div
+        data-property-id="featured-1"
+        data-property-name="Featured Snapshot 1"
+        data-testid="property-card"
+      >
+        PropertyCard: 
+        Featured Snapshot 1
+      </div>
+    </div>
+  </div>
+</section>
+`;
+
+exports[`PropertiesList Snapshots should match snapshot with no properties 1`] = `
+<section
+  role="region"
+>
+  <div
+    class="m-auto"
+  >
+    <p>
+      No properties found
+    </p>
+  </div>
+</section>
+`;

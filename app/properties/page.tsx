@@ -8,7 +8,7 @@ import { fetchNumPropertiesPages } from "@/lib/data/property-data";
 import PropertiesListSkeleton from "@/ui/skeletons/properties-list-skeleton";
 import DelayedRender from "@/ui/shared/delayed-render";
 import { PropertiesQuery } from "@/types/types";
-import PropertyFilterForm from "@/ui/properties/properties-filter-form";
+import PropertiesFilterForm from "@/ui/properties/properties-filter-form";
 import { getViewportWidth } from "@/utils/get-viewport-width";
 
 export const metadata: Metadata = {
@@ -53,7 +53,7 @@ const PropertiesPage = async (props: PropertiesPageProps) => {
                     { label: "Properties", href: "/properties", active: true }
                 ]}
             />
-            <PropertyFilterForm />
+            <PropertiesFilterForm />
             <Suspense fallback={
                 <DelayedRender>
                     <PropertiesListSkeleton />

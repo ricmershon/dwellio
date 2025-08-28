@@ -95,6 +95,16 @@ export const MockToastContainer = (props: { position?: string; theme?: string })
     />
 );
 
+// Unified react-toastify mock that includes both ToastContainer and toast methods
+export const createReactToastifyMock = () => ({
+    ToastContainer: MockToastContainer,
+    Slide: 'slide',
+    toast: {
+        error: jest.fn(),
+        success: jest.fn(),
+    },
+});
+
 // =============================================================================
 // SHARED TEST UTILITIES
 // =============================================================================

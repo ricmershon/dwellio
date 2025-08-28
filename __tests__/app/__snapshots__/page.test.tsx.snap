@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`HomePage Snapshots should match snapshot 1`] = `
+<main>
+  <div
+    data-testid="suspense"
+  >
+    <div
+      data-testid="check-auth-status"
+    >
+      CheckAuthStatus Component
+    </div>
+  </div>
+  <div
+    data-testid="hero"
+  >
+    Hero Component
+  </div>
+  <div
+    data-testid="featured-properties"
+  >
+    FeaturedProperties Component
+  </div>
+  <div
+    data-testid="info-boxes"
+  >
+    InfoBoxes Component
+  </div>
+</main>
+`;
+
+exports[`HomePage Snapshots should match snapshot with all components 1`] = `
+<main>
+  <div
+    data-testid="suspense"
+  >
+    <div
+      data-testid="check-auth-status"
+    >
+      CheckAuthStatus Component
+    </div>
+  </div>
+  <div
+    data-testid="hero"
+  >
+    Hero Component
+  </div>
+  <div
+    data-testid="featured-properties"
+  >
+    FeaturedProperties Component
+  </div>
+  <div
+    data-testid="info-boxes"
+  >
+    InfoBoxes Component
+  </div>
+</main>
+`;

@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`PropertyFilterForm Snapshots should match snapshot with empty search 1`] = `
+<div
+  class="mb-6 relative flex flex-1 flex-shrink-0"
+>
+  <label
+    class="sr-only"
+    for="property-filter"
+  >
+    Search
+  </label>
+  <input
+    class="w-full rounded-md border border-gray-300 py-2 pl-10 px-3 text-sm placeholder:text-gray-500 bg-white"
+    id="property-filter"
+    placeholder="Search by name, description, location or amenity"
+    type="text"
+  />
+  <div
+    class="absolute left-3 top-1/2 size-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"
+    data-testid="magnifying-glass-icon"
+  >
+    🔍
+  </div>
+</div>
+`;
+
+exports[`PropertyFilterForm Snapshots should match snapshot with existing search term 1`] = `
+<div
+  class="mb-6 relative flex flex-1 flex-shrink-0"
+>
+  <label
+    class="sr-only"
+    for="property-filter"
+  >
+    Search
+  </label>
+  <input
+    class="w-full rounded-md border border-gray-300 py-2 pl-10 px-3 text-sm placeholder:text-gray-500 bg-white"
+    id="property-filter"
+    placeholder="Search by name, description, location or amenity"
+    type="text"
+    value="luxury apartment"
+  />
+  <div
+    class="absolute left-3 top-1/2 size-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"
+    data-testid="magnifying-glass-icon"
+  >
+    🔍
+  </div>
+</div>
+`;
+
+exports[`PropertyFilterForm Snapshots should match snapshot with special characters 1`] = `
+<div
+  class="mb-6 relative flex flex-1 flex-shrink-0"
+>
+  <label
+    class="sr-only"
+    for="property-filter"
+  >
+    Search
+  </label>
+  <input
+    class="w-full rounded-md border border-gray-300 py-2 pl-10 px-3 text-sm placeholder:text-gray-500 bg-white"
+    id="property-filter"
+    placeholder="Search by name, description, location or amenity"
+    type="text"
+    value="café & restaurant 🍽️"
+  />
+  <div
+    class="absolute left-3 top-1/2 size-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900"
+    data-testid="magnifying-glass-icon"
+  >
+    🔍
+  </div>
+</div>
+`;

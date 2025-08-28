@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`PropertyFavoriteButton Snapshots should match snapshot when favorited 1`] = `
+<form
+  action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+  class="size-[18px] z-20"
+>
+  <button
+    class="size-4 hover:cursor-pointer"
+  >
+    <div
+      class="text-red-600"
+      data-testid="heart-solid-icon"
+    >
+      Solid Heart
+    </div>
+  </button>
+</form>
+`;
+
+exports[`PropertyFavoriteButton Snapshots should match snapshot when not favorited 1`] = `
+<form
+  action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+  class="size-[18px] z-20"
+>
+  <button
+    class="size-4 hover:cursor-pointer"
+  >
+    <div
+      class="text-gray-600"
+      data-testid="heart-outline-icon"
+    >
+      Outline Heart
+    </div>
+  </button>
+</form>
+`;
