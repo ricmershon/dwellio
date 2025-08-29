@@ -5,31 +5,61 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import clsx from "clsx";
 import { FaGoogle } from "react-icons/fa";
+import { HiOutlineBell } from "react-icons/hi2";
 
 import LoginButtons from "@/ui/auth/login-buttons";
 import { withAuth, WithAuthProps } from "@/hocs/with-auth";
 import LogoutButton from "@/ui/auth/logout-button";
 import { useClickOutside } from "@/hooks/use-click-outside";
+import { useGlobalContext } from "@/context/global-context";
+import UnreadMessageCount from "@/ui/messages/unread-message-count";
 
-const NavBarRight = ({ session }: WithAuthProps) => {
+interface NavBarRightProps extends WithAuthProps {
+    viewportWidth: number;
+}
+
+const NavBarRight = ({ viewportWidth, session }: NavBarRightProps) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const menuButtonRef = useRef<HTMLButtonElement>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
+
+        const { unreadCount } = useGlobalContext();
 
     const close = useCallback(() => setIsMenuOpen(false), []);
 
     useClickOutside([menuButtonRef, dropdownRef], close, isMenuOpen)
 
     return (
-        <>
+        <div className="flex">
+            {session ? (
+                <Link className="relative group" href="/messages">
+                    <HiOutlineBell className="size-8 rounded-full btn btn-login-logout p-1"/>
+                    {unreadCount > 0 && (
+                        <UnreadMessageCount
+                            unreadCount={unreadCount}
+                            viewportWidth={viewportWidth}
+                        />
+                    )}
+                </Link>
+            ) : (
+                <div className="block">
+                    <div className="flex items-center">
+                        <LoginButtons
+                            buttonClassName="flex items-center btn btn-login-logout text-sm py-[6px] px-3"
+                            text="Login"
+                            icon={<FaGoogle className="mr-2" />}
+                        />
+                    </div>
+                </div>
+            )}
             {/* Mobile menu button */}
-            <div className="md:hidden flex items-center">
+            <div className="md:hidden flex items-center ml-2">
                 <button
                     ref={menuButtonRef}
                     type="button"
                     id="mobile-menu-button"
-                    className={`md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 ${isMenuOpen && "mobile-menu-open"}`}
+                    className={`md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 md:ml-0 ${isMenuOpen && "mobile-menu-open"}`}
                     aria-controls="mobile-menu"
                     aria-expanded="false"
                     onClick={() => setIsMenuOpen((prevState) => !prevState)}
@@ -83,7 +113,7 @@ const NavBarRight = ({ session }: WithAuthProps) => {
                 >
                         Properties
                     </Link>
-                    {session ? (
+                    {session && (
                         <Link
                             href="/properties/add"
                             className={clsx(
@@ -100,15 +130,6 @@ const NavBarRight = ({ session }: WithAuthProps) => {
                         >
                             Add Property
                         </Link>
-                    ) : (
-                        <>
-                            <hr className="w-full border-t border-gray-200"/>
-                            <LoginButtons
-                                buttonClassName="flex items-center justify-center btn btn-login-logout w-full"
-                                text="Login"
-                                icon={<FaGoogle className="mr-2" />}
-                            />
-                        </>
                     )}
                     {session && (
                         <>
@@ -156,7 +177,7 @@ const NavBarRight = ({ session }: WithAuthProps) => {
                     )}
                 </div>
             )}
-        </>
+        </div>
     );
 }
  
