@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@/__tests__/test-utils';
+import { render, screen, fireEvent, waitFor, createReactToastifyMock } from '@/__tests__/test-utils';
 
 import DeleteMessageButton from '@/ui/messages/delete-message-button';
 import { ActionStatus } from '@/types/types';
@@ -13,12 +13,7 @@ jest.mock('@/context/global-context', () => ({
     useGlobalContext: jest.fn()
 }));
 
-jest.mock('react-toastify', () => ({
-    toast: {
-        success: jest.fn(),
-        error: jest.fn()
-    }
-}));
+jest.mock('react-toastify', () => createReactToastifyMock());
 
 // Import mocked functions
 const { deleteMessage } = jest.requireMock('@/lib/actions/message-actions');
