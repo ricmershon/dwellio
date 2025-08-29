@@ -366,7 +366,7 @@ describe('PropertyDetails', () => {
         it('should apply responsive grid classes for amenities', async () => {
             const { container } = render(await PropertyDetails({ property: defaultProperty }));
             
-            const amenitiesList = container.querySelector('.grid.grid-cols-1.md\\:grid-cols-3.lg\\:grid-cols-4');
+            const amenitiesList = container.querySelector('.grid.grid-cols-2.sm\\:grid-cols-3.md\\:grid-cols-4.lg\\:grid-cols-5');
             expect(amenitiesList).toBeInTheDocument();
         });
 

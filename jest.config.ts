@@ -21,7 +21,7 @@ const config: Config = {
 		'photoswipe/dist/photoswipe.css': 'identity-obj-proxy',
 	},
 	transformIgnorePatterns: [
-		'node_modules/(?!.*\\.(js|jsx|ts|tsx|css)$)'
+		'node_modules/(?!(jose|openid-client|next-auth)/).*'
 	],
 	testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/', '<rootDir>/__tests__/coverage/'],
 	testMatch: ['**/__tests__/**/*.(test|spec).(ts|tsx|js)'],
