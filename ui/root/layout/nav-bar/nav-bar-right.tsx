@@ -24,7 +24,7 @@ const NavBarRight = ({ viewportWidth, session }: NavBarRightProps) => {
     const dropdownRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
 
-        const { unreadCount } = useGlobalContext();
+    const { unreadCount } = useGlobalContext();
 
     const close = useCallback(() => setIsMenuOpen(false), []);
 
