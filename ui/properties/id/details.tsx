@@ -51,7 +51,7 @@ const PropertyDetails = async ({ property }: { property: PropertyDocument }) => 
             {/* Amenities */}
             <div className="pb-4 mb-4 border-b border-gray-200">
                 <h3>Amenities</h3>
-                <ul className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 text-xs list-none">
+                <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 text-xs list-none">
                     {property.amenities && (
                         property.amenities.map((amenity) => (
                             <li className="mt-2" key={amenity}>
