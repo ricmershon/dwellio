@@ -15,8 +15,8 @@ const NavBar = async () => {
                     <NavBarLeft />
                     <NavBarDesktopMiddle />
                     <div className="flex relative">
-                        <NavBarDesktopRight viewportWidth={viewportWidth} />
-                        <NavBarRight />
+                        <NavBarRight viewportWidth={viewportWidth} />
+                        <NavBarDesktopRight />
                     </div>
                 </div>
             </div>

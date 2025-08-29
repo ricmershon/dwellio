@@ -2,55 +2,37 @@
 
 import { useCallback, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
-import { FaGoogle } from "react-icons/fa";
-import { HiOutlineBell } from "react-icons/hi2";
 import Link from "next/link";
 import Image from "next/image";
 
-import LoginButtons from "@/ui/auth/login-buttons";
 import profileDefaultImage from "@/assets/images/profile.png";
-import { useGlobalContext } from "@/context/global-context";
-import UnreadMessageCount from "@/ui/messages/unread-message-count";
 import { withAuth, WithAuthProps } from "@/hocs/with-auth";
 import LogoutButton from "@/ui/auth/logout-button";
 import { useClickOutside } from "@/hooks/use-click-outside";
 
-interface NavBarDesktopRightProps extends WithAuthProps {
-    viewportWidth: number;
-}
-
-const NavBarDesktopRight = ({ viewportWidth, session }: NavBarDesktopRightProps) => {
+const NavBarDesktopRight = ({ session }: WithAuthProps) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const menuButtonRef = useRef<HTMLButtonElement>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
     
     const profileImage = session?.user?.image;
-    const { unreadCount } = useGlobalContext();
 
     const close = useCallback(() => setIsMenuOpen(false), []);
     
-    useClickOutside(dropdownRef, close, isMenuOpen);
+    useClickOutside([menuButtonRef, dropdownRef], close, isMenuOpen);
 
     return (
         <>
-            {session ? (
+            {session && (
                 // Logged in
                 <div className="flex items-center pr-2">
-                    <Link className="relative group" href="/messages">
-                        <HiOutlineBell className="size-8 rounded-full btn btn-login-logout p-1"/>
-                        {unreadCount > 0 &&
-                            <UnreadMessageCount
-                                unreadCount={unreadCount}
-                                viewportWidth={viewportWidth}
-                            />
-                        }
-                        
-                    </Link>
 
                     {/* Profile dropdown button */}
                     <div className="ml-5 hidden md:block">
                         <div>
                             <button
+                                ref={menuButtonRef}
                                 type="button"
                                 className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-200 cursor-pointer"
                                 id="user-menu-button"
@@ -107,17 +89,6 @@ const NavBarDesktopRight = ({ viewportWidth, session }: NavBarDesktopRightProps)
                                 />
                             </div>
                         )}
-                    </div>
-                </div>
-            ) : (
-                // Logged out
-                <div className="hidden md:block md:ml-6">
-                    <div className="flex items-center">
-                        <LoginButtons
-                            buttonClassName="flex items-center btn btn-login-logout py-[6px] px-3"
-                            text="Login"
-                            icon={<FaGoogle className="mr-2" />}
-                        />
                     </div>
                 </div>
             )}
