@@ -39,6 +39,12 @@ jest.mock('react-icons/fa', () => ({
     ),
 }));
 
+jest.mock('react-icons/hi2', () => ({
+    HiOutlineBell: ({ className }: { className: string }) => (
+        <div data-testid="bell-icon" className={className}>Bell Icon</div>
+    ),
+}));
+
 // Mock LoginButtons component
 jest.mock('@/ui/auth/login-buttons', () => {
     const MockLoginButtons = ({ buttonClassName, text, icon }: {
@@ -53,6 +59,29 @@ jest.mock('@/ui/auth/login-buttons', () => {
     );
     MockLoginButtons.displayName = 'MockLoginButtons';
     return MockLoginButtons;
+});
+
+// Mock Global Context
+jest.mock('@/context/global-context', () => ({
+    useGlobalContext: jest.fn()
+}));
+
+// Mock UnreadMessageCount component
+jest.mock('@/ui/messages/unread-message-count', () => {
+    const MockUnreadMessageCount = ({ unreadCount, viewportWidth }: {
+        unreadCount: number;
+        viewportWidth: number;
+    }) => (
+        <div 
+            data-testid="unread-message-count" 
+            data-count={unreadCount}
+            data-viewport-width={viewportWidth}
+        >
+            {unreadCount}
+        </div>
+    );
+    MockUnreadMessageCount.displayName = 'MockUnreadMessageCount';
+    return MockUnreadMessageCount;
 });
 
 // Mock LogoutButton component  
@@ -81,6 +110,7 @@ jest.mock('@/hooks/use-click-outside', () => ({
 describe('NavBarRight', () => {
     const mockUsePathname = usePathname as jest.MockedFunction<typeof usePathname>;
     const mockUseSession = useSession as jest.MockedFunction<typeof useSession>;
+    const { useGlobalContext: mockUseGlobalContext } = jest.requireMock('@/context/global-context');
     
     const mockUser = {
         id: '1',
@@ -102,11 +132,19 @@ describe('NavBarRight', () => {
             status: 'unauthenticated',
             update: jest.fn() 
         });
+        
+        // Mock useGlobalContext
+        mockUseGlobalContext.mockReturnValue({
+            unreadCount: 3,
+            setUnreadCount: jest.fn(),
+            staticInputs: {},
+            setStaticInputs: jest.fn()
+        });
     });
 
     describe('Mobile Menu Button', () => {
         it('should render mobile menu button with correct attributes', () => {
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             
             const menuButton = screen.getByRole('button');
             expect(menuButton).toBeInTheDocument();
@@ -116,14 +154,14 @@ describe('NavBarRight', () => {
         });
 
         it('should have correct CSS classes', () => {
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             
             const menuButton = screen.getByRole('button');
             expect(menuButton).toHaveClass('md:hidden', 'z-40', 'block', 'mobile-menu', 'focus:outline-none', 'mt-2', 'ml-4');
         });
 
         it('should toggle menu state when clicked', () => {
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             
             const menuButton = screen.getByRole('button');
             
@@ -140,7 +178,7 @@ describe('NavBarRight', () => {
         });
 
         it('should add mobile-menu-open class when menu is open', () => {
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             
             const menuButton = screen.getByRole('button');
             
@@ -153,7 +191,7 @@ describe('NavBarRight', () => {
         });
 
         it('should render hamburger menu spans', () => {
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             
             const menuButton = screen.getByRole('button');
             const spans = menuButton.querySelectorAll('span');
@@ -167,7 +205,7 @@ describe('NavBarRight', () => {
 
     describe('Mobile Menu - Unauthenticated', () => {
         beforeEach(() => {
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             fireEvent.click(screen.getByRole('button')); // Open menu
         });
 
@@ -237,7 +275,7 @@ describe('NavBarRight', () => {
                 status: 'authenticated',
                 update: jest.fn()
             });
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             fireEvent.click(screen.getByRole('button')); // Open menu
         });
 
@@ -296,7 +334,7 @@ describe('NavBarRight', () => {
         it('should highlight Home link when on home page', () => {
             mockUsePathname.mockReturnValue('/');
             
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             fireEvent.click(screen.getByRole('button'));
             
             const homeLink = screen.getByText('Home').closest('a');
@@ -306,7 +344,7 @@ describe('NavBarRight', () => {
         it('should highlight Properties link when on properties page', () => {
             mockUsePathname.mockReturnValue('/properties');
             
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             fireEvent.click(screen.getByRole('button'));
             
             const propertiesLink = screen.getByText('Properties').closest('a');
@@ -321,7 +359,7 @@ describe('NavBarRight', () => {
                 update: jest.fn()
             });
             
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             fireEvent.click(screen.getByRole('button'));
             
             const addPropertyLink = screen.getByText('Add Property').closest('a');
@@ -336,7 +374,7 @@ describe('NavBarRight', () => {
                 update: jest.fn()
             });
             
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             fireEvent.click(screen.getByRole('button'));
             
             const profileLink = screen.getByText('My Listings').closest('a');
@@ -351,7 +389,7 @@ describe('NavBarRight', () => {
                 update: jest.fn()
             });
             
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             fireEvent.click(screen.getByRole('button'));
             
             const favoritesLink = screen.getByText('Favorite Properties').closest('a');
@@ -366,7 +404,7 @@ describe('NavBarRight', () => {
                 update: jest.fn()
             });
             
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             fireEvent.click(screen.getByRole('button'));
             
             const propertiesLink = screen.getByText('Properties').closest('a');
@@ -379,7 +417,7 @@ describe('NavBarRight', () => {
 
     describe('Menu Interactions', () => {
         it('should close menu when navigation link is clicked', () => {
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             const menuButton = screen.getByRole('button');
             
             // Open menu
@@ -400,7 +438,7 @@ describe('NavBarRight', () => {
                 update: jest.fn()
             });
             
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             const menuButton = screen.getByRole('button');
             
             // Open menu
@@ -421,7 +459,7 @@ describe('NavBarRight', () => {
                 update: jest.fn()
             });
             
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             const menuButton = screen.getByRole('button');
             
             // Open menu
@@ -436,7 +474,7 @@ describe('NavBarRight', () => {
         });
 
         it('should handle rapid menu toggle clicks', () => {
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             const menuButton = screen.getByRole('button');
             
             // Rapid clicks
@@ -451,7 +489,7 @@ describe('NavBarRight', () => {
     describe('Authentication State Changes', () => {
         it('should update menu content when authentication state changes', () => {
             // Test separately: unauthenticated state
-            const { unmount } = render(<NavBarRight />);
+            const { unmount } = render(<NavBarRight viewportWidth={1024} />);
             let menuButton = document.getElementById('mobile-menu-button')!;
             fireEvent.click(menuButton);
             
@@ -468,7 +506,7 @@ describe('NavBarRight', () => {
                 update: jest.fn()
             });
             
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             menuButton = document.getElementById('mobile-menu-button')!;
             fireEvent.click(menuButton);
             
@@ -482,7 +520,7 @@ describe('NavBarRight', () => {
 
         it('should handle component remount properly', () => {
             // Test that component can be unmounted and remounted with different auth states
-            const { unmount } = render(<NavBarRight />);
+            const { unmount } = render(<NavBarRight viewportWidth={1024} />);
             
             // Open menu while unauthenticated
             let menuButton = document.getElementById('mobile-menu-button')!;
@@ -498,7 +536,7 @@ describe('NavBarRight', () => {
                 update: jest.fn()
             });
             
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             menuButton = document.getElementById('mobile-menu-button')!;
             fireEvent.click(menuButton);
             
@@ -510,7 +548,7 @@ describe('NavBarRight', () => {
 
     describe('Component Props', () => {
         it('should handle unauthenticated session state', () => {
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             
             expect(screen.getByRole('button')).toBeInTheDocument();
             fireEvent.click(screen.getByRole('button'));
@@ -525,7 +563,7 @@ describe('NavBarRight', () => {
                 update: jest.fn()
             });
             
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             
             fireEvent.click(screen.getByRole('button'));
             
@@ -542,7 +580,7 @@ describe('NavBarRight', () => {
                 update: jest.fn()
             });
             
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             fireEvent.click(screen.getByRole('button'));
             
             const links = screen.getAllByRole('menuitem');
@@ -555,18 +593,18 @@ describe('NavBarRight', () => {
         });
 
         it('should apply login button styling correctly', () => {
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             fireEvent.click(screen.getByRole('button'));
             
             const loginButtons = screen.getByTestId('login-buttons');
             expect(loginButtons).toHaveClass(
-                'flex', 'items-center', 'justify-center', 
-                'btn', 'btn-login-logout', 'w-full'
+                'flex', 'items-center', 
+                'btn', 'btn-login-logout', 'text-sm', 'py-[6px]', 'px-3'
             );
         });
 
         it('should render Google icon in login buttons', () => {
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             fireEvent.click(screen.getByRole('button'));
             
             const googleIcon = screen.getByTestId('google-icon');
@@ -576,7 +614,7 @@ describe('NavBarRight', () => {
 
     describe('Accessibility', () => {
         it('should have proper ARIA attributes on menu button', () => {
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             
             const menuButton = screen.getByRole('button');
             expect(menuButton).toHaveAttribute('aria-controls', 'mobile-menu');
@@ -584,7 +622,7 @@ describe('NavBarRight', () => {
         });
 
         it('should have proper ARIA attributes on menu', () => {
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             fireEvent.click(screen.getByRole('button'));
             
             const menu = screen.getByRole('menu');
@@ -599,7 +637,7 @@ describe('NavBarRight', () => {
                 update: jest.fn()
             });
             
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             fireEvent.click(screen.getByRole('button'));
             
             const menuItems = screen.getAllByRole('menuitem');
@@ -618,7 +656,7 @@ describe('NavBarRight', () => {
                 update: jest.fn()
             });
             
-            render(<NavBarRight />);
+            render(<NavBarRight viewportWidth={1024} />);
             fireEvent.click(screen.getByRole('button'));
             
             const expectedIds = [
@@ -637,12 +675,12 @@ describe('NavBarRight', () => {
 
     describe('Snapshots', () => {
         it('should match snapshot when unauthenticated with menu closed', () => {
-            const { container } = render(<NavBarRight />);
+            const { container } = render(<NavBarRight viewportWidth={1024} />);
             expect(container.firstChild).toMatchSnapshot();
         });
 
         it('should match snapshot when unauthenticated with menu open', () => {
-            const { container } = render(<NavBarRight />);
+            const { container } = render(<NavBarRight viewportWidth={1024} />);
             fireEvent.click(screen.getByRole('button'));
             expect(container.firstChild).toMatchSnapshot();
         });
@@ -654,7 +692,7 @@ describe('NavBarRight', () => {
                 update: jest.fn()
             });
             
-            const { container } = render(<NavBarRight />);
+            const { container } = render(<NavBarRight viewportWidth={1024} />);
             expect(container.firstChild).toMatchSnapshot();
         });
 
@@ -665,7 +703,7 @@ describe('NavBarRight', () => {
                 update: jest.fn()
             });
             
-            const { container } = render(<NavBarRight />);
+            const { container } = render(<NavBarRight viewportWidth={1024} />);
             fireEvent.click(screen.getByRole('button'));
             expect(container.firstChild).toMatchSnapshot();
         });
@@ -678,7 +716,7 @@ describe('NavBarRight', () => {
                 update: jest.fn()
             });
             
-            const { container } = render(<NavBarRight />);
+            const { container } = render(<NavBarRight viewportWidth={1024} />);
             fireEvent.click(screen.getByRole('button'));
             expect(container.firstChild).toMatchSnapshot();
         });

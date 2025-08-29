@@ -449,7 +449,8 @@ describe('Global Context Integration Tests', () => {
             });
             
             // Mark unread message as read (decrement by 1)
-            fireEvent.click(screen.getByText('Mark as Read'));
+            const markAsReadButtons = screen.getAllByText('Mark as Read');
+            fireEvent.click(markAsReadButtons[0]);
             
             await waitFor(() => {
                 expect(screen.getByTestId('unread-count')).toHaveTextContent('4');
@@ -469,7 +470,7 @@ describe('Global Context Integration Tests', () => {
             });
 
             render(
-                <GlobalContextProvider>
+                <GlobalContextProvider initialStaticInputs={mockStaticInputs}>
                     <ContextTestComponent />
                     <DeleteMessageButton messageId="msg-1" />
                     <ToggleMessageReadButton messageId="msg-2" read={false} />
@@ -554,12 +555,12 @@ describe('Global Context Integration Tests', () => {
         });
 
         it('should maintain state isolation between different provider instances', () => {
-            const { container } = render(
+            render(
                 <div>
-                    <GlobalContextProvider>
+                    <GlobalContextProvider initialStaticInputs={mockStaticInputs}>
                         <ContextTestComponent />
                     </GlobalContextProvider>
-                    <GlobalContextProvider>
+                    <GlobalContextProvider initialStaticInputs={mockStaticInputs}>
                         <ContextTestComponent />
                     </GlobalContextProvider>
                 </div>
