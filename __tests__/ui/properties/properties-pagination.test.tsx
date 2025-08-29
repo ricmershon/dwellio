@@ -1,20 +1,12 @@
 import React from 'react';
-import { render, screen } from '@/__tests__/test-utils';
+import { render, screen, createNextNavigationMock } from '@/__tests__/test-utils';
 import PropertiesPagination from '@/ui/properties/properties-pagination';
 import { generatePagination } from '@/utils/generate-pagination';
 
 // Mock Next.js navigation hooks
-const mockPush = jest.fn();
-const mockReplace = jest.fn();
-const mockSearchParams = new URLSearchParams();
-
 jest.mock('next/navigation', () => ({
+    ...createNextNavigationMock(),
     usePathname: jest.fn(() => '/properties'),
-    useSearchParams: jest.fn(() => mockSearchParams),
-    useRouter: jest.fn(() => ({
-        push: mockPush,
-        replace: mockReplace,
-    })),
 }));
 
 // Mock clsx to return joined class names
@@ -71,6 +63,9 @@ jest.mock('@/ui/shared/pagination-number', () => ({
 // Mock generatePagination utility - we'll test this separately
 jest.mock('@/utils/generate-pagination');
 const mockGeneratePagination = generatePagination as jest.MockedFunction<typeof generatePagination>;
+
+// Get mocks from the navigation mock
+const { mockPush, mockReplace, mockSearchParams } = jest.requireMock('next/navigation');
 
 describe('PropertiesPagination', () => {
     const defaultProps = {

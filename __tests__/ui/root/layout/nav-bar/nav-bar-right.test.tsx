@@ -1,14 +1,12 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@/__tests__/test-utils';
+import { render, screen, fireEvent, createNextNavigationMock } from '@/__tests__/test-utils';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
 import NavBarRight from '@/ui/root/layout/nav-bar/nav-bar-right';
 
 // Mock Next.js navigation
-jest.mock('next/navigation', () => ({
-    usePathname: jest.fn(),
-}));
+jest.mock('next/navigation', () => createNextNavigationMock());
 
 // Mock NextAuth
 jest.mock('next-auth/react', () => ({

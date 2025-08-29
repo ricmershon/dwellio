@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@/__tests__/test-utils';
+import { render, screen, fireEvent, waitFor, createNextNavigationMock } from '@/__tests__/test-utils';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 
@@ -13,9 +13,7 @@ jest.mock('next-auth/react', () => ({
     useSession: jest.fn(),
 }));
 
-jest.mock('next/navigation', () => ({
-    usePathname: jest.fn(),
-}));
+jest.mock('next/navigation', () => createNextNavigationMock());
 
 jest.mock('next/link', () => {
     const MockLink = ({ children, href, className, onClick, role, tabIndex, id }: {

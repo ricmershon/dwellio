@@ -102,6 +102,8 @@ export const createReactToastifyMock = () => ({
     toast: {
         error: jest.fn(),
         success: jest.fn(),
+        info: jest.fn(),
+        warning: jest.fn(),
     },
 });
 
@@ -180,3 +182,6 @@ export const setupCommonMocks = () => {
 // Export everything from testing library plus our custom render
 export * from '@testing-library/react';
 export { customRender as render };
+
+// Export shared mocks
+export { createNextNavigationMock } from './shared-mocks';

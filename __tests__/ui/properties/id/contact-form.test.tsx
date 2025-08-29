@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@/__tests__/test-utils';
+import { render, screen, fireEvent, createReactToastifyMock } from '@/__tests__/test-utils';
 import PropertyContactForm from '@/ui/properties/id/contact-form';
 import { PropertyDocument } from '@/models';
 import { ActionState, ActionStatus } from '@/types/types';
@@ -21,22 +21,7 @@ jest.mock('@/lib/actions/message-actions', () => ({
 }));
 
 // Use unified react-toastify mock
-jest.mock('react-toastify', () => ({
-    ToastContainer: ({ position, theme }: { position?: string; theme?: string }) => (
-        <div 
-            data-testid="toast-container"
-            data-position={position}
-            data-theme={theme}
-        />
-    ),
-    Slide: 'slide',
-    toast: {
-        error: jest.fn(),
-        success: jest.fn(),
-        info: jest.fn(),
-        warning: jest.fn(),
-    },
-}));
+jest.mock('react-toastify', () => createReactToastifyMock());
 
 // Mock icons
 jest.mock('react-icons/fa', () => ({

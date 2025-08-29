@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
+import { createNextNavigationMock } from '@/__tests__/test-utils';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 
@@ -11,10 +12,7 @@ jest.mock('next-auth/react', () => ({
     useSession: jest.fn(),
 }));
 
-jest.mock('next/navigation', () => ({
-    useRouter: jest.fn(),
-    usePathname: jest.fn(),
-}));
+jest.mock('next/navigation', () => createNextNavigationMock());
 
 jest.mock('@/utils/get-viewport-width', () => ({
     getViewportWidth: jest.fn(),
