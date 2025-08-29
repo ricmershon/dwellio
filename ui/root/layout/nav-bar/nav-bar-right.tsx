@@ -13,18 +13,20 @@ import { useClickOutside } from "@/hooks/use-click-outside";
 
 const NavBarRight = ({ session }: WithAuthProps) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const menuButtonRef = useRef<HTMLButtonElement>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
 
     const close = useCallback(() => setIsMenuOpen(false), []);
 
-    useClickOutside(dropdownRef, close, isMenuOpen)
+    useClickOutside([menuButtonRef, dropdownRef], close, isMenuOpen)
 
     return (
         <>
             {/* Mobile menu button */}
             <div className="md:hidden flex items-center">
                 <button
+                    ref={menuButtonRef}
                     type="button"
                     id="mobile-menu-button"
                     className={`md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 ${isMenuOpen && "mobile-menu-open"}`}
@@ -146,20 +148,10 @@ const NavBarRight = ({ session }: WithAuthProps) => {
 
                             <hr className="w-full border-t border-gray-200"/>
 
-                                <LogoutButton
-                                    setIsMenuOpen={setIsMenuOpen}
-                                    id="user-menu-item-2"
-                                />
-
-                            {/* <button
-                                className="btn btn-login-logout w-full"
-                                role="menuitem"
-                                tabIndex={-1}
-                                id="user-menu-item-6"
-                                onClick={handleSignOutClick}
-                            >
-                                Sign Out
-                            </button> */}
+                            <LogoutButton
+                                setIsMenuOpen={setIsMenuOpen}
+                                id="user-menu-item-2"
+                            />
                         </>
                     )}
                 </div>
