@@ -1,0 +1,635 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`PropertyImagesGallery Snapshots should match snapshot with 3 images (grid-cols-3 layout) 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="grid grid-rows-2 gap-2 md:gap-3 grid-cols-3"
+  >
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-span-2 row-span-2"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image1.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image1.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="true"
+            data-testid="next-image"
+            src="https://example.com/image1.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-start-3"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image2.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image2.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/image2.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-start-3 row-start-2"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image3.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image3.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/image3.jpg"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PropertyImagesGallery Snapshots should match snapshot with 4 images (grid-cols-2 layout) 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="grid grid-rows-2 gap-2 md:gap-3 grid-cols-2"
+  >
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image1.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image1.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="true"
+            data-testid="next-image"
+            src="https://example.com/image1.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image2.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image2.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/image2.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image3.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image3.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/image3.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image4.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image4.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/image4.jpg"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PropertyImagesGallery Snapshots should match snapshot with 5 images (grid-cols-4 layout) 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="grid grid-rows-2 gap-2 md:gap-3 grid-cols-4"
+  >
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-span-2 row-span-2"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image1.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image1.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="true"
+            data-testid="next-image"
+            src="https://example.com/image1.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-start-3"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image2.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image2.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/image2.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-start-4 row-start-1"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image3.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image3.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/image3.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-start-3 row-start-2"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image4.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image4.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/image4.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-start-4 row-start-2"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image5.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image5.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/image5.jpg"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PropertyImagesGallery Snapshots should match snapshot with 6+ images (shows gallery icon) 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="grid grid-rows-2 gap-2 md:gap-3"
+  >
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-span-2 row-span-2"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image1.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image1.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="true"
+            data-testid="next-image"
+            src="https://example.com/image1.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-start-3"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image2.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image2.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/image2.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-start-4 row-start-1"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image3.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image3.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/image3.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-start-3 row-start-2"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image4.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image4.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/image4.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-start-4 row-start-2"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image5.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image5.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/image5.jpg"
+          />
+          <svg
+            class="absolute bottom-2 right-2 size-10 z-10 text-gray-400 bg-white/80 rounded-sm"
+            data-testid="gallery-view-icon"
+          >
+            Gallery Icon
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square hidden"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image6.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image6.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/image6.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square hidden"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image7.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image7.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/image7.jpg"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PropertyImagesGallery Snapshots should match snapshot with custom image dimensions 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="grid grid-rows-2 gap-2 md:gap-3 grid-cols-3"
+  >
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-span-2 row-span-2"
+    >
+      <div
+        data-height="800"
+        data-original="https://example.com/portrait.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/portrait.jpg"
+        data-width="600"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="true"
+            data-testid="next-image"
+            src="https://example.com/portrait.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-start-3"
+    >
+      <div
+        data-height="800"
+        data-original="https://example.com/landscape.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/landscape.jpg"
+        data-width="1200"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/landscape.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-start-3 row-start-2"
+    >
+      <div
+        data-height="800"
+        data-original="https://example.com/square.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/square.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/square.jpg"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PropertyImagesGallery Snapshots should match snapshot with empty images array 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="grid grid-rows-2 gap-2 md:gap-3"
+  />
+</div>
+`;
+
+exports[`PropertyImagesGallery Snapshots should match snapshot with single image 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="grid grid-rows-2 gap-2 md:gap-3"
+  >
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image1.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image1.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="true"
+            data-testid="next-image"
+            src="https://example.com/image1.jpg"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
