@@ -436,4 +436,61 @@ describe('MessagesPage', () => {
             expect(screen.getByTestId('breadcrumbs')).toBeInTheDocument();
         });
     });
+
+    describe('Snapshots', () => {
+        it('should match snapshot for empty messages state', async () => {
+            fetchMessages.mockResolvedValue([]);
+            
+            const component = await MessagesPage();
+            const { container } = render(component);
+            expect(container.firstChild).toMatchSnapshot('empty-messages-state');
+        });
+
+        it('should match snapshot for single message display', async () => {
+            const singleMessage = [mockMessages[0]];
+            fetchMessages.mockResolvedValue(singleMessage);
+            
+            const component = await MessagesPage();
+            const { container } = render(component);
+            expect(container.firstChild).toMatchSnapshot('single-message-display');
+        });
+
+        it('should match snapshot for multiple messages (mixed read/unread)', async () => {
+            const component = await MessagesPage();
+            const { container } = render(component);
+            expect(container.firstChild).toMatchSnapshot('multiple-mixed-messages');
+        });
+
+        it('should match snapshot for long message list', async () => {
+            const longMessageList = Array.from({ length: 10 }, (_, i) => ({
+                _id: `long-msg-${i}`,
+                body: `Long message ${i} with detailed content about property inquiry and requirements`,
+                sender: { username: `sender${i}` },
+                property: { name: `Property ${i} Complex` },
+                recipient: mockSessionUser.id,
+                read: i % 3 === 0,
+                createdAt: new Date(`2024-01-${String(i + 1).padStart(2, '0')}`)
+            })) as unknown as MessageDocument[];
+            
+            fetchMessages.mockResolvedValue(longMessageList);
+            
+            const component = await MessagesPage();
+            const { container } = render(component);
+            expect(container.firstChild).toMatchSnapshot('long-message-list');
+        });
+
+        it('should match snapshot for page layout structure', async () => {
+            const component = await MessagesPage();
+            const { container } = render(component);
+            expect(container.firstChild).toMatchSnapshot('page-layout-structure');
+        });
+
+        it('should match snapshot for breadcrumbs integration', async () => {
+            fetchMessages.mockResolvedValue([]);
+            
+            const component = await MessagesPage();
+            const { container } = render(component);
+            expect(container.firstChild).toMatchSnapshot('breadcrumbs-integration');
+        });
+    });
 });

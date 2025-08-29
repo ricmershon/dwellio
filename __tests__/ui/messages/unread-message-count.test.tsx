@@ -216,4 +216,36 @@ describe('UnreadMessageCount', () => {
             expect(screen.getByText('5')).toBeInTheDocument();
         });
     });
+
+    describe('Snapshots', () => {
+        it('should match snapshot for mobile viewport (count hidden)', () => {
+            const { container } = render(<UnreadMessageCount unreadCount={3} viewportWidth={480} />);
+            expect(container.firstChild).toMatchSnapshot('mobile-viewport-count-hidden');
+        });
+
+        it('should match snapshot for desktop viewport (count visible)', () => {
+            const { container } = render(<UnreadMessageCount unreadCount={5} viewportWidth={1024} />);
+            expect(container.firstChild).toMatchSnapshot('desktop-viewport-count-visible');
+        });
+
+        it('should match snapshot for zero count', () => {
+            const { container } = render(<UnreadMessageCount unreadCount={0} viewportWidth={1024} />);
+            expect(container.firstChild).toMatchSnapshot('zero-count');
+        });
+
+        it('should match snapshot for single count', () => {
+            const { container } = render(<UnreadMessageCount unreadCount={1} viewportWidth={1024} />);
+            expect(container.firstChild).toMatchSnapshot('single-count');
+        });
+
+        it('should match snapshot for large count (99+)', () => {
+            const { container } = render(<UnreadMessageCount unreadCount={150} viewportWidth={1024} />);
+            expect(container.firstChild).toMatchSnapshot('large-count-99-plus');
+        });
+
+        it('should match snapshot for mobile with large count', () => {
+            const { container } = render(<UnreadMessageCount unreadCount={42} viewportWidth={320} />);
+            expect(container.firstChild).toMatchSnapshot('mobile-large-count');
+        });
+    });
 });

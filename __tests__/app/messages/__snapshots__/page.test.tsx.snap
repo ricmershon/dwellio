@@ -1,0 +1,288 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`MessagesPage Snapshots should match snapshot for breadcrumbs integration: breadcrumbs-integration 1`] = `
+<main>
+  <nav
+    data-testid="breadcrumbs"
+  >
+    <span
+      data-active="false"
+    >
+      Home
+    </span>
+    <span
+      data-active="true"
+    >
+      Your Messages
+    </span>
+  </nav>
+  <div
+    class="m-auto"
+  >
+    <div
+      class="space-y-5"
+    >
+      <p>
+        You have no messages.
+      </p>
+    </div>
+  </div>
+</main>
+`;
+
+exports[`MessagesPage Snapshots should match snapshot for empty messages state: empty-messages-state 1`] = `
+<main>
+  <nav
+    data-testid="breadcrumbs"
+  >
+    <span
+      data-active="false"
+    >
+      Home
+    </span>
+    <span
+      data-active="true"
+    >
+      Your Messages
+    </span>
+  </nav>
+  <div
+    class="m-auto"
+  >
+    <div
+      class="space-y-5"
+    >
+      <p>
+        You have no messages.
+      </p>
+    </div>
+  </div>
+</main>
+`;
+
+exports[`MessagesPage Snapshots should match snapshot for long message list: long-message-list 1`] = `
+<main>
+  <nav
+    data-testid="breadcrumbs"
+  >
+    <span
+      data-active="false"
+    >
+      Home
+    </span>
+    <span
+      data-active="true"
+    >
+      Your Messages
+    </span>
+  </nav>
+  <div
+    class="m-auto"
+  >
+    <div
+      class="space-y-5"
+    >
+      <div
+        data-message-id="long-msg-0"
+        data-testid="message-card"
+      >
+        Message Card - 
+        Long message 0 with detailed content about property inquiry and requirements
+      </div>
+      <div
+        data-message-id="long-msg-1"
+        data-testid="message-card"
+      >
+        Message Card - 
+        Long message 1 with detailed content about property inquiry and requirements
+      </div>
+      <div
+        data-message-id="long-msg-2"
+        data-testid="message-card"
+      >
+        Message Card - 
+        Long message 2 with detailed content about property inquiry and requirements
+      </div>
+      <div
+        data-message-id="long-msg-3"
+        data-testid="message-card"
+      >
+        Message Card - 
+        Long message 3 with detailed content about property inquiry and requirements
+      </div>
+      <div
+        data-message-id="long-msg-4"
+        data-testid="message-card"
+      >
+        Message Card - 
+        Long message 4 with detailed content about property inquiry and requirements
+      </div>
+      <div
+        data-message-id="long-msg-5"
+        data-testid="message-card"
+      >
+        Message Card - 
+        Long message 5 with detailed content about property inquiry and requirements
+      </div>
+      <div
+        data-message-id="long-msg-6"
+        data-testid="message-card"
+      >
+        Message Card - 
+        Long message 6 with detailed content about property inquiry and requirements
+      </div>
+      <div
+        data-message-id="long-msg-7"
+        data-testid="message-card"
+      >
+        Message Card - 
+        Long message 7 with detailed content about property inquiry and requirements
+      </div>
+      <div
+        data-message-id="long-msg-8"
+        data-testid="message-card"
+      >
+        Message Card - 
+        Long message 8 with detailed content about property inquiry and requirements
+      </div>
+      <div
+        data-message-id="long-msg-9"
+        data-testid="message-card"
+      >
+        Message Card - 
+        Long message 9 with detailed content about property inquiry and requirements
+      </div>
+    </div>
+  </div>
+</main>
+`;
+
+exports[`MessagesPage Snapshots should match snapshot for multiple messages (mixed read/unread): multiple-mixed-messages 1`] = `
+<main>
+  <nav
+    data-testid="breadcrumbs"
+  >
+    <span
+      data-active="false"
+    >
+      Home
+    </span>
+    <span
+      data-active="true"
+    >
+      Your Messages
+    </span>
+  </nav>
+  <div
+    class="m-auto"
+  >
+    <div
+      class="space-y-5"
+    >
+      <div
+        data-message-id="msg1"
+        data-testid="message-card"
+      >
+        Message Card - 
+        Test message 1
+      </div>
+      <div
+        data-message-id="msg2"
+        data-testid="message-card"
+      >
+        Message Card - 
+        Test message 2
+      </div>
+      <div
+        data-message-id="msg3"
+        data-testid="message-card"
+      >
+        Message Card - 
+        Test message 3
+      </div>
+    </div>
+  </div>
+</main>
+`;
+
+exports[`MessagesPage Snapshots should match snapshot for page layout structure: page-layout-structure 1`] = `
+<main>
+  <nav
+    data-testid="breadcrumbs"
+  >
+    <span
+      data-active="false"
+    >
+      Home
+    </span>
+    <span
+      data-active="true"
+    >
+      Your Messages
+    </span>
+  </nav>
+  <div
+    class="m-auto"
+  >
+    <div
+      class="space-y-5"
+    >
+      <div
+        data-message-id="msg1"
+        data-testid="message-card"
+      >
+        Message Card - 
+        Test message 1
+      </div>
+      <div
+        data-message-id="msg2"
+        data-testid="message-card"
+      >
+        Message Card - 
+        Test message 2
+      </div>
+      <div
+        data-message-id="msg3"
+        data-testid="message-card"
+      >
+        Message Card - 
+        Test message 3
+      </div>
+    </div>
+  </div>
+</main>
+`;
+
+exports[`MessagesPage Snapshots should match snapshot for single message display: single-message-display 1`] = `
+<main>
+  <nav
+    data-testid="breadcrumbs"
+  >
+    <span
+      data-active="false"
+    >
+      Home
+    </span>
+    <span
+      data-active="true"
+    >
+      Your Messages
+    </span>
+  </nav>
+  <div
+    class="m-auto"
+  >
+    <div
+      class="space-y-5"
+    >
+      <div
+        data-message-id="msg1"
+        data-testid="message-card"
+      >
+        Message Card - 
+        Test message 1
+      </div>
+    </div>
+  </div>
+</main>
+`;

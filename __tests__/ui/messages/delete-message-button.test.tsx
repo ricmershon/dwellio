@@ -506,4 +506,26 @@ describe('DeleteMessageButton', () => {
             });
         });
     });
+
+    describe('Snapshots', () => {
+        it('should match snapshot for delete button styling', () => {
+            const { container } = render(<DeleteMessageButton messageId="msg-123" />);
+            expect(container.firstChild).toMatchSnapshot('delete-button-styling');
+        });
+
+        it('should match snapshot for different message ID', () => {
+            const { container } = render(<DeleteMessageButton messageId="different-msg-456" />);
+            expect(container.firstChild).toMatchSnapshot('different-message-id');
+        });
+
+        it('should match snapshot for form structure', () => {
+            const { container } = render(<DeleteMessageButton messageId="form-structure-test" />);
+            expect(container.firstChild).toMatchSnapshot('form-structure');
+        });
+
+        it('should match snapshot for danger button appearance', () => {
+            const { container } = render(<DeleteMessageButton messageId="danger-btn-test" />);
+            expect(container.firstChild).toMatchSnapshot('danger-button-appearance');
+        });
+    });
 });

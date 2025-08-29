@@ -520,4 +520,26 @@ describe('ToggleMessageReadButton', () => {
             }
         });
     });
+
+    describe('Snapshots', () => {
+        it('should match snapshot for unread message state (Mark as Read)', () => {
+            const { container } = render(<ToggleMessageReadButton messageId="msg-123" read={false} />);
+            expect(container.firstChild).toMatchSnapshot('unread-mark-as-read');
+        });
+
+        it('should match snapshot for read message state (Mark as Unread)', () => {
+            const { container } = render(<ToggleMessageReadButton messageId="msg-456" read={true} />);
+            expect(container.firstChild).toMatchSnapshot('read-mark-as-unread');
+        });
+
+        it('should match snapshot with different message ID', () => {
+            const { container } = render(<ToggleMessageReadButton messageId="different-id-789" read={false} />);
+            expect(container.firstChild).toMatchSnapshot('different-message-id');
+        });
+
+        it('should match snapshot for form structure', () => {
+            const { container } = render(<ToggleMessageReadButton messageId="form-test" read={true} />);
+            expect(container.firstChild).toMatchSnapshot('form-structure');
+        });
+    });
 });

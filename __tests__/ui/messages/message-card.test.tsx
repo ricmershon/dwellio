@@ -423,4 +423,62 @@ describe('MessageCard', () => {
             expect(screen.getByText(expectedDate)).toBeInTheDocument();
         });
     });
+
+    describe('Snapshots', () => {
+        it('should match snapshot for read message state', () => {
+            const message = createMockMessage({ read: true });
+            const { container } = render(<MessageCard message={message} />);
+            expect(container.firstChild).toMatchSnapshot('read-message-state');
+        });
+
+        it('should match snapshot for unread message state (with "New" badge)', () => {
+            const message = createMockMessage({ read: false });
+            const { container } = render(<MessageCard message={message} />);
+            expect(container.firstChild).toMatchSnapshot('unread-message-with-new-badge');
+        });
+
+        it('should match snapshot for long message content', () => {
+            const longMessage = createMockMessage({
+                body: 'This is a very long message that contains multiple sentences and should test how the component handles extensive text content. It includes various details about the property inquiry and demonstrates the component\'s ability to display lengthy communications from potential tenants or property owners. The message continues with more information about specific requirements, preferences, and questions about the property features, amenities, and availability.'
+            });
+            const { container } = render(<MessageCard message={longMessage} />);
+            expect(container.firstChild).toMatchSnapshot('long-message-content');
+        });
+
+        it('should match snapshot for different property types', () => {
+            const apartmentMessage = createMockMessage({
+                property: { name: 'Luxury Downtown Apartment Complex' }
+            });
+            const { container } = render(<MessageCard message={apartmentMessage} />);
+            expect(container.firstChild).toMatchSnapshot('apartment-property-type');
+        });
+
+        it('should match snapshot for house property type', () => {
+            const houseMessage = createMockMessage({
+                property: { name: 'Spacious Family House with Garden' }
+            });
+            const { container } = render(<MessageCard message={houseMessage} />);
+            expect(container.firstChild).toMatchSnapshot('house-property-type');
+        });
+
+        it('should match snapshot with all contact information', () => {
+            const fullContactMessage = createMockMessage({
+                email: 'john.doe@example.com',
+                phone: '555-123-4567',
+                body: 'Complete message with all contact details'
+            });
+            const { container } = render(<MessageCard message={fullContactMessage} />);
+            expect(container.firstChild).toMatchSnapshot('full-contact-information');
+        });
+
+        it('should match snapshot with minimal contact information', () => {
+            const minimalMessage = createMockMessage({
+                email: '',
+                phone: '',
+                body: 'Message with minimal contact info'
+            });
+            const { container } = render(<MessageCard message={minimalMessage} />);
+            expect(container.firstChild).toMatchSnapshot('minimal-contact-information');
+        });
+    });
 });
