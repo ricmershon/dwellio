@@ -85,12 +85,12 @@ const mockRedirect = redirect as jest.MockedFunction<typeof redirect>;
 const mockStartSession = startSession as jest.MockedFunction<typeof startSession>;
 
 // Access the mocked models and functions
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { Property: mockProperty, User: mockUser } = require("@/models");
 const mockPropertySave = jest.fn();
 
 // Create convenient accessors for the mocked functions
 const mockPropertyFindById = mockProperty.findById;
-const mockPropertyFind = mockProperty.find;
 const mockPropertyFindByIdAndDelete = mockProperty.findByIdAndDelete;
 const mockPropertyFindByIdAndUpdate = mockProperty.findByIdAndUpdate;
 const mockUserFindById = mockUser.findById;
@@ -149,6 +149,7 @@ describe('Property Actions Tests', () => {
         mockRequireSessionUser.mockResolvedValue(mockSessionUser);
         
         // Reset Property constructor mock
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         mockProperty.mockImplementation((data: any) => ({
             ...data,
             save: mockPropertySave.mockResolvedValue(true),
@@ -205,6 +206,7 @@ describe('Property Actions Tests', () => {
 
                 mockUploadImages.mockResolvedValue(mockImageData);
                 const mockSave = mockPropertySave.mockResolvedValue(true);
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 mockProperty.mockImplementation((data: any) => ({
                     ...data,
                     _id: 'new-property-123',
@@ -213,7 +215,7 @@ describe('Property Actions Tests', () => {
 
                 const prevState: ActionState = {};
                 
-                const result = await createProperty(prevState, mockFormData);
+                await createProperty(prevState, mockFormData);
 
                 expect(mockRequireSessionUser).toHaveBeenCalledTimes(1);
                 expect(mockDbConnect).toHaveBeenCalledTimes(1);
@@ -248,6 +250,7 @@ describe('Property Actions Tests', () => {
 
                 mockUploadImages.mockResolvedValue(mockImageData);
                 const mockSave = mockPropertySave.mockResolvedValue(true);
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 mockProperty.mockImplementation((data: any) => ({
                     ...data,
                     _id: 'multi-image-prop',
@@ -267,8 +270,10 @@ describe('Property Actions Tests', () => {
                 
                 mockUploadImages.mockResolvedValue(mockImageData);
                 
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 let capturedPropertyData: any;
                 const mockSave = mockPropertySave.mockResolvedValue(true);
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 mockProperty.mockImplementation((data: any) => {
                     capturedPropertyData = data;
                     return {
@@ -357,9 +362,11 @@ describe('Property Actions Tests', () => {
                     ]
                 } as unknown as PropertyDocument;
 
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 mockStartSession.mockResolvedValue(mockSession as any);
                 mockPropertyFindById.mockResolvedValue(mockPropertyDoc);
                 mockPropertyFindByIdAndDelete.mockResolvedValue(mockPropertyDoc);
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 mockUserUpdateMany.mockResolvedValue({ modifiedCount: 1 } as any);
                 mockDestroyImages.mockResolvedValue(undefined);
 
@@ -474,6 +481,7 @@ describe('Property Actions Tests', () => {
         describe('Adding to Favorites', () => {
             it('should add property to favorites when not favorited', async () => {
                 mockUserFindById.mockResolvedValue(mockUserDoc);
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 mockUserUpdateOne.mockResolvedValue({ modifiedCount: 1 } as any);
 
                 const result = await favoriteProperty(mockPropertyId);
@@ -493,6 +501,7 @@ describe('Property Actions Tests', () => {
         describe('Removing from Favorites', () => {
             it('should remove property from favorites when already favorited', async () => {
                 // Import the ObjectId constructor after mocking
+                // eslint-disable-next-line @typescript-eslint/no-require-imports
                 const { Types } = require("mongoose");
                 const mockPropertyObjectId = new Types.ObjectId(mockPropertyId);
                 const userWithFavorites = {
@@ -501,6 +510,7 @@ describe('Property Actions Tests', () => {
                 } as UserDocument;
 
                 mockUserFindById.mockResolvedValue(userWithFavorites);
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 mockUserUpdateOne.mockResolvedValue({ modifiedCount: 1 } as any);
 
                 const result = await favoriteProperty(mockPropertyId);
@@ -550,6 +560,7 @@ describe('Property Actions Tests', () => {
 
             it('should return true when property is favorited', async () => {
                 // Import the ObjectId constructor after mocking
+                // eslint-disable-next-line @typescript-eslint/no-require-imports
                 const { Types } = require("mongoose");
                 const mockPropertyObjectId = new Types.ObjectId(mockPropertyId);
                 const userWithFavorites = {

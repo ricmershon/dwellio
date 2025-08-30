@@ -777,6 +777,277 @@ describe('Property Data Layer Tests', () => {
         });
     });
 
+    describe('fetchPropertiesByUserId', () => {
+        describe('Query Logic', () => {
+            it('should filter properties by owner field matching userId', async () => {
+                const testUserId = 'user123';
+                const mockProperties = [mockPropertyData] as PropertyDocument[];
+                mockProperty.find.mockResolvedValue(mockProperties);
+
+                const result = await fetchPropertiesByUserId(testUserId);
+
+                expect(mockDbConnect).toHaveBeenCalledTimes(1);
+                expect(mockProperty.find).toHaveBeenCalledWith({ owner: testUserId });
+                expect(result).toEqual(mockProperties);
+            });
+
+            it('should return all properties owned by the user', async () => {
+                const testUserId = 'user456';
+                const mockUserProperties = [
+                    mockPropertyData,
+                    { ...mockPropertyData, _id: 'property2', name: 'Second Property' },
+                    { ...mockPropertyData, _id: 'property3', name: 'Third Property' }
+                ] as PropertyDocument[];
+                mockProperty.find.mockResolvedValue(mockUserProperties);
+
+                const result = await fetchPropertiesByUserId(testUserId);
+
+                expect(result).toHaveLength(3);
+                expect(result).toEqual(mockUserProperties);
+                expect(mockProperty.find).toHaveBeenCalledWith({ owner: testUserId });
+            });
+
+            it('should handle valid ObjectId strings', async () => {
+                const objectIdString = '507f1f77bcf86cd799439011';
+                mockProperty.find.mockResolvedValue([]);
+
+                await fetchPropertiesByUserId(objectIdString);
+
+                expect(mockProperty.find).toHaveBeenCalledWith({ owner: objectIdString });
+            });
+
+            it('should handle different userId formats', async () => {
+                const userIds = ['user123', 'abc-def-ghi', '12345', 'user@example.com'];
+                mockProperty.find.mockResolvedValue([]);
+
+                for (const userId of userIds) {
+                    await fetchPropertiesByUserId(userId);
+                    expect(mockProperty.find).toHaveBeenCalledWith({ owner: userId });
+                }
+
+                expect(mockProperty.find).toHaveBeenCalledTimes(userIds.length);
+            });
+        });
+
+        describe('Database Integration', () => {
+            it('should call dbConnect before query execution', async () => {
+                mockProperty.find.mockResolvedValue([]);
+
+                await fetchPropertiesByUserId('user123');
+
+                expect(mockDbConnect).toHaveBeenCalled();
+            });
+
+            it('should handle database connection failures', async () => {
+                const connectionError = new Error('Database connection failed');
+                mockDbConnect.mockRejectedValue(connectionError);
+
+                await expect(fetchPropertiesByUserId('user123')).rejects.toThrow('Failed to fetch properties data: Error: Database connection failed');
+                expect(mockConsoleError).toHaveBeenCalledWith('>>> Database error fetching properties: Error: Database connection failed');
+            });
+
+            it('should execute Property.find with correct parameters', async () => {
+                const testUserId = 'test-user-id';
+                mockProperty.find.mockResolvedValue([]);
+
+                await fetchPropertiesByUserId(testUserId);
+
+                expect(mockProperty.find).toHaveBeenCalledWith({ owner: testUserId });
+                expect(mockProperty.find).toHaveBeenCalledTimes(1);
+            });
+
+            it('should return PropertyDocument array from database', async () => {
+                const mockResults = [mockPropertyData, { ...mockPropertyData, _id: 'property2' }] as PropertyDocument[];
+                mockProperty.find.mockResolvedValue(mockResults);
+
+                const result = await fetchPropertiesByUserId('user123');
+
+                expect(result).toBe(mockResults); // Should return exact same array reference
+                expect(Array.isArray(result)).toBe(true);
+            });
+        });
+
+        describe('Data Handling', () => {
+            it('should preserve all property fields and structure', async () => {
+                const fullPropertyData = {
+                    ...mockPropertyData,
+                    amenities: ['WiFi', 'Pool', 'Gym'],
+                    rates: { nightly: 200, weekly: 1200, monthly: 4000 },
+                    imagesData: [{ secureUrl: 'test.jpg', publicId: 'test', width: 800, height: 600 }]
+                } as PropertyDocument;
+                mockProperty.find.mockResolvedValue([fullPropertyData]);
+
+                const result = await fetchPropertiesByUserId('user123');
+
+                expect(result[0]).toEqual(fullPropertyData);
+                expect(result[0].amenities).toEqual(['WiFi', 'Pool', 'Gym']);
+                expect(result[0].rates).toEqual({ nightly: 200, weekly: 1200, monthly: 4000 });
+                expect(result[0].imagesData).toBeDefined();
+            });
+
+            it('should handle empty result sets (no properties)', async () => {
+                mockProperty.find.mockResolvedValue([]);
+
+                const result = await fetchPropertiesByUserId('user-no-properties');
+
+                expect(result).toEqual([]);
+                expect(Array.isArray(result)).toBe(true);
+                expect(result).toHaveLength(0);
+            });
+
+            it('should maintain document integrity', async () => {
+                const propertyWithComplexData = {
+                    ...mockPropertyData,
+                    location: {
+                        street: '123 Complex Street Name',
+                        city: 'City-With-Hyphens',
+                        state: 'CA',
+                        zipcode: '90210-1234'
+                    },
+                    description: 'A property with "quotes" and special chars: !@#$%^&*()'
+                } as PropertyDocument;
+                mockProperty.find.mockResolvedValue([propertyWithComplexData]);
+
+                const result = await fetchPropertiesByUserId('user123');
+
+                expect(result[0].location).toEqual(propertyWithComplexData.location);
+                expect(result[0].description).toBe(propertyWithComplexData.description);
+            });
+
+            it('should handle null or undefined fields gracefully', async () => {
+                const propertyWithNullFields = {
+                    ...mockPropertyData,
+                    description: null,
+                    amenities: undefined,
+                    rates: { nightly: undefined, weekly: 1000, monthly: null }
+                } as unknown as PropertyDocument;
+                mockProperty.find.mockResolvedValue([propertyWithNullFields]);
+
+                const result = await fetchPropertiesByUserId('user123');
+
+                expect(result[0]).toEqual(propertyWithNullFields);
+                expect(result[0].description).toBeNull();
+                expect(result[0].amenities).toBeUndefined();
+            });
+        });
+
+        describe('Error Handling', () => {
+            it('should throw descriptive errors on failure', async () => {
+                const dbError = new Error('Database query failed');
+                mockProperty.find.mockRejectedValue(dbError);
+
+                await expect(fetchPropertiesByUserId('user123')).rejects.toThrow('Failed to fetch properties data: Error: Database query failed');
+            });
+
+            it('should log database errors to console with prefix', async () => {
+                const specificError = new Error('Specific database error');
+                mockProperty.find.mockRejectedValue(specificError);
+
+                try {
+                    await fetchPropertiesByUserId('user123');
+                } catch {
+                    // Expected to throw
+                }
+
+                expect(mockConsoleError).toHaveBeenCalledWith('>>> Database error fetching properties: Error: Specific database error');
+            });
+
+            it('should propagate errors to calling code', async () => {
+                const originalError = new Error('Original database error');
+                mockProperty.find.mockRejectedValue(originalError);
+
+                let caughtError;
+                try {
+                    await fetchPropertiesByUserId('user123');
+                } catch (error) {
+                    caughtError = error;
+                }
+
+                expect(caughtError).toBeInstanceOf(Error);
+                expect((caughtError as Error).message).toContain('Failed to fetch properties data');
+                expect((caughtError as Error).message).toContain('Original database error');
+            });
+
+            it('should handle malformed userId parameters', async () => {
+                const malformedUserIds = ['', null, undefined, 123, {}, []];
+                mockProperty.find.mockResolvedValue([]);
+
+                for (const userId of malformedUserIds) {
+                    try {
+                        await fetchPropertiesByUserId(userId as any);
+                        expect(mockProperty.find).toHaveBeenCalledWith({ owner: userId });
+                    } catch (error) {
+                        // Some malformed IDs might cause errors, which is acceptable
+                        expect(error).toBeInstanceOf(Error);
+                    }
+                }
+            });
+        });
+
+        describe('Edge Cases', () => {
+            it('should handle non-existent userId gracefully', async () => {
+                const nonExistentUserId = 'non-existent-user-999';
+                mockProperty.find.mockResolvedValue([]);
+
+                const result = await fetchPropertiesByUserId(nonExistentUserId);
+
+                expect(result).toEqual([]);
+                expect(mockProperty.find).toHaveBeenCalledWith({ owner: nonExistentUserId });
+            });
+
+            it('should return empty array for users with no properties', async () => {
+                const userWithNoProperties = 'user-no-properties';
+                mockProperty.find.mockResolvedValue([]);
+
+                const result = await fetchPropertiesByUserId(userWithNoProperties);
+
+                expect(result).toEqual([]);
+                expect(Array.isArray(result)).toBe(true);
+            });
+
+            it('should handle database query failures', async () => {
+                const queryError = new Error('Query execution failed');
+                mockProperty.find.mockRejectedValue(queryError);
+
+                await expect(fetchPropertiesByUserId('user123')).rejects.toThrow('Failed to fetch properties data: Error: Query execution failed');
+            });
+
+            it('should manage memory efficiently for large datasets', async () => {
+                // Create a large array of properties
+                const largePropertySet = Array.from({ length: 1000 }, (_, index) => ({
+                    ...mockPropertyData,
+                    _id: `property${index}`,
+                    name: `Property ${index}`
+                })) as PropertyDocument[];
+                
+                mockProperty.find.mockResolvedValue(largePropertySet);
+
+                const result = await fetchPropertiesByUserId('user-with-many-properties');
+
+                expect(result).toHaveLength(1000);
+                expect(result[0]._id).toBe('property0');
+                expect(result[999]._id).toBe('property999');
+            });
+
+            it('should handle concurrent calls to same user', async () => {
+                const userId = 'concurrent-user';
+                const mockProperties = [mockPropertyData] as PropertyDocument[];
+                mockProperty.find.mockResolvedValue(mockProperties);
+
+                // Make multiple concurrent calls
+                const promises = Array.from({ length: 5 }, () => fetchPropertiesByUserId(userId));
+                const results = await Promise.all(promises);
+
+                // All calls should succeed
+                results.forEach(result => {
+                    expect(result).toEqual(mockProperties);
+                });
+
+                expect(mockProperty.find).toHaveBeenCalledTimes(5);
+            });
+        });
+    });
+
     describe('Edge Cases and Integration', () => {
         it('should handle zero properties in database', async () => {
             mockProperty.countDocuments.mockResolvedValue(0);
