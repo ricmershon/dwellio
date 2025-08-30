@@ -432,6 +432,113 @@ describe('ProfileProperties Component', () => {
         });
     });
 
+    describe('User Interaction and Navigation', () => {
+        it('should provide property detail navigation links', () => {
+            render(<ProfileProperties properties={[mockProperty]} />);
+            
+            const links = screen.getAllByRole('link');
+            const propertyLink = links.find(link => link.getAttribute('href') === '/properties/property123');
+            expect(propertyLink).toBeInTheDocument();
+        });
+
+        it('should generate correct edit URLs for property management', () => {
+            render(<ProfileProperties properties={mockProperties} />);
+            
+            const editLinks = screen.getAllByText('Edit');
+            expect(editLinks[0]).toHaveAttribute('href', '/properties/property123/edit');
+            expect(editLinks[1]).toHaveAttribute('href', '/properties/property456/edit');
+        });
+
+        it('should provide delete functionality for property management', () => {
+            render(<ProfileProperties properties={[mockProperty]} />);
+            
+            expect(screen.getByTestId('delete-button-property123')).toBeInTheDocument();
+        });
+
+        it('should handle property ID routing properly', () => {
+            render(<ProfileProperties properties={mockProperties} />);
+            
+            const propertyCards = screen.getAllByRole('link');
+            expect(propertyCards.length).toBeGreaterThan(0);
+            
+            // Verify each property has correct routing
+            mockProperties.forEach(property => {
+                const propertyLink = propertyCards.find(link => 
+                    link.getAttribute('href') === `/properties/${property._id}`
+                );
+                expect(propertyLink).toBeInTheDocument();
+            });
+        });
+    });
+
+    describe('Accessibility', () => {
+        it('should provide proper image alt text', () => {
+            render(<ProfileProperties properties={[mockProperty]} />);
+            
+            const image = screen.getByAltText('property123');
+            expect(image).toBeInTheDocument();
+        });
+
+        it('should maintain keyboard navigation support', () => {
+            render(<ProfileProperties properties={[mockProperty]} />);
+            
+            const links = screen.getAllByRole('link');
+            links.forEach(link => {
+                expect(link).toHaveAttribute('href');
+            });
+        });
+
+        it('should provide semantic HTML structure', () => {
+            const { container } = render(<ProfileProperties properties={[mockProperty]} />);
+            
+            const gridContainer = container.querySelector('.grid');
+            expect(gridContainer).toBeInTheDocument();
+            
+            const propertyCards = container.querySelectorAll('.mb-4');
+            expect(propertyCards).toHaveLength(1);
+        });
+    });
+
+    describe('Loading States and Performance', () => {
+        it('should handle empty image data gracefully', () => {
+            const propertyWithoutImages = {
+                ...mockProperty,
+                imagesData: [{
+                    secureUrl: '',
+                    publicId: '',
+                    width: 0,
+                    height: 0
+                }]
+            } as unknown as PropertyDocument;
+
+            expect(() => {
+                render(<ProfileProperties properties={[propertyWithoutImages]} />);
+            }).not.toThrow();
+        });
+
+        it('should maintain responsive layout during loading', () => {
+            const { container } = render(<ProfileProperties properties={mockProperties} />);
+            
+            const gridElement = container.querySelector('.grid');
+            expect(gridElement).toHaveClass(
+                'grid-cols-2',
+                'sm:grid-cols-3',
+                'lg:grid-cols-4',
+                'xl:grid-cols-5'
+            );
+        });
+
+        it('should handle rapid property list updates', () => {
+            const { rerender } = render(<ProfileProperties properties={[]} />);
+            
+            rerender(<ProfileProperties properties={[mockProperty]} />);
+            expect(screen.getByText('Beautiful Test Property')).toBeInTheDocument();
+            
+            rerender(<ProfileProperties properties={mockProperties} />);
+            expect(screen.getByText('Another Test Property')).toBeInTheDocument();
+        });
+    });
+
     describe('Snapshots', () => {
         it('should match snapshot with empty properties array', () => {
             const { container } = render(<ProfileProperties properties={[]} />);

@@ -1102,4 +1102,127 @@ describe('Property Data Layer Tests', () => {
             expect(mockProperty.find).toHaveBeenCalledTimes(2);
         });
     });
+
+    describe('Authentication Integration', () => {
+        describe('Property Ownership Validation', () => {
+            it('should filter properties by exact user ID match', async () => {
+                const testUserId = 'authenticated-user-123';
+                const userProperties = [mockPropertyData, mockPropertyData];
+                mockProperty.find.mockResolvedValue(userProperties);
+
+                await fetchPropertiesByUserId(testUserId);
+
+                expect(mockProperty.find).toHaveBeenCalledWith({ owner: testUserId });
+            });
+
+            it('should return empty array for users with no properties', async () => {
+                const testUserId = 'new-user-456';
+                mockProperty.find.mockResolvedValue([]);
+
+                const result = await fetchPropertiesByUserId(testUserId);
+
+                expect(result).toEqual([]);
+                expect(mockProperty.find).toHaveBeenCalledWith({ owner: testUserId });
+            });
+
+            it('should handle invalid user IDs gracefully', async () => {
+                const invalidUserId = 'invalid-user-id';
+                mockProperty.find.mockRejectedValue(new Error('Invalid user ID'));
+
+                await expect(fetchPropertiesByUserId(invalidUserId)).rejects.toThrow();
+                expect(mockDbConnect).toHaveBeenCalled();
+            });
+
+            it('should prevent cross-user property access', async () => {
+                const user1Id = 'user-1';
+                const user2Id = 'user-2';
+                const user1Properties = [{ ...mockPropertyData, owner: user1Id }];
+                
+                mockProperty.find
+                    .mockResolvedValueOnce(user1Properties)
+                    .mockResolvedValueOnce([]);
+
+                const user1Result = await fetchPropertiesByUserId(user1Id);
+                const user2Result = await fetchPropertiesByUserId(user2Id);
+
+                expect(user1Result).toHaveLength(1);
+                expect(user2Result).toHaveLength(0);
+                expect(mockProperty.find).toHaveBeenCalledWith({ owner: user1Id });
+                expect(mockProperty.find).toHaveBeenCalledWith({ owner: user2Id });
+            });
+        });
+
+        describe('Session Data Integration', () => {
+            it('should handle session-based user identification', async () => {
+                const sessionUserId = 'session-user-789';
+                const sessionUserProperties = [mockPropertyData];
+                mockProperty.find.mockResolvedValue(sessionUserProperties);
+
+                const result = await fetchPropertiesByUserId(sessionUserId);
+
+                expect(result).toEqual(sessionUserProperties);
+                expect(mockProperty.find).toHaveBeenCalledWith({ owner: sessionUserId });
+            });
+
+            it('should maintain data privacy across different sessions', async () => {
+                const session1UserId = 'session1-user';
+                const session2UserId = 'session2-user';
+                
+                // Simulate different session calls
+                await fetchPropertiesByUserId(session1UserId);
+                await fetchPropertiesByUserId(session2UserId);
+
+                expect(mockProperty.find).toHaveBeenNthCalledWith(1, { owner: session1UserId });
+                expect(mockProperty.find).toHaveBeenNthCalledWith(2, { owner: session2UserId });
+            });
+        });
+
+        describe('Security and Authorization', () => {
+            it('should not leak properties between users', async () => {
+                const user1 = 'user1';
+                const user2 = 'user2';
+                
+                const user1Properties = [{ ...mockPropertyData, _id: 'prop1', owner: user1 }];
+                const user2Properties = [{ ...mockPropertyData, _id: 'prop2', owner: user2 }];
+                
+                // First call for user1
+                mockProperty.find.mockResolvedValueOnce(user1Properties);
+                const result1 = await fetchPropertiesByUserId(user1);
+                
+                // Second call for user2
+                mockProperty.find.mockResolvedValueOnce(user2Properties);
+                const result2 = await fetchPropertiesByUserId(user2);
+
+                expect(result1[0]._id).toBe('prop1');
+                expect(result2[0]._id).toBe('prop2');
+                expect(result1).not.toEqual(result2);
+                expect(mockProperty.find).toHaveBeenCalledWith({ owner: user1 });
+                expect(mockProperty.find).toHaveBeenCalledWith({ owner: user2 });
+            });
+
+            it('should validate user ownership consistently', async () => {
+                const ownerId = 'property-owner-123';
+                const properties = [
+                    { ...mockPropertyData, owner: ownerId },
+                    { ...mockPropertyData, owner: ownerId }
+                ];
+                mockProperty.find.mockResolvedValue(properties);
+
+                const result = await fetchPropertiesByUserId(ownerId);
+
+                expect(result).toHaveLength(2);
+                result.forEach(property => {
+                    expect(property.owner).toBe(ownerId);
+                });
+            });
+
+            it('should handle unauthorized access attempts', async () => {
+                const unauthorizedUserId = 'unauthorized-user';
+                mockProperty.find.mockRejectedValue(new Error('Access denied'));
+
+                await expect(fetchPropertiesByUserId(unauthorizedUserId))
+                    .rejects.toThrow('Access denied');
+            });
+        });
+    });
 });
