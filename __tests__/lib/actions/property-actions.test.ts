@@ -1,9 +1,23 @@
 import { ActionStatus, type ActionState, type PropertyImageData } from "@/types/types";
 
 // Mock mongoose first
+// Create a map to store ObjectId instances for consistent mocking
+const objectIdInstances = new Map();
+
 jest.mock("mongoose", () => ({
     Types: {
-        ObjectId: jest.fn().mockImplementation((id) => ({ toString: () => id, equals: jest.fn() }))
+        ObjectId: jest.fn().mockImplementation((id) => {
+            if (objectIdInstances.has(id)) {
+                return objectIdInstances.get(id);
+            }
+            const instance = { 
+                toString: () => id, 
+                equals: jest.fn((other) => other.toString() === id),
+                id: id  // Add id property to help with comparisons
+            };
+            objectIdInstances.set(id, instance);
+            return instance;
+        })
     },
     startSession: jest.fn(),
     HydratedDocument: jest.fn(),
@@ -126,7 +140,7 @@ describe('Property Actions Tests', () => {
         ] as PropertyImageData[]
     };
 
-    const mockFormData = new FormData();
+    let mockFormData: FormData;
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -141,11 +155,12 @@ describe('Property Actions Tests', () => {
             _id: 'mock-property-id'
         }));
         
-        // Reset images functions
+        // Reset images functions - individual tests will override as needed
         mockUploadImages.mockResolvedValue([]);
         mockDestroyImages.mockResolvedValue(undefined);
         
-        // Setup default form data
+        // Create fresh FormData for each test
+        mockFormData = new FormData();
         mockFormData.set('type', 'House');
         mockFormData.set('name', 'Test Property');
         mockFormData.set('description', 'A beautiful test property');
@@ -477,7 +492,9 @@ describe('Property Actions Tests', () => {
 
         describe('Removing from Favorites', () => {
             it('should remove property from favorites when already favorited', async () => {
-                const mockPropertyObjectId = { toString: () => mockPropertyId };
+                // Import the ObjectId constructor after mocking
+                const { Types } = require("mongoose");
+                const mockPropertyObjectId = new Types.ObjectId(mockPropertyId);
                 const userWithFavorites = {
                     ...mockUserDoc,
                     favorites: [mockPropertyObjectId]
@@ -532,7 +549,9 @@ describe('Property Actions Tests', () => {
             });
 
             it('should return true when property is favorited', async () => {
-                const mockPropertyObjectId = { toString: () => mockPropertyId };
+                // Import the ObjectId constructor after mocking
+                const { Types } = require("mongoose");
+                const mockPropertyObjectId = new Types.ObjectId(mockPropertyId);
                 const userWithFavorites = {
                     ...mockUserDoc,
                     favorites: [mockPropertyObjectId]

@@ -11,7 +11,8 @@
       "Bash(./__tests__/detect-duplicate-mocks.sh:*)",
       "Bash(__tests__/detect-duplicate-mocks.sh:*)",
       "Bash(./detect-duplicate-mocks.sh:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []
