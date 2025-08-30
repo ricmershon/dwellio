@@ -431,4 +431,39 @@ describe('ProfileProperties Component', () => {
             expect(screen.getByText("This is a very long property name that should be handled gracefully by the component without breaking the layout or causing display issues")).toBeInTheDocument();
         });
     });
+
+    describe('Snapshots', () => {
+        it('should match snapshot with empty properties array', () => {
+            const { container } = render(<ProfileProperties properties={[]} />);
+            expect(container.firstChild).toMatchSnapshot();
+        });
+
+        it('should match snapshot with single property', () => {
+            const { container } = render(<ProfileProperties properties={[mockProperty]} />);
+            expect(container.firstChild).toMatchSnapshot();
+        });
+
+        it('should match snapshot with multiple properties', () => {
+            const { container } = render(<ProfileProperties properties={mockProperties} />);
+            expect(container.firstChild).toMatchSnapshot();
+        });
+
+        it('should match snapshot with different property types', () => {
+            const differentTypeProperty = {
+                ...mockProperty,
+                _id: 'apartment123',
+                name: 'Downtown Apartment',
+                type: 'Apartment',
+                location: {
+                    street: '456 City Ave',
+                    city: 'Metro City',
+                    state: 'NY',
+                    zipcode: '10001'
+                }
+            } as PropertyDocument;
+
+            const { container } = render(<ProfileProperties properties={[differentTypeProperty]} />);
+            expect(container.firstChild).toMatchSnapshot();
+        });
+    });
 });

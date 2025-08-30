@@ -518,4 +518,21 @@ describe('DeletePropertyButton Component', () => {
             expect(screen.getByRole('button', { name: 'Delete' })).toBeInTheDocument();
         });
     });
+
+    describe('Snapshots', () => {
+        it('should match snapshot with default button state', () => {
+            const { container } = render(<DeletePropertyButton propertyId={mockPropertyId} />);
+            expect(container.firstChild).toMatchSnapshot();
+        });
+
+        it('should match snapshot with different propertyId', () => {
+            const { container } = render(<DeletePropertyButton propertyId="different-property-id" />);
+            expect(container.firstChild).toMatchSnapshot();
+        });
+
+        it('should match snapshot showing form layout structure', () => {
+            const { container } = render(<DeletePropertyButton propertyId={mockPropertyId} />);
+            expect(container.firstChild).toMatchSnapshot();
+        });
+    });
 });
