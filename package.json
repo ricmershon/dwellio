@@ -16,6 +16,7 @@
     "lint:tests": "eslint __tests__/ --ext .ts,.tsx"
   },
   "dependencies": {
+    "@auth/mongodb-adapter": "^3.10.0",
     "@heroicons/react": "^2.2.0",
     "@types/google.maps": "^3.58.1",
     "cloudinary": "^2.7.0",
