@@ -75,7 +75,7 @@ const NavBarRight = ({ viewportWidth, session }: NavBarRightProps) => {
                 <div
                     ref={dropdownRef}
                     id="mobile-menu"
-                    className="md:hidden absolute w-screen -mr-4 p-3 rounded-sm bg-white text-sm right-0 top-10 z-10 border border-gray-100 shadow-md flex flex-col items-center justify-center space-y-3"
+                    className="md:hidden absolute w-screen -mr-4 p-3 rounded-sm bg-white text-sm right-0 top-10 z-40 border border-gray-100 shadow-md flex flex-col items-center justify-center space-y-3"
                     role="menu"
                     aria-orientation="vertical"
                     aria-labelledby="mobile-menu-button"
