@@ -1,3 +1,41 @@
+// Mock Next.js navigation
+jest.mock('next/navigation', () => {
+	const mockPush = jest.fn();
+	const mockReplace = jest.fn();
+	const mockBack = jest.fn();
+	const mockForward = jest.fn();
+	const mockRefresh = jest.fn();
+	const mockPrefetch = jest.fn();
+	const mockSearchParams = new URLSearchParams();
+
+	return {
+		usePathname: jest.fn(() => '/'),
+		useSearchParams: jest.fn(() => mockSearchParams),
+		useRouter: jest.fn(() => ({
+			push: mockPush,
+			replace: mockReplace,
+			back: mockBack,
+			forward: mockForward,
+			refresh: mockRefresh,
+			prefetch: mockPrefetch,
+		})),
+		useParams: jest.fn(() => ({})),
+		// Export mocks for testing
+		mockPush,
+		mockReplace,
+		mockBack,
+		mockForward,
+		mockRefresh,
+		mockPrefetch,
+		mockSearchParams,
+	};
+});
+
+// Mock NextAuth
+jest.mock('next-auth/react', () => ({
+	signIn: jest.fn(),
+}));
+
 import React from 'react';
 import { screen, fireEvent } from '@testing-library/react';
 import { signIn, ClientSafeProvider, LiteralUnion } from 'next-auth/react';
@@ -7,16 +45,6 @@ import { useSearchParams } from 'next/navigation';
 import LoginButtons from '@/ui/auth/login-buttons';
 import { useAuthProviders } from '@/hooks/use-auth-providers';
 import { render, createMockSearchParams } from '@/__tests__/test-utils';
-
-// Mock NextAuth
-jest.mock('next-auth/react', () => ({
-	signIn: jest.fn(),
-}));
-
-// Mock Next.js navigation
-jest.mock('next/navigation', () => ({
-	useSearchParams: jest.fn(),
-}));
 
 // Mock custom hook
 jest.mock('@/hooks/use-auth-providers', () => ({

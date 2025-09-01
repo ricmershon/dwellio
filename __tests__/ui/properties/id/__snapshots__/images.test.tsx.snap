@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`PropertyImages Snapshots should match snapshot with empty image array 1`] = `
+<section>
+  <div
+    data-testid="gallery-wrapper"
+  >
+    <div
+      data-images-count="0"
+      data-testid="property-images-gallery"
+    >
+      PropertyImagesGallery Component
+    </div>
+  </div>
+</section>
+`;
+
+exports[`PropertyImages Snapshots should match snapshot with single image 1`] = `
+<section>
+  <div
+    data-testid="gallery-wrapper"
+  >
+    <div
+      data-images-count="1"
+      data-testid="property-images-gallery"
+    >
+      PropertyImagesGallery Component
+    </div>
+  </div>
+</section>
+`;
+
+exports[`PropertyImages Snapshots should match snapshot with standard image data 1`] = `
+<section>
+  <div
+    data-testid="gallery-wrapper"
+  >
+    <div
+      data-images-count="3"
+      data-testid="property-images-gallery"
+    >
+      PropertyImagesGallery Component
+    </div>
+  </div>
+</section>
+`;

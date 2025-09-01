@@ -124,22 +124,22 @@ describe('PropertyFavoriteButton', () => {
         });
 
         // TODO: This test causes mock contamination - mockRejectedValue persists across tests
-        it.skip('should throw error when getFavoriteStatus promise rejects', async () => {
-            const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
-            getFavoriteStatus.mockRejectedValue(new Error('Network error'));
+        // it.skip('should throw error when getFavoriteStatus promise rejects', async () => {
+        //     const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+        //     getFavoriteStatus.mockRejectedValue(new Error('Network error'));
 
-            expect(() => {
-                render(<PropertyFavoriteButton propertyId={testPropertyId} />);
-            }).not.toThrow(); // Component should render, but useEffect error should be thrown
+        //     expect(() => {
+        //         render(<PropertyFavoriteButton propertyId={testPropertyId} />);
+        //     }).not.toThrow(); // Component should render, but useEffect error should be thrown
 
-            consoleErrorSpy.mockRestore();
+        //     consoleErrorSpy.mockRestore();
             
-            // Force reset this mock after the test to prevent contamination
-            getFavoriteStatus.mockImplementation(() => Promise.resolve({
-                status: ActionStatus.SUCCESS,
-                isFavorite: false,
-            }));
-        });
+        //     // Force reset this mock after the test to prevent contamination
+        //     getFavoriteStatus.mockImplementation(() => Promise.resolve({
+        //         status: ActionStatus.SUCCESS,
+        //         isFavorite: false,
+        //     }));
+        // });
     });
 
     describe('Form Structure', () => {

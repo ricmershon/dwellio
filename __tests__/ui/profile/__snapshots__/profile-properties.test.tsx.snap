@@ -1,0 +1,228 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`ProfileProperties Component Snapshots should match snapshot with different property types 1`] = `
+<div
+  class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4"
+>
+  <div
+    class="mb-4 md:mb-6 rounded-lg shadow-lg"
+  >
+    <a
+      href="/properties/apartment123"
+    >
+      <img
+        alt="apartment123"
+        class="h-32 w-full rounded-t-lg object-cover"
+        height="400"
+        src="https://test.com/image1.jpg"
+        width="400"
+      />
+    </a>
+    <div
+      class="p-4"
+    >
+      <div
+        class=""
+      >
+        <p>
+          Downtown Apartment
+        </p>
+        <p
+          class="text-gray-800 text-sm"
+        >
+          456 City Ave
+           
+          Metro City
+           
+          NY
+        </p>
+      </div>
+      <div
+        class="mt-2 flex"
+      >
+        <a
+          class="btn btn-primary mr-2"
+          href="/properties/apartment123/edit"
+        >
+          Edit
+        </a>
+        <button
+          data-testid="delete-button-apartment123"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ProfileProperties Component Snapshots should match snapshot with empty properties array 1`] = `
+<div
+  class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4"
+/>
+`;
+
+exports[`ProfileProperties Component Snapshots should match snapshot with multiple properties 1`] = `
+<div
+  class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4"
+>
+  <div
+    class="mb-4 md:mb-6 rounded-lg shadow-lg"
+  >
+    <a
+      href="/properties/property123"
+    >
+      <img
+        alt="property123"
+        class="h-32 w-full rounded-t-lg object-cover"
+        height="400"
+        src="https://test.com/image1.jpg"
+        width="400"
+      />
+    </a>
+    <div
+      class="p-4"
+    >
+      <div
+        class=""
+      >
+        <p>
+          Beautiful Test Property
+        </p>
+        <p
+          class="text-gray-800 text-sm"
+        >
+          123 Test St
+           
+          Test City
+           
+          TX
+        </p>
+      </div>
+      <div
+        class="mt-2 flex"
+      >
+        <a
+          class="btn btn-primary mr-2"
+          href="/properties/property123/edit"
+        >
+          Edit
+        </a>
+        <button
+          data-testid="delete-button-property123"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    class="mb-4 md:mb-6 rounded-lg shadow-lg"
+  >
+    <a
+      href="/properties/property456"
+    >
+      <img
+        alt="property456"
+        class="h-32 w-full rounded-t-lg object-cover"
+        height="400"
+        src="https://test.com/image2.jpg"
+        width="400"
+      />
+    </a>
+    <div
+      class="p-4"
+    >
+      <div
+        class=""
+      >
+        <p>
+          Another Test Property
+        </p>
+        <p
+          class="text-gray-800 text-sm"
+        >
+          456 Another St
+           
+          Another City
+           
+          CA
+        </p>
+      </div>
+      <div
+        class="mt-2 flex"
+      >
+        <a
+          class="btn btn-primary mr-2"
+          href="/properties/property456/edit"
+        >
+          Edit
+        </a>
+        <button
+          data-testid="delete-button-property456"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`ProfileProperties Component Snapshots should match snapshot with single property 1`] = `
+<div
+  class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4"
+>
+  <div
+    class="mb-4 md:mb-6 rounded-lg shadow-lg"
+  >
+    <a
+      href="/properties/property123"
+    >
+      <img
+        alt="property123"
+        class="h-32 w-full rounded-t-lg object-cover"
+        height="400"
+        src="https://test.com/image1.jpg"
+        width="400"
+      />
+    </a>
+    <div
+      class="p-4"
+    >
+      <div
+        class=""
+      >
+        <p>
+          Beautiful Test Property
+        </p>
+        <p
+          class="text-gray-800 text-sm"
+        >
+          123 Test St
+           
+          Test City
+           
+          TX
+        </p>
+      </div>
+      <div
+        class="mt-2 flex"
+      >
+        <a
+          class="btn btn-primary mr-2"
+          href="/properties/property123/edit"
+        >
+          Edit
+        </a>
+        <button
+          data-testid="delete-button-property123"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;

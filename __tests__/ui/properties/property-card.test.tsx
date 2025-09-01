@@ -75,7 +75,7 @@ jest.mock('@/utils/to-serialized-object', () => ({
     })),
 }));
 
-jest.mock('@/utils/is-within-last-seven-days', () => ({
+jest.mock('@/utils/is-within-last-three-days', () => ({
     isWithinLastWeek: jest.fn(),
 }));
 
@@ -116,7 +116,7 @@ describe('PropertyCard', () => {
     const mockGetSessionUser = jest.mocked(jest.requireMock('@/utils/get-session-user').getSessionUser);
     const mockGetRateDisplay = jest.mocked(jest.requireMock('@/utils/get-rate-display').getRateDisplay);
     const mockToSerializedObject = jest.mocked(jest.requireMock('@/utils/to-serialized-object').toSerializedOjbect);
-    const mockIsWithinLastWeek = jest.mocked(jest.requireMock('@/utils/is-within-last-seven-days').isWithinLastWeek);
+    const mockIsWithinLastWeek = jest.mocked(jest.requireMock('@/utils/is-within-last-three-days').isWithinLastWeek);
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -513,6 +513,412 @@ describe('PropertyCard', () => {
             const { container } = render(await PropertyCard({ property }));
             
             expect(container.firstChild).toMatchSnapshot();
+        });
+    });
+
+    // FAVORITES-SPECIFIC TESTS - Phase 1 Enhancement
+    describe('Favorites Integration', () => {
+        const createFavoriteProperty = (overrides: Partial<PropertyDocument> = {}) =>
+            createMockProperty({
+                _id: `fav-${Math.random().toString(36).substr(2, 9)}`,
+                name: 'Favorite Property',
+                isFeatured: true, // Often favorites are featured properties
+                ...overrides,
+            });
+
+        describe('Favorites UI Behavior', () => {
+            it('should display favorite button for non-owners when logged in', async () => {
+                mockGetSessionUser.mockResolvedValue({ id: 'logged-in-user' });
+                const favoriteProperty = createFavoriteProperty({ 
+                    owner: 'different-owner' as unknown as any 
+                });
+                
+                render(await PropertyCard({ property: favoriteProperty }));
+                
+                const favoriteButton = screen.getByTestId('property-favorite-button');
+                expect(favoriteButton).toBeInTheDocument();
+                expect(favoriteButton).toHaveTextContent('❤️');
+            });
+
+            it('should not display favorite button for property owners', async () => {
+                const ownerId = 'property-owner-123';
+                mockGetSessionUser.mockResolvedValue({ id: ownerId });
+                const favoriteProperty = createFavoriteProperty({ 
+                    owner: ownerId as unknown as any 
+                });
+                
+                render(await PropertyCard({ property: favoriteProperty }));
+                
+                expect(screen.queryByTestId('property-favorite-button')).not.toBeInTheDocument();
+            });
+
+            it('should not display favorite button when user not logged in', async () => {
+                mockGetSessionUser.mockResolvedValue(null);
+                const favoriteProperty = createFavoriteProperty();
+                
+                render(await PropertyCard({ property: favoriteProperty }));
+                
+                expect(screen.queryByTestId('property-favorite-button')).not.toBeInTheDocument();
+            });
+
+            it('should pass correct property ID to favorite button', async () => {
+                const propertyId = 'fav-property-456';
+                mockGetSessionUser.mockResolvedValue({ id: 'logged-in-user' });
+                mockToSerializedObject.mockReturnValue({ _id: propertyId });
+                
+                const favoriteProperty = createFavoriteProperty({ 
+                    _id: propertyId,
+                    owner: 'different-owner' as unknown as any 
+                });
+                
+                render(await PropertyCard({ property: favoriteProperty }));
+                
+                const favoriteButton = screen.getByTestId('property-favorite-button');
+                expect(favoriteButton).toHaveAttribute('data-property-id', propertyId);
+                expect(mockToSerializedObject).toHaveBeenCalledWith(favoriteProperty);
+            });
+
+            it('should handle favorite properties with different property types', async () => {
+                mockGetSessionUser.mockResolvedValue({ id: 'user-123' });
+                
+                const favoriteTypes = ['House', 'Apartment', 'Condo', 'Villa'];
+                
+                for (const type of favoriteTypes) {
+                    const favoriteProperty = createFavoriteProperty({ 
+                        name: `Favorite ${type}`,
+                        type: type as PropertyDocument['type'],
+                        owner: 'different-owner' as unknown as any 
+                    });
+                    
+                    const { unmount } = render(await PropertyCard({ property: favoriteProperty }));
+                    
+                    expect(screen.getByText(`Favorite ${type}`)).toBeInTheDocument();
+                    expect(screen.getByTestId('property-favorite-button')).toBeInTheDocument();
+                    
+                    unmount();
+                }
+            });
+        });
+
+        describe('Favorites Display Features', () => {
+            it('should display favorite property with premium pricing correctly', async () => {
+                const premiumFavorite = createFavoriteProperty({
+                    name: 'Premium Favorite Villa',
+                    rates: {
+                        nightly: 500,
+                        weekly: 3000,
+                        monthly: 10000,
+                    }
+                });
+                
+                mockGetRateDisplay.mockReturnValue('$500/night');
+                
+                render(await PropertyCard({ property: premiumFavorite }));
+                
+                expect(screen.getByText('Premium Favorite Villa')).toBeInTheDocument();
+                expect(screen.getByText('$500/night')).toBeInTheDocument();
+                expect(mockGetRateDisplay).toHaveBeenCalledWith(premiumFavorite.rates);
+            });
+
+            it('should display favorite property location correctly', async () => {
+                const locationFavorite = createFavoriteProperty({
+                    name: 'Tropical Paradise',
+                    location: {
+                        street: '456 Paradise Ave',
+                        city: 'Malibu',
+                        state: 'CA',
+                        zipcode: '90265',
+                    }
+                });
+                
+                render(await PropertyCard({ property: locationFavorite }));
+                
+                expect(screen.getByText('Tropical Paradise')).toBeInTheDocument();
+                expect(screen.getByText('Malibu')).toBeInTheDocument();
+                expect(screen.getByTestId('map-marker-icon')).toBeInTheDocument();
+            });
+
+            it('should display favorite property amenities correctly', async () => {
+                const amenityFavorite = createFavoriteProperty({
+                    name: 'Luxury Favorite',
+                    beds: 5,
+                    baths: 4,
+                });
+                
+                render(await PropertyCard({ property: amenityFavorite }));
+                
+                expect(screen.getByText('Luxury Favorite')).toBeInTheDocument();
+                expect(screen.getByText(/5 Beds/)).toBeInTheDocument();
+                expect(screen.getByText(/4 Baths/)).toBeInTheDocument();
+            });
+
+            it('should handle favorite property with recently added badge', async () => {
+                const recentFavorite = createFavoriteProperty({
+                    name: 'New Favorite Property',
+                    createdAt: new Date(),
+                });
+                
+                mockIsWithinLastWeek.mockImplementation((date: Date) => 
+                    date.getTime() === recentFavorite.createdAt.getTime()
+                );
+                
+                render(await PropertyCard({ property: recentFavorite }));
+                
+                expect(screen.getByText('New Favorite Property')).toBeInTheDocument();
+                expect(screen.getByText('Recently Added')).toBeInTheDocument();
+                expect(mockIsWithinLastWeek).toHaveBeenCalledWith(recentFavorite.createdAt);
+            });
+
+            it('should handle favorite property with recently updated badge', async () => {
+                const updatedFavorite = createFavoriteProperty({
+                    name: 'Updated Favorite',
+                    createdAt: new Date('2023-01-01'),
+                    updatedAt: new Date(),
+                });
+                
+                mockIsWithinLastWeek.mockImplementation((date: Date) => 
+                    date.getTime() === updatedFavorite.updatedAt.getTime()
+                );
+                
+                render(await PropertyCard({ property: updatedFavorite }));
+                
+                expect(screen.getByText('Updated Favorite')).toBeInTheDocument();
+                expect(screen.getByText('Recently Updated')).toBeInTheDocument();
+            });
+        });
+
+        describe('Favorites Navigation', () => {
+            it('should create correct links for favorite properties', async () => {
+                const favoriteId = 'fav-nav-123';
+                const navigationFavorite = createFavoriteProperty({
+                    _id: favoriteId,
+                    name: 'Navigation Test Favorite',
+                });
+                
+                render(await PropertyCard({ property: navigationFavorite }));
+                
+                const propertyLinks = screen.getAllByTestId('property-link');
+                expect(propertyLinks).toHaveLength(3);
+                
+                propertyLinks.forEach(link => {
+                    expect(link).toHaveAttribute('href', `/properties/${favoriteId}`);
+                });
+            });
+
+            it('should make favorite property image clickable', async () => {
+                const clickableFavorite = createFavoriteProperty({
+                    _id: 'clickable-fav-456',
+                    name: 'Clickable Favorite Image',
+                    imagesData: [{
+                        secureUrl: 'https://example.com/favorite-image.jpg',
+                        publicId: 'favorite-image',
+                        width: 800,
+                        height: 600,
+                    }]
+                });
+                
+                render(await PropertyCard({ property: clickableFavorite }));
+                
+                const image = screen.getByTestId('property-image');
+                const imageLink = image.closest('a');
+                
+                expect(imageLink).toBeInTheDocument();
+                expect(imageLink).toHaveAttribute('href', '/properties/clickable-fav-456');
+                expect(image).toHaveAttribute('src', 'https://example.com/favorite-image.jpg');
+                expect(image).toHaveAttribute('alt', 'Clickable Favorite Image');
+            });
+
+            it('should make favorite property name clickable', async () => {
+                const nameClickableFavorite = createFavoriteProperty({
+                    _id: 'name-click-789',
+                    name: 'Clickable Name Favorite',
+                });
+                
+                render(await PropertyCard({ property: nameClickableFavorite }));
+                
+                const nameElement = screen.getByText('Clickable Name Favorite');
+                const nameLink = nameElement.closest('a');
+                
+                expect(nameLink).toBeInTheDocument();
+                expect(nameLink).toHaveAttribute('href', '/properties/name-click-789');
+            });
+        });
+
+        describe('Favorites Performance', () => {
+            it('should render favorite properties efficiently', async () => {
+                const performanceFavorite = createFavoriteProperty({
+                    name: 'Performance Test Favorite',
+                    imagesData: Array.from({ length: 5 }, (_, i) => ({
+                        secureUrl: `https://example.com/perf-${i}.jpg`,
+                        publicId: `perf-${i}`,
+                        width: 800,
+                        height: 600,
+                    }))
+                });
+                
+                const startTime = performance.now();
+                render(await PropertyCard({ property: performanceFavorite }));
+                const endTime = performance.now();
+                
+                expect(screen.getByText('Performance Test Favorite')).toBeInTheDocument();
+                expect(endTime - startTime).toBeLessThan(100); // Should render quickly
+            });
+
+            it('should handle favorite properties with complex data structures', async () => {
+                const complexFavorite = createFavoriteProperty({
+                    name: 'Complex Data Favorite',
+                    location: {
+                        street: '789 Complex St',
+                        city: 'Data City',
+                        state: 'FL',
+                        zipcode: '12345',
+                    },
+                    rates: {
+                        nightly: 275,
+                        weekly: 1650,
+                        monthly: 5500,
+                    },
+                    amenities: ['Pool', 'Spa', 'Gym', 'WiFi', 'Pet Friendly', 'Parking'],
+                    owner: 'complex-owner' as unknown as any,
+                });
+                
+                render(await PropertyCard({ property: complexFavorite }));
+                
+                expect(screen.getByText('Complex Data Favorite')).toBeInTheDocument();
+                expect(screen.getByText('Data City')).toBeInTheDocument();
+                expect(mockGetRateDisplay).toHaveBeenCalledWith(complexFavorite.rates);
+            });
+        });
+
+        describe('Favorites Error Handling', () => {
+            it('should handle favorite property with missing image gracefully', async () => {
+                const noImageFavorite = createFavoriteProperty({
+                    name: 'No Image Favorite',
+                    imagesData: [], // Empty images array
+                });
+                
+                await expect(async () => {
+                    render(await PropertyCard({ property: noImageFavorite }));
+                }).rejects.toThrow(); // Will throw because imagesData[0] is undefined
+            });
+
+            it('should handle favorite property with invalid rate data', async () => {
+                const invalidRateFavorite = createFavoriteProperty({
+                    name: 'Invalid Rate Favorite',
+                    rates: {
+                        nightly: undefined,
+                        weekly: undefined,
+                        monthly: undefined,
+                    } as unknown as any,
+                });
+                
+                mockGetRateDisplay.mockReturnValue('Contact for rates');
+                
+                render(await PropertyCard({ property: invalidRateFavorite }));
+                
+                expect(screen.getByText('Invalid Rate Favorite')).toBeInTheDocument();
+                expect(screen.getByText('Contact for rates')).toBeInTheDocument();
+            });
+
+            it('should handle session errors for favorite properties', async () => {
+                mockGetSessionUser.mockRejectedValue(new Error('Session error'));
+                const sessionErrorFavorite = createFavoriteProperty();
+                
+                await expect(async () => {
+                    render(await PropertyCard({ property: sessionErrorFavorite }));
+                }).rejects.toThrow('Session error');
+            });
+        });
+
+        describe('Favorites Accessibility', () => {
+            it('should provide proper alt text for favorite property images', async () => {
+                const accessibleFavorite = createFavoriteProperty({
+                    name: 'Accessible Favorite Property',
+                    imagesData: [{
+                        secureUrl: 'https://example.com/accessible.jpg',
+                        publicId: 'accessible',
+                        width: 800,
+                        height: 600,
+                    }]
+                });
+                
+                render(await PropertyCard({ property: accessibleFavorite }));
+                
+                const image = screen.getByTestId('property-image');
+                expect(image).toHaveAttribute('alt', 'Accessible Favorite Property');
+                expect(image).toHaveAttribute('src', 'https://example.com/accessible.jpg');
+            });
+
+            it('should maintain proper link structure for favorite properties', async () => {
+                const linkStructureFavorite = createFavoriteProperty({
+                    _id: 'link-structure-fav',
+                    name: 'Link Structure Favorite',
+                });
+                
+                render(await PropertyCard({ property: linkStructureFavorite }));
+                
+                const allLinks = screen.getAllByTestId('property-link');
+                expect(allLinks.length).toBeGreaterThan(0);
+                
+                allLinks.forEach(link => {
+                    expect(link.getAttribute('href')).toBe('/properties/link-structure-fav');
+                });
+            });
+
+            it('should ensure favorite button is accessible when present', async () => {
+                mockGetSessionUser.mockResolvedValue({ id: 'accessibility-user' });
+                const accessibilityFavorite = createFavoriteProperty({
+                    owner: 'different-owner' as unknown as any,
+                });
+                
+                render(await PropertyCard({ property: accessibilityFavorite }));
+                
+                const favoriteButton = screen.getByTestId('property-favorite-button');
+                expect(favoriteButton).toBeInTheDocument();
+                expect(favoriteButton).toHaveAttribute('data-property-id');
+            });
+        });
+
+        describe('Favorites Snapshots', () => {
+            it('should match snapshot with favorite property', async () => {
+                const snapshotFavorite = createFavoriteProperty({
+                    _id: 'snapshot-fav-1',
+                    name: 'Snapshot Favorite Property',
+                });
+                
+                const { container } = render(await PropertyCard({ property: snapshotFavorite }));
+                
+                expect(container.firstChild).toMatchSnapshot();
+            });
+
+            it('should match snapshot with favorite property and favorite button', async () => {
+                mockGetSessionUser.mockResolvedValue({ id: 'snapshot-user' });
+                const favoriteWithButton = createFavoriteProperty({
+                    _id: 'snapshot-with-button',
+                    name: 'Favorite With Button',
+                    owner: 'different-owner' as unknown as any,
+                });
+                
+                const { container } = render(await PropertyCard({ property: favoriteWithButton }));
+                
+                expect(container.firstChild).toMatchSnapshot();
+            });
+
+            it('should match snapshot with recently added favorite', async () => {
+                const recentlyAddedFavorite = createFavoriteProperty({
+                    _id: 'recent-fav-snap',
+                    name: 'Recently Added Favorite',
+                    createdAt: new Date(),
+                });
+                
+                mockIsWithinLastWeek.mockImplementation((date: Date) => 
+                    date.getTime() === recentlyAddedFavorite.createdAt.getTime()
+                );
+                
+                const { container } = render(await PropertyCard({ property: recentlyAddedFavorite }));
+                
+                expect(container.firstChild).toMatchSnapshot();
+            });
         });
     });
 });

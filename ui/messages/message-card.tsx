@@ -9,7 +9,7 @@ const MessageCard = ({ message }: { message: MessageDocument }) => (
         )}
         <h2 className="mb-4">
             <span className="font-bold">Property:</span>{" "}
-            {typeof message.property === "object" && "name" in message.property && message.property.name}
+            {typeof message.property === "object" && message.property !== null && "name" in message.property && message.property.name}
         </h2>
         <p>{message.body}</p>
         <ul className="mt-4">

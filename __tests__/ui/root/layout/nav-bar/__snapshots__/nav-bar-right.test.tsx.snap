@@ -2,120 +2,393 @@
 
 exports[`NavBarRight Snapshots should match snapshot when authenticated with menu closed 1`] = `
 <div
-  class="md:hidden flex items-center"
+  class="flex"
 >
-  <button
-    aria-controls="mobile-menu"
-    aria-expanded="false"
-    class="md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 false"
-    id="mobile-menu-button"
-    type="button"
+  <a
+    class="relative group"
+    href="/messages"
   >
-    <span
-      class="mobile-menu-top"
-    />
-    <span
-      class="mobile-menu-middle"
-    />
-    <span
-      class="mobile-menu-bottom"
-    />
-  </button>
+    <div
+      class="size-8 rounded-full btn btn-login-logout p-1"
+      data-testid="bell-icon"
+    >
+      Bell Icon
+    </div>
+    <div
+      data-count="3"
+      data-testid="unread-message-count"
+      data-viewport-width="1024"
+    >
+      3
+    </div>
+  </a>
+  <div
+    class="md:hidden flex items-center ml-2"
+  >
+    <button
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      class="md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 md:ml-0 false"
+      id="mobile-menu-button"
+      type="button"
+    >
+      <span
+        class="mobile-menu-top"
+      />
+      <span
+        class="mobile-menu-middle"
+      />
+      <span
+        class="mobile-menu-bottom"
+      />
+    </button>
+  </div>
 </div>
 `;
 
 exports[`NavBarRight Snapshots should match snapshot when authenticated with menu open 1`] = `
 <div
-  class="md:hidden flex items-center"
+  class="flex"
 >
-  <button
-    aria-controls="mobile-menu"
-    aria-expanded="false"
-    class="md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 mobile-menu-open"
-    id="mobile-menu-button"
-    type="button"
+  <a
+    class="relative group"
+    href="/messages"
   >
-    <span
-      class="mobile-menu-top"
+    <div
+      class="size-8 rounded-full btn btn-login-logout p-1"
+      data-testid="bell-icon"
+    >
+      Bell Icon
+    </div>
+    <div
+      data-count="3"
+      data-testid="unread-message-count"
+      data-viewport-width="1024"
+    >
+      3
+    </div>
+  </a>
+  <div
+    class="md:hidden flex items-center ml-2"
+  >
+    <button
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      class="md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 md:ml-0 mobile-menu-open"
+      id="mobile-menu-button"
+      type="button"
+    >
+      <span
+        class="mobile-menu-top"
+      />
+      <span
+        class="mobile-menu-middle"
+      />
+      <span
+        class="mobile-menu-bottom"
+      />
+    </button>
+  </div>
+  <div
+    aria-labelledby="mobile-menu-button"
+    aria-orientation="vertical"
+    class="md:hidden absolute w-screen -mr-4 p-3 rounded-sm bg-white text-sm right-0 top-10 z-10 border border-gray-100 shadow-md flex flex-col items-center justify-center space-y-3"
+    id="mobile-menu"
+    role="menu"
+    tabindex="-1"
+  >
+    <a
+      class="menu-btn menu-btn-current-path"
+      href="/"
+      id="mobile-menu-item-0"
+      role="menuitem"
+      tabindex="-1"
+    >
+      Home
+    </a>
+    <a
+      class="menu-btn menu-btn-not-current-path"
+      href="/properties"
+      id="mobile-menu-item-1"
+      role="menuitem"
+      tabindex="-1"
+    >
+      Properties
+    </a>
+    <a
+      class="menu-btn menu-btn-not-current-path"
+      href="/properties/add"
+      id="mobile-menu-item-2"
+      role="menuitem"
+      tabindex="-1"
+    >
+      Add Property
+    </a>
+    <hr
+      class="w-full border-t border-gray-200"
     />
-    <span
-      class="mobile-menu-middle"
+    <a
+      class="menu-btn menu-btn-not-current-path"
+      href="/profile"
+      id="mobile-menu-item-4"
+      role="menuitem"
+      tabindex="-1"
+    >
+      My Listings
+    </a>
+    <a
+      class="menu-btn menu-btn-not-current-path"
+      href="/properties/favorites"
+      id="mobile-menu-item-5"
+      role="menuitem"
+      tabindex="-1"
+    >
+      Favorite Properties
+    </a>
+    <hr
+      class="w-full border-t border-gray-200"
     />
-    <span
-      class="mobile-menu-bottom"
-    />
-  </button>
+    <button
+      data-testid="logout-button"
+      id="user-menu-item-2"
+    >
+      Logout
+    </button>
+  </div>
 </div>
 `;
 
 exports[`NavBarRight Snapshots should match snapshot when unauthenticated with menu closed 1`] = `
 <div
-  class="md:hidden flex items-center"
+  class="flex"
 >
-  <button
-    aria-controls="mobile-menu"
-    aria-expanded="false"
-    class="md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 false"
-    id="mobile-menu-button"
-    type="button"
+  <div
+    class="block"
   >
-    <span
-      class="mobile-menu-top"
-    />
-    <span
-      class="mobile-menu-middle"
-    />
-    <span
-      class="mobile-menu-bottom"
-    />
-  </button>
+    <div
+      class="flex items-center"
+    >
+      <div
+        class="flex items-center btn btn-login-logout text-sm py-[6px] px-3"
+        data-testid="login-buttons"
+      >
+        <span
+          class="mr-2"
+          data-testid="google-icon"
+        >
+          G
+        </span>
+        Login
+      </div>
+    </div>
+  </div>
+  <div
+    class="md:hidden flex items-center ml-2"
+  >
+    <button
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      class="md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 md:ml-0 false"
+      id="mobile-menu-button"
+      type="button"
+    >
+      <span
+        class="mobile-menu-top"
+      />
+      <span
+        class="mobile-menu-middle"
+      />
+      <span
+        class="mobile-menu-bottom"
+      />
+    </button>
+  </div>
 </div>
 `;
 
 exports[`NavBarRight Snapshots should match snapshot when unauthenticated with menu open 1`] = `
 <div
-  class="md:hidden flex items-center"
+  class="flex"
 >
-  <button
-    aria-controls="mobile-menu"
-    aria-expanded="false"
-    class="md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 mobile-menu-open"
-    id="mobile-menu-button"
-    type="button"
+  <div
+    class="block"
   >
-    <span
-      class="mobile-menu-top"
-    />
-    <span
-      class="mobile-menu-middle"
-    />
-    <span
-      class="mobile-menu-bottom"
-    />
-  </button>
+    <div
+      class="flex items-center"
+    >
+      <div
+        class="flex items-center btn btn-login-logout text-sm py-[6px] px-3"
+        data-testid="login-buttons"
+      >
+        <span
+          class="mr-2"
+          data-testid="google-icon"
+        >
+          G
+        </span>
+        Login
+      </div>
+    </div>
+  </div>
+  <div
+    class="md:hidden flex items-center ml-2"
+  >
+    <button
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      class="md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 md:ml-0 mobile-menu-open"
+      id="mobile-menu-button"
+      type="button"
+    >
+      <span
+        class="mobile-menu-top"
+      />
+      <span
+        class="mobile-menu-middle"
+      />
+      <span
+        class="mobile-menu-bottom"
+      />
+    </button>
+  </div>
+  <div
+    aria-labelledby="mobile-menu-button"
+    aria-orientation="vertical"
+    class="md:hidden absolute w-screen -mr-4 p-3 rounded-sm bg-white text-sm right-0 top-10 z-10 border border-gray-100 shadow-md flex flex-col items-center justify-center space-y-3"
+    id="mobile-menu"
+    role="menu"
+    tabindex="-1"
+  >
+    <a
+      class="menu-btn menu-btn-current-path"
+      href="/"
+      id="mobile-menu-item-0"
+      role="menuitem"
+      tabindex="-1"
+    >
+      Home
+    </a>
+    <a
+      class="menu-btn menu-btn-not-current-path"
+      href="/properties"
+      id="mobile-menu-item-1"
+      role="menuitem"
+      tabindex="-1"
+    >
+      Properties
+    </a>
+  </div>
 </div>
 `;
 
 exports[`NavBarRight Snapshots should match snapshot with different active paths 1`] = `
 <div
-  class="md:hidden flex items-center"
+  class="flex"
 >
-  <button
-    aria-controls="mobile-menu"
-    aria-expanded="false"
-    class="md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 mobile-menu-open"
-    id="mobile-menu-button"
-    type="button"
+  <a
+    class="relative group"
+    href="/messages"
   >
-    <span
-      class="mobile-menu-top"
+    <div
+      class="size-8 rounded-full btn btn-login-logout p-1"
+      data-testid="bell-icon"
+    >
+      Bell Icon
+    </div>
+    <div
+      data-count="3"
+      data-testid="unread-message-count"
+      data-viewport-width="1024"
+    >
+      3
+    </div>
+  </a>
+  <div
+    class="md:hidden flex items-center ml-2"
+  >
+    <button
+      aria-controls="mobile-menu"
+      aria-expanded="false"
+      class="md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 md:ml-0 mobile-menu-open"
+      id="mobile-menu-button"
+      type="button"
+    >
+      <span
+        class="mobile-menu-top"
+      />
+      <span
+        class="mobile-menu-middle"
+      />
+      <span
+        class="mobile-menu-bottom"
+      />
+    </button>
+  </div>
+  <div
+    aria-labelledby="mobile-menu-button"
+    aria-orientation="vertical"
+    class="md:hidden absolute w-screen -mr-4 p-3 rounded-sm bg-white text-sm right-0 top-10 z-10 border border-gray-100 shadow-md flex flex-col items-center justify-center space-y-3"
+    id="mobile-menu"
+    role="menu"
+    tabindex="-1"
+  >
+    <a
+      class="menu-btn menu-btn-not-current-path"
+      href="/"
+      id="mobile-menu-item-0"
+      role="menuitem"
+      tabindex="-1"
+    >
+      Home
+    </a>
+    <a
+      class="menu-btn menu-btn-not-current-path"
+      href="/properties"
+      id="mobile-menu-item-1"
+      role="menuitem"
+      tabindex="-1"
+    >
+      Properties
+    </a>
+    <a
+      class="menu-btn menu-btn-not-current-path"
+      href="/properties/add"
+      id="mobile-menu-item-2"
+      role="menuitem"
+      tabindex="-1"
+    >
+      Add Property
+    </a>
+    <hr
+      class="w-full border-t border-gray-200"
     />
-    <span
-      class="mobile-menu-middle"
+    <a
+      class="menu-btn menu-btn-not-current-path"
+      href="/profile"
+      id="mobile-menu-item-4"
+      role="menuitem"
+      tabindex="-1"
+    >
+      My Listings
+    </a>
+    <a
+      class="menu-btn menu-btn-current-path"
+      href="/properties/favorites"
+      id="mobile-menu-item-5"
+      role="menuitem"
+      tabindex="-1"
+    >
+      Favorite Properties
+    </a>
+    <hr
+      class="w-full border-t border-gray-200"
     />
-    <span
-      class="mobile-menu-bottom"
-    />
-  </button>
+    <button
+      data-testid="logout-button"
+      id="user-menu-item-2"
+    >
+      Logout
+    </button>
+  </div>
 </div>
 `;

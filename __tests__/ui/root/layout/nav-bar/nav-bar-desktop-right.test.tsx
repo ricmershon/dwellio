@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@/__tests__/test-utils';
+import { render, screen, fireEvent, waitFor, createNextNavigationMock } from '@/__tests__/test-utils';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 
@@ -13,9 +13,7 @@ jest.mock('next-auth/react', () => ({
     useSession: jest.fn(),
 }));
 
-jest.mock('next/navigation', () => ({
-    usePathname: jest.fn(),
-}));
+jest.mock('next/navigation', () => createNextNavigationMock());
 
 jest.mock('next/link', () => {
     const MockLink = ({ children, href, className, onClick, role, tabIndex, id }: {
@@ -156,24 +154,9 @@ describe('NavBarDesktopRight', () => {
             });
         });
 
-        it('should render login buttons for desktop', () => {
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+        it('should not render authenticated content when logged out', () => {
+            render(<NavBarDesktopRight />);
             
-            expect(screen.getByTestId('login-buttons')).toBeInTheDocument();
-        });
-
-        it('should apply correct responsive classes for login section', () => {
-            const { container } = render(<NavBarDesktopRight viewportWidth={1024} />);
-            
-            const loginSection = container.querySelector('.hidden.md\\:block.md\\:ml-6');
-            expect(loginSection).toBeInTheDocument();
-            expect(loginSection).toHaveClass('hidden', 'md:block', 'md:ml-6');
-        });
-
-        it('should not render authenticated content', () => {
-            render(<NavBarDesktopRight viewportWidth={1024} />);
-            
-            expect(screen.queryByTestId('bell-icon')).not.toBeInTheDocument();
             expect(screen.queryByTestId('profile-image')).not.toBeInTheDocument();
             expect(screen.queryByRole('button', { name: /open user menu/i })).not.toBeInTheDocument();
         });
@@ -188,37 +171,9 @@ describe('NavBarDesktopRight', () => {
             });
         });
 
-        it('should render authenticated user interface', () => {
-            render(<NavBarDesktopRight viewportWidth={1024} />);
-            
-            expect(screen.getByTestId('bell-icon')).toBeInTheDocument();
-            expect(screen.getByTestId('profile-image')).toBeInTheDocument();
-        });
-
-        it('should render messages link with bell icon', () => {
-            render(<NavBarDesktopRight viewportWidth={1024} />);
-            
-            const messagesLink = screen.getByRole('link', { name: /bell icon/i });
-            expect(messagesLink).toHaveAttribute('href', '/messages');
-        });
-
-        it('should display unread message count', () => {
-            render(<NavBarDesktopRight viewportWidth={1024} />);
-            
-            const unreadCount = screen.getByTestId('unread-message-count');
-            expect(unreadCount).toBeInTheDocument();
-            expect(unreadCount).toHaveAttribute('data-count', '3');
-        });
-
-        it('should pass viewport width to unread message count', () => {
-            render(<NavBarDesktopRight viewportWidth={768} />);
-            
-            const unreadCount = screen.getByTestId('unread-message-count');
-            expect(unreadCount).toHaveAttribute('data-viewport-width', '768');
-        });
 
         it('should render profile dropdown button', () => {
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+            render(<NavBarDesktopRight />);
             
             const profileButton = screen.getByRole('button', { name: /open user menu/i });
             expect(profileButton).toBeInTheDocument();
@@ -226,7 +181,7 @@ describe('NavBarDesktopRight', () => {
         });
 
         it('should use user profile image when available', () => {
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+            render(<NavBarDesktopRight />);
             
             const profileImage = screen.getByTestId('profile-image');
             expect(profileImage).toHaveAttribute('src', mockUser.image);
@@ -244,7 +199,7 @@ describe('NavBarDesktopRight', () => {
                 update: jest.fn()
             });
             
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+            render(<NavBarDesktopRight />);
             
             const profileImage = screen.getByTestId('profile-image');
             expect(profileImage).toHaveAttribute('src');
@@ -252,7 +207,7 @@ describe('NavBarDesktopRight', () => {
         });
 
         it('should not render login buttons when authenticated', () => {
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+            render(<NavBarDesktopRight />);
             
             expect(screen.queryByTestId('login-buttons')).not.toBeInTheDocument();
         });
@@ -268,13 +223,13 @@ describe('NavBarDesktopRight', () => {
         });
 
         it('should not show dropdown menu initially', () => {
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+            render(<NavBarDesktopRight />);
             
             expect(screen.queryByRole('menu')).not.toBeInTheDocument();
         });
 
         it('should show dropdown menu when profile button is clicked', async () => {
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+            render(<NavBarDesktopRight />);
             
             const profileButton = screen.getByRole('button', { name: /open user menu/i });
             fireEvent.click(profileButton);
@@ -285,7 +240,7 @@ describe('NavBarDesktopRight', () => {
         });
 
         it('should render dropdown menu with correct attributes', async () => {
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+            render(<NavBarDesktopRight />);
             
             const profileButton = screen.getByRole('button', { name: /open user menu/i });
             fireEvent.click(profileButton);
@@ -299,7 +254,7 @@ describe('NavBarDesktopRight', () => {
         });
 
         it('should render My Listings link in dropdown', async () => {
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+            render(<NavBarDesktopRight />);
             
             const profileButton = screen.getByRole('button', { name: /open user menu/i });
             fireEvent.click(profileButton);
@@ -312,7 +267,7 @@ describe('NavBarDesktopRight', () => {
         });
 
         it('should render Favorite Properties link in dropdown', async () => {
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+            render(<NavBarDesktopRight />);
             
             const profileButton = screen.getByRole('button', { name: /open user menu/i });
             fireEvent.click(profileButton);
@@ -325,7 +280,7 @@ describe('NavBarDesktopRight', () => {
         });
 
         it('should render logout button in dropdown', async () => {
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+            render(<NavBarDesktopRight />);
             
             const profileButton = screen.getByRole('button', { name: /open user menu/i });
             fireEvent.click(profileButton);
@@ -336,7 +291,7 @@ describe('NavBarDesktopRight', () => {
         });
 
         it('should close menu when clicking My Listings link', async () => {
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+            render(<NavBarDesktopRight />);
             
             const profileButton = screen.getByRole('button', { name: /open user menu/i });
             fireEvent.click(profileButton);
@@ -352,7 +307,7 @@ describe('NavBarDesktopRight', () => {
         });
 
         it('should close menu when clicking Favorite Properties link', async () => {
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+            render(<NavBarDesktopRight />);
             
             const profileButton = screen.getByRole('button', { name: /open user menu/i });
             fireEvent.click(profileButton);
@@ -380,7 +335,7 @@ describe('NavBarDesktopRight', () => {
         it('should highlight My Listings when on profile page', async () => {
             mockUsePathname.mockReturnValue('/profile');
             
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+            render(<NavBarDesktopRight />);
             
             const profileButton = screen.getByRole('button', { name: /open user menu/i });
             fireEvent.click(profileButton);
@@ -394,7 +349,7 @@ describe('NavBarDesktopRight', () => {
         it('should highlight Favorite Properties when on favorites page', async () => {
             mockUsePathname.mockReturnValue('/properties/favorites');
             
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+            render(<NavBarDesktopRight />);
             
             const profileButton = screen.getByRole('button', { name: /open user menu/i });
             fireEvent.click(profileButton);
@@ -408,7 +363,7 @@ describe('NavBarDesktopRight', () => {
         it('should not highlight links when on different page', async () => {
             mockUsePathname.mockReturnValue('/messages');
             
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+            render(<NavBarDesktopRight />);
             
             const profileButton = screen.getByRole('button', { name: /open user menu/i });
             fireEvent.click(profileButton);
@@ -433,25 +388,13 @@ describe('NavBarDesktopRight', () => {
         });
 
         it('should be hidden on mobile for authenticated content', () => {
-            const { container } = render(<NavBarDesktopRight viewportWidth={1024} />);
+            const { container } = render(<NavBarDesktopRight />);
             
             const profileDropdownSection = container.querySelector('.ml-5.hidden.md\\:block');
             expect(profileDropdownSection).toBeInTheDocument();
             expect(profileDropdownSection).toHaveClass('ml-5', 'hidden', 'md:block');
         });
 
-        it('should handle different viewport widths', () => {
-            const viewportWidths = [320, 768, 1024, 1280, 1920];
-            
-            viewportWidths.forEach(width => {
-                const { unmount } = render(<NavBarDesktopRight viewportWidth={width} />);
-                
-                const unreadCount = screen.getByTestId('unread-message-count');
-                expect(unreadCount).toHaveAttribute('data-viewport-width', width.toString());
-                
-                unmount();
-            });
-        });
     });
 
     describe('Menu State Management', () => {
@@ -464,7 +407,7 @@ describe('NavBarDesktopRight', () => {
         });
 
         it('should toggle menu open and closed', async () => {
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+            render(<NavBarDesktopRight />);
             
             const profileButton = screen.getByRole('button', { name: /open user menu/i });
             
@@ -493,10 +436,9 @@ describe('NavBarDesktopRight', () => {
                 update: jest.fn() 
             });
             
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+            render(<NavBarDesktopRight />);
             
-            // Should have login buttons with proper structure
-            expect(screen.getByTestId('login-buttons')).toBeInTheDocument();
+            // NavBarDesktopRight only shows when authenticated, so no content when logged out
         });
 
         it('should have proper ARIA attributes for profile button', () => {
@@ -506,7 +448,7 @@ describe('NavBarDesktopRight', () => {
                 update: jest.fn()
             });
             
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+            render(<NavBarDesktopRight />);
             
             const profileButton = screen.getByRole('button', { name: /open user menu/i });
             expect(profileButton).toHaveAttribute('aria-expanded', 'false');
@@ -520,7 +462,7 @@ describe('NavBarDesktopRight', () => {
                 update: jest.fn()
             });
             
-            render(<NavBarDesktopRight viewportWidth={1024} />);
+            render(<NavBarDesktopRight />);
             
             expect(screen.getByText('Open user menu')).toBeInTheDocument();
         });
@@ -534,7 +476,7 @@ describe('NavBarDesktopRight', () => {
                 update: jest.fn() 
             });
             
-            const { container } = render(<NavBarDesktopRight viewportWidth={1024} />);
+            const { container } = render(<NavBarDesktopRight />);
             expect(container.firstChild).toMatchSnapshot();
         });
 
@@ -545,7 +487,7 @@ describe('NavBarDesktopRight', () => {
                 update: jest.fn()
             });
             
-            const { container } = render(<NavBarDesktopRight viewportWidth={1024} />);
+            const { container } = render(<NavBarDesktopRight />);
             expect(container.firstChild).toMatchSnapshot();
         });
 
@@ -556,7 +498,7 @@ describe('NavBarDesktopRight', () => {
                 update: jest.fn()
             });
             
-            const { container } = render(<NavBarDesktopRight viewportWidth={1024} />);
+            const { container } = render(<NavBarDesktopRight />);
             
             const profileButton = screen.getByRole('button', { name: /open user menu/i });
             fireEvent.click(profileButton);
