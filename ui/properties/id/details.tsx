@@ -66,23 +66,23 @@ const PropertyDetails = async ({ property }: { property: PropertyDocument }) => 
             {/* Property rates and options */}
             <div className="pb-4 mb-6 border-b border-gray-200">
                 <h3 className="mb-2">Rates</h3>
-                <div className="flex flex-col md:flex-row justify-start items-start">
+                <div className="flex flex-col sm:flex-row justify-start items-start">
                     {rates.nightly && (
-                        <div className="flex items-center justify-center mb-2 md:pb-0 md:mr-4">
+                        <div className="flex items-center justify-center mb-2 sm:mr-4">
                             <div className="mr-1 text-sm">{`$${rates.nightly.toLocaleString()}`}</div>
                             <div className="text-gray-500 text-xs">nightly</div>
                         </div>
                     )}
 
                     {rates.weekly && (
-                        <div className="flex items-center justify-center mb-2 md:pb-0 md:mr-4">
+                        <div className="flex items-center justify-center mb-2 sm:mr-4">
                             <div className="mr-1 text-sm">{`$${rates.weekly.toLocaleString()}`}</div>
                             <div className="text-gray-500 text-xs">weekly</div>
                         </div>
                     )}
 
                     {rates.monthly && (
-                        <div className="flex items-center justify-center mb-2 md:pb-0">
+                        <div className="flex items-center justify-center">
                             <div className="mr-1 text-sm">{`$${rates.monthly.toLocaleString()}`}</div>
                             <div className="text-gray-500 text-xs">monthly</div>
                         </div>
