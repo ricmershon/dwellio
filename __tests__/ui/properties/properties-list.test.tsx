@@ -22,6 +22,7 @@ jest.mock('@/ui/properties/property-card', () => ({
 jest.mock('@/lib/data/property-data', () => ({
     fetchFeaturedProperties: jest.fn(),
     fetchPaginatedProperties: jest.fn(),
+    fetchFavoritedProperties: jest.fn(),
 }));
 
 // Helper to create valid PropertiesQuery
@@ -74,12 +75,14 @@ const createMockProperty = (overrides: Partial<PropertyDocument> = {}): Property
 describe('PropertiesList', () => {
     const mockFetchFeaturedProperties = jest.mocked(jest.requireMock('@/lib/data/property-data').fetchFeaturedProperties);
     const mockFetchPaginatedProperties = jest.mocked(jest.requireMock('@/lib/data/property-data').fetchPaginatedProperties);
+    const mockFetchFavoritedProperties = jest.mocked(jest.requireMock('@/lib/data/property-data').fetchFavoritedProperties);
 
     beforeEach(() => {
         jest.clearAllMocks();
         // Setup default mock returns
         mockFetchFeaturedProperties.mockResolvedValue([]);
         mockFetchPaginatedProperties.mockResolvedValue([]);
+        mockFetchFavoritedProperties.mockResolvedValue([]);
     });
 
     describe('Component Structure', () => {
@@ -569,6 +572,351 @@ describe('PropertiesList', () => {
             }));
             
             expect(container.firstChild).toMatchSnapshot();
+        });
+    });
+
+    // FAVORITES-SPECIFIC TESTS - Phase 1 Enhancement
+    describe('Favorites Integration', () => {
+        const createFavoritedProperty = (overrides: Partial<PropertyDocument> = {}) =>
+            createMockProperty({
+                _id: `fav-${Math.random().toString(36).substr(2, 9)}`,
+                name: 'Favorited Property',
+                isFeatured: true, // Favorites are often featured
+                ...overrides,
+            });
+
+        describe('Favorited Properties Display', () => {
+            it('should render favorited properties with correct styling', async () => {
+                const favoritedProperties = [
+                    createFavoritedProperty({ name: 'My Favorite Home' }),
+                    createFavoritedProperty({ name: 'Dream Vacation Spot' }),
+                ];
+                
+                render(await PropertiesList({ properties: favoritedProperties }));
+                
+                expect(screen.getByText('PropertyCard: My Favorite Home')).toBeInTheDocument();
+                expect(screen.getByText('PropertyCard: Dream Vacation Spot')).toBeInTheDocument();
+                
+                // Verify grid structure is maintained
+                const propertyCards = screen.getAllByTestId('property-card');
+                expect(propertyCards).toHaveLength(2);
+            });
+
+            it('should handle empty favorites list gracefully', async () => {
+                render(await PropertiesList({ properties: [] }));
+                
+                expect(screen.getByText('No properties found')).toBeInTheDocument();
+                expect(screen.queryAllByTestId('property-card')).toHaveLength(0);
+            });
+
+            it('should display favorites with mixed property types', async () => {
+                const mixedFavorites = [
+                    createFavoritedProperty({ name: 'Favorite House', type: 'House' }),
+                    createFavoritedProperty({ name: 'Favorite Apartment', type: 'Apartment' }),
+                    createFavoritedProperty({ name: 'Favorite Condo', type: 'Condo' }),
+                ];
+                
+                render(await PropertiesList({ properties: mixedFavorites }));
+                
+                expect(screen.getByText('PropertyCard: Favorite House')).toBeInTheDocument();
+                expect(screen.getByText('PropertyCard: Favorite Apartment')).toBeInTheDocument();
+                expect(screen.getByText('PropertyCard: Favorite Condo')).toBeInTheDocument();
+            });
+
+            it('should maintain grid layout with various numbers of favorites', async () => {
+                const testCases = [1, 3, 6, 12];
+                
+                for (const count of testCases) {
+                    const favorites = Array.from({ length: count }, (_, i) =>
+                        createFavoritedProperty({ 
+                            _id: `grid-test-${i}`, 
+                            name: `Grid Test Favorite ${i + 1}` 
+                        })
+                    );
+                    
+                    const { container, unmount } = render(await PropertiesList({ properties: favorites }));
+                    
+                    const gridContainer = container.querySelector('.grid');
+                    expect(gridContainer).toBeInTheDocument();
+                    expect(gridContainer).toHaveClass('grid-cols-2', 'sm:grid-cols-3', 'md:grid-cols-4', 'lg:grid-cols-5', 'xl:grid-cols-6');
+                    
+                    const propertyCards = screen.getAllByTestId('property-card');
+                    expect(propertyCards).toHaveLength(count);
+                    
+                    unmount();
+                }
+            });
+        });
+
+        describe('Favorites Data Integration', () => {
+            it('should handle favorites properties with complex data structures', async () => {
+                const complexFavorite = createFavoritedProperty({
+                    name: 'Complex Favorite Property',
+                    location: {
+                        street: '456 Favorite St',
+                        city: 'Favorite City',
+                        state: 'FL',
+                        zipcode: '54321',
+                    },
+                    rates: {
+                        nightly: 250,
+                        weekly: 1500,
+                        monthly: 5000,
+                    },
+                    amenities: ['Pool', 'Gym', 'WiFi', 'Pet Friendly'],
+                    imagesData: [
+                        { secureUrl: 'https://test.com/fav1.jpg', publicId: 'fav1', width: 1200, height: 800 },
+                        { secureUrl: 'https://test.com/fav2.jpg', publicId: 'fav2', width: 1200, height: 800 },
+                    ]
+                });
+                
+                render(await PropertiesList({ properties: [complexFavorite] }));
+                
+                expect(screen.getByText('PropertyCard: Complex Favorite Property')).toBeInTheDocument();
+                
+                const propertyCard = screen.getByTestId('property-card');
+                expect(propertyCard).toHaveAttribute('data-property-name', 'Complex Favorite Property');
+            });
+
+            it('should preserve property metadata in favorites display', async () => {
+                const metadataProperty = createFavoritedProperty({
+                    _id: 'metadata-test',
+                    name: 'Metadata Favorite',
+                    beds: 4,
+                    baths: 3,
+                    squareFeet: 2500,
+                    owner: 'user-456' as unknown as import('mongoose').Types.ObjectId,
+                    createdAt: new Date('2024-01-15'),
+                    updatedAt: new Date('2024-01-20'),
+                });
+                
+                render(await PropertiesList({ properties: [metadataProperty] }));
+                
+                const propertyCard = screen.getByTestId('property-card');
+                expect(propertyCard).toHaveAttribute('data-property-id', 'metadata-test');
+                expect(propertyCard).toHaveAttribute('data-property-name', 'Metadata Favorite');
+            });
+
+            it('should handle favorites with missing optional fields', async () => {
+                const minimalFavorite = {
+                    _id: 'minimal-fav',
+                    name: 'Minimal Favorite',
+                    type: 'House',
+                    beds: 2,
+                    baths: 1,
+                    location: { 
+                        street: '123 Test St',
+                        city: 'Test City', 
+                        state: 'TX',
+                        zipcode: '12345'
+                    },
+                    owner: 'test-owner' as unknown as import('mongoose').Types.ObjectId,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                } as unknown as PropertyDocument;
+                
+                render(await PropertiesList({ properties: [minimalFavorite] }));
+                
+                expect(screen.getByText('PropertyCard: Minimal Favorite')).toBeInTheDocument();
+            });
+        });
+
+        describe('Favorites Performance', () => {
+            it('should handle large lists of favorite properties efficiently', async () => {
+                const largeFavoritesList = Array.from({ length: 50 }, (_, i) =>
+                    createFavoritedProperty({
+                        _id: `perf-fav-${i}`,
+                        name: `Performance Favorite ${i + 1}`,
+                    })
+                );
+                
+                const startTime = performance.now();
+                render(await PropertiesList({ properties: largeFavoritesList }));
+                const endTime = performance.now();
+                
+                expect(screen.getAllByTestId('property-card')).toHaveLength(50);
+                expect(endTime - startTime).toBeLessThan(1000); // Should render within 1 second
+                
+                // Verify first and last items
+                expect(screen.getByText('PropertyCard: Performance Favorite 1')).toBeInTheDocument();
+                expect(screen.getByText('PropertyCard: Performance Favorite 50')).toBeInTheDocument();
+            });
+
+            it('should not cause memory leaks with frequent favorites updates', async () => {
+                let favorites = [createFavoritedProperty({ name: 'Memory Test Favorite' })];
+                const { rerender, unmount } = render(await PropertiesList({ properties: favorites }));
+                
+                // Simulate multiple updates to favorites list
+                for (let i = 0; i < 10; i++) {
+                    favorites = [
+                        ...favorites,
+                        createFavoritedProperty({ 
+                            _id: `memory-${i}`, 
+                            name: `Memory Favorite ${i}` 
+                        })
+                    ];
+                    rerender(await PropertiesList({ properties: favorites }));
+                }
+                
+                expect(screen.getAllByTestId('property-card')).toHaveLength(11);
+                
+                // Should unmount cleanly without memory leaks
+                expect(() => unmount()).not.toThrow();
+            });
+        });
+
+        describe('Favorites UI State', () => {
+            it('should maintain consistent styling for favorited properties', async () => {
+                const styledFavorites = [
+                    createFavoritedProperty({ name: 'Styled Favorite 1' }),
+                    createFavoritedProperty({ name: 'Styled Favorite 2' }),
+                ];
+                
+                const { container } = render(await PropertiesList({ properties: styledFavorites }));
+                
+                const gridContainer = container.querySelector('.grid');
+                expect(gridContainer).toHaveClass('gap-4', 'md:gap-6');
+                
+                const propertyCards = screen.getAllByTestId('property-card');
+                propertyCards.forEach(card => {
+                    expect(card).toHaveAttribute('data-testid', 'property-card');
+                });
+            });
+
+            it('should handle responsive design for favorites display', async () => {
+                const responsiveFavorites = Array.from({ length: 8 }, (_, i) =>
+                    createFavoritedProperty({ 
+                        _id: `responsive-${i}`, 
+                        name: `Responsive Favorite ${i + 1}` 
+                    })
+                );
+                
+                const { container } = render(await PropertiesList({ 
+                    properties: responsiveFavorites,
+                    viewportWidth: 768 
+                }));
+                
+                const gridContainer = container.querySelector('.grid');
+                expect(gridContainer).toHaveClass(
+                    'grid-cols-2',
+                    'sm:grid-cols-3',
+                    'md:grid-cols-4',
+                    'lg:grid-cols-5',
+                    'xl:grid-cols-6'
+                );
+            });
+        });
+
+        describe('Favorites Error Handling', () => {
+            it('should handle corrupted favorite property data gracefully', async () => {
+                const corruptedFavorite = {
+                    _id: 'corrupted-id', // Valid ID to avoid toString error
+                    name: 'Corrupted Favorite',
+                    // Missing some required fields to test graceful handling
+                } as unknown as PropertyDocument;
+                
+                const validFavorite = createFavoritedProperty({ name: 'Valid Favorite' });
+                
+                render(await PropertiesList({ properties: [corruptedFavorite, validFavorite] }));
+                
+                // Should still render both properties (component handles missing fields gracefully)
+                expect(screen.getByText('PropertyCard: Corrupted Favorite')).toBeInTheDocument();
+                expect(screen.getByText('PropertyCard: Valid Favorite')).toBeInTheDocument();
+                expect(screen.getAllByTestId('property-card')).toHaveLength(2);
+            });
+
+            it('should handle favorites with invalid image data', async () => {
+                const invalidImageFavorite = createFavoritedProperty({
+                    name: 'Invalid Image Favorite',
+                    imagesData: [
+                        { secureUrl: '', publicId: '', width: 0, height: 0 },
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        null as unknown as any,
+                    ]
+                });
+                
+                render(await PropertiesList({ properties: [invalidImageFavorite] }));
+                
+                expect(screen.getByText('PropertyCard: Invalid Image Favorite')).toBeInTheDocument();
+            });
+        });
+
+        describe('Favorites Accessibility', () => {
+            it('should maintain accessibility standards for favorites list', async () => {
+                const accessibleFavorites = [
+                    createFavoritedProperty({ name: 'Accessible Favorite 1' }),
+                    createFavoritedProperty({ name: 'Accessible Favorite 2' }),
+                ];
+                
+                render(await PropertiesList({ properties: accessibleFavorites }));
+                
+                const section = screen.getByRole('region');
+                expect(section).toBeInTheDocument();
+                
+                const propertyCards = screen.getAllByTestId('property-card');
+                expect(propertyCards).toHaveLength(2);
+                
+                // Each favorite should have meaningful content for screen readers
+                expect(screen.getByText('PropertyCard: Accessible Favorite 1')).toBeInTheDocument();
+                expect(screen.getByText('PropertyCard: Accessible Favorite 2')).toBeInTheDocument();
+            });
+
+            it('should provide proper semantic structure for favorites grid', async () => {
+                const semanticFavorites = Array.from({ length: 4 }, (_, i) =>
+                    createFavoritedProperty({ 
+                        _id: `semantic-${i}`, 
+                        name: `Semantic Favorite ${i + 1}` 
+                    })
+                );
+                
+                const { container } = render(await PropertiesList({ properties: semanticFavorites }));
+                
+                const section = container.querySelector('section');
+                expect(section).toBeInTheDocument();
+                
+                const gridContainer = container.querySelector('.grid');
+                expect(gridContainer).toBeInTheDocument();
+                
+                // Grid should contain all favorite properties
+                const propertyCards = screen.getAllByTestId('property-card');
+                expect(propertyCards).toHaveLength(4);
+            });
+        });
+
+        describe('Favorites Snapshots', () => {
+            it('should match snapshot with favorite properties', async () => {
+                const snapshotFavorites = [
+                    createFavoritedProperty({ _id: 'snap-fav-1', name: 'Snapshot Favorite 1' }),
+                    createFavoritedProperty({ _id: 'snap-fav-2', name: 'Snapshot Favorite 2' }),
+                ];
+                
+                const { container } = render(await PropertiesList({ properties: snapshotFavorites }));
+                
+                expect(container.firstChild).toMatchSnapshot();
+            });
+
+            it('should match snapshot with single favorite property', async () => {
+                const singleFavorite = [
+                    createFavoritedProperty({ _id: 'snap-single-fav', name: 'Single Snapshot Favorite' }),
+                ];
+                
+                const { container } = render(await PropertiesList({ properties: singleFavorite }));
+                
+                expect(container.firstChild).toMatchSnapshot();
+            });
+
+            it('should match snapshot with many favorite properties', async () => {
+                const manyFavorites = Array.from({ length: 6 }, (_, i) =>
+                    createFavoritedProperty({ 
+                        _id: `snap-many-${i}`, 
+                        name: `Many Snapshot Favorite ${i + 1}` 
+                    })
+                );
+                
+                const { container } = render(await PropertiesList({ properties: manyFavorites }));
+                
+                expect(container.firstChild).toMatchSnapshot();
+            });
         });
     });
 });
