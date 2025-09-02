@@ -11,9 +11,7 @@ exports[`PropertyFavoriteButton Snapshots should match snapshot when favorited 1
     <div
       class="text-red-600"
       data-testid="heart-solid-icon"
-    >
-      Solid Heart
-    </div>
+    />
   </button>
 </form>
 `;
@@ -29,9 +27,7 @@ exports[`PropertyFavoriteButton Snapshots should match snapshot when not favorit
     <div
       class="text-gray-600"
       data-testid="heart-outline-icon"
-    >
-      Outline Heart
-    </div>
+    />
   </button>
 </form>
 `;
