@@ -13,7 +13,8 @@
       "Bash(./detect-duplicate-mocks.sh:*)",
       "Bash(find:*)",
       "Bash(npm run build:*)",
-      "Bash(npx jest:*)"
+      "Bash(npx jest:*)",
+      "Bash(cd:*)"
     ],
     "deny": [],
     "ask": []

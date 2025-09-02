@@ -1050,7 +1050,16 @@ describe('Property Data Layer Tests', () => {
 
     describe('Edge Cases and Authentication Integration', () => {
         const mockQuery: PropertiesQuery = {
-            $or: [{ name: /test/i }, { type: /test/i }, { "location.city": /test/i }]
+            $or: [
+                { name: /test/i },
+                { description: /test/i },
+                { amenities: /test/i },
+                { type: /test/i },
+                { "location.street": /test/i },
+                { "location.city": /test/i },
+                { "location.state": /test/i },
+                { "location.zip": /test/i }
+            ]
         };
 
         it('should handle extreme cases in property counting', async () => {

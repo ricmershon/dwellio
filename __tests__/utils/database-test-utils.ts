@@ -43,9 +43,9 @@ export const createMockModel = (data: unknown) => ({
 });
 
 /**
- * Creates a database error for testing
+ * Creates a database operation error for testing
  */
-export const createDatabaseError = (message: string = 'Database operation failed') => {
+export const createDatabaseOperationError = (message: string = 'Database operation failed') => {
     const error = new Error(message);
     error.name = 'DatabaseError';
     return error;
