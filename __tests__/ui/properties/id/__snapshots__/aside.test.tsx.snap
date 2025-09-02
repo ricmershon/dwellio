@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`PropertyPageAside Snapshots should match snapshot when hiding contact form (no session) 1`] = `<aside />`;
+
+exports[`PropertyPageAside Snapshots should match snapshot when hiding contact form (user is owner) 1`] = `<aside />`;
+
+exports[`PropertyPageAside Snapshots should match snapshot when showing contact form 1`] = `
+<aside>
+  <div
+    data-property-id="507f1f77bcf86cd799439011"
+    data-testid="property-contact-form"
+    data-user-email="user@example.com"
+    data-user-name="Test User"
+  >
+    PropertyContactForm Component
+  </div>
+</aside>
+`;
+
+exports[`PropertyPageAside Snapshots should match snapshot with custom user data 1`] = `
+<aside>
+  <div
+    data-property-id="507f1f77bcf86cd799439011"
+    data-testid="property-contact-form"
+    data-user-email="custom@email.com"
+    data-user-name="Custom Name"
+  >
+    PropertyContactForm Component
+  </div>
+</aside>
+`;

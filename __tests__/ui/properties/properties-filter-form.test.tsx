@@ -1,18 +1,15 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@/__tests__/test-utils';
+import { render, screen, fireEvent, createNextNavigationMock } from '@/__tests__/test-utils';
 import PropertyFilterForm from '@/ui/properties/properties-filter-form';
 
 // Mock Next.js navigation hooks
-const mockReplace = jest.fn();
-const mockSearchParams = new URLSearchParams();
-
 jest.mock('next/navigation', () => ({
+    ...createNextNavigationMock(),
     usePathname: jest.fn(() => '/properties'),
-    useSearchParams: jest.fn(() => mockSearchParams),
-    useRouter: jest.fn(() => ({
-        replace: mockReplace,
-    })),
 }));
+
+// Get mocks from the navigation mock
+const { mockReplace, mockSearchParams } = jest.requireMock('next/navigation');
 
 // Mock use-debounce to return a function that calls immediately
 jest.mock('use-debounce', () => ({

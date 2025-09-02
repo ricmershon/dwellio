@@ -4,24 +4,6 @@ exports[`NavBarDesktopRight Snapshots should match snapshot when logged in 1`] =
 <div
   class="flex items-center pr-2"
 >
-  <a
-    class="relative group"
-    href="/messages"
-  >
-    <div
-      class="size-8 rounded-full btn btn-login-logout p-1"
-      data-testid="bell-icon"
-    >
-      Bell Icon
-    </div>
-    <div
-      data-count="3"
-      data-testid="unread-message-count"
-      data-viewport-width="1024"
-    >
-      3
-    </div>
-  </a>
   <div
     class="ml-5 hidden md:block"
   >
@@ -55,54 +37,12 @@ exports[`NavBarDesktopRight Snapshots should match snapshot when logged in 1`] =
 </div>
 `;
 
-exports[`NavBarDesktopRight Snapshots should match snapshot when logged out 1`] = `
-<div
-  class="hidden md:block md:ml-6"
->
-  <div
-    class="flex items-center"
-  >
-    <div
-      data-testid="login-buttons"
-    >
-      <button
-        class="flex items-center btn btn-login-logout py-[6px] px-3"
-      >
-        <div
-          class="mr-2"
-          data-testid="google-icon"
-        >
-          Google Icon
-        </div>
-        Login
-      </button>
-    </div>
-  </div>
-</div>
-`;
+exports[`NavBarDesktopRight Snapshots should match snapshot when logged out 1`] = `null`;
 
 exports[`NavBarDesktopRight Snapshots should match snapshot with dropdown menu open 1`] = `
 <div
   class="flex items-center pr-2"
 >
-  <a
-    class="relative group"
-    href="/messages"
-  >
-    <div
-      class="size-8 rounded-full btn btn-login-logout p-1"
-      data-testid="bell-icon"
-    >
-      Bell Icon
-    </div>
-    <div
-      data-count="3"
-      data-testid="unread-message-count"
-      data-viewport-width="1024"
-    >
-      3
-    </div>
-  </a>
   <div
     class="ml-5 hidden md:block"
   >

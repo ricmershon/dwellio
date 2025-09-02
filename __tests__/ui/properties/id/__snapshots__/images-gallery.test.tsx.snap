@@ -1,0 +1,177 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`PropertyImagesGallery Snapshots should match snapshots for different layouts: empty images 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="grid grid-rows-2 gap-2 md:gap-3"
+  />
+</div>
+`;
+
+exports[`PropertyImagesGallery Snapshots should match snapshots for different layouts: multiple images 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="grid grid-rows-2 gap-2 md:gap-3 grid-cols-4"
+  >
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-span-2 row-span-2"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image1.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image1.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="true"
+            data-testid="next-image"
+            src="https://example.com/image1.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-start-3"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image2.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image2.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/image2.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-start-4 row-start-1"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image3.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image3.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/image3.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-start-3 row-start-2"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image4.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image4.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/image4.jpg"
+          />
+        </div>
+      </div>
+    </div>
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square col-start-4 row-start-2"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image5.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image5.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="false"
+            data-testid="next-image"
+            src="https://example.com/image5.jpg"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PropertyImagesGallery Snapshots should match snapshots for different layouts: single image 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="grid grid-rows-2 gap-2 md:gap-3"
+  >
+    <div
+      class="object-cover h-full w-full rounded-md cursor-pointer aspect-square"
+    >
+      <div
+        data-height="600"
+        data-original="https://example.com/image1.jpg"
+        data-testid="gallery-item"
+        data-thumbnail="https://example.com/image1.jpg"
+        data-width="800"
+      >
+        <div
+          class="relative h-full w-full"
+        >
+          <img
+            alt=""
+            class="object-cover rounded-md cursor-pointer"
+            data-fill="true"
+            data-priority="true"
+            data-testid="next-image"
+            src="https://example.com/image1.jpg"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

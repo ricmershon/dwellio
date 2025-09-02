@@ -4,8 +4,7 @@ import { getToken } from "next-auth/jwt";
 
 // Intercepts the typical provider flow to see if user is trying to access a protected page.
 export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-
+    const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
     if (!token) {
         const url = req.nextUrl.clone();
         url.pathname = "/";
@@ -13,7 +12,6 @@ export async function middleware(req: NextRequest) {
         url.searchParams.set("returnTo", req.nextUrl.pathname + req.nextUrl.search);
         return NextResponse.redirect(url);
     }
-
     return NextResponse.next();
 }
 

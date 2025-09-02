@@ -1,5 +1,122 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
+exports[`PropertiesList Favorites Integration Favorites Snapshots should match snapshot with favorite properties 1`] = `
+<section
+  role="region"
+>
+  <div
+    class="m-auto"
+  >
+    <div
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6"
+    >
+      <div
+        data-property-id="snap-fav-1"
+        data-property-name="Snapshot Favorite 1"
+        data-testid="property-card"
+      >
+        PropertyCard: 
+        Snapshot Favorite 1
+      </div>
+      <div
+        data-property-id="snap-fav-2"
+        data-property-name="Snapshot Favorite 2"
+        data-testid="property-card"
+      >
+        PropertyCard: 
+        Snapshot Favorite 2
+      </div>
+    </div>
+  </div>
+</section>
+`;
+
+exports[`PropertiesList Favorites Integration Favorites Snapshots should match snapshot with many favorite properties 1`] = `
+<section
+  role="region"
+>
+  <div
+    class="m-auto"
+  >
+    <div
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6"
+    >
+      <div
+        data-property-id="snap-many-0"
+        data-property-name="Many Snapshot Favorite 1"
+        data-testid="property-card"
+      >
+        PropertyCard: 
+        Many Snapshot Favorite 1
+      </div>
+      <div
+        data-property-id="snap-many-1"
+        data-property-name="Many Snapshot Favorite 2"
+        data-testid="property-card"
+      >
+        PropertyCard: 
+        Many Snapshot Favorite 2
+      </div>
+      <div
+        data-property-id="snap-many-2"
+        data-property-name="Many Snapshot Favorite 3"
+        data-testid="property-card"
+      >
+        PropertyCard: 
+        Many Snapshot Favorite 3
+      </div>
+      <div
+        data-property-id="snap-many-3"
+        data-property-name="Many Snapshot Favorite 4"
+        data-testid="property-card"
+      >
+        PropertyCard: 
+        Many Snapshot Favorite 4
+      </div>
+      <div
+        data-property-id="snap-many-4"
+        data-property-name="Many Snapshot Favorite 5"
+        data-testid="property-card"
+      >
+        PropertyCard: 
+        Many Snapshot Favorite 5
+      </div>
+      <div
+        data-property-id="snap-many-5"
+        data-property-name="Many Snapshot Favorite 6"
+        data-testid="property-card"
+      >
+        PropertyCard: 
+        Many Snapshot Favorite 6
+      </div>
+    </div>
+  </div>
+</section>
+`;
+
+exports[`PropertiesList Favorites Integration Favorites Snapshots should match snapshot with single favorite property 1`] = `
+<section
+  role="region"
+>
+  <div
+    class="m-auto"
+  >
+    <div
+      class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6"
+    >
+      <div
+        data-property-id="snap-single-fav"
+        data-property-name="Single Snapshot Favorite"
+        data-testid="property-card"
+      >
+        PropertyCard: 
+        Single Snapshot Favorite
+      </div>
+    </div>
+  </div>
+</section>
+`;
+
 exports[`PropertiesList Snapshots should match snapshot with direct properties 1`] = `
 <section
   role="region"

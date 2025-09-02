@@ -1,3 +1,36 @@
+// Mock Next.js router
+jest.mock('next/navigation', () => {
+	const mockPush = jest.fn();
+	const mockReplace = jest.fn();
+	const mockBack = jest.fn();
+	const mockForward = jest.fn();
+	const mockRefresh = jest.fn();
+	const mockPrefetch = jest.fn();
+	const mockSearchParams = new URLSearchParams();
+
+	return {
+		usePathname: jest.fn(() => '/'),
+		useSearchParams: jest.fn(() => mockSearchParams),
+		useRouter: jest.fn(() => ({
+			push: mockPush,
+			replace: mockReplace,
+			back: mockBack,
+			forward: mockForward,
+			refresh: mockRefresh,
+			prefetch: mockPrefetch,
+		})),
+		useParams: jest.fn(() => ({})),
+		// Export mocks for testing
+		mockPush,
+		mockReplace,
+		mockBack,
+		mockForward,
+		mockRefresh,
+		mockPrefetch,
+		mockSearchParams,
+	};
+});
+
 import React from 'react';
 import { act } from '@testing-library/react';
 import { useRouter } from 'next/navigation';
@@ -5,11 +38,6 @@ import { useRouter } from 'next/navigation';
 import ViewportCookieWriter from '@/ui/root/viewport-cookie-writer';
 import { VIEWPORT_WIDTH_COOKIE_NAME } from '@/types/types';
 import { render, createMockRouter, createMockViewportUtils } from '@/__tests__/test-utils';
-
-// Mock Next.js router
-jest.mock('next/navigation', () => ({
-    useRouter: jest.fn(),
-}));
 
 // Mock timers for debounce testing
 jest.useFakeTimers();

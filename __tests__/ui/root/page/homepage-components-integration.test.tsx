@@ -69,7 +69,7 @@ jest.mock('@/ui/root/page/featured-properties', () => {
     return MockFeaturedProperties;
 });
 
-jest.mock('@/ui/properties/search/search-form', () => {
+jest.mock('@/ui/properties/search-form', () => {
     const MockSearchForm = () => (
         <form data-testid="property-search-form">
             <input data-testid="search-input" placeholder="Search properties..." />

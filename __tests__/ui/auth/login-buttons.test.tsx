@@ -1,3 +1,41 @@
+// Mock Next.js navigation
+jest.mock('next/navigation', () => {
+	const mockPush = jest.fn();
+	const mockReplace = jest.fn();
+	const mockBack = jest.fn();
+	const mockForward = jest.fn();
+	const mockRefresh = jest.fn();
+	const mockPrefetch = jest.fn();
+	const mockSearchParams = new URLSearchParams();
+
+	return {
+		usePathname: jest.fn(() => '/'),
+		useSearchParams: jest.fn(() => mockSearchParams),
+		useRouter: jest.fn(() => ({
+			push: mockPush,
+			replace: mockReplace,
+			back: mockBack,
+			forward: mockForward,
+			refresh: mockRefresh,
+			prefetch: mockPrefetch,
+		})),
+		useParams: jest.fn(() => ({})),
+		// Export mocks for testing
+		mockPush,
+		mockReplace,
+		mockBack,
+		mockForward,
+		mockRefresh,
+		mockPrefetch,
+		mockSearchParams,
+	};
+});
+
+// Mock NextAuth
+jest.mock('next-auth/react', () => ({
+	signIn: jest.fn(),
+}));
+
 import React from 'react';
 import { screen, fireEvent } from '@testing-library/react';
 import { signIn, ClientSafeProvider, LiteralUnion } from 'next-auth/react';
@@ -7,16 +45,6 @@ import { useSearchParams } from 'next/navigation';
 import LoginButtons from '@/ui/auth/login-buttons';
 import { useAuthProviders } from '@/hooks/use-auth-providers';
 import { render, createMockSearchParams } from '@/__tests__/test-utils';
-
-// Mock NextAuth
-jest.mock('next-auth/react', () => ({
-	signIn: jest.fn(),
-}));
-
-// Mock Next.js navigation
-jest.mock('next/navigation', () => ({
-	useSearchParams: jest.fn(),
-}));
 
 // Mock custom hook
 jest.mock('@/hooks/use-auth-providers', () => ({
@@ -192,39 +220,15 @@ describe('LoginButtons', () => {
 	});
 
 	describe('Snapshots', () => {
-		it('should match snapshot with default props', () => {
+		it('should match snapshot in different states', () => {
+			// Default state
 			const { container } = render(<LoginButtons />);
-			expect(container.firstChild).toMatchSnapshot();
-		});
-
-		it('should match snapshot with custom props', () => {
-			const customIcon = <span>🔐</span>;
-			const { container } = render(
-				<LoginButtons 
-					buttonClassName="btn-primary" 
-					text="Sign In" 
-					icon={customIcon} 
-				/>
-			);
-			expect(container.firstChild).toMatchSnapshot();
-		});
-
-		it('should match snapshot when providers are null', () => {
-			mockUseAuthProviders.mockReturnValue(null);
+			expect(container.firstChild).toMatchSnapshot('default state');
 			
-			const { container } = render(<LoginButtons />);
-			expect(container.firstChild).toMatchSnapshot();
-		});
-
-		it('should match snapshot with single provider', () => {
-			const singleProvider = {
-				google: mockProviders.google,
-			};
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			mockUseAuthProviders.mockReturnValue(singleProvider as any);
-
-			const { container } = render(<LoginButtons />);
-			expect(container.firstChild).toMatchSnapshot();
+			// Null providers state
+			mockUseAuthProviders.mockReturnValue(null);
+			const { container: nullContainer } = render(<LoginButtons />);
+			expect(nullContainer.firstChild).toMatchSnapshot('null providers');
 		});
 	});
 

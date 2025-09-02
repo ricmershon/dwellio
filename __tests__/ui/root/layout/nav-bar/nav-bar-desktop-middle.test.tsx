@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@/__tests__/test-utils';
+import { render, screen, createNextNavigationMock } from '@/__tests__/test-utils';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 
@@ -10,9 +10,7 @@ jest.mock('next-auth/react', () => ({
     useSession: jest.fn(),
 }));
 
-jest.mock('next/navigation', () => ({
-    usePathname: jest.fn(),
-}));
+jest.mock('next/navigation', () => createNextNavigationMock());
 
 // Mock Next.js Link component
 jest.mock('next/link', () => {
