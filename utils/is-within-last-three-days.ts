@@ -4,8 +4,8 @@ export const isWithinLastThreeDays = (date: Date) => {
     /**
      * Get date for 3 days ago
      */
-    const threeDaysAgog = new Date();
-    threeDaysAgog.setDate(now.getDate() - 3);
+    const threeDaysAgo = new Date();
+    threeDaysAgo.setDate(now.getDate() - 3);
 
-    return date >= threeDaysAgog && date <= now;
+    return date >= threeDaysAgo && date <= now;
 };
