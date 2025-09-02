@@ -96,15 +96,13 @@ describe('MessagesPage', () => {
             expect(fetchMessages).toHaveBeenCalledWith(mockSessionUser.id);
         });
 
-        it('should handle authentication redirects', async () => {
-            requireSessionUser.mockRejectedValue(new Error('Authentication required'));
-
+        it('should handle authentication and session errors', async () => {
+            // Authentication required
+            requireSessionUser.mockRejectedValueOnce(new Error('Authentication required'));
             await expect(MessagesPage()).rejects.toThrow('Authentication required');
-        });
 
-        it('should handle session errors gracefully', async () => {
-            requireSessionUser.mockRejectedValue(new Error('Session expired'));
-
+            // Session expired
+            requireSessionUser.mockRejectedValueOnce(new Error('Session expired'));
             await expect(MessagesPage()).rejects.toThrow('Session expired');
         });
     });
