@@ -224,7 +224,7 @@ describe('NavBarRight', () => {
             expect(menu).toHaveClass(
                 'md:hidden', 'absolute', 'w-screen', '-mr-4', 'p-3', 
                 'rounded-sm', 'bg-white', 'text-sm', 'right-0', 'top-10', 
-                'z-10', 'border', 'border-gray-100', 'shadow-md', 'flex', 
+                'z-40', 'border', 'border-gray-100', 'shadow-md', 'flex', 
                 'flex-col', 'items-center', 'justify-center', 'space-y-3'
             );
         });

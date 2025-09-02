@@ -118,10 +118,10 @@ exports[`PropertyDetails Snapshots should match snapshot when user is property o
       Rates
     </h3>
     <div
-      class="flex flex-col md:flex-row justify-start items-start"
+      class="flex flex-col sm:flex-row justify-start items-start"
     >
       <div
-        class="flex items-center justify-center mb-2 md:pb-0 md:mr-4"
+        class="flex items-center justify-center mb-2 sm:mr-4"
       >
         <div
           class="mr-1 text-sm"
@@ -135,7 +135,7 @@ exports[`PropertyDetails Snapshots should match snapshot when user is property o
         </div>
       </div>
       <div
-        class="flex items-center justify-center mb-2 md:pb-0 md:mr-4"
+        class="flex items-center justify-center mb-2 sm:mr-4"
       >
         <div
           class="mr-1 text-sm"
@@ -149,7 +149,7 @@ exports[`PropertyDetails Snapshots should match snapshot when user is property o
         </div>
       </div>
       <div
-        class="flex items-center justify-center mb-2 md:pb-0"
+        class="flex items-center justify-center"
       >
         <div
           class="mr-1 text-sm"
@@ -307,10 +307,10 @@ exports[`PropertyDetails Snapshots should match snapshot with default property 1
       Rates
     </h3>
     <div
-      class="flex flex-col md:flex-row justify-start items-start"
+      class="flex flex-col sm:flex-row justify-start items-start"
     >
       <div
-        class="flex items-center justify-center mb-2 md:pb-0 md:mr-4"
+        class="flex items-center justify-center mb-2 sm:mr-4"
       >
         <div
           class="mr-1 text-sm"
@@ -324,7 +324,7 @@ exports[`PropertyDetails Snapshots should match snapshot with default property 1
         </div>
       </div>
       <div
-        class="flex items-center justify-center mb-2 md:pb-0 md:mr-4"
+        class="flex items-center justify-center mb-2 sm:mr-4"
       >
         <div
           class="mr-1 text-sm"
@@ -338,7 +338,7 @@ exports[`PropertyDetails Snapshots should match snapshot with default property 1
         </div>
       </div>
       <div
-        class="flex items-center justify-center mb-2 md:pb-0"
+        class="flex items-center justify-center"
       >
         <div
           class="mr-1 text-sm"
@@ -496,10 +496,10 @@ exports[`PropertyDetails Snapshots should match snapshot with minimal rates 1`] 
       Rates
     </h3>
     <div
-      class="flex flex-col md:flex-row justify-start items-start"
+      class="flex flex-col sm:flex-row justify-start items-start"
     >
       <div
-        class="flex items-center justify-center mb-2 md:pb-0 md:mr-4"
+        class="flex items-center justify-center mb-2 sm:mr-4"
       >
         <div
           class="mr-1 text-sm"
@@ -601,10 +601,10 @@ exports[`PropertyDetails Snapshots should match snapshot with no amenities 1`] =
       Rates
     </h3>
     <div
-      class="flex flex-col md:flex-row justify-start items-start"
+      class="flex flex-col sm:flex-row justify-start items-start"
     >
       <div
-        class="flex items-center justify-center mb-2 md:pb-0 md:mr-4"
+        class="flex items-center justify-center mb-2 sm:mr-4"
       >
         <div
           class="mr-1 text-sm"
@@ -618,7 +618,7 @@ exports[`PropertyDetails Snapshots should match snapshot with no amenities 1`] =
         </div>
       </div>
       <div
-        class="flex items-center justify-center mb-2 md:pb-0 md:mr-4"
+        class="flex items-center justify-center mb-2 sm:mr-4"
       >
         <div
           class="mr-1 text-sm"
@@ -632,7 +632,7 @@ exports[`PropertyDetails Snapshots should match snapshot with no amenities 1`] =
         </div>
       </div>
       <div
-        class="flex items-center justify-center mb-2 md:pb-0"
+        class="flex items-center justify-center"
       >
         <div
           class="mr-1 text-sm"

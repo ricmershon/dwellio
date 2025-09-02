@@ -75,7 +75,7 @@ exports[`NavBarDesktopRight Snapshots should match snapshot with dropdown menu o
     <div
       aria-labelledby="user-menu-button"
       aria-orientation="vertical"
-      class="absolute right-0 top-10 z-10 p-2 w-50 origin-top-right rounded-sm bg-white border-gray-100 shadow-md flex flex-col items-center justify-center space-y-2"
+      class="absolute right-0 top-10 z-40 p-2 w-50 origin-top-right rounded-sm bg-white border-gray-100 shadow-md flex flex-col items-center justify-center space-y-2"
       id="user-menu"
       role="menu"
       tabindex="-1"
