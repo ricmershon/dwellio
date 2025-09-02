@@ -69,14 +69,14 @@ jest.mock('@/utils/get-session-user', () => ({
 }));
 
 jest.mock('@/utils/to-serialized-object', () => ({
-    toSerializedOjbect: jest.fn((obj: Record<string, unknown>) => ({
+    toSerializedObject: jest.fn((obj: Record<string, unknown>) => ({
         ...obj,
         _id: obj._id?.toString() || 'mock-id',
     })),
 }));
 
-jest.mock('@/utils/is-within-last-seven-days', () => ({
-    isWithinLastWeek: jest.fn(),
+jest.mock('@/utils/is-within-last-three-days', () => ({
+    isWithinLastThreeDays: jest.fn(),
 }));
 
 // Create mock property data
@@ -115,8 +115,8 @@ const createMockProperty = (overrides: Partial<PropertyDocument> = {}): Property
 describe('PropertyCard', () => {
     const mockGetSessionUser = jest.mocked(jest.requireMock('@/utils/get-session-user').getSessionUser);
     const mockGetRateDisplay = jest.mocked(jest.requireMock('@/utils/get-rate-display').getRateDisplay);
-    const mockToSerializedObject = jest.mocked(jest.requireMock('@/utils/to-serialized-object').toSerializedOjbect);
-    const mockIsWithinLastWeek = jest.mocked(jest.requireMock('@/utils/is-within-last-seven-days').isWithinLastWeek);
+    const mockToSerializedObject = jest.mocked(jest.requireMock('@/utils/to-serialized-object').toSerializedObject);
+    const mockIsWithinLastThreeDays = jest.mocked(jest.requireMock('@/utils/is-within-last-three-days').isWithinLastThreeDays);
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -124,7 +124,7 @@ describe('PropertyCard', () => {
         mockGetSessionUser.mockResolvedValue(null);
         mockGetRateDisplay.mockReturnValue('$250/night');
         mockToSerializedObject.mockImplementation((obj: Record<string, unknown>) => ({ ...obj, _id: obj._id?.toString() || 'mock-id' }));
-        mockIsWithinLastWeek.mockReturnValue(false);
+        mockIsWithinLastThreeDays.mockReturnValue(false);
     });
 
     describe('Component Structure', () => {
@@ -232,14 +232,14 @@ describe('PropertyCard', () => {
         it('should show "Recently Added" badge for new properties', async () => {
             const property = createMockProperty();
             
-            mockIsWithinLastWeek.mockImplementation((date: Date) => 
+            mockIsWithinLastThreeDays.mockImplementation((date: Date) => 
                 date.getTime() === property.createdAt.getTime()
             );
             
             render(await PropertyCard({ property }));
             
             expect(screen.getByText('Recently Added')).toBeInTheDocument();
-            expect(mockIsWithinLastWeek).toHaveBeenCalledWith(property.createdAt);
+            expect(mockIsWithinLastThreeDays).toHaveBeenCalledWith(property.createdAt);
         });
 
         it('should show "Recently Updated" badge for updated properties', async () => {
@@ -248,19 +248,19 @@ describe('PropertyCard', () => {
                 updatedAt: new Date('2024-12-01'), // Recent update
             });
             
-            mockIsWithinLastWeek.mockImplementation((date: Date) => 
+            mockIsWithinLastThreeDays.mockImplementation((date: Date) => 
                 date === property.updatedAt
             );
             
             render(await PropertyCard({ property }));
             
             expect(screen.getByText('Recently Updated')).toBeInTheDocument();
-            expect(mockIsWithinLastWeek).toHaveBeenCalledWith(property.createdAt);
-            expect(mockIsWithinLastWeek).toHaveBeenCalledWith(property.updatedAt);
+            expect(mockIsWithinLastThreeDays).toHaveBeenCalledWith(property.createdAt);
+            expect(mockIsWithinLastThreeDays).toHaveBeenCalledWith(property.updatedAt);
         });
 
         it('should not show badge for old properties', async () => {
-            mockIsWithinLastWeek.mockReturnValue(false);
+            mockIsWithinLastThreeDays.mockReturnValue(false);
             const property = createMockProperty();
             
             render(await PropertyCard({ property }));
@@ -270,7 +270,7 @@ describe('PropertyCard', () => {
         });
 
         it('should prioritize "Recently Added" over "Recently Updated"', async () => {
-            mockIsWithinLastWeek.mockReturnValue(true); // Both dates are recent
+            mockIsWithinLastThreeDays.mockReturnValue(true); // Both dates are recent
             const property = createMockProperty();
             
             render(await PropertyCard({ property }));
@@ -496,7 +496,7 @@ describe('PropertyCard', () => {
         });
 
         it('should match snapshot with recently added property', async () => {
-            mockIsWithinLastWeek.mockImplementation((date: Date) => 
+            mockIsWithinLastThreeDays.mockImplementation((date: Date) => 
                 date === createMockProperty().createdAt
             );
             const property = createMockProperty();
@@ -513,6 +513,85 @@ describe('PropertyCard', () => {
             const { container } = render(await PropertyCard({ property }));
             
             expect(container.firstChild).toMatchSnapshot();
+        });
+    });
+
+    // FAVORITES INTEGRATION TESTS - Essential property-card specific behavior only
+    describe('Favorites Integration', () => {
+        describe('Favorite Button Display Logic', () => {
+            it('should display favorite button when user is logged in and does not own property', async () => {
+                mockGetSessionUser.mockResolvedValue({ id: 'different-user' });
+                mockToSerializedObject.mockReturnValue({ _id: 'serialized-property-id' });
+                const property = createMockProperty({ owner: 'owner-456' as unknown as any });
+                
+                render(await PropertyCard({ property }));
+                
+                const favoriteButton = screen.getByTestId('property-favorite-button');
+                expect(favoriteButton).toBeInTheDocument();
+                expect(favoriteButton).toHaveAttribute('data-property-id', 'serialized-property-id');
+            });
+
+            it('should not display favorite button for property owners', async () => {
+                const ownerId = 'property-owner-123';
+                mockGetSessionUser.mockResolvedValue({ id: ownerId });
+                const property = createMockProperty({ owner: ownerId as unknown as any });
+                
+                render(await PropertyCard({ property }));
+                
+                expect(screen.queryByTestId('property-favorite-button')).not.toBeInTheDocument();
+            });
+
+            it('should not display favorite button when user not logged in', async () => {
+                mockGetSessionUser.mockResolvedValue(null);
+                const property = createMockProperty();
+                
+                render(await PropertyCard({ property }));
+                
+                expect(screen.queryByTestId('property-favorite-button')).not.toBeInTheDocument();
+            });
+        });
+
+        describe('Property Card with Favorites', () => {
+            it('should render property card with favorite button positioned correctly', async () => {
+                mockGetSessionUser.mockResolvedValue({ id: 'logged-in-user' });
+                const property = createMockProperty({ owner: 'different-owner' as unknown as any });
+                
+                const { container } = render(await PropertyCard({ property }));
+                
+                const favoriteButton = screen.getByTestId('property-favorite-button');
+                const cardContainer = container.querySelector('.rounded-md.shadow-md.relative');
+                
+                expect(cardContainer).toBeInTheDocument();
+                expect(favoriteButton).toBeInTheDocument();
+                expect(mockToSerializedObject).toHaveBeenCalledWith(property);
+            });
+
+            it('should maintain all property card functionality when favorite button is present', async () => {
+                mockGetSessionUser.mockResolvedValue({ id: 'user-123' });
+                const property = createMockProperty({ 
+                    name: 'Test Property with Favorites',
+                    owner: 'different-owner' as unknown as any 
+                });
+                
+                render(await PropertyCard({ property }));
+                
+                // Verify core property card elements still work with favorite button
+                expect(screen.getByText('Test Property with Favorites')).toBeInTheDocument();
+                expect(screen.getByTestId('property-favorite-button')).toBeInTheDocument();
+                expect(screen.getAllByTestId('property-link')).toHaveLength(3);
+                expect(screen.getByTestId('property-image')).toBeInTheDocument();
+            });
+        });
+
+        describe('Favorites Snapshot', () => {
+            it('should match snapshot with favorite button integrated', async () => {
+                mockGetSessionUser.mockResolvedValue({ id: 'snapshot-user' });
+                const property = createMockProperty({ owner: 'different-owner' as unknown as any });
+                
+                const { container } = render(await PropertyCard({ property }));
+                
+                expect(container.firstChild).toMatchSnapshot();
+            });
         });
     });
 });

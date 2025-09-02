@@ -44,6 +44,41 @@ export const createNextLinkMock = () => {
 };
 
 // =============================================================================
+// NEXT.JS NAVIGATION MOCK - Unified navigation hooks mock
+// =============================================================================
+export const createNextNavigationMock = () => {
+    const mockPush = jest.fn();
+    const mockReplace = jest.fn();
+    const mockBack = jest.fn();
+    const mockForward = jest.fn();
+    const mockRefresh = jest.fn();
+    const mockPrefetch = jest.fn();
+    const mockSearchParams = new URLSearchParams();
+
+    return {
+        usePathname: jest.fn(() => '/'),
+        useSearchParams: jest.fn(() => mockSearchParams),
+        useRouter: jest.fn(() => ({
+            push: mockPush,
+            replace: mockReplace,
+            back: mockBack,
+            forward: mockForward,
+            refresh: mockRefresh,
+            prefetch: mockPrefetch,
+        })),
+        useParams: jest.fn(() => ({})),
+        // Export mocks for testing
+        mockPush,
+        mockReplace,
+        mockBack,
+        mockForward,
+        mockRefresh,
+        mockPrefetch,
+        mockSearchParams,
+    };
+};
+
+// =============================================================================
 // REACT ICONS MOCKS - Individual icon mock creators
 // =============================================================================
 export const createReactIconsMocks = () => ({

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@/__tests__/test-utils';
+import { render, screen, fireEvent, createReactToastifyMock } from '@/__tests__/test-utils';
 import PropertyContactForm from '@/ui/properties/id/contact-form';
 import { PropertyDocument } from '@/models';
 import { ActionState, ActionStatus } from '@/types/types';
@@ -20,15 +20,8 @@ jest.mock('@/lib/actions/message-actions', () => ({
     createMessage: jest.fn(),
 }));
 
-// Mock toast notifications
-jest.mock('react-toastify', () => ({
-    toast: {
-        success: jest.fn(),
-        error: jest.fn(),
-        info: jest.fn(),
-        warning: jest.fn(),
-    },
-}));
+// Use unified react-toastify mock
+jest.mock('react-toastify', () => createReactToastifyMock());
 
 // Mock icons
 jest.mock('react-icons/fa', () => ({
@@ -705,6 +698,71 @@ describe('PropertyContactForm', () => {
             
             expect(screen.getByDisplayValue('new-property-456')).toBeInTheDocument();
             expect(screen.getByDisplayValue('new-owner-789')).toBeInTheDocument();
+        });
+    });
+
+    describe('Snapshots', () => {
+        it('should match snapshot with default props', () => {
+            const { container } = render(<PropertyContactForm {...defaultProps} />);
+            expect(container.firstChild).toMatchSnapshot();
+        });
+
+        it('should match snapshot with minimal user data', () => {
+            const propsWithoutUser = {
+                ...defaultProps,
+                userName: null,
+                userEmail: null,
+            };
+            const { container } = render(<PropertyContactForm {...propsWithoutUser} />);
+            expect(container.firstChild).toMatchSnapshot();
+        });
+
+        it('should match snapshot with form errors', () => {
+            // Mock useActionState to return errors
+            mockUseActionState.mockReturnValue([
+                createMockActionState({
+                    formErrorMap: {
+                        name: ['Name is required'],
+                        email: ['Invalid email format'],
+                        message: ['Message too short'],
+                    },
+                }),
+                mockFormAction,
+                false,
+            ]);
+
+            const { container } = render(<PropertyContactForm {...defaultProps} />);
+            expect(container.firstChild).toMatchSnapshot();
+        });
+
+        it('should match snapshot in loading state', () => {
+            // Mock useActionState to return pending state
+            mockUseActionState.mockReturnValue([
+                createMockActionState(),
+                mockFormAction,
+                true, // pending state
+            ]);
+
+            const { container } = render(<PropertyContactForm {...defaultProps} />);
+            expect(container.firstChild).toMatchSnapshot();
+        });
+
+        it('should match snapshot with different property data', () => {
+            const customProperty = createMockProperty({
+                _id: 'custom-property-123' as any,
+                name: 'Custom Property Name',
+                owner: 'custom-owner-456' as any,
+            });
+
+            const customProps = {
+                ...defaultProps,
+                property: customProperty,
+                userName: 'Jane Smith',
+                userEmail: 'jane@example.com',
+            };
+
+            const { container } = render(<PropertyContactForm {...customProps} />);
+            expect(container.firstChild).toMatchSnapshot();
         });
     });
 });

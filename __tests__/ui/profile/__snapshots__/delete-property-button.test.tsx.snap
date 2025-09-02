@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`DeletePropertyButton Component Snapshots should match snapshot showing form layout structure 1`] = `
+<form
+  action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+  class="inline-block"
+>
+  <button
+    class="btn btn-danger"
+    type="submit"
+  >
+    Delete
+  </button>
+</form>
+`;
+
+exports[`DeletePropertyButton Component Snapshots should match snapshot with default button state 1`] = `
+<form
+  action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+  class="inline-block"
+>
+  <button
+    class="btn btn-danger"
+    type="submit"
+  >
+    Delete
+  </button>
+</form>
+`;
+
+exports[`DeletePropertyButton Component Snapshots should match snapshot with different propertyId 1`] = `
+<form
+  action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+  class="inline-block"
+>
+  <button
+    class="btn btn-danger"
+    type="submit"
+  >
+    Delete
+  </button>
+</form>
+`;

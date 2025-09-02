@@ -9,7 +9,12 @@
       "Bash(npm run lint:*)",
       "Bash(chmod:*)",
       "Bash(./__tests__/detect-duplicate-mocks.sh:*)",
-      "Bash(__tests__/detect-duplicate-mocks.sh:*)"
+      "Bash(__tests__/detect-duplicate-mocks.sh:*)",
+      "Bash(./detect-duplicate-mocks.sh:*)",
+      "Bash(find:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx jest:*)",
+      "Bash(cd:*)"
     ],
     "deny": [],
     "ask": []
