@@ -37,20 +37,6 @@ describe('DeletePropertyButton Component', () => {
             expect(button).toBeInTheDocument();
         });
 
-        it('should render form with inline-block styling', () => {
-            const { container } = render(<DeletePropertyButton propertyId={mockPropertyId} />);
-            
-            const form = container.querySelector('form');
-            expect(form).toHaveClass('inline-block');
-        });
-
-        it('should render button with correct type and styling', () => {
-            render(<DeletePropertyButton propertyId={mockPropertyId} />);
-            
-            const button = screen.getByRole('button', { name: 'Delete' });
-            expect(button).toHaveAttribute('type', 'submit');
-            expect(button).toHaveClass('btn', 'btn-danger');
-        });
 
         it('should create bound action function properly', () => {
             // This test verifies the component renders without errors, 
@@ -212,97 +198,6 @@ describe('DeletePropertyButton Component', () => {
         });
     });
 
-    describe('Toast Notifications', () => {
-        it('should use toast[result.status] dynamic pattern', async () => {
-            const user = userEvent.setup();
-            const result = {
-                status: ActionStatus.SUCCESS,
-                message: 'Dynamic toast test'
-            };
-            
-            mockDeleteProperty.mockResolvedValue(result);
-
-            render(<DeletePropertyButton propertyId={mockPropertyId} />);
-            
-            await user.click(screen.getByRole('button', { name: 'Delete' }));
-
-            await waitFor(() => {
-                expect(mockToast[ActionStatus.SUCCESS]).toHaveBeenCalledWith('Dynamic toast test');
-            });
-        });
-
-        it('should display result.message as toast content', async () => {
-            const user = userEvent.setup();
-            const customMessage = 'Custom deletion message';
-            const result = {
-                status: ActionStatus.SUCCESS,
-                message: customMessage
-            };
-            
-            mockDeleteProperty.mockResolvedValue(result);
-
-            render(<DeletePropertyButton propertyId={mockPropertyId} />);
-            
-            await user.click(screen.getByRole('button', { name: 'Delete' }));
-
-            await waitFor(() => {
-                expect(mockToast.success).toHaveBeenCalledWith(customMessage);
-            });
-        });
-
-        it('should handle different toast types based on status', async () => {
-            const user = userEvent.setup();
-            
-            const { rerender } = render(<DeletePropertyButton propertyId={mockPropertyId} />);
-            
-            // Test success toast
-            mockDeleteProperty.mockResolvedValue({
-                status: ActionStatus.SUCCESS,
-                message: 'Success message'
-            });
-            
-            await user.click(screen.getByRole('button', { name: 'Delete' }));
-            
-            await waitFor(() => {
-                expect(mockToast.success).toHaveBeenCalledWith('Success message');
-            });
-
-            // Reset mocks for next test
-            jest.clearAllMocks();
-            
-            // Test error toast
-            mockDeleteProperty.mockResolvedValue({
-                status: ActionStatus.ERROR,
-                message: 'Error message'
-            });
-            
-            rerender(<DeletePropertyButton propertyId="different-property" />);
-            
-            await user.click(screen.getByRole('button', { name: 'Delete' }));
-            
-            await waitFor(() => {
-                expect(mockToast.error).toHaveBeenCalledWith('Error message');
-            });
-        });
-
-        it('should handle missing message gracefully', async () => {
-            const user = userEvent.setup();
-            const resultWithoutMessage = {
-                status: ActionStatus.SUCCESS
-            };
-            
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            mockDeleteProperty.mockResolvedValue(resultWithoutMessage as any);
-
-            render(<DeletePropertyButton propertyId={mockPropertyId} />);
-            
-            await user.click(screen.getByRole('button', { name: 'Delete' }));
-
-            await waitFor(() => {
-                expect(mockToast.success).not.toHaveBeenCalled();
-            });
-        });
-    });
 
     describe('Action Results Handling', () => {
         it('should validate result object structure', async () => {

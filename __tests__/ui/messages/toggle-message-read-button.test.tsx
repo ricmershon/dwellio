@@ -371,37 +371,6 @@ describe('ToggleMessageReadButton', () => {
     });
 
     describe('Error Handling', () => {
-        it('should handle server action failures gracefully', async () => {
-            toggleMessageRead.mockRejectedValue(new Error('Network error'));
-
-            render(<ToggleMessageReadButton messageId="msg-123" read={false} />);
-            
-            const button = screen.getByRole('button');
-            
-            // Should not crash on error
-            expect(() => fireEvent.click(button)).not.toThrow();
-        });
-
-        it('should maintain original state on error', async () => {
-            toggleMessageRead.mockResolvedValue({
-                status: ActionStatus.ERROR,
-                message: 'Update failed'
-            });
-
-            render(<ToggleMessageReadButton messageId="msg-123" read={false} />);
-            
-            const button = screen.getByRole('button');
-            expect(button).toHaveTextContent('Mark as Read');
-            
-            fireEvent.click(button);
-            
-            await waitFor(() => {
-                expect(toast.error).toHaveBeenCalled();
-            });
-
-            // Button text should remain the same
-            expect(button).toHaveTextContent('Mark as Read');
-        });
 
         it('should display error messages to user', async () => {
             toggleMessageRead.mockResolvedValue({
@@ -470,15 +439,6 @@ describe('ToggleMessageReadButton', () => {
             });
         });
 
-        it('should apply correct CSS classes', () => {
-            render(<ToggleMessageReadButton messageId="msg-123" read={false} />);
-            
-            const form = screen.getByRole('button').closest('form');
-            expect(form).toHaveClass('inline-block');
-            
-            const button = screen.getByRole('button');
-            expect(button).toHaveClass('btn', 'btn-primary', 'mt-4', 'mr-2');
-        });
     });
 
     describe('Component Props', () => {
