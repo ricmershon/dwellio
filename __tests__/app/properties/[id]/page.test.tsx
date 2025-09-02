@@ -14,14 +14,14 @@ jest.mock('@/utils/get-session-user', () => ({
     getSessionUser: jest.fn(),
 }));
 
-// Mock toSerializedOjbect
+// Mock toSerializedObject
 jest.mock('@/utils/to-serialized-object', () => ({
-    toSerializedOjbect: jest.fn(),
+    toSerializedObject: jest.fn(),
 }));
 
 const mockFetchProperty = jest.requireMock('@/lib/data/property-data').fetchProperty;
 const mockGetSessionUser = jest.requireMock('@/utils/get-session-user').getSessionUser;
-const mockToSerializedObject = jest.requireMock('@/utils/to-serialized-object').toSerializedOjbect;
+const mockToSerializedObject = jest.requireMock('@/utils/to-serialized-object').toSerializedObject;
 
 // Mock child components
 jest.mock('@/ui/shared/breadcrumbs', () => {

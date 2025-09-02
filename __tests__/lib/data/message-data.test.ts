@@ -6,7 +6,7 @@ jest.mock('@/models', () => ({
     }
 }));
 jest.mock('@/utils/to-serialized-object', () => ({
-    toSerializedOjbect: jest.fn()
+    toSerializedObject: jest.fn()
 }));
 
 // Import after mocks
@@ -14,7 +14,7 @@ import { fetchMessages } from '@/lib/data/message-data';
 
 const mockDbConnect = jest.requireMock('@/lib/db-connect');
 const { Message: mockMessage } = jest.requireMock('@/models');
-const { toSerializedOjbect: mockToSerializedObject } = jest.requireMock('@/utils/to-serialized-object');
+const { toSerializedObject: mockToSerializedObject } = jest.requireMock('@/utils/to-serialized-object');
 
 describe('fetchMessages', () => {
     const testUserId = '507f1f77bcf86cd799439011';

@@ -69,14 +69,14 @@ jest.mock('@/utils/get-session-user', () => ({
 }));
 
 jest.mock('@/utils/to-serialized-object', () => ({
-    toSerializedOjbect: jest.fn((obj: Record<string, unknown>) => ({
+    toSerializedObject: jest.fn((obj: Record<string, unknown>) => ({
         ...obj,
         _id: obj._id?.toString() || 'mock-id',
     })),
 }));
 
 jest.mock('@/utils/is-within-last-three-days', () => ({
-    isWithinLastWeek: jest.fn(),
+    isWithinLastThreeDays: jest.fn(),
 }));
 
 // Create mock property data
@@ -115,8 +115,8 @@ const createMockProperty = (overrides: Partial<PropertyDocument> = {}): Property
 describe('PropertyCard', () => {
     const mockGetSessionUser = jest.mocked(jest.requireMock('@/utils/get-session-user').getSessionUser);
     const mockGetRateDisplay = jest.mocked(jest.requireMock('@/utils/get-rate-display').getRateDisplay);
-    const mockToSerializedObject = jest.mocked(jest.requireMock('@/utils/to-serialized-object').toSerializedOjbect);
-    const mockIsWithinLastWeek = jest.mocked(jest.requireMock('@/utils/is-within-last-three-days').isWithinLastWeek);
+    const mockToSerializedObject = jest.mocked(jest.requireMock('@/utils/to-serialized-object').toSerializedObject);
+    const mockIsWithinLastThreeDays = jest.mocked(jest.requireMock('@/utils/is-within-last-three-days').isWithinLastThreeDays);
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -124,7 +124,7 @@ describe('PropertyCard', () => {
         mockGetSessionUser.mockResolvedValue(null);
         mockGetRateDisplay.mockReturnValue('$250/night');
         mockToSerializedObject.mockImplementation((obj: Record<string, unknown>) => ({ ...obj, _id: obj._id?.toString() || 'mock-id' }));
-        mockIsWithinLastWeek.mockReturnValue(false);
+        mockIsWithinLastThreeDays.mockReturnValue(false);
     });
 
     describe('Component Structure', () => {
@@ -232,14 +232,14 @@ describe('PropertyCard', () => {
         it('should show "Recently Added" badge for new properties', async () => {
             const property = createMockProperty();
             
-            mockIsWithinLastWeek.mockImplementation((date: Date) => 
+            mockIsWithinLastThreeDays.mockImplementation((date: Date) => 
                 date.getTime() === property.createdAt.getTime()
             );
             
             render(await PropertyCard({ property }));
             
             expect(screen.getByText('Recently Added')).toBeInTheDocument();
-            expect(mockIsWithinLastWeek).toHaveBeenCalledWith(property.createdAt);
+            expect(mockIsWithinLastThreeDays).toHaveBeenCalledWith(property.createdAt);
         });
 
         it('should show "Recently Updated" badge for updated properties', async () => {
@@ -248,19 +248,19 @@ describe('PropertyCard', () => {
                 updatedAt: new Date('2024-12-01'), // Recent update
             });
             
-            mockIsWithinLastWeek.mockImplementation((date: Date) => 
+            mockIsWithinLastThreeDays.mockImplementation((date: Date) => 
                 date === property.updatedAt
             );
             
             render(await PropertyCard({ property }));
             
             expect(screen.getByText('Recently Updated')).toBeInTheDocument();
-            expect(mockIsWithinLastWeek).toHaveBeenCalledWith(property.createdAt);
-            expect(mockIsWithinLastWeek).toHaveBeenCalledWith(property.updatedAt);
+            expect(mockIsWithinLastThreeDays).toHaveBeenCalledWith(property.createdAt);
+            expect(mockIsWithinLastThreeDays).toHaveBeenCalledWith(property.updatedAt);
         });
 
         it('should not show badge for old properties', async () => {
-            mockIsWithinLastWeek.mockReturnValue(false);
+            mockIsWithinLastThreeDays.mockReturnValue(false);
             const property = createMockProperty();
             
             render(await PropertyCard({ property }));
@@ -270,7 +270,7 @@ describe('PropertyCard', () => {
         });
 
         it('should prioritize "Recently Added" over "Recently Updated"', async () => {
-            mockIsWithinLastWeek.mockReturnValue(true); // Both dates are recent
+            mockIsWithinLastThreeDays.mockReturnValue(true); // Both dates are recent
             const property = createMockProperty();
             
             render(await PropertyCard({ property }));
@@ -496,7 +496,7 @@ describe('PropertyCard', () => {
         });
 
         it('should match snapshot with recently added property', async () => {
-            mockIsWithinLastWeek.mockImplementation((date: Date) => 
+            mockIsWithinLastThreeDays.mockImplementation((date: Date) => 
                 date === createMockProperty().createdAt
             );
             const property = createMockProperty();
@@ -658,7 +658,7 @@ describe('PropertyCard', () => {
                     createdAt: new Date(),
                 });
                 
-                mockIsWithinLastWeek.mockImplementation((date: Date) => 
+                mockIsWithinLastThreeDays.mockImplementation((date: Date) => 
                     date.getTime() === recentFavorite.createdAt.getTime()
                 );
                 
@@ -666,7 +666,7 @@ describe('PropertyCard', () => {
                 
                 expect(screen.getByText('New Favorite Property')).toBeInTheDocument();
                 expect(screen.getByText('Recently Added')).toBeInTheDocument();
-                expect(mockIsWithinLastWeek).toHaveBeenCalledWith(recentFavorite.createdAt);
+                expect(mockIsWithinLastThreeDays).toHaveBeenCalledWith(recentFavorite.createdAt);
             });
 
             it('should handle favorite property with recently updated badge', async () => {
@@ -676,7 +676,7 @@ describe('PropertyCard', () => {
                     updatedAt: new Date(),
                 });
                 
-                mockIsWithinLastWeek.mockImplementation((date: Date) => 
+                mockIsWithinLastThreeDays.mockImplementation((date: Date) => 
                     date.getTime() === updatedFavorite.updatedAt.getTime()
                 );
                 
@@ -911,7 +911,7 @@ describe('PropertyCard', () => {
                     createdAt: new Date(),
                 });
                 
-                mockIsWithinLastWeek.mockImplementation((date: Date) => 
+                mockIsWithinLastThreeDays.mockImplementation((date: Date) => 
                     date.getTime() === recentlyAddedFavorite.createdAt.getTime()
                 );
                 

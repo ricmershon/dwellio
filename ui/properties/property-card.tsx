@@ -6,13 +6,13 @@ import PropertyFavoriteButton from '@/ui/properties/shared/form/property-favorit
 import { PropertyDocument } from '@/models';
 import { getRateDisplay } from '@/utils/get-rate-display';
 import { getSessionUser } from '@/utils/get-session-user';
-import { toSerializedOjbect } from '@/utils/to-serialized-object';
+import { toSerializedObject } from '@/utils/to-serialized-object';
 import { isWithinLastThreeDays } from '@/utils/is-within-last-three-days';
 
 // FIXME: Make PropertyFavoriteButton accept initialIsFavorite and remove its mount-time fetch; lazy-load it.
 const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
     const sessionUser = await getSessionUser();
-    const serializedProperty = toSerializedOjbect(property);
+    const serializedProperty = toSerializedObject(property);
 
     const isCreatedWithinLastWeek = isWithinLastThreeDays(property.createdAt);
     const isUpdatedWithinLastWeek = !isCreatedWithinLastWeek
