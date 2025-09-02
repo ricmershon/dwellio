@@ -7,16 +7,16 @@ import { PropertyDocument } from '@/models';
 import { getRateDisplay } from '@/utils/get-rate-display';
 import { getSessionUser } from '@/utils/get-session-user';
 import { toSerializedOjbect } from '@/utils/to-serialized-object';
-import { isWithinLastWeek } from '@/utils/is-within-last-three-days';
+import { isWithinLastThreeDays } from '@/utils/is-within-last-three-days';
 
 // FIXME: Make PropertyFavoriteButton accept initialIsFavorite and remove its mount-time fetch; lazy-load it.
 const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
     const sessionUser = await getSessionUser();
     const serializedProperty = toSerializedOjbect(property);
 
-    const isCreatedWithinLastWeek = isWithinLastWeek(property.createdAt);
+    const isCreatedWithinLastWeek = isWithinLastThreeDays(property.createdAt);
     const isUpdatedWithinLastWeek = !isCreatedWithinLastWeek
-        && isWithinLastWeek(property.updatedAt);
+        && isWithinLastThreeDays(property.updatedAt);
 
     return (
         <div className='rounded-md shadow-md relative'>
