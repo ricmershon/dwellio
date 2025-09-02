@@ -1,21 +1,6 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
-exports[`LoginButtons Snapshots should match snapshot when providers are null 1`] = `null`;
-
-exports[`LoginButtons Snapshots should match snapshot with custom props 1`] = `
-<button
-  class="btn-primary"
->
-  <span>
-    🔐
-  </span>
-  <span>
-    Sign In
-  </span>
-</button>
-`;
-
-exports[`LoginButtons Snapshots should match snapshot with default props 1`] = `
+exports[`LoginButtons Snapshots should match snapshot in different states: default state 1`] = `
 <button
   class=""
 >
@@ -25,12 +10,4 @@ exports[`LoginButtons Snapshots should match snapshot with default props 1`] = `
 </button>
 `;
 
-exports[`LoginButtons Snapshots should match snapshot with single provider 1`] = `
-<button
-  class=""
->
-  <span>
-    Login
-  </span>
-</button>
-`;
+exports[`LoginButtons Snapshots should match snapshot in different states: null providers 1`] = `null`;

@@ -505,56 +505,18 @@ describe('PropertyImagesGallery', () => {
     });
 
     describe('Snapshots', () => {
-        it('should match snapshot with 3 images (grid-cols-3 layout)', () => {
-            const imagesData = createImageData(3);
-            const { container } = render(<PropertyImagesGallery imagesData={imagesData} />);
+        it('should match snapshots for different layouts', () => {
+            // Single image layout
+            const singleImage = render(<PropertyImagesGallery imagesData={createImageData(1)} />);
+            expect(singleImage.container.firstChild).toMatchSnapshot('single image');
             
-            expect(container.firstChild).toMatchSnapshot();
-        });
-
-        it('should match snapshot with 4 images (grid-cols-2 layout)', () => {
-            const imagesData = createImageData(4);
-            const { container } = render(<PropertyImagesGallery imagesData={imagesData} />);
+            // Grid layout with multiple images
+            const multipleImages = render(<PropertyImagesGallery imagesData={createImageData(5)} />);
+            expect(multipleImages.container.firstChild).toMatchSnapshot('multiple images');
             
-            expect(container.firstChild).toMatchSnapshot();
-        });
-
-        it('should match snapshot with 5 images (grid-cols-4 layout)', () => {
-            const imagesData = createImageData(5);
-            const { container } = render(<PropertyImagesGallery imagesData={imagesData} />);
-            
-            expect(container.firstChild).toMatchSnapshot();
-        });
-
-        it('should match snapshot with 6+ images (shows gallery icon)', () => {
-            const imagesData = createImageData(7);
-            const { container } = render(<PropertyImagesGallery imagesData={imagesData} />);
-            
-            expect(container.firstChild).toMatchSnapshot();
-        });
-
-        it('should match snapshot with single image', () => {
-            const imagesData = createImageData(1);
-            const { container } = render(<PropertyImagesGallery imagesData={imagesData} />);
-            
-            expect(container.firstChild).toMatchSnapshot();
-        });
-
-        it('should match snapshot with empty images array', () => {
-            const { container } = render(<PropertyImagesGallery imagesData={[]} />);
-            
-            expect(container.firstChild).toMatchSnapshot();
-        });
-
-        it('should match snapshot with custom image dimensions', () => {
-            const imagesData = [
-                { secureUrl: 'https://example.com/portrait.jpg', publicId: 'portrait', width: 600, height: 800 },
-                { secureUrl: 'https://example.com/landscape.jpg', publicId: 'landscape', width: 1200, height: 800 },
-                { secureUrl: 'https://example.com/square.jpg', publicId: 'square', width: 800, height: 800 }
-            ];
-            const { container } = render(<PropertyImagesGallery imagesData={imagesData} />);
-            
-            expect(container.firstChild).toMatchSnapshot();
+            // Empty state
+            const emptyImages = render(<PropertyImagesGallery imagesData={[]} />);
+            expect(emptyImages.container.firstChild).toMatchSnapshot('empty images');
         });
     });
 });

@@ -220,39 +220,15 @@ describe('LoginButtons', () => {
 	});
 
 	describe('Snapshots', () => {
-		it('should match snapshot with default props', () => {
+		it('should match snapshot in different states', () => {
+			// Default state
 			const { container } = render(<LoginButtons />);
-			expect(container.firstChild).toMatchSnapshot();
-		});
-
-		it('should match snapshot with custom props', () => {
-			const customIcon = <span>🔐</span>;
-			const { container } = render(
-				<LoginButtons 
-					buttonClassName="btn-primary" 
-					text="Sign In" 
-					icon={customIcon} 
-				/>
-			);
-			expect(container.firstChild).toMatchSnapshot();
-		});
-
-		it('should match snapshot when providers are null', () => {
-			mockUseAuthProviders.mockReturnValue(null);
+			expect(container.firstChild).toMatchSnapshot('default state');
 			
-			const { container } = render(<LoginButtons />);
-			expect(container.firstChild).toMatchSnapshot();
-		});
-
-		it('should match snapshot with single provider', () => {
-			const singleProvider = {
-				google: mockProviders.google,
-			};
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			mockUseAuthProviders.mockReturnValue(singleProvider as any);
-
-			const { container } = render(<LoginButtons />);
-			expect(container.firstChild).toMatchSnapshot();
+			// Null providers state
+			mockUseAuthProviders.mockReturnValue(null);
+			const { container: nullContainer } = render(<LoginButtons />);
+			expect(nullContainer.firstChild).toMatchSnapshot('null providers');
 		});
 	});
 

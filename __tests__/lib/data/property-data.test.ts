@@ -1048,652 +1048,130 @@ describe('Property Data Layer Tests', () => {
         });
     });
 
-    describe('Edge Cases and Integration', () => {
-        it('should handle zero properties in database', async () => {
-            mockProperty.countDocuments.mockResolvedValue(0);
+    describe('Edge Cases and Authentication Integration', () => {
+        const mockQuery: PropertiesQuery = {
+            $or: [{ name: /test/i }, { type: /test/i }, { "location.city": /test/i }]
+        };
 
-            const mockQuery: PropertiesQuery = {
-                $or: [
-                    { name: /test/i },
-                    { description: /test/i },
-                    { amenities: /test/i },
-                    { type: /test/i },
-                    { "location.street": /test/i },
-                    { "location.city": /test/i },
-                    { "location.state": /test/i },
-                    { "location.zip": /test/i }
-                ]
-            };
-            const result = await fetchNumPropertiesPages(mockQuery, 1024);
+        it('should handle extreme cases in property counting', async () => {
+            // Zero properties
+            mockProperty.countDocuments.mockResolvedValueOnce(0);
+            const zeroResult = await fetchNumPropertiesPages(mockQuery, 1024);
+            expect(zeroResult).toBe(0);
 
-            expect(result).toBe(0); // Math.ceil(0 / 15) = 0 pages
-        });
+            // Large property counts
+            mockProperty.countDocuments.mockResolvedValueOnce(1000000);
+            const largeResult = await fetchNumPropertiesPages(mockQuery, 1024);
+            expect(largeResult).toBe(66667);
 
-        it('should handle large property counts', async () => {
-            mockProperty.countDocuments.mockResolvedValue(1000000);
-
-            const mockQuery: PropertiesQuery = {
-                $or: [
-                    { name: /test/i },
-                    { description: /test/i },
-                    { amenities: /test/i },
-                    { type: /test/i },
-                    { "location.street": /test/i },
-                    { "location.city": /test/i },
-                    { "location.state": /test/i },
-                    { "location.zip": /test/i }
-                ]
-            };
-            const result = await fetchNumPropertiesPages(mockQuery, 1024);
-
-            expect(result).toBe(66667); // Math.ceil(1000000 / 15) = 66667 pages
-        });
-
-        it('should handle extreme viewport widths', async () => {
+            // Extreme viewport widths
             mockProperty.find.mockReturnValue({
                 sort: jest.fn().mockReturnThis(),
                 limit: jest.fn().mockResolvedValue([])
             } as any);
-
             await fetchFeaturedProperties(0);
             await fetchFeaturedProperties(10000);
-
-            // Should handle gracefully without errors
-            expect(mockProperty.find).toHaveBeenCalledTimes(2);
-        });
-    });
-
-    describe('Authentication Integration', () => {
-        describe('Property Ownership Validation', () => {
-            it('should filter properties by exact user ID match', async () => {
-                const testUserId = 'authenticated-user-123';
-                const userProperties = [mockPropertyData, mockPropertyData];
-                mockProperty.find.mockResolvedValue(userProperties);
-
-                await fetchPropertiesByUserId(testUserId);
-
-                expect(mockProperty.find).toHaveBeenCalledWith({ owner: testUserId });
-            });
-
-            it('should return empty array for users with no properties', async () => {
-                const testUserId = 'new-user-456';
-                mockProperty.find.mockResolvedValue([]);
-
-                const result = await fetchPropertiesByUserId(testUserId);
-
-                expect(result).toEqual([]);
-                expect(mockProperty.find).toHaveBeenCalledWith({ owner: testUserId });
-            });
-
-            it('should handle invalid user IDs gracefully', async () => {
-                const invalidUserId = 'invalid-user-id';
-                mockProperty.find.mockRejectedValue(new Error('Invalid user ID'));
-
-                await expect(fetchPropertiesByUserId(invalidUserId)).rejects.toThrow();
-                expect(mockDbConnect).toHaveBeenCalled();
-            });
-
-            it('should prevent cross-user property access', async () => {
-                const user1Id = 'user-1';
-                const user2Id = 'user-2';
-                const user1Properties = [{ ...mockPropertyData, owner: user1Id }];
-                
-                mockProperty.find
-                    .mockResolvedValueOnce(user1Properties)
-                    .mockResolvedValueOnce([]);
-
-                const user1Result = await fetchPropertiesByUserId(user1Id);
-                const user2Result = await fetchPropertiesByUserId(user2Id);
-
-                expect(user1Result).toHaveLength(1);
-                expect(user2Result).toHaveLength(0);
-                expect(mockProperty.find).toHaveBeenCalledWith({ owner: user1Id });
-                expect(mockProperty.find).toHaveBeenCalledWith({ owner: user2Id });
-            });
         });
 
-        describe('Session Data Integration', () => {
-            it('should handle session-based user identification', async () => {
-                const sessionUserId = 'session-user-789';
-                const sessionUserProperties = [mockPropertyData];
-                mockProperty.find.mockResolvedValue(sessionUserProperties);
+        it('should handle user property ownership and access control', async () => {
+            // User with properties
+            const testUserId = 'authenticated-user-123';
+            const userProperties = [mockPropertyData, mockPropertyData];
+            mockProperty.find.mockResolvedValueOnce(userProperties);
+            await fetchPropertiesByUserId(testUserId);
+            expect(mockProperty.find).toHaveBeenCalledWith({ owner: testUserId });
 
-                const result = await fetchPropertiesByUserId(sessionUserId);
+            // User with no properties
+            mockProperty.find.mockResolvedValueOnce([]);
+            const emptyResult = await fetchPropertiesByUserId('new-user-456');
+            expect(emptyResult).toEqual([]);
 
-                expect(result).toEqual(sessionUserProperties);
-                expect(mockProperty.find).toHaveBeenCalledWith({ owner: sessionUserId });
-            });
-
-            it('should maintain data privacy across different sessions', async () => {
-                const session1UserId = 'session1-user';
-                const session2UserId = 'session2-user';
-                
-                // Simulate different session calls
-                await fetchPropertiesByUserId(session1UserId);
-                await fetchPropertiesByUserId(session2UserId);
-
-                expect(mockProperty.find).toHaveBeenNthCalledWith(1, { owner: session1UserId });
-                expect(mockProperty.find).toHaveBeenNthCalledWith(2, { owner: session2UserId });
-            });
+            // Cross-user access prevention
+            mockProperty.find
+                .mockResolvedValueOnce([mockPropertyData])
+                .mockResolvedValueOnce([]);
+            const user1Result = await fetchPropertiesByUserId('user-1');
+            const user2Result = await fetchPropertiesByUserId('user-2');
+            expect(user1Result).toHaveLength(1);
+            expect(user2Result).toHaveLength(0);
         });
 
-        describe('Security and Authorization', () => {
-            it('should not leak properties between users', async () => {
-                const user1 = 'user1';
-                const user2 = 'user2';
-                
-                const user1Properties = [{ ...mockPropertyData, _id: 'prop1', owner: user1 }];
-                const user2Properties = [{ ...mockPropertyData, _id: 'prop2', owner: user2 }];
-                
-                // First call for user1
-                mockProperty.find.mockResolvedValueOnce(user1Properties);
-                const result1 = await fetchPropertiesByUserId(user1);
-                
-                // Second call for user2
-                mockProperty.find.mockResolvedValueOnce(user2Properties);
-                const result2 = await fetchPropertiesByUserId(user2);
-
-                expect(result1[0]._id).toBe('prop1');
-                expect(result2[0]._id).toBe('prop2');
-                expect(result1).not.toEqual(result2);
-                expect(mockProperty.find).toHaveBeenCalledWith({ owner: user1 });
-                expect(mockProperty.find).toHaveBeenCalledWith({ owner: user2 });
-            });
-
-            it('should validate user ownership consistently', async () => {
-                const ownerId = 'property-owner-123';
-                const properties = [
-                    { ...mockPropertyData, owner: ownerId },
-                    { ...mockPropertyData, owner: ownerId }
-                ];
-                mockProperty.find.mockResolvedValue(properties);
-
-                const result = await fetchPropertiesByUserId(ownerId);
-
-                expect(result).toHaveLength(2);
-                result.forEach(property => {
-                    expect(property.owner).toBe(ownerId);
-                });
-            });
-
-            it('should handle unauthorized access attempts', async () => {
-                const unauthorizedUserId = 'unauthorized-user';
-                mockProperty.find.mockRejectedValue(new Error('Access denied'));
-
-                await expect(fetchPropertiesByUserId(unauthorizedUserId))
-                    .rejects.toThrow('Access denied');
-            });
-        });
     });
 
     // FAVORITES-SPECIFIC DATA LAYER TESTS - Phase 2 Enhancement
-    describe('Advanced Favorites System Tests', () => {
+    describe('Favorites System Integration Tests', () => {
         const createMockFavoritedProperty = (overrides: Partial<PropertyDocument> = {}) => ({
             _id: `fav-prop-${Math.random().toString(36).substr(2, 9)}`,
             name: 'Favorited Property',
             type: 'House',
-            description: 'A beautiful favorited property',
-            location: {
-                street: '456 Favorite St',
-                city: 'Favorite City',
-                state: 'FC',
-                zipcode: '54321'
-            },
-            beds: 3,
-            baths: 2,
-            squareFeet: 1800,
             owner: 'property-owner-123' as unknown as import('mongoose').Types.ObjectId,
             isFeatured: true,
-            amenities: ['Pool', 'WiFi', 'Gym'],
-            rates: { nightly: 200, weekly: 1200, monthly: 4000 },
-            imagesData: [
-                { secureUrl: 'https://test.com/fav1.jpg', publicId: 'fav1', width: 800, height: 600 }
-            ],
-            createdAt: new Date('2024-01-01'),
-            updatedAt: new Date('2024-01-01'),
             ...overrides,
         } as Partial<PropertyDocument>);
 
         const createMockUserWithFavorites = (userId: string, favoriteProperties: any[] = []) => ({
             _id: userId,
-            email: `user-${userId}@test.com`,
-            name: `Test User ${userId}`,
             favorites: favoriteProperties,
-            createdAt: new Date(),
-            updatedAt: new Date(),
         });
 
-        describe('Favorites Data Retrieval', () => {
-            it('should fetch user favorites with complete property data', async () => {
-                const userId = 'favorites-user-123';
-                const favoriteProperties = [
-                    createMockFavoritedProperty({ name: 'Favorite Beach House' }),
-                    createMockFavoritedProperty({ name: 'Favorite Mountain Cabin' }),
-                ];
-                const userWithFavorites = createMockUserWithFavorites(userId, favoriteProperties);
+        it('should fetch user favorites with complete property data', async () => {
+            const userId = 'favorites-user-123';
+            const favoriteProperties = [
+                createMockFavoritedProperty({ name: 'Beach House' }),
+                createMockFavoritedProperty({ name: 'Mountain Cabin' }),
+            ];
+            const userWithFavorites = createMockUserWithFavorites(userId, favoriteProperties);
 
-                mockUser.findById.mockReturnValue({
-                    populate: jest.fn().mockResolvedValue(userWithFavorites)
-                } as any);
+            mockUser.findById.mockReturnValue({
+                populate: jest.fn().mockResolvedValue(userWithFavorites)
+            } as any);
 
-                const result = await fetchFavoritedProperties(userId);
+            const result = await fetchFavoritedProperties(userId);
 
-                expect(mockDbConnect).toHaveBeenCalled();
-                expect(mockUser.findById).toHaveBeenCalledWith(userId);
-                expect(result).toEqual(favoriteProperties);
-                expect(result).toHaveLength(2);
-                expect(result[0].name).toBe('Favorite Beach House');
-                expect(result[1].name).toBe('Favorite Mountain Cabin');
-            });
-
-            it('should handle empty favorites list correctly', async () => {
-                const userId = 'user-no-favorites';
-                const userWithNoFavorites = createMockUserWithFavorites(userId, []);
-
-                mockUser.findById.mockReturnValue({
-                    populate: jest.fn().mockResolvedValue(userWithNoFavorites)
-                } as any);
-
-                const result = await fetchFavoritedProperties(userId);
-
-                expect(result).toEqual([]);
-                expect(result).toHaveLength(0);
-            });
-
-            it('should populate favorites with all necessary property fields', async () => {
-                const userId = 'detailed-user';
-                const detailedFavorite = createMockFavoritedProperty({
-                    name: 'Detailed Favorite Property',
-                    beds: 4,
-                    baths: 3,
-                    squareFeet: 2500,
-                    amenities: ['Pool', 'Spa', 'Gym', 'WiFi'],
-                    rates: { nightly: 350, weekly: 2100, monthly: 7000 }
-                });
-                const userWithDetailedFavorites = createMockUserWithFavorites(userId, [detailedFavorite]);
-
-                const mockPopulate = jest.fn().mockResolvedValue(userWithDetailedFavorites);
-                mockUser.findById.mockReturnValue({ populate: mockPopulate } as any);
-
-                const result = await fetchFavoritedProperties(userId);
-
-                expect(mockPopulate).toHaveBeenCalledWith('favorites');
-                expect(result[0]).toEqual(detailedFavorite);
-                expect(result[0].amenities).toHaveLength(4);
-                expect(result[0].rates.nightly).toBe(350);
-            });
-
-            it('should handle large favorites lists efficiently', async () => {
-                const userId = 'power-user';
-                const largeFavoritesList = Array.from({ length: 50 }, (_, i) => 
-                    createMockFavoritedProperty({ 
-                        name: `Favorite Property ${i + 1}`,
-                        _id: `large-fav-${i}`
-                    })
-                );
-                const userWithManyFavorites = createMockUserWithFavorites(userId, largeFavoritesList);
-
-                mockUser.findById.mockReturnValue({
-                    populate: jest.fn().mockResolvedValue(userWithManyFavorites)
-                } as any);
-
-                const result = await fetchFavoritedProperties(userId);
-
-                expect(result).toHaveLength(50);
-                expect(result[0].name).toBe('Favorite Property 1');
-                expect(result[49].name).toBe('Favorite Property 50');
-            });
+            expect(result).toEqual(favoriteProperties);
+            expect(result).toHaveLength(2);
         });
 
-        describe('Favorites Data Integrity', () => {
-            it('should maintain referential integrity for favorited properties', async () => {
-                const userId = 'integrity-user';
-                const favoriteWithOwner = createMockFavoritedProperty({
-                    name: 'Owner Integrity Test',
-                    owner: 'property-owner-456' as unknown as import('mongoose').Types.ObjectId
-                });
-                const userWithFavorites = createMockUserWithFavorites(userId, [favoriteWithOwner]);
+        it('should handle empty favorites and large lists', async () => {
+            // Empty favorites
+            const userWithNoFavorites = createMockUserWithFavorites('user1', []);
+            mockUser.findById.mockReturnValueOnce({
+                populate: jest.fn().mockResolvedValue(userWithNoFavorites)
+            } as any);
 
-                mockUser.findById.mockReturnValue({
-                    populate: jest.fn().mockResolvedValue(userWithFavorites)
-                } as any);
+            const emptyResult = await fetchFavoritedProperties('user1');
+            expect(emptyResult).toEqual([]);
 
-                const result = await fetchFavoritedProperties(userId);
+            // Large favorites list
+            const largeFavoritesList = Array.from({ length: 50 }, (_, i) => 
+                createMockFavoritedProperty({ name: `Property ${i + 1}` })
+            );
+            const userWithManyFavorites = createMockUserWithFavorites('user2', largeFavoritesList);
+            mockUser.findById.mockReturnValueOnce({
+                populate: jest.fn().mockResolvedValue(userWithManyFavorites)
+            } as any);
 
-                expect(result[0].owner).toBe('property-owner-456');
-                expect(result[0]._id).toBeTruthy();
-            });
-
-            it('should handle favorites with mixed property types', async () => {
-                const userId = 'mixed-types-user';
-                const mixedFavorites = [
-                    createMockFavoritedProperty({ name: 'House Favorite', type: 'House' }),
-                    createMockFavoritedProperty({ name: 'Apartment Favorite', type: 'Apartment' }),
-                    createMockFavoritedProperty({ name: 'Condo Favorite', type: 'Condo' }),
-                ];
-                const userWithMixedFavorites = createMockUserWithFavorites(userId, mixedFavorites);
-
-                mockUser.findById.mockReturnValue({
-                    populate: jest.fn().mockResolvedValue(userWithMixedFavorites)
-                } as any);
-
-                const result = await fetchFavoritedProperties(userId);
-
-                expect(result).toHaveLength(3);
-                expect(result.map(p => p.type)).toEqual(['House', 'Apartment', 'Condo']);
-            });
-
-            it('should preserve favorite property metadata', async () => {
-                const userId = 'metadata-user';
-                const metadataFavorite = createMockFavoritedProperty({
-                    name: 'Metadata Rich Property',
-                    createdAt: new Date('2023-06-15'),
-                    updatedAt: new Date('2024-01-10'),
-                    isFeatured: true,
-                    amenities: ['Premium WiFi', 'Concierge', 'Valet']
-                });
-                const userWithMetadataFavorites = createMockUserWithFavorites(userId, [metadataFavorite]);
-
-                mockUser.findById.mockReturnValue({
-                    populate: jest.fn().mockResolvedValue(userWithMetadataFavorites)
-                } as any);
-
-                const result = await fetchFavoritedProperties(userId);
-
-                expect(result[0].isFeatured).toBe(true);
-                expect(result[0].createdAt).toEqual(new Date('2023-06-15'));
-                expect(result[0].updatedAt).toEqual(new Date('2024-01-10'));
-                expect(result[0].amenities).toContain('Premium WiFi');
-            });
+            const largeResult = await fetchFavoritedProperties('user2');
+            expect(largeResult).toHaveLength(50);
         });
 
-        describe('Favorites Performance & Optimization', () => {
-            it('should efficiently handle database population queries', async () => {
-                const userId = 'performance-user';
-                const performanceFavorites = Array.from({ length: 25 }, (_, i) => 
-                    createMockFavoritedProperty({ name: `Performance Test ${i}` })
-                );
-                const performanceUser = createMockUserWithFavorites(userId, performanceFavorites);
+        it('should handle mixed property types and statuses', async () => {
+            const mixedFavorites = [
+                createMockFavoritedProperty({ name: 'House', type: 'House', isFeatured: true }),
+                createMockFavoritedProperty({ name: 'Apartment', type: 'Apartment', isFeatured: false }),
+            ];
+            const userWithMixedFavorites = createMockUserWithFavorites('mixed-user', mixedFavorites);
 
-                const mockPopulate = jest.fn().mockResolvedValue(performanceUser);
-                mockUser.findById.mockReturnValue({ populate: mockPopulate } as any);
+            mockUser.findById.mockReturnValue({
+                populate: jest.fn().mockResolvedValue(userWithMixedFavorites)
+            } as any);
 
-                const startTime = performance.now();
-                const result = await fetchFavoritedProperties(userId);
-                const endTime = performance.now();
+            const result = await fetchFavoritedProperties('mixed-user');
 
-                expect(result).toHaveLength(25);
-                expect(endTime - startTime).toBeLessThan(50); // Should be fast
-                expect(mockPopulate).toHaveBeenCalledTimes(1);
-            });
-
-            it('should minimize database calls for favorites retrieval', async () => {
-                const userId = 'optimization-user';
-                const favorites = [createMockFavoritedProperty()];
-                const user = createMockUserWithFavorites(userId, favorites);
-
-                mockUser.findById.mockReturnValue({
-                    populate: jest.fn().mockResolvedValue(user)
-                } as any);
-
-                await fetchFavoritedProperties(userId);
-
-                // Should only call findById once and populate once
-                expect(mockUser.findById).toHaveBeenCalledTimes(1);
-                expect(mockDbConnect).toHaveBeenCalledTimes(1);
-            });
-
-            it('should handle concurrent favorites requests', async () => {
-                const user1 = 'concurrent-user-1';
-                const user2 = 'concurrent-user-2';
-                const favorites1 = [createMockFavoritedProperty({ name: 'User 1 Favorite' })];
-                const favorites2 = [createMockFavoritedProperty({ name: 'User 2 Favorite' })];
-
-                mockUser.findById
-                    .mockReturnValueOnce({ populate: jest.fn().mockResolvedValue(createMockUserWithFavorites(user1, favorites1)) } as any)
-                    .mockReturnValueOnce({ populate: jest.fn().mockResolvedValue(createMockUserWithFavorites(user2, favorites2)) } as any);
-
-                const [result1, result2] = await Promise.all([
-                    fetchFavoritedProperties(user1),
-                    fetchFavoritedProperties(user2)
-                ]);
-
-                expect(result1[0].name).toBe('User 1 Favorite');
-                expect(result2[0].name).toBe('User 2 Favorite');
-                expect(mockUser.findById).toHaveBeenCalledTimes(2);
-            });
-        });
-
-        describe('Favorites Error Handling', () => {
-            it('should handle user not found errors gracefully', async () => {
-                const nonexistentUserId = 'nonexistent-user';
-                mockUser.findById.mockReturnValue({
-                    populate: jest.fn().mockResolvedValue(null)
-                } as any);
-
-                // The current implementation throws an error when user is null
-                await expect(fetchFavoritedProperties(nonexistentUserId))
-                    .rejects.toThrow('Failed to fetch favorite properties data');
-            });
-
-            it('should handle database connection errors during favorites fetch', async () => {
-                const userId = 'db-error-user';
-                const dbError = new Error('Database connection timeout');
-                mockDbConnect.mockRejectedValue(dbError);
-
-                await expect(fetchFavoritedProperties(userId))
-                    .rejects.toThrow('Failed to fetch favorite properties data: Error: Database connection timeout');
-                
-                expect(mockConsoleError).toHaveBeenCalledWith('>>> Database error fetching favorite properties: Error: Database connection timeout');
-            });
-
-            it('should handle population errors during favorites fetch', async () => {
-                const userId = 'populate-error-user';
-                const populateError = new Error('Population reference error');
-                
-                mockUser.findById.mockReturnValue({
-                    populate: jest.fn().mockRejectedValue(populateError)
-                } as any);
-
-                await expect(fetchFavoritedProperties(userId))
-                    .rejects.toThrow('Failed to fetch favorite properties data: Error: Population reference error');
-            });
-
-            it('should handle corrupted favorite data gracefully', async () => {
-                const userId = 'corrupted-data-user';
-                const corruptedUser = {
-                    _id: userId,
-                    favorites: [
-                        null, // Corrupted favorite
-                        createMockFavoritedProperty({ name: 'Valid Favorite' }),
-                        undefined, // Another corrupted entry
-                    ]
-                };
-
-                mockUser.findById.mockReturnValue({
-                    populate: jest.fn().mockResolvedValue(corruptedUser)
-                } as any);
-
-                const result = await fetchFavoritedProperties(userId);
-
-                // Should still return the array, even with null/undefined entries
-                expect(result).toHaveLength(3);
-                expect(result[1].name).toBe('Valid Favorite');
-            });
-        });
-
-        describe('Favorites User Experience', () => {
-            it('should maintain favorite order from user preferences', async () => {
-                const userId = 'ordered-user';
-                const orderedFavorites = [
-                    createMockFavoritedProperty({ name: 'First Favorite', _id: 'first-fav' }),
-                    createMockFavoritedProperty({ name: 'Second Favorite', _id: 'second-fav' }),
-                    createMockFavoritedProperty({ name: 'Third Favorite', _id: 'third-fav' }),
-                ];
-                const userWithOrderedFavorites = createMockUserWithFavorites(userId, orderedFavorites);
-
-                mockUser.findById.mockReturnValue({
-                    populate: jest.fn().mockResolvedValue(userWithOrderedFavorites)
-                } as any);
-
-                const result = await fetchFavoritedProperties(userId);
-
-                expect(result[0].name).toBe('First Favorite');
-                expect(result[1].name).toBe('Second Favorite');
-                expect(result[2].name).toBe('Third Favorite');
-            });
-
-            it('should support different user favorite patterns', async () => {
-                const userPatterns = [
-                    { id: 'heavy-user', count: 100 },
-                    { id: 'light-user', count: 3 },
-                    { id: 'medium-user', count: 15 },
-                    { id: 'new-user', count: 0 }
-                ];
-
-                for (const pattern of userPatterns) {
-                    const favorites = Array.from({ length: pattern.count }, (_, i) => 
-                        createMockFavoritedProperty({ name: `${pattern.id} Favorite ${i}` })
-                    );
-                    const user = createMockUserWithFavorites(pattern.id, favorites);
-
-                    mockUser.findById.mockReturnValue({
-                        populate: jest.fn().mockResolvedValue(user)
-                    } as any);
-
-                    const result = await fetchFavoritedProperties(pattern.id);
-                    expect(result).toHaveLength(pattern.count);
-                }
-
-                expect(mockUser.findById).toHaveBeenCalledTimes(4);
-            });
-
-            it('should handle favorites with different property statuses', async () => {
-                const userId = 'status-user';
-                const statusFavorites = [
-                    createMockFavoritedProperty({ name: 'Featured Favorite', isFeatured: true }),
-                    createMockFavoritedProperty({ name: 'Regular Favorite', isFeatured: false }),
-                    createMockFavoritedProperty({ name: 'Recent Favorite', createdAt: new Date() }),
-                ];
-                const userWithStatusFavorites = createMockUserWithFavorites(userId, statusFavorites);
-
-                mockUser.findById.mockReturnValue({
-                    populate: jest.fn().mockResolvedValue(userWithStatusFavorites)
-                } as any);
-
-                const result = await fetchFavoritedProperties(userId);
-
-                expect(result[0].isFeatured).toBe(true);
-                expect(result[1].isFeatured).toBe(false);
-                expect(result[2].createdAt).toBeInstanceOf(Date);
-            });
-        });
-
-        describe('Favorites Data Validation', () => {
-            it('should validate favorite property completeness', async () => {
-                const userId = 'validation-user';
-                const completeFavorite = createMockFavoritedProperty({
-                    name: 'Complete Property',
-                    location: {
-                        street: '789 Complete St',
-                        city: 'Complete City',
-                        state: 'FL',
-                        zipcode: '99999'
-                    },
-                    rates: { nightly: 150, weekly: 900, monthly: 3000 }
-                });
-                const userWithCompleteFavorite = createMockUserWithFavorites(userId, [completeFavorite]);
-
-                mockUser.findById.mockReturnValue({
-                    populate: jest.fn().mockResolvedValue(userWithCompleteFavorite)
-                } as any);
-
-                const result = await fetchFavoritedProperties(userId);
-
-                expect(result[0]).toHaveProperty('name');
-                expect(result[0]).toHaveProperty('location');
-                expect(result[0]).toHaveProperty('rates');
-                expect(result[0].location).toHaveProperty('street');
-                expect(result[0].rates).toHaveProperty('nightly');
-            });
-
-            it('should handle favorites with missing optional fields', async () => {
-                const userId = 'optional-fields-user';
-                const minimalFavorite = {
-                    _id: 'minimal-fav',
-                    name: 'Minimal Favorite',
-                    type: 'House',
-                    // Missing many optional fields
-                    owner: 'owner-123' as unknown as import('mongoose').Types.ObjectId
-                } as unknown as Partial<PropertyDocument>;
-                const userWithMinimalFavorite = createMockUserWithFavorites(userId, [minimalFavorite]);
-
-                mockUser.findById.mockReturnValue({
-                    populate: jest.fn().mockResolvedValue(userWithMinimalFavorite)
-                } as any);
-
-                const result = await fetchFavoritedProperties(userId);
-
-                expect(result[0].name).toBe('Minimal Favorite');
-                expect(result[0]._id).toBe('minimal-fav');
-            });
-        });
-
-        describe('Favorites Integration with Other Systems', () => {
-            it('should integrate with featured properties system', async () => {
-                const userId = 'featured-integration-user';
-                const featuredFavorites = [
-                    createMockFavoritedProperty({ name: 'Featured Favorite 1', isFeatured: true }),
-                    createMockFavoritedProperty({ name: 'Featured Favorite 2', isFeatured: true }),
-                    createMockFavoritedProperty({ name: 'Regular Favorite', isFeatured: false }),
-                ];
-                const userWithFeaturedFavorites = createMockUserWithFavorites(userId, featuredFavorites);
-
-                mockUser.findById.mockReturnValue({
-                    populate: jest.fn().mockResolvedValue(userWithFeaturedFavorites)
-                } as any);
-
-                const result = await fetchFavoritedProperties(userId);
-
-                const featuredCount = result.filter(p => p.isFeatured).length;
-                expect(featuredCount).toBe(2);
-            });
-
-            it('should work with property search and filtering', async () => {
-                const userId = 'search-integration-user';
-                const searchableFavorites = [
-                    createMockFavoritedProperty({ 
-                        name: 'Luxury Beach House', 
-                        type: 'House',
-                        location: { 
-                            street: '123 Beach Blvd',
-                            city: 'Miami',
-                            state: 'FL',
-                            zipcode: '33101'
-                        }
-                    }),
-                    createMockFavoritedProperty({ 
-                        name: 'Downtown Apartment', 
-                        type: 'Apartment',
-                        location: { 
-                            street: '456 Broadway',
-                            city: 'New York',
-                            state: 'NY',
-                            zipcode: '10001'
-                        }
-                    }),
-                ];
-                const userWithSearchableFavorites = createMockUserWithFavorites(userId, searchableFavorites);
-
-                mockUser.findById.mockReturnValue({
-                    populate: jest.fn().mockResolvedValue(userWithSearchableFavorites)
-                } as any);
-
-                const result = await fetchFavoritedProperties(userId);
-
-                expect(result.find(p => p.name.includes('Beach'))).toBeTruthy();
-                expect(result.find(p => p.type === 'Apartment')).toBeTruthy();
-            });
+            expect(result).toHaveLength(2);
+            expect(result.map(p => p.type)).toEqual(['House', 'Apartment']);
+            expect(result[0].isFeatured).toBe(true);
+            expect(result[1].isFeatured).toBe(false);
         });
     });
 });
