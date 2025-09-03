@@ -6,6 +6,7 @@ export interface UserDocument extends Document {
     username: string;
     email: string;
     image: string;
+    passwordHash: string;
     favorites: Types.ObjectId[] & PropertyDocument[]
 }
 
