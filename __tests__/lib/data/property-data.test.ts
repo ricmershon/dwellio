@@ -1,4 +1,4 @@
-import { PropertiesQuery } from "@/types/types";
+import { PropertiesQuery } from "@/types";
 import type { HydratedDocument } from "mongoose";
 
 // Mock mongoose before any imports that use it

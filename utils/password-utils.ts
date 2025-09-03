@@ -1,6 +1,6 @@
 import { hash, compare } from "bcryptjs";
 
-import { PasswordValidation } from "@/types/types";
+import { PasswordValidation } from "@/types";
 
 /**
  * Hash a password.

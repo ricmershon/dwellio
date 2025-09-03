@@ -6,7 +6,7 @@ import { LuRefreshCw } from "react-icons/lu";
 import clsx from "clsx";
 
 import { PropertyDocument } from "@/models";
-import { ActionState } from "@/types/types";
+import { ActionState } from "@/types";
 import { createMessage } from "@/lib/actions/message-actions";
 import { toast } from "react-toastify";
 import Input from "@/ui/shared/input";

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@/__tests__/test-utils';
 import PropertiesPage from '@/app/(root)/properties/page';
-import { PropertiesQuery } from '@/types/types';
+import { PropertiesQuery } from '@/types';
 
 // Mock all child components
 jest.mock('@/ui/properties/properties-list', () => ({

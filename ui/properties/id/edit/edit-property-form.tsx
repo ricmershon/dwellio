@@ -2,7 +2,7 @@
 
 import { useActionState, useEffect } from "react";
 import { toast } from "react-toastify";
-import { ActionState, ActionStatus } from "@/types/types";
+import { ActionState, ActionStatus } from "@/types";
 import type { PropertyDocument } from "@/models";
 import { updateProperty } from "@/lib/actions/property-actions";
 import InputErrors from "@/ui/shared/input-errors";

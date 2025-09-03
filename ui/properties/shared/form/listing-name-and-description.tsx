@@ -1,4 +1,4 @@
-import { ActionState } from "@/types/types";
+import { ActionState } from "@/types";
 import Input from "@/ui/shared/input";
 
 const ListNameAndDescription = ({ actionState }: { actionState: ActionState }) => (

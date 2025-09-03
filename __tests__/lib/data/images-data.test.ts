@@ -1,4 +1,4 @@
-import { PropertyImageData } from "@/types/types";
+import { PropertyImageData } from "@/types";
 
 // Create mock functions for cloudinary - must be defined before import
 const mockUpload = jest.fn();

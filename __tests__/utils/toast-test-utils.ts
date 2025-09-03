@@ -1,7 +1,7 @@
 /**
  * Shared toast notification testing utilities to reduce duplicate toast tests
  */
-import { ActionStatus } from '@/types/types';
+import { ActionStatus } from '@/types';
 
 /**
  * Verifies dynamic toast notification based on action result status

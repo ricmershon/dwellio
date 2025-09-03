@@ -1,4 +1,4 @@
-import { FormErrorsType } from "@/types/types";
+import { FormErrorsType } from "@/types";
 import FormErrors from "@/ui/shared/form-errors";
 
 interface InputProps {

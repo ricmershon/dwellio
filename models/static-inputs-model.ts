@@ -1,6 +1,6 @@
 import { Schema, model, models } from "mongoose";
 
-import { Amenity, OptionType } from "@/types/types";
+import { Amenity, OptionType } from "@/types";
 
 export interface StaticInputsDocument {
   amenities: Amenity[];

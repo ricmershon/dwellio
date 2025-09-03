@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 import { PropsValue, StylesConfig, Theme, GroupBase, SingleValue } from "react-select";
 const Select = dynamic(() => import("react-select"), { ssr: false });
 
-import { OptionType } from "@/types/types";
+import { OptionType } from "@/types";
 
 const customStyles: StylesConfig<OptionType, false, GroupBase<OptionType>> = {
     singleValue: (baseStyles) => ({ ...baseStyles, fontSize: ".875rem" }),

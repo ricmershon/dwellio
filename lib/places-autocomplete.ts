@@ -1,4 +1,4 @@
-import type { AutocompleteFetchOptions, AutocompletePrediction, AutocompleteResponse } from "@/types/types";
+import type { AutocompleteFetchOptions, AutocompletePrediction, AutocompleteResponse } from "@/types";
 
 type AddressComponent = {
     types?: string[];

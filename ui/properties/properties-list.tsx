@@ -1,6 +1,6 @@
 import { fetchFeaturedProperties, fetchPaginatedProperties } from "@/lib/data/property-data";
 import { PropertyDocument } from "@/models";
-import { PropertiesQuery } from "@/types/types";
+import { PropertiesQuery } from "@/types";
 import PropertyCard from "@/ui/properties/property-card";
 
 type PropertiesListProps =

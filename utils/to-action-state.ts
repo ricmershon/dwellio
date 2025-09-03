@@ -1,4 +1,4 @@
-import { ActionState } from "@/types/types";
+import { ActionState } from "@/types";
 
 /**
  * Creates a clean ActionState object with validated properties
@@ -25,7 +25,11 @@ export const toActionState = (actionState: ActionState): ActionState => {
             isFavorite, 
             isRead, 
             formData, 
-            formErrorMap 
+            formErrorMap,
+            error,
+            userId,
+            isAccountLinked,
+            canSignInWith
         } = actionState;
         
         // Build the result object, only including defined properties
@@ -80,7 +84,42 @@ export const toActionState = (actionState: ActionState): ActionState => {
                 console.warn('toActionState: formErrorMap property is not an object');
             }
         }
-        
+
+        // Validate and include error  
+        if (error !== undefined && error !== null) {
+            if (typeof error === 'string') {
+                result.error = error;
+            } else {
+                console.warn('toActionState: error property is not a string');
+            }
+        }
+        // Validate and include userId  
+        if (userId !== undefined && userId !== null) {
+            if (typeof userId === 'string') {
+                result.userId = userId;
+            } else {
+                console.warn('toActionState: userId property is not a string');
+            }
+        }
+
+        // Validate and include isAccountLinked
+        if (isAccountLinked !== undefined && isAccountLinked !== null) {
+            if (typeof isAccountLinked === 'boolean') {
+                result.isAccountLinked = isAccountLinked;
+            } else {
+                console.warn('toActionState: isAccountLinked property is not a boolean');
+            }
+        }
+
+        // Validate and include canSignInWith
+        if (canSignInWith !== undefined && canSignInWith !== null) {
+            if (Array.isArray(canSignInWith)) {
+                result.canSignInWith = [...canSignInWith];
+            } else {
+                console.warn('toActionState: canSignInWith property is not a boolean');
+            }
+        }
+
         return result;
     } catch (error) {
         console.error('toActionState: error processing actionState:', error);

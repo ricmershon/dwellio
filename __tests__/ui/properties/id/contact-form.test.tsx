@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, createReactToastifyMock } from '@/__tests__/test-utils';
 import PropertyContactForm from '@/ui/properties/id/contact-form';
 import { PropertyDocument } from '@/models';
-import { ActionState, ActionStatus } from '@/types/types';
+import { ActionState, ActionStatus } from '@/types';
 
 // Mock React hooks
 const mockUseActionState = jest.fn();

@@ -1,4 +1,4 @@
-import { PropertyImageData } from '@/types/types';
+import { PropertyImageData } from '@/types';
 
 // Mock property image data
 export const mockPropertyImageData: PropertyImageData[] = [

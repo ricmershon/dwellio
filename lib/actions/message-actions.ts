@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import dbConnect from "@/lib/db-connect";
 import { Message, MessageDocument } from "@/models";
 import { toActionState } from "@/utils/to-action-state";
-import { ActionState, ActionStatus } from "@/types/types";
+import { ActionState, ActionStatus } from "@/types";
 import { MessageInput } from "@/schemas/message-schema";
 import { buildFormErrorMap } from "@/utils/build-form-error-map";
 import { requireSessionUser } from "@/utils/require-session-user";

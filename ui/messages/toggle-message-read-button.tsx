@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 import { useGlobalContext } from "@/context/global-context";
 import { toggleMessageRead } from "@/lib/actions/message-actions";
-import { ActionStatus } from "@/types/types";
+import { ActionStatus } from "@/types";
 
 interface ToggleMessageReadButtonProps {
     messageId: string,

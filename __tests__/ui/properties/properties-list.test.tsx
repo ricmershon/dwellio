@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@/__tests__/test-utils';
 import PropertiesList from '@/ui/properties/properties-list';
 import { PropertyDocument } from '@/models';
-import { PropertiesQuery } from '@/types/types';
+import { PropertiesQuery } from '@/types';
 
 // Mock PropertyCard component
 jest.mock('@/ui/properties/property-card', () => ({

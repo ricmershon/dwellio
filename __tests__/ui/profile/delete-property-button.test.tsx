@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { toast } from 'react-toastify';
 import DeletePropertyButton from '@/ui/profile/delete-property-button';
 import { deleteProperty } from '@/lib/actions/property-actions';
-import { ActionStatus } from '@/types/types';
+import { ActionStatus } from '@/types';
 
 // Mock dependencies
 jest.mock('react-toastify', () => ({
