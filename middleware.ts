@@ -9,7 +9,7 @@ export async function middleware(req: NextRequest) {
         const url = req.nextUrl.clone();
         url.pathname = "/";
         url.searchParams.set("authRequired", "true");
-        url.searchParams.set("returnTo", req.nextUrl.pathname + req.nextUrl.search);
+        url.searchParams.set("returnTo", `${req.nextUrl.pathname}${req.nextUrl.search}`);
         return NextResponse.redirect(url);
     }
     return NextResponse.next();

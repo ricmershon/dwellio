@@ -98,4 +98,9 @@ export interface AddressComponent {
     shortText?: string;
 };
 
+export interface PasswordValidation {
+    isValid: boolean;
+    errors: string[];
+}
+
 export const VIEWPORT_WIDTH_COOKIE_NAME = "viewport_width";
