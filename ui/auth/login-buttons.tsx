@@ -17,12 +17,15 @@ const LoginButtons = ({ buttonClassName = "", text = "Login", icon }: LoginButto
     const returnTo = searchParams.get("returnTo") || "/"
 
     const providers = useAuthProviders();
+    
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { credentials, ...otherProviders } = providers || {};
 
     if (!providers) return null;
 
     return (
         <>
-            {Object.values(providers).map((provider) => (
+            {Object.values(otherProviders).map((provider) => (
                 <button
                     key={provider.id}
                     className={buttonClassName}

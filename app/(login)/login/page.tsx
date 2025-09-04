@@ -1,13 +1,36 @@
+import LoginButtons from "@/ui/auth/login-buttons";
 import LoginUI from "@/ui/login/login-ui";
 import DwellioLogo from "@/ui/shared/logo";
+import { Suspense } from "react";
 
 const LoginPage = () => {
     return (
-        <section className="mt-4 h-screen text-center flex flex-col jusitfy-center items-center">
-            <DwellioLogo />
-            <h1 className="my-4 text-xl text-gray-700">Sign in with Google or create an account</h1>
-            <LoginUI />
-        </section>
+        <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+            <div className="max-w-md w-full space-y-6">
+                {/* Main Login/Signup Form */}
+                <Suspense fallback={<div>Loading...</div>}>
+                    <LoginUI />
+                </Suspense>
+                
+                {/* OAuth Providers (Google, etc.) */}
+                <div className="mt-6">
+                    <Suspense fallback={<div>Loading providers...</div>}>
+                        <LoginButtons />
+                    </Suspense>
+                </div>
+                
+                {/* Account Linking Info */}
+                <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <div className="text-sm text-blue-800">
+                        <div className="font-medium mb-1">Account Linking</div>
+                        <div>
+                            If you have an existing Google account with this email, 
+                            creating a password will link both sign-in methods to the same account.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 }
  

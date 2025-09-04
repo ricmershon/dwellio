@@ -7,9 +7,9 @@ import { ActionState, ActionStatus } from '@/types';
 import { toActionState } from '@/utils/to-action-state';
 
 export const createCredentialsUser =  async (_prevState: ActionState, formData: FormData) => {
-    const email = <string>formData.get("email");
-    const password = <string>formData.get("password");
-    const username = <string>formData.get("username");
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const username = formData.get("username") as string;
     
     /**
      * Input validation
@@ -42,7 +42,7 @@ export const createCredentialsUser =  async (_prevState: ActionState, formData: 
                 /**
                  * ACCOUNT LINKING: Google OAuth user adding password.
                  */
-                console.log(`API: Linking password to existing OAuth account: ${email}.`);
+                console.log(`>>> Linking password to existing OAuth account: ${email}.`);
                 
                 const passwordValidation = validatePassword(password);
                 if (!passwordValidation.isValid) {
@@ -81,7 +81,10 @@ export const createCredentialsUser =  async (_prevState: ActionState, formData: 
                     userId: (existingUser._id as string).toString(),
                     message: 'Password successfully added to your existin Google account. You can now sign in with either method.',
                     isAccountLinked: true,
-                    canSignInWith: ['google', 'credentials']
+                    canSignInWith: ['google', 'credentials'],
+                    email: email,
+                    password: password,
+                    shouldAutoLogin: true
                 });
             } else {
 
@@ -98,7 +101,7 @@ export const createCredentialsUser =  async (_prevState: ActionState, formData: 
         /**
          * NEW USER: Create account with credentials authentication.
          */
-        console.log(`API: Creating new credentials account: ${email}`);
+        console.log(`>>> Creating new credentials account: ${email}`);
         
         const passwordValidation = validatePassword(password);
         if (!passwordValidation.isValid) {
@@ -139,7 +142,10 @@ export const createCredentialsUser =  async (_prevState: ActionState, formData: 
             message: "Account created successfully.",
             userId: newUser._id.toString(),
             isAccountLinked: false,
-            canSignInWith: ['credentials']
+            canSignInWith: ['credentials'],
+            email: email,
+            password: password,
+            shouldAutoLogin: true
         });
     } catch (error) {
         console.error(`>>> User registration error: ${error}`);

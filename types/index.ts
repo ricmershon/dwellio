@@ -10,16 +10,19 @@ export const ActionStatus = {
 type ActionStatus = (typeof ActionStatus)[keyof typeof ActionStatus];
 
 export type ActionState = {
-  message?: string | null;
-  status?: ActionStatus | null;
-  isFavorite?: boolean;
-  isRead?: boolean;
-  formData?: FormData;
-  formErrorMap?: StructuredFormErrorMap;
-  error?: string;
-  userId?: string;
-  isAccountLinked?: boolean;
-  canSignInWith?: string[];
+    message?: string | null;
+    status?: ActionStatus | null;
+    isFavorite?: boolean;
+    isRead?: boolean;
+    formData?: FormData;
+    formErrorMap?: StructuredFormErrorMap;
+    error?: string;
+    userId?: string;
+    isAccountLinked?: boolean;
+    canSignInWith?: string[];
+    email?: string;
+    password?: string;
+    shouldAutoLogin?: boolean;
 };
 
 export interface PropertiesQuery {
