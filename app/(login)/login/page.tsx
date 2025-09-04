@@ -1,4 +1,4 @@
-import LoginButtons from "@/ui/auth/login-buttons";
+
 import LoginUI from "@/ui/login/login-ui";
 import DwellioLogo from "@/ui/shared/logo";
 import { Suspense } from "react";
@@ -11,13 +11,6 @@ const LoginPage = () => {
                 <Suspense fallback={<div>Loading...</div>}>
                     <LoginUI />
                 </Suspense>
-                
-                {/* OAuth Providers (Google, etc.) */}
-                <div className="mt-6">
-                    <Suspense fallback={<div>Loading providers...</div>}>
-                        <LoginButtons />
-                    </Suspense>
-                </div>
                 
                 {/* Account Linking Info */}
                 <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">

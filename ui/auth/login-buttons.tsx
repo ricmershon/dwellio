@@ -1,18 +1,13 @@
 "use client";
 
-import { ReactNode } from "react";
 import { signIn } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 
 import { useAuthProviders } from "@/hooks/use-auth-providers";
+import Google__G__logo from "@/assets/images/Google__G__logo.svg";
+import Image from "next/image";
 
-interface LoginButtonsProps {
-    buttonClassName?: string;
-    text?: string;
-    icon?: ReactNode;
-}
-
-const LoginButtons = ({ buttonClassName = "", text = "Login", icon }: LoginButtonsProps) => {
+const LoginButtons = () => {
     const searchParams = useSearchParams();
     const returnTo = searchParams.get("returnTo") || "/"
 
@@ -25,16 +20,36 @@ const LoginButtons = ({ buttonClassName = "", text = "Login", icon }: LoginButto
 
     return (
         <>
-            {Object.values(otherProviders).map((provider) => (
-                <button
-                    key={provider.id}
-                    className={buttonClassName}
-                    onClick={() => signIn(provider.id, { callbackUrl: returnTo })}
-                >
-                    {icon}
-                    <span>{text}</span>
-                </button>
-            ))}
+            {Object.values(otherProviders).map((provider) => {
+                let logo;
+                let alt: string = "";
+                let text: string = "";
+
+                if (provider.id === 'google') {
+                    logo = Google__G__logo;
+                    alt = "Google logo";
+                    text = "Continue with Google"
+                }
+
+                return (
+                    <button
+                        key={provider.id}
+                        className="btn btn-login-logout flex items-center w-full content-center"
+                        onClick={() => signIn(provider.id, { callbackUrl: returnTo })}
+                    >
+                        <Image
+                            src={logo}
+                            width={20}
+                            height={20}
+                            alt={alt}
+                            className="mr-2"
+                        />
+                        {/* <div className="grow-0 shrink basis-[0%]">{icon}</div> */}
+                        <div className="grow-1 shrink basis-[0%]">{text}</div>
+                        <div className="grow-0 shrink basis-[0%]"></div>
+                    </button>
+                )
+            })}
         </>
     );
 }

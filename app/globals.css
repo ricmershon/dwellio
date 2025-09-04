@@ -54,6 +54,9 @@
 		@apply text-lg mr-2;
 	}
 	.btn-login-logout {
+		@apply text-gray-800 bg-white hover:bg-gray-100 active:bg-gray-50 md:text-sm border border-[#747775];
+	}
+	.btn-alert {
 		@apply text-gray-700 hover:text-white active:text-white bg-gray-300 hover:bg-gray-500 active:bg-gray-400 text-lg md:text-sm;
 	}
 	.menu-btn {

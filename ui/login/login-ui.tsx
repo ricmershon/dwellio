@@ -7,6 +7,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { createCredentialsUser } from "@/lib/actions/user-actions";
 import { ActionState, ActionStatus } from "@/types";
+import Input from "../shared/input";
+import LoginButtons from "../auth/login-buttons";
+import { FaGoogle } from "react-icons/fa";
 
 export default function LoginUI() {
     const [actionState, formAction, isPending] = useActionState(
@@ -150,70 +153,55 @@ export default function LoginUI() {
 
             {isSignup ? (
                 <form action={formAction} className="space-y-4">{/* Registration Form with useActionState */}
-                    {/* Username Field */}
-                    <div>
-                        <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-                            Username <span className="text-gray-500">(optional)</span>
-                        </label>
-                        <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Choose a username"
-                            disabled={isLoading || isPending}
-                        />
-                        <p className="mt-1 text-xs text-gray-500">
-                            {"If not provided, we'll use the part before @ in your email"}
-                        </p>
-                    </div>
+                    {/* Username */}
+                    <Input
+                        id="username"
+                        name="username"
+                        type="text"
+                        inputType="input"
+                        placeholder="Enter a username"
+                        label="Username (optional)"
+                        disabled={isLoading || isPending}
+                    />
 
-                    {/* Email Field */}
-                    <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                            Email Address *
-                        </label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            required
-                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="your@email.com"
-                            disabled={isLoading || isPending}
-                        />
-                    </div>
+                    {/* Email */}
+                    <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        required
+                        inputType="input"
+                        placeholder="your@email.com"
+                        label="Email Address *"
+                        disabled={isLoading || isPending}
+                    />
 
-                    {/* Password Field */}
-                    <div>
-                        <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                            Password *
-                        </label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            required
-                            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Create a strong password"
-                            disabled={isLoading || isPending}
-                        />
-                        <div className="mt-1 text-xs text-gray-500">
-                            <div>Password requirements:</div>
-                            <ul className="list-disc list-inside mt-1 space-y-0.5">
-                                <li>At least 8 characters long</li>
-                                <li>Contains uppercase and lowercase letters</li>
-                                <li>Contains at least one number</li>
-                                <li>Contains at least one special character (@$!%*?&)</li>
-                            </ul>
-                        </div>
+                    {/* Password */}
+                    <Input
+                        id="password"
+                        name="password"
+                        type="password"
+                        required
+                        inputType="input"
+                        placeholder="Create a strong password"
+                        label="Password *"
+                        disabled={isLoading || isPending}
+                    />
+                    <div className="-mt-3 text-xs text-gray-500">
+                        <div>Password requirements:</div>
+                        <ul className="list-disc list-inside mt-1 space-y-0.5">
+                            <li>At least 8 characters long</li>
+                            <li>Contains uppercase and lowercase letters</li>
+                            <li>Contains at least one number</li>
+                            <li>Contains at least one special character (@$!%*?&)</li>
+                        </ul>
                     </div>
 
                     {/* Submit Button */}
                     <button
                         type="submit"
                         disabled={isLoading || isPending}
-                        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                        className="btn btn-login-logout h-10 w-full"
                     >
                         {(isLoading || isPending) ? (
                             <div className="flex items-center">
@@ -266,7 +254,7 @@ export default function LoginUI() {
                     <button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                        className=" w-full btn btn-login-logout"
                     >
                         {isLoading ? (
                             <div className="flex items-center">
@@ -304,9 +292,14 @@ export default function LoginUI() {
                         <div className="w-full border-t border-gray-300" />
                     </div>
                     <div className="relative flex justify-center text-sm">
-                        <span className="px-2 bg-white text-gray-500">Or continue with Google Login</span>
+                        <span className="px-2 bg-white text-gray-500">or</span>
                     </div>
                 </div>
+            </div>
+            
+            {/* OAuth Providers (Google, etc.) */}
+            <div className="mt-6">
+                <LoginButtons />
             </div>
         </div>
     );
