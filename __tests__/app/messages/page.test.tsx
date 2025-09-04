@@ -32,7 +32,7 @@ jest.mock('@/ui/shared/breadcrumbs', () => ({
 // Import after mocks
 import React from 'react';
 import { render, screen } from '@/__tests__/test-utils';
-import MessagesPage from '@/app/messages/page';
+import MessagesPage from '@/app/(root)/messages/page';
 import { MessageDocument } from '@/models';
 
 const { fetchMessages } = jest.requireMock('@/lib/data/message-data');

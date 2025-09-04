@@ -46,7 +46,7 @@ jest.mock('next/image', () => ({
 }));
 
 import { render } from '@testing-library/react';
-import ProfilePage from '@/app/profile/page';
+import ProfilePage from '@/app/(root)/profile/page';
 import { requireSessionUser } from '@/utils/require-session-user';
 import { fetchPropertiesByUserId } from '@/lib/data/property-data';
 
@@ -105,7 +105,7 @@ describe('ProfilePage Integration Tests', () => {
     describe('Page Metadata', () => {
         it('should export correct metadata object', () => {
             // eslint-disable-next-line @typescript-eslint/no-require-imports
-            const ProfilePageModule = require('@/app/profile/page');
+            const ProfilePageModule = require('@/app/(root)/profile/page');
             expect(ProfilePageModule.metadata).toEqual({
                 title: 'Profile'
             });

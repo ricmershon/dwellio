@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@/__tests__/test-utils';
-import PropertyPage from '@/app/properties/[id]/page';
+import PropertyPage from '@/app/(root)/properties/[id]/page';
 import { mockPropertyData, mockSessionUser } from '@/__tests__/property-detail-test-utils';
 import { PropertyDocument } from '@/models';
 
