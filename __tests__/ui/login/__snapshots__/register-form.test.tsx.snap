@@ -1,0 +1,325 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`RegisterForm Snapshots should match snapshot in default state 1`] = `
+<form
+  action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+  class="space-y-4"
+>
+  <div
+    data-testid="input-username"
+  >
+    <label
+      class="mb-1 block text-sm text-gray-700"
+      for="username"
+    >
+      Username (optional)
+    </label>
+    <input
+      data-testid="input-field-username"
+      id="username"
+      name="username"
+      placeholder="Enter a username"
+      type="text"
+    />
+  </div>
+  <div
+    data-testid="input-email"
+  >
+    <label
+      class="mb-1 block text-sm text-gray-700"
+      for="email"
+    >
+      Email Address *
+    </label>
+    <input
+      data-testid="input-field-email"
+      id="email"
+      name="email"
+      placeholder="your@email.com"
+      required=""
+      type="email"
+    />
+  </div>
+  <div
+    data-testid="input-password"
+  >
+    <label
+      class="mb-1 block text-sm text-gray-700"
+      for="password"
+    >
+      Password *
+    </label>
+    <input
+      data-testid="input-field-password"
+      id="password"
+      name="password"
+      placeholder="Create a strong password"
+      required=""
+      type="password"
+    />
+  </div>
+  <div
+    class="-mt-3 text-xs text-gray-500"
+  >
+    <div>
+      Password requirements:
+    </div>
+    <ul
+      class="list-disc list-inside mt-1 space-y-0.5"
+    >
+      <li>
+        At least 8 characters long
+      </li>
+      <li>
+        Contains uppercase and lowercase letters
+      </li>
+      <li>
+        Contains at least one number
+      </li>
+      <li>
+        Contains at least one special character (@$!%*?&)
+      </li>
+    </ul>
+  </div>
+  <button
+    class="btn btn-login-logout h-10 w-full"
+    type="submit"
+  >
+    Create Account
+  </button>
+</form>
+`;
+
+exports[`RegisterForm Snapshots should match snapshot in loading state 1`] = `
+<form
+  action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+  class="space-y-4"
+>
+  <div
+    data-testid="input-username"
+  >
+    <label
+      class="mb-1 block text-sm text-gray-700"
+      for="username"
+    >
+      Username (optional)
+    </label>
+    <input
+      data-testid="input-field-username"
+      disabled=""
+      id="username"
+      name="username"
+      placeholder="Enter a username"
+      type="text"
+    />
+  </div>
+  <div
+    data-testid="input-email"
+  >
+    <label
+      class="mb-1 block text-sm text-gray-700"
+      for="email"
+    >
+      Email Address *
+    </label>
+    <input
+      data-testid="input-field-email"
+      disabled=""
+      id="email"
+      name="email"
+      placeholder="your@email.com"
+      required=""
+      type="email"
+    />
+  </div>
+  <div
+    data-testid="input-password"
+  >
+    <label
+      class="mb-1 block text-sm text-gray-700"
+      for="password"
+    >
+      Password *
+    </label>
+    <input
+      data-testid="input-field-password"
+      disabled=""
+      id="password"
+      name="password"
+      placeholder="Create a strong password"
+      required=""
+      type="password"
+    />
+  </div>
+  <div
+    class="-mt-3 text-xs text-gray-500"
+  >
+    <div>
+      Password requirements:
+    </div>
+    <ul
+      class="list-disc list-inside mt-1 space-y-0.5"
+    >
+      <li>
+        At least 8 characters long
+      </li>
+      <li>
+        Contains uppercase and lowercase letters
+      </li>
+      <li>
+        Contains at least one number
+      </li>
+      <li>
+        Contains at least one special character (@$!%*?&)
+      </li>
+    </ul>
+  </div>
+  <button
+    class="btn btn-login-logout h-10 w-full"
+    disabled=""
+    type="submit"
+  >
+    <div
+      class="flex items-center"
+    >
+      <svg
+        class="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        />
+        <path
+          class="opacity-75"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          fill="currentColor"
+        />
+      </svg>
+      Please wait...
+    </div>
+  </button>
+</form>
+`;
+
+exports[`RegisterForm Snapshots should match snapshot in pending state 1`] = `
+<form
+  action="javascript:throw new Error('A React form was unexpectedly submitted. If you called form.submit() manually, consider using form.requestSubmit() instead. If you\\'re trying to use event.stopPropagation() in a submit event handler, consider also calling event.preventDefault().')"
+  class="space-y-4"
+>
+  <div
+    data-testid="input-username"
+  >
+    <label
+      class="mb-1 block text-sm text-gray-700"
+      for="username"
+    >
+      Username (optional)
+    </label>
+    <input
+      data-testid="input-field-username"
+      disabled=""
+      id="username"
+      name="username"
+      placeholder="Enter a username"
+      type="text"
+    />
+  </div>
+  <div
+    data-testid="input-email"
+  >
+    <label
+      class="mb-1 block text-sm text-gray-700"
+      for="email"
+    >
+      Email Address *
+    </label>
+    <input
+      data-testid="input-field-email"
+      disabled=""
+      id="email"
+      name="email"
+      placeholder="your@email.com"
+      required=""
+      type="email"
+    />
+  </div>
+  <div
+    data-testid="input-password"
+  >
+    <label
+      class="mb-1 block text-sm text-gray-700"
+      for="password"
+    >
+      Password *
+    </label>
+    <input
+      data-testid="input-field-password"
+      disabled=""
+      id="password"
+      name="password"
+      placeholder="Create a strong password"
+      required=""
+      type="password"
+    />
+  </div>
+  <div
+    class="-mt-3 text-xs text-gray-500"
+  >
+    <div>
+      Password requirements:
+    </div>
+    <ul
+      class="list-disc list-inside mt-1 space-y-0.5"
+    >
+      <li>
+        At least 8 characters long
+      </li>
+      <li>
+        Contains uppercase and lowercase letters
+      </li>
+      <li>
+        Contains at least one number
+      </li>
+      <li>
+        Contains at least one special character (@$!%*?&)
+      </li>
+    </ul>
+  </div>
+  <button
+    class="btn btn-login-logout h-10 w-full"
+    disabled=""
+    type="submit"
+  >
+    <div
+      class="flex items-center"
+    >
+      <svg
+        class="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          class="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          stroke-width="4"
+        />
+        <path
+          class="opacity-75"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          fill="currentColor"
+        />
+      </svg>
+      Please wait...
+    </div>
+  </button>
+</form>
+`;
