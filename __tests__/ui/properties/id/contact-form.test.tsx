@@ -35,9 +35,9 @@ jest.mock('react-icons/lu', () => ({
 // Mock child components
 jest.mock('@/ui/shared/input', () => ({
     __esModule: true,
-    default: ({ id, name, type, label, placeholder, defaultValue, errors, inputType, labelSize }: any) => (
+    default: ({ id, name, type, label, placeholder, defaultValue, errors, inputType }: any) => (
         <div data-testid={`input-${id}`}>
-            <label htmlFor={id} data-label-size={labelSize}>{label}</label>
+            <label htmlFor={id} className="mb-1 block text-sm text-gray-700">{label}</label>
             {inputType === 'textarea' ? (
                 <textarea
                     id={id}
@@ -466,7 +466,7 @@ describe('PropertyContactForm', () => {
             expect(input).toHaveAttribute('type', 'text');
             expect(input).toHaveAttribute('placeholder', 'Enter your name');
             expect(label).toHaveTextContent('Name');
-            expect(label).toHaveAttribute('data-label-size', 'text-sm');
+            expect(label).toHaveClass('text-sm');
         });
 
         it('should configure email field correctly', () => {

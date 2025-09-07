@@ -28,7 +28,7 @@ exports[`PropertyContactForm Snapshots should match snapshot in loading state 1`
       data-testid="input-name"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="name"
       >
         Name
@@ -46,7 +46,7 @@ exports[`PropertyContactForm Snapshots should match snapshot in loading state 1`
       data-testid="input-email"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="email"
       >
         Email
@@ -64,7 +64,7 @@ exports[`PropertyContactForm Snapshots should match snapshot in loading state 1`
       data-testid="input-phone"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="phone"
       >
         Phone
@@ -82,7 +82,7 @@ exports[`PropertyContactForm Snapshots should match snapshot in loading state 1`
       data-testid="input-body"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="body"
       >
         Message
@@ -139,7 +139,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with default props 
       data-testid="input-name"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="name"
       >
         Name
@@ -157,7 +157,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with default props 
       data-testid="input-email"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="email"
       >
         Email
@@ -175,7 +175,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with default props 
       data-testid="input-phone"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="phone"
       >
         Phone
@@ -193,7 +193,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with default props 
       data-testid="input-body"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="body"
       >
         Message
@@ -249,7 +249,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with different prop
       data-testid="input-name"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="name"
       >
         Name
@@ -267,7 +267,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with different prop
       data-testid="input-email"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="email"
       >
         Email
@@ -285,7 +285,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with different prop
       data-testid="input-phone"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="phone"
       >
         Phone
@@ -303,7 +303,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with different prop
       data-testid="input-body"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="body"
       >
         Message
@@ -359,7 +359,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with form errors 1`
       data-testid="input-name"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="name"
       >
         Name
@@ -377,7 +377,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with form errors 1`
       data-testid="input-email"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="email"
       >
         Email
@@ -395,7 +395,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with form errors 1`
       data-testid="input-phone"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="phone"
       >
         Phone
@@ -413,7 +413,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with form errors 1`
       data-testid="input-body"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="body"
       >
         Message
@@ -474,7 +474,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with minimal user d
       data-testid="input-name"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="name"
       >
         Name
@@ -492,7 +492,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with minimal user d
       data-testid="input-email"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="email"
       >
         Email
@@ -510,7 +510,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with minimal user d
       data-testid="input-phone"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="phone"
       >
         Phone
@@ -528,7 +528,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with minimal user d
       data-testid="input-body"
     >
       <label
-        data-label-size="text-sm"
+        class="mb-1 block text-sm text-gray-700"
         for="body"
       >
         Message

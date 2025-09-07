@@ -6,6 +6,7 @@ import dbConnect from "@/lib/db-connect";
 import { User } from "@/models";
 import { verifyPassword } from "@/utils/password-utils";
 
+// FIXME: fix returnTo after login
 export const authOptions: NextAuthOptions = {
     providers: [
         /**
