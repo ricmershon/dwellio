@@ -42,7 +42,7 @@ import { signIn, ClientSafeProvider, LiteralUnion } from 'next-auth/react';
 import { BuiltInProviderType } from 'next-auth/providers/index';
 import { useSearchParams } from 'next/navigation';
 
-import LoginButtons from '@/ui/auth/login-buttons';
+import LoginButtons from '@/ui/login/login-buttons';
 import { useAuthProviders } from '@/hooks/use-auth-providers';
 import { render, createMockSearchParams } from '@/__tests__/test-utils';
 

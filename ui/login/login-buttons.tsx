@@ -7,6 +7,7 @@ import { useAuthProviders } from "@/hooks/use-auth-providers";
 import Google__G__logo from "@/assets/images/Google__G__logo.svg";
 import Image from "next/image";
 
+
 const LoginButtons = () => {
     const searchParams = useSearchParams();
     const returnTo = searchParams.get("returnTo") || "/"
@@ -16,7 +17,9 @@ const LoginButtons = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { credentials, ...otherProviders } = providers || {};
 
-    if (!providers) return null;
+    if (!providers) {
+        return null;
+    }
 
     return (
         <>
@@ -34,7 +37,7 @@ const LoginButtons = () => {
                 return (
                     <button
                         key={provider.id}
-                        className="btn btn-login-logout flex items-center w-full content-center"
+                        className="relative btn btn-login-logout flex items-center w-full content"
                         onClick={() => signIn(provider.id, { callbackUrl: returnTo })}
                     >
                         <Image
@@ -42,11 +45,9 @@ const LoginButtons = () => {
                             width={20}
                             height={20}
                             alt={alt}
-                            className="mr-2"
+                            className="absolute left-[12px]"
                         />
-                        {/* <div className="grow-0 shrink basis-[0%]">{icon}</div> */}
-                        <div className="grow-1 shrink basis-[0%]">{text}</div>
-                        <div className="grow-0 shrink basis-[0%]"></div>
+                        <div className="mx-auto">{text}</div>
                     </button>
                 )
             })}

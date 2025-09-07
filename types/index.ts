@@ -16,7 +16,6 @@ export type ActionState = {
     isRead?: boolean;
     formData?: FormData;
     formErrorMap?: StructuredFormErrorMap;
-    error?: string;
     userId?: string;
     isAccountLinked?: boolean;
     canSignInWith?: string[];

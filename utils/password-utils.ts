@@ -58,16 +58,3 @@ export const validatePassword = (password: string): PasswordValidation => {
         errors: errors
     }
 }
-
-/**
- * Generate a secure random username from email.
- * 
- * @param {string} email address.
- * @returns {string} - randomized username.
- */
-export const generateUsername = (email: string) => {
-    const baseUsername = email.split('@')[0];
-    const randomSuffix = Math.random().toString(36).substring(2, 8);
-
-    return `${baseUsername}_${randomSuffix}`
-}

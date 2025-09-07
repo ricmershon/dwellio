@@ -43,8 +43,5 @@ export const requireSessionUser = async (): Promise<NonNullable<Session["user"]>
             // In case redirect fails, throw the original error
             throw new Error('Authentication required but unable to redirect');
         }
-        
-        // This should never be reached due to redirect, but satisfy TypeScript
-        throw error;
     }
 };

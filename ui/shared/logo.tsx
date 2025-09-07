@@ -3,7 +3,7 @@ import Link from "next/link";
 
 const DwellioLogo = () => (
     <Link
-        className="flex flex-shrink-0 items-center"
+        className="flex flex-shrink-0 items-center justify-center"
         href="/"
     >
         <HomeIcon className="h-10 w-auto text-blue-800 p-[4px] bg-white" />

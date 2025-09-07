@@ -1,10 +1,10 @@
 "use server";
 
-import dbConnect from '@/lib/db-connect';
-import { User, UserDocument } from '@/models';
-import { hashPassword, validatePassword } from '@/utils/password-utils';
-import { ActionState, ActionStatus } from '@/types';
-import { toActionState } from '@/utils/to-action-state';
+import dbConnect from "@/lib/db-connect";
+import { User, UserDocument } from "@/models";
+import { hashPassword, validatePassword } from "@/utils/password-utils";
+import { ActionState, ActionStatus } from "@/types";
+import { toActionState } from "@/utils/to-action-state";
 
 export const createCredentialsUser =  async (_prevState: ActionState, formData: FormData) => {
     const email = formData.get("email") as string;
@@ -17,7 +17,7 @@ export const createCredentialsUser =  async (_prevState: ActionState, formData: 
     if (!email || !password) {
         return toActionState({
             status: ActionStatus.ERROR,
-            message: 'Email and password are required.'
+            message: "Email and password are required."
         });
     }
 
@@ -48,7 +48,7 @@ export const createCredentialsUser =  async (_prevState: ActionState, formData: 
                 if (!passwordValidation.isValid) {
                     return toActionState({
                         status: ActionStatus.ERROR,
-                        message: passwordValidation.errors.join(', ')
+                        message: passwordValidation.errors.join(" ")
                     });
                 }
 
@@ -79,9 +79,9 @@ export const createCredentialsUser =  async (_prevState: ActionState, formData: 
                 return toActionState({
                     status: ActionStatus.SUCCESS,
                     userId: (existingUser._id as string).toString(),
-                    message: 'Password successfully added to your existin Google account. You can now sign in with either method.',
+                    message: "Password successfully added to your existin Google account. You can now sign in with either method.",
                     isAccountLinked: true,
-                    canSignInWith: ['google', 'credentials'],
+                    canSignInWith: ["google", "credentials"],
                     email: email,
                     password: password,
                     shouldAutoLogin: true
@@ -93,7 +93,7 @@ export const createCredentialsUser =  async (_prevState: ActionState, formData: 
                  */
                 return toActionState({
                     status: ActionStatus.ERROR,
-                    message: 'An account with this email already exists. Try signing in instead.'
+                    message: `An account with the email "${existingUser.email}" already exists.`
                 });
             }
         }
@@ -104,24 +104,25 @@ export const createCredentialsUser =  async (_prevState: ActionState, formData: 
         console.log(`>>> Creating new credentials account: ${email}`);
         
         const passwordValidation = validatePassword(password);
+
         if (!passwordValidation.isValid) {
             return toActionState({
                 status: ActionStatus.ERROR,
-                message: passwordValidation.errors.join(', ')
+                message: passwordValidation.errors.join(" ")
             });
         }
 
-        const finalUsername = username?.trim() || email.split('@')[0];
+        const finalUsername = username?.trim() || email.split("@")[0];
 
         /**
          * Check if username is taken (if provided).
          */
-        if (username?.trim()) {
-            const usernameExists = await User.findOne({ username: username.trim() });
+        if (finalUsername) {
+            const usernameExists = await User.findOne({ username: finalUsername });
             if (usernameExists) {
                 return toActionState({
                     status: ActionStatus.ERROR,
-                    message: "Username is already taken."
+                    message: `Username "${finalUsername}" already taken.`
                 })
             }
         }
@@ -142,7 +143,7 @@ export const createCredentialsUser =  async (_prevState: ActionState, formData: 
             message: "Account created successfully.",
             userId: newUser._id.toString(),
             isAccountLinked: false,
-            canSignInWith: ['credentials'],
+            canSignInWith: ["credentials"],
             email: email,
             password: password,
             shouldAutoLogin: true
