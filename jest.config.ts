@@ -14,6 +14,7 @@ const config: Config = {
 	},
 	moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
 	moduleNameMapper: {
+		'\\.(svg|png|jpg|jpeg|gif)$': '<rootDir>/__tests__/__mocks__/fileMock.js',
 		'^@/(.*)$': '<rootDir>/$1',
 		'\\.(css|less|scss|sass)$': 'identity-obj-proxy',
 		'react-toastify/dist/ReactToastify.css': 'identity-obj-proxy',

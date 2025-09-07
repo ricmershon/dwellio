@@ -89,7 +89,7 @@ describe('LoginButtons', () => {
 
 			const buttons = screen.getAllByRole('button');
 			expect(buttons).toHaveLength(2);
-			expect(screen.getAllByText('Login')).toHaveLength(2);
+			expect(screen.getByText('Continue with Google')).toBeInTheDocument();
 		});
 
 		it('should render nothing when providers are not loaded', () => {
@@ -99,26 +99,26 @@ describe('LoginButtons', () => {
 			expect(container.firstChild).toBeNull();
 		});
 
-		it('should render custom text when provided', () => {
-			render(<LoginButtons text="Sign In" />);
+		it('should render with default text', () => {
+			render(<LoginButtons />);
 
-			expect(screen.getAllByText('Sign In')).toHaveLength(2);
+			expect(screen.getByText('Continue with Google')).toBeInTheDocument();
 		});
 
-		it('should apply custom className when provided', () => {
-			render(<LoginButtons buttonClassName="custom-btn" />);
+		it('should apply default className', () => {
+			render(<LoginButtons />);
 
 			const buttons = screen.getAllByRole('button');
 			buttons.forEach(button => {
-				expect(button).toHaveClass('custom-btn');
+				expect(button).toHaveClass('btn', 'btn-login-logout');
 			});
 		});
 
-		it('should render custom icon when provided', () => {
-			const customIcon = <span data-testid="custom-icon">🔐</span>;
-			render(<LoginButtons icon={customIcon} />);
+		it('should render default Google logo', () => {
+			render(<LoginButtons />);
 
-			expect(screen.getAllByTestId('custom-icon')).toHaveLength(2);
+			const googleLogo = screen.getByAltText('Google logo');
+			expect(googleLogo).toBeInTheDocument();
 		});
 	});
 
