@@ -55,12 +55,7 @@ describe('Authentication Configuration - Business Logic', () => {
   });
 
   describe('Credentials Authorization Logic', () => {
-    const getCredentialsProvider = () => {
-      return authOptions.providers.find((p: any) => p.type === 'credentials') as any;
-    };
-
     it('should validate required credentials', async () => {
-      const provider = getCredentialsProvider();
       
       // Test validation logic that would be in the authorize function
       const validateCredentials = async (credentials: any) => {
@@ -129,8 +124,8 @@ describe('Authentication Configuration - Business Logic', () => {
     });
 
     it('should handle OAuth-only user detection', async () => {
-      const testOAuthOnlyUser = (user: any) => {
-        if (!user) return false;
+      const testOAuthOnlyUser = (user: any): { isOAuthOnly: boolean; message?: string } => {
+        if (!user) return { isOAuthOnly: false };
         if (!user.passwordHash) {
           return { isOAuthOnly: true, message: `${user.email} is linked to a Google account.` };
         }
