@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Mock all external dependencies first
 jest.mock('@/lib/data/property-data', () => ({
     fetchPropertiesByUserId: jest.fn()
@@ -11,7 +12,6 @@ jest.mock('@/assets/images/profile.png', () => '/mock-profile-image.png');
 
 jest.mock('@/ui/shared/breadcrumbs', () => ({
     __esModule: true,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     default: ({ breadcrumbs }: any) => (
         <nav data-testid="breadcrumbs">
             {breadcrumbs.map((crumb: any, index: number) => (
@@ -25,7 +25,6 @@ jest.mock('@/ui/shared/breadcrumbs', () => ({
 
 jest.mock('@/ui/profile/profile-properties', () => ({
     __esModule: true,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     default: ({ properties }: any) => (
         <div data-testid="profile-properties">
             {properties.map((prop: any) => (
@@ -39,7 +38,6 @@ jest.mock('@/ui/profile/profile-properties', () => ({
 
 jest.mock('next/image', () => ({
     __esModule: true,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     default: ({ src, alt, className, width, height }: any) => (
         <img src={src} alt={alt} className={className} width={width} height={height} />
     ),
@@ -98,7 +96,6 @@ describe('ProfilePage Integration Tests', () => {
     beforeEach(() => {
         jest.clearAllMocks();
         mockRequireSessionUser.mockResolvedValue(mockSessionUser);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         mockFetchPropertiesByUserId.mockResolvedValue(mockProperties as any);
     });
 
