@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@/__tests__/test-utils';
 
-import NotFound from '@/app/not-found';
+import NotFound from '@/app/(root)/not-found';
 
 describe('NotFound', () => {
     describe('Rendering', () => {

@@ -1,5 +1,5 @@
 import { PropertyDocument } from "@/models";
-import { ActionState } from "@/types/types";
+import { ActionState } from "@/types";
 import FormErrors from "@/ui/shared/form-errors";
 
 interface SpecsProps {

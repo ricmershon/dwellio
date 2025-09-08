@@ -6,7 +6,7 @@ const Item = dynamic(() => import("react-photoswipe-gallery").then(m => m.Item),
 import { useGallery } from "react-photoswipe-gallery";
 import { RiGalleryView2 } from "react-icons/ri";
 
-import { PropertyImageData } from "@/types/types";
+import { PropertyImageData } from "@/types";
 
 const PropertyImagesGallery = ({ imagesData }: { imagesData: PropertyImageData[] }) => {
     const { open } = useGallery();

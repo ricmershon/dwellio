@@ -1,4 +1,4 @@
-import { Rates } from "@/types/types";
+import { Rates } from "@/types";
 
 /**
  * Formats rate display string with priority: monthly > weekly > nightly

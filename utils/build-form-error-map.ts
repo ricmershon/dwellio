@@ -1,5 +1,5 @@
 import { ZodError } from "zod";
-import { FormErrorsType } from "@/types/types";
+import { FormErrorsType } from "@/types";
 
 /**
  * Builds a structured form error map from Zod validation issues

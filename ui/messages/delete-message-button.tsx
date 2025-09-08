@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 import { useGlobalContext } from "@/context/global-context";
 import { deleteMessage } from "@/lib/actions/message-actions";
-import { ActionStatus } from "@/types/types";
+import { ActionStatus } from "@/types";
 
 const DeleteMessageButton = ({ messageId }: { messageId: string } ) => {
     const { setUnreadCount } = useGlobalContext();

@@ -1,5 +1,5 @@
-import NavBarLeft from "@/ui/root/layout/nav-bar/nav-bar-left";
 import NavBarRight from "@/ui/root/layout/nav-bar/nav-bar-right";
+import NavBarLeft from "@/ui/root/layout/nav-bar/nav-bar-left";
 import NavBarDesktopMiddle from "@/ui/root/layout/nav-bar/nav-bar-desktop-middle";
 import NavBarDesktopRight from "@/ui/root/layout/nav-bar/nav-bar-desktop-right";
 import { getViewportWidth } from "@/utils/get-viewport-width";

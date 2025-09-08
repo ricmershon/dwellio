@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@/__tests__/test-utils';
 
-import HomePage from '@/app/page';
+import HomePage from '@/app/(root)/page';
 
 // Mock React Suspense
 jest.mock('react', () => ({

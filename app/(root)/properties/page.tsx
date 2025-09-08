@@ -7,7 +7,7 @@ import Breadcrumbs from "@/ui/shared/breadcrumbs";
 import { fetchNumPropertiesPages } from "@/lib/data/property-data";
 import PropertiesListSkeleton from "@/ui/skeletons/properties-list-skeleton";
 import DelayedRender from "@/ui/shared/delayed-render";
-import { PropertiesQuery } from "@/types/types";
+import { PropertiesQuery } from "@/types";
 import PropertiesFilterForm from "@/ui/properties/properties-filter-form";
 import { getViewportWidth } from "@/utils/get-viewport-width";
 

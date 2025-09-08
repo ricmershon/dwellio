@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import FormErrors from "@/ui/shared/form-errors";
 import AddressSearch from "@/ui/properties/shared/form/address-search";
-import { ActionState } from "@/types/types";
+import { ActionState } from "@/types";
 import { PropertyDocument } from "@/models";
 
 interface LocationProps {

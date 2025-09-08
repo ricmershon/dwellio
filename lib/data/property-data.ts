@@ -2,7 +2,7 @@ import { HydratedDocument } from "mongoose";
 
 import dbConnect from "@/lib/db-connect"
 import { Property, PropertyDocument, User, UserDocument } from "@/models";
-import { PropertiesQuery } from "@/types/types";
+import { PropertiesQuery } from "@/types";
 
 /**
  * Returns a single property from the database.

@@ -3,7 +3,7 @@
 import dynamic from "next/dynamic";
 const Gallery = dynamic(() => import("react-photoswipe-gallery").then(m => m.Gallery), { ssr: false });
 
-import { PropertyImageData } from "@/types/types";
+import { PropertyImageData } from "@/types";
 import PropertyImagesGallery from "@/ui/properties/id/images-gallery";
 
 const PropertyImages = ({ imagesData }: { imagesData: PropertyImageData[] }) => (

@@ -9,7 +9,7 @@ exports[`NavBarRight Snapshots should match snapshot when authenticated with men
     href="/messages"
   >
     <div
-      class="size-8 rounded-full btn btn-login-logout p-1"
+      class="size-8 rounded-full btn btn-alert p-1"
       data-testid="bell-icon"
     >
       Bell Icon
@@ -55,7 +55,7 @@ exports[`NavBarRight Snapshots should match snapshot when authenticated with men
     href="/messages"
   >
     <div
-      class="size-8 rounded-full btn btn-login-logout p-1"
+      class="size-8 rounded-full btn btn-alert p-1"
       data-testid="bell-icon"
     >
       Bell Icon
@@ -92,7 +92,7 @@ exports[`NavBarRight Snapshots should match snapshot when authenticated with men
   <div
     aria-labelledby="mobile-menu-button"
     aria-orientation="vertical"
-    class="md:hidden absolute w-screen -mr-4 p-3 rounded-sm bg-white text-sm right-0 top-10 z-10 border border-gray-100 shadow-md flex flex-col items-center justify-center space-y-3"
+    class="md:hidden absolute w-screen -mr-4 p-3 rounded-sm bg-white text-sm right-0 top-10 z-40 border border-gray-100 shadow-md flex flex-col items-center justify-center space-y-3"
     id="mobile-menu"
     role="menu"
     tabindex="-1"
@@ -168,18 +168,12 @@ exports[`NavBarRight Snapshots should match snapshot when unauthenticated with m
     <div
       class="flex items-center"
     >
-      <div
-        class="flex items-center btn btn-login-logout text-sm py-[6px] px-3"
-        data-testid="login-buttons"
+      <a
+        class="btn btn-login-logout py-[6px] px-3"
+        href="/login"
       >
-        <span
-          class="mr-2"
-          data-testid="google-icon"
-        >
-          G
-        </span>
-        Login
-      </div>
+        Log In or Sign Up
+      </a>
     </div>
   </div>
   <div
@@ -216,18 +210,12 @@ exports[`NavBarRight Snapshots should match snapshot when unauthenticated with m
     <div
       class="flex items-center"
     >
-      <div
-        class="flex items-center btn btn-login-logout text-sm py-[6px] px-3"
-        data-testid="login-buttons"
+      <a
+        class="btn btn-login-logout py-[6px] px-3"
+        href="/login"
       >
-        <span
-          class="mr-2"
-          data-testid="google-icon"
-        >
-          G
-        </span>
-        Login
-      </div>
+        Log In or Sign Up
+      </a>
     </div>
   </div>
   <div
@@ -254,7 +242,7 @@ exports[`NavBarRight Snapshots should match snapshot when unauthenticated with m
   <div
     aria-labelledby="mobile-menu-button"
     aria-orientation="vertical"
-    class="md:hidden absolute w-screen -mr-4 p-3 rounded-sm bg-white text-sm right-0 top-10 z-10 border border-gray-100 shadow-md flex flex-col items-center justify-center space-y-3"
+    class="md:hidden absolute w-screen -mr-4 p-3 rounded-sm bg-white text-sm right-0 top-10 z-40 border border-gray-100 shadow-md flex flex-col items-center justify-center space-y-3"
     id="mobile-menu"
     role="menu"
     tabindex="-1"
@@ -290,7 +278,7 @@ exports[`NavBarRight Snapshots should match snapshot with different active paths
     href="/messages"
   >
     <div
-      class="size-8 rounded-full btn btn-login-logout p-1"
+      class="size-8 rounded-full btn btn-alert p-1"
       data-testid="bell-icon"
     >
       Bell Icon
@@ -327,7 +315,7 @@ exports[`NavBarRight Snapshots should match snapshot with different active paths
   <div
     aria-labelledby="mobile-menu-button"
     aria-orientation="vertical"
-    class="md:hidden absolute w-screen -mr-4 p-3 rounded-sm bg-white text-sm right-0 top-10 z-10 border border-gray-100 shadow-md flex flex-col items-center justify-center space-y-3"
+    class="md:hidden absolute w-screen -mr-4 p-3 rounded-sm bg-white text-sm right-0 top-10 z-40 border border-gray-100 shadow-md flex flex-col items-center justify-center space-y-3"
     id="mobile-menu"
     role="menu"
     tabindex="-1"

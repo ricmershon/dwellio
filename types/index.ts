@@ -10,12 +10,18 @@ export const ActionStatus = {
 type ActionStatus = (typeof ActionStatus)[keyof typeof ActionStatus];
 
 export type ActionState = {
-  message?: string | null;
-  status?: ActionStatus | null;
-  isFavorite?: boolean;
-  isRead?: boolean;
-  formData?: FormData;
-  formErrorMap?: StructuredFormErrorMap;
+    message?: string | null;
+    status?: ActionStatus | null;
+    isFavorite?: boolean;
+    isRead?: boolean;
+    formData?: FormData;
+    formErrorMap?: StructuredFormErrorMap;
+    userId?: string;
+    isAccountLinked?: boolean;
+    canSignInWith?: string[];
+    email?: string;
+    password?: string;
+    shouldAutoLogin?: boolean;
 };
 
 export interface PropertiesQuery {
@@ -97,5 +103,10 @@ export interface AddressComponent {
     longText?: string;
     shortText?: string;
 };
+
+export interface PasswordValidation {
+    isValid: boolean;
+    errors: string[];
+}
 
 export const VIEWPORT_WIDTH_COOKIE_NAME = "viewport_width";

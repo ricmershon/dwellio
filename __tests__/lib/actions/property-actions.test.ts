@@ -1,4 +1,4 @@
-import { ActionStatus, type ActionState, type PropertyImageData } from "@/types/types";
+import { ActionStatus, type ActionState, type PropertyImageData } from "@/types";
 
 // Mock mongoose first
 // Create a map to store ObjectId instances for consistent mocking

@@ -34,7 +34,7 @@ const NavBarDesktopRight = ({ session }: WithAuthProps) => {
                             <button
                                 ref={menuButtonRef}
                                 type="button"
-                                className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-200 cursor-pointer"
+                                className="relative flex rounded-full bg-gray-200 text-sm cursor-pointer"
                                 id="user-menu-button"
                                 aria-expanded="false"
                                 aria-haspopup="true"
@@ -57,7 +57,7 @@ const NavBarDesktopRight = ({ session }: WithAuthProps) => {
                             <div
                                 ref={dropdownRef}
                                 id="user-menu"
-                                className="absolute right-0 top-10 z-10 p-2 w-50 origin-top-right rounded-sm bg-white border-gray-100 shadow-md flex flex-col items-center justify-center space-y-2"
+                                className="absolute right-0 top-10 z-40 p-2 w-50 origin-top-right rounded-sm bg-white border-gray-100 shadow-md flex flex-col items-center justify-center space-y-2"
                                 role="menu"
                                 aria-orientation="vertical"
                                 aria-labelledby="user-menu-button"

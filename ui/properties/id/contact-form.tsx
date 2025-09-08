@@ -6,7 +6,7 @@ import { LuRefreshCw } from "react-icons/lu";
 import clsx from "clsx";
 
 import { PropertyDocument } from "@/models";
-import { ActionState } from "@/types/types";
+import { ActionState } from "@/types";
 import { createMessage } from "@/lib/actions/message-actions";
 import { toast } from "react-toastify";
 import Input from "@/ui/shared/input";
@@ -55,7 +55,6 @@ const PropertyContactForm = ({ property, userName, userEmail }: PropertyContactF
                         type="text"
                         label="Name"
                         placeholder="Enter your name"
-                        labelSize="text-sm"
                         defaultValue={(userName! || actionState.formData?.get("name") || "") as string}
                         errors={actionState.formErrorMap?.name}
                     />
@@ -66,7 +65,6 @@ const PropertyContactForm = ({ property, userName, userEmail }: PropertyContactF
                         name="email"
                         type="tel"
                         label="Email"
-                        labelSize="text-sm"
                         placeholder="Enter your email"
                         defaultValue={(userEmail! || actionState.formData?.get("email") || "") as string}
                         errors={actionState.formErrorMap?.email}
@@ -78,7 +76,6 @@ const PropertyContactForm = ({ property, userName, userEmail }: PropertyContactF
                         name="phone"
                         type="tel"
                         label="Phone"
-                        labelSize="text-sm"
                         placeholder="Enter your phone number"
                         defaultValue={(actionState.formData?.get("phone") || "") as string}
                         errors={actionState.formErrorMap?.phone}
@@ -89,7 +86,6 @@ const PropertyContactForm = ({ property, userName, userEmail }: PropertyContactF
                         id="body"
                         name="body"
                         label="Message"
-                        labelSize="text-sm"
                         placeholder="Enter your message"
                         defaultValue={(actionState.formData?.get("body") || "") as string}
                         errors={actionState.formErrorMap?.body}

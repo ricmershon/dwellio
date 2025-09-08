@@ -36,7 +36,7 @@ import { act } from '@testing-library/react';
 import { useRouter } from 'next/navigation';
 
 import ViewportCookieWriter from '@/ui/root/viewport-cookie-writer';
-import { VIEWPORT_WIDTH_COOKIE_NAME } from '@/types/types';
+import { VIEWPORT_WIDTH_COOKIE_NAME } from '@/types';
 import { render, createMockRouter, createMockViewportUtils } from '@/__tests__/test-utils';
 
 // Mock timers for debounce testing

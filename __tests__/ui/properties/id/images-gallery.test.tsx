@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@/__tests__/test-utils';
 import PropertyImagesGallery from '@/ui/properties/id/images-gallery';
-import { PropertyImageData } from '@/types/types';
+import { PropertyImageData } from '@/types';
 
 // Mock react-photoswipe-gallery first
 jest.mock('react-photoswipe-gallery', () => ({

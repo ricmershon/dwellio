@@ -40,7 +40,7 @@ jest.mock('@/ui/properties/properties-list', () => ({
 }));
 
 import { render, screen } from '@testing-library/react';
-import FavoritePropertiesPage from '@/app/properties/favorites/page';
+import FavoritePropertiesPage from '@/app/(root)/properties/favorites/page';
 import { requireSessionUser } from '@/utils/require-session-user';
 import { fetchFavoritedProperties } from '@/lib/data/property-data';
 
@@ -97,7 +97,7 @@ describe('FavoritePropertiesPage Integration Tests', () => {
     describe('Page Metadata', () => {
         it('should export correct metadata object', () => {
             // eslint-disable-next-line @typescript-eslint/no-require-imports
-            const FavoritePropertiesPageModule = require('@/app/properties/favorites/page');
+            const FavoritePropertiesPageModule = require('@/app/(root)/properties/favorites/page');
             expect(FavoritePropertiesPageModule.metadata).toEqual({
                 title: 'Favorite Properties'
             });

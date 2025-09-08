@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import PropertyFavoriteButton from '@/ui/properties/shared/form/property-favorite-button';
 import { favoriteProperty } from '@/lib/actions/property-actions';
 import { getFavoriteStatus } from '@/lib/actions/property-actions';
-import { ActionStatus } from '@/types/types';
+import { ActionStatus } from '@/types';
 
 // Mock the dependencies
 jest.mock('@/lib/actions/property-actions', () => ({

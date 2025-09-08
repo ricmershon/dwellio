@@ -45,21 +45,7 @@ jest.mock('react-icons/hi2', () => ({
     ),
 }));
 
-// Mock LoginButtons component
-jest.mock('@/ui/auth/login-buttons', () => {
-    const MockLoginButtons = ({ buttonClassName, text, icon }: {
-        buttonClassName?: string;
-        text?: string;
-        icon?: React.ReactNode;
-    }) => (
-        <div data-testid="login-buttons" className={buttonClassName}>
-            {icon}
-            {text}
-        </div>
-    );
-    MockLoginButtons.displayName = 'MockLoginButtons';
-    return MockLoginButtons;
-});
+// Note: NavBarRight component doesn't use LoginButtons, it renders a simple login link
 
 // Mock Global Context
 jest.mock('@/context/global-context', () => ({
@@ -224,7 +210,7 @@ describe('NavBarRight', () => {
             expect(menu).toHaveClass(
                 'md:hidden', 'absolute', 'w-screen', '-mr-4', 'p-3', 
                 'rounded-sm', 'bg-white', 'text-sm', 'right-0', 'top-10', 
-                'z-10', 'border', 'border-gray-100', 'shadow-md', 'flex', 
+                'z-40', 'border', 'border-gray-100', 'shadow-md', 'flex', 
                 'flex-col', 'items-center', 'justify-center', 'space-y-3'
             );
         });
@@ -235,9 +221,9 @@ describe('NavBarRight', () => {
             expect(screen.queryByText('Add Property')).not.toBeInTheDocument();
         });
 
-        it('should render login buttons for unauthenticated users', () => {
-            expect(screen.getByTestId('login-buttons')).toBeInTheDocument();
-            expect(screen.getByTestId('google-icon')).toBeInTheDocument();
+        it('should render login link for unauthenticated users', () => {
+            expect(screen.getByText('Log In or Sign Up')).toBeInTheDocument();
+            expect(screen.getByText('Log In or Sign Up').closest('a')).toHaveAttribute('href', '/login');
         });
 
         it('should not render authenticated menu items', () => {
@@ -288,7 +274,7 @@ describe('NavBarRight', () => {
         });
 
         it('should not render login buttons when authenticated', () => {
-            expect(screen.queryByTestId('login-buttons')).not.toBeInTheDocument();
+            expect(screen.queryByText('Log In or Sign Up')).not.toBeInTheDocument();
         });
 
         it('should render logout button when authenticated', () => {
@@ -494,7 +480,7 @@ describe('NavBarRight', () => {
             fireEvent.click(menuButton);
             
             // Initially unauthenticated - should show login buttons
-            expect(screen.getByTestId('login-buttons')).toBeInTheDocument();
+            expect(screen.getByText('Log In or Sign Up')).toBeInTheDocument();
             expect(screen.queryByText('Add Property')).not.toBeInTheDocument();
             
             unmount();
@@ -511,7 +497,7 @@ describe('NavBarRight', () => {
             fireEvent.click(menuButton);
             
             // Now authenticated - should show authenticated menu items
-            expect(screen.queryByTestId('login-buttons')).not.toBeInTheDocument();
+            expect(screen.queryByText('Log In or Sign Up')).not.toBeInTheDocument();
             expect(screen.getByText('Add Property')).toBeInTheDocument();
             expect(screen.getByText('My Listings')).toBeInTheDocument();
             expect(screen.getByText('Favorite Properties')).toBeInTheDocument();
@@ -553,7 +539,7 @@ describe('NavBarRight', () => {
             expect(screen.getByRole('button')).toBeInTheDocument();
             fireEvent.click(screen.getByRole('button'));
             
-            expect(screen.getByTestId('login-buttons')).toBeInTheDocument();
+            expect(screen.getByText('Log In or Sign Up')).toBeInTheDocument();
         });
 
         it('should handle authenticated session state', () => {
@@ -592,23 +578,18 @@ describe('NavBarRight', () => {
             });
         });
 
-        it('should apply login button styling correctly', () => {
+        it('should apply login link styling correctly', () => {
             render(<NavBarRight viewportWidth={1024} />);
-            fireEvent.click(screen.getByRole('button'));
             
-            const loginButtons = screen.getByTestId('login-buttons');
-            expect(loginButtons).toHaveClass(
-                'flex', 'items-center', 
-                'btn', 'btn-login-logout', 'text-sm', 'py-[6px]', 'px-3'
-            );
+            const loginLink = screen.getByText('Log In or Sign Up').closest('a');
+            expect(loginLink).toHaveClass('btn', 'btn-login-logout', 'py-[6px]', 'px-3');
         });
 
-        it('should render Google icon in login buttons', () => {
+        it('should render login link correctly', () => {
             render(<NavBarRight viewportWidth={1024} />);
-            fireEvent.click(screen.getByRole('button'));
             
-            const googleIcon = screen.getByTestId('google-icon');
-            expect(googleIcon).toHaveClass('mr-2');
+            expect(screen.getByText('Log In or Sign Up')).toBeInTheDocument();
+            expect(screen.getByText('Log In or Sign Up').closest('a')).toHaveAttribute('href', '/login');
         });
     });
 

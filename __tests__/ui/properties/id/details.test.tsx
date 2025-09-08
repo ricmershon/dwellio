@@ -373,7 +373,7 @@ describe('PropertyDetails', () => {
         it('should apply responsive flex classes for rates', async () => {
             const { container } = render(await PropertyDetails({ property: defaultProperty }));
             
-            const ratesContainer = container.querySelector('.flex.flex-col.md\\:flex-row');
+            const ratesContainer = container.querySelector('.flex.flex-col.sm\\:flex-row');
             expect(ratesContainer).toBeInTheDocument();
         });
     });

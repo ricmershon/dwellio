@@ -3,7 +3,7 @@ import { useDebounce } from "use-debounce";
 import clsx from "clsx";
 
 import { usePlacesAutocomplete } from "@/hooks/use-google-places-autocomplete";
-import { ActionState, AutocompletePrediction } from "@/types/types";
+import { ActionState, AutocompletePrediction } from "@/types";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import FormErrors from "@/ui/shared/form-errors";
 

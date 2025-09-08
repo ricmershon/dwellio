@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor, createReactToastifyMock } from '@/__tests__/test-utils';
 
 import DeleteMessageButton from '@/ui/messages/delete-message-button';
-import { ActionStatus } from '@/types/types';
+import { ActionStatus } from '@/types';
 
 // Mock external dependencies
 jest.mock('@/lib/actions/message-actions', () => ({

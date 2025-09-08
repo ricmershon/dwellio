@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@/__tests__/test-utils';
 import { createNextLinkMock } from '@/__tests__/shared-mocks';
 
-import Error from '@/app/error';
+import Error from '@/app/(root)/error';
 
 // Use centralized mocks
 jest.mock('next/link', () => createNextLinkMock());
