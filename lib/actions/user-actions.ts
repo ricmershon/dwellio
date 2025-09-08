@@ -40,7 +40,8 @@ export const createCredentialsUser =  async (_prevState: ActionState, formData: 
             if (!existingUser.passwordHash) {
 
                 /**
-                 * ACCOUNT LINKING: Google OAuth user adding password.
+                 * ACCOUNT LINKING: If the user exists without a passwordHash,
+                 * the user is an OAuth user adding a password.
                  */
                 console.log(`>>> Linking password to existing OAuth account: ${email}.`);
                 
@@ -79,7 +80,7 @@ export const createCredentialsUser =  async (_prevState: ActionState, formData: 
                 return toActionState({
                     status: ActionStatus.SUCCESS,
                     userId: (existingUser._id as string).toString(),
-                    message: "Password successfully added to your existin Google account. You can now sign in with either method.",
+                    message: "Password successfully added to your existing Google account. You can now sign in with either method.",
                     isAccountLinked: true,
                     canSignInWith: ["google", "credentials"],
                     email: email,
@@ -122,7 +123,7 @@ export const createCredentialsUser =  async (_prevState: ActionState, formData: 
             if (usernameExists) {
                 return toActionState({
                     status: ActionStatus.ERROR,
-                    message: `Username "${finalUsername}" already taken.`
+                    message: `Username "${finalUsername}" is already taken.`
                 })
             }
         }
