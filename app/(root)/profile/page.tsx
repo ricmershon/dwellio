@@ -8,6 +8,8 @@ import { PropertyDocument } from "@/models";
 import Breadcrumbs from "@/ui/shared/breadcrumbs";
 import { requireSessionUser } from "@/utils/require-session-user";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
     title: "Profile"
 }

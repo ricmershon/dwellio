@@ -12,6 +12,8 @@ import Footer from "@/ui/root/layout/footer";
 import { GlobalContextProvider } from "@/context/global-context";
 import "@/app/globals.css";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
     title: {
         template: "%s | Dwellio",

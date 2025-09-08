@@ -5,6 +5,8 @@ import LoginUI from "@/ui/login/login-ui";
 import DwellioLogo from "@/ui/shared/logo";
 import { getSessionUser } from "@/utils/get-session-user";
 
+export const dynamic = "force-dynamic";
+
 const LoginPage = async () => {
     /**
      * Redirect to the home page if user logged in.
