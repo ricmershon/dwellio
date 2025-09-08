@@ -90,7 +90,7 @@ export const fetchPlacesAutocomplete = async (
 };
 
 /**
- * Fethes details for a place prediction.
+ * Fetches details for a place prediction.
  * 
  * @param {string} placeId 
  * @param {string} apiKey 
