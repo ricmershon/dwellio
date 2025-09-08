@@ -1,36 +1,68 @@
-'use client';
+"use client";
 
-import { useState } from "react";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { useCallback, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { FaGoogle } from "react-icons/fa";
+import clsx from "clsx";
+import { HiOutlineBell } from "react-icons/hi2";
 
-import { useAuthProviders } from "@/hooks/use-auth-providers";
+import { withAuth, WithAuthProps } from "@/hocs/with-auth"
+import LogoutButton from "@/ui/auth/logout-button";
+import { useClickOutside } from "@/hooks/use-click-outside";
+import { useGlobalContext } from "@/context/global-context";
+import UnreadMessageCount from "@/ui/messages/unread-message-count";
 
-const NavBarRight = () => {
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-    const { data: session } = useSession();
+interface NavBarRightProps extends WithAuthProps {
+    viewportWidth: number;
+}
+
+const NavBarRight = ({ viewportWidth, session }: NavBarRightProps) => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const menuButtonRef = useRef<HTMLButtonElement>(null);
+    const dropdownRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
 
-    const providers = useAuthProviders();
+    const { unreadCount } = useGlobalContext();
 
-    const handleSignOutClick = () => {
-        setIsMobileMenuOpen(false);
-        signOut();
-    }
+    const close = useCallback(() => setIsMenuOpen(false), []);
+
+    useClickOutside([menuButtonRef, dropdownRef], close, isMenuOpen)
 
     return (
-        <>
+        <div className="flex">
+            {session ? (
+                <Link className="relative group" href="/messages">
+                    <HiOutlineBell className="size-8 rounded-full btn btn-alert p-1"/>
+                    {unreadCount > 0 && (
+                        <UnreadMessageCount
+                            unreadCount={unreadCount}
+                            viewportWidth={viewportWidth}
+                        />
+                    )}
+                </Link>
+            ) : (
+                <div className="block">
+                    
+                    <div className="flex items-center">
+                        <Link
+                            href="/login"
+                            className="btn btn-login-logout py-[6px] px-3"
+                        >
+                            Log In or Sign Up
+                        </Link>
+                    </div>
+                </div>
+            )}
             {/* Mobile menu button */}
-            <div className='md:hidden flex items-center'>
+            <div className="md:hidden flex items-center ml-2">
                 <button
-                    type='button'
-                    id='mobile-menu-button'
-                    className={`md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 ${isMobileMenuOpen && 'mobile-menu-open'}`}
-                    aria-controls='mobile-menu'
-                    aria-expanded='false'
-                    onClick={() => setIsMobileMenuOpen((prevState) => !prevState)}
+                    ref={menuButtonRef}
+                    type="button"
+                    id="mobile-menu-button"
+                    className={`md:hidden z-40 block mobile-menu focus:outline-none mt-2 ml-4 md:ml-0 ${isMenuOpen && "mobile-menu-open"}`}
+                    aria-controls="mobile-menu"
+                    aria-expanded="false"
+                    onClick={() => setIsMenuOpen((prevState) => !prevState)}
                 >
                     <span className="mobile-menu-top"></span>
                     <span className="mobile-menu-middle"></span>
@@ -39,19 +71,26 @@ const NavBarRight = () => {
             </div>
             
             {/* Mobile menu */}
-            {isMobileMenuOpen && (
+            {isMenuOpen && (
                 <div
+                    ref={dropdownRef}
                     id="mobile-menu"
-                    className="md:hidden absolute w-screen -mr-4 p-3 rounded-sm bg-white text-sm right-0 top-10 z-10 border border-gray-100 shadow-md flex flex-col items-center justify-center space-y-3"
+                    className="md:hidden absolute w-screen -mr-4 p-3 rounded-sm bg-white text-sm right-0 top-10 z-40 border border-gray-100 shadow-md flex flex-col items-center justify-center space-y-3"
                     role="menu"
                     aria-orientation="vertical"
                     aria-labelledby="mobile-menu-button"
                     tabIndex={-1}
                 >
                     <Link
-                        href='/'
-                        className={`${pathname === '/' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
-                        onClick={() => setIsMobileMenuOpen(false)}
+                        href="/"
+                        className={clsx(
+                            "menu-btn",
+                            {
+                                "menu-btn-current-path": pathname === "/",
+                                "menu-btn-not-current-path": pathname !== "/"
+                            }
+                        )}
+                        onClick={() => setIsMenuOpen(false)}
                         role="menuitem"
                         id="mobile-menu-item-0"
                         tabIndex={-1}
@@ -59,84 +98,87 @@ const NavBarRight = () => {
                         Home
                     </Link>
                     <Link
-                        href='/properties'
-                        className={`${pathname === '/properties' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
-                        onClick={() => setIsMobileMenuOpen(false)}
+                        href="/properties"
+                        className={clsx(
+                            "menu-btn",
+                            {
+                                "menu-btn-current-path": pathname === "/properties",
+                                "menu-btn-not-current-path": pathname !== "/properties"
+                            }
+                        )}
+                        onClick={() => setIsMenuOpen(false)}
                         role="menuitem"
                         id="mobile-menu-item-1"
                         tabIndex={-1}
                 >
                         Properties
                     </Link>
-                    {session ? (
+                    {session && (
                         <Link
-                            href='/properties/add'
-                            className={`${pathname === '/properties/add' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
-                            onClick={() => setIsMobileMenuOpen(false)}
+                            href="/properties/add"
+                            className={clsx(
+                                "menu-btn",
+                                {
+                                    "menu-btn-current-path": pathname === "/properties/add",
+                                    "menu-btn-not-current-path": pathname !== "/properties/add"
+                                }
+                            )}
+                            onClick={() => setIsMenuOpen(false)}
                             role="menuitem"
                             id="mobile-menu-item-2"
                             tabIndex={-1}
                         >
                             Add Property
                         </Link>
-                    ) : (
-                        <>
-                            <hr className="w-full border-t border-gray-200"/>
-                            {providers && Object.values(providers).map((provider) => (
-                                <button
-                                    key={provider.id}
-                                    className="flex items-center justify-center btn btn-login-logout w-full"
-                                    role="menuitem"
-                                    id="mobile-menu-item-3"
-                                    tabIndex={-1}
-                                    onClick={() => signIn(provider.id)}
-                                >
-                                    <FaGoogle className='mr-2' />
-                                    <span>Login</span>
-                                </button>
-                            ))}
-                        </>
                     )}
                     {session && (
                         <>
                             <hr className="w-full border-t border-gray-200"/>
                             <Link
-                                href='/profile'
-                                className={`${pathname === '/profile' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
-                                onClick={() => setIsMobileMenuOpen(false)}
+                                href="/profile"
+                                className={clsx(
+                                    "menu-btn",
+                                    {
+                                        "menu-btn-current-path": pathname === "/profile",
+                                        "menu-btn-not-current-path": pathname !== "/profile"
+                                    }
+                                )}
+                                onClick={() => setIsMenuOpen(false)}
                                 role="menuitem"
                                 id="mobile-menu-item-4"
                                 tabIndex={-1}
                             >
-                                Profile
+                                My Listings
                             </Link>
                             <Link
-                                href='/properties/favorites'
-                                className={`${pathname === '/properties/favorites' ? 'menu-btn-current-path' : 'menu-btn-not-current-path'} menu-btn`}
-                                onClick={() => setIsMobileMenuOpen(false)}
+                                href="/properties/favorites"
+                                className={clsx(
+                                    "menu-btn",
+                                    {
+                                        "menu-btn-current-path": pathname === "/properties/favorites",
+                                        "menu-btn-not-current-path": pathname !== "/properties/favorites"
+                                    }
+                                )}
+                                onClick={() => setIsMenuOpen(false)}
                                 role="menuitem"
                                 id="mobile-menu-item-5"
                                 tabIndex={-1}
                             >
                                 Favorite Properties
                             </Link>
+
                             <hr className="w-full border-t border-gray-200"/>
 
-                            <button
-                                className="btn btn-login-logout w-full"
-                                role="menuitem"
-                                tabIndex={-1}
-                                id="user-menu-item-6"
-                                onClick={handleSignOutClick}
-                            >
-                                Sign Out
-                            </button>
+                            <LogoutButton
+                                setIsMenuOpen={setIsMenuOpen}
+                                id="user-menu-item-2"
+                            />
                         </>
                     )}
                 </div>
             )}
-        </>
+        </div>
     );
 }
  
-export default NavBarRight;
+export default withAuth(NavBarRight);

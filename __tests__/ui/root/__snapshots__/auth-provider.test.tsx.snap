@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`AuthProvider Snapshots should match snapshot with complex children 1`] = `
+<div
+  data-testid="session-provider"
+>
+  <div
+    class="app"
+  >
+    <header>
+      Header
+    </header>
+    <main>
+      <section>
+        Content
+      </section>
+    </main>
+    <footer>
+      Footer
+    </footer>
+  </div>
+</div>
+`;
+
+exports[`AuthProvider Snapshots should match snapshot with no children 1`] = `
+<div
+  data-testid="session-provider"
+/>
+`;
+
+exports[`AuthProvider Snapshots should match snapshot with simple children 1`] = `
+<div
+  data-testid="session-provider"
+>
+  <div>
+    Simple child content
+  </div>
+</div>
+`;

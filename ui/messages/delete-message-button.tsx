@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
 import { toast } from "react-toastify";
 
 import { useGlobalContext } from "@/context/global-context";
 import { deleteMessage } from "@/lib/actions/message-actions";
-import { ActionStatus } from "@/types/types";
+import { ActionStatus } from "@/types";
 
 const DeleteMessageButton = ({ messageId }: { messageId: string } ) => {
     const { setUnreadCount } = useGlobalContext();
@@ -22,7 +22,7 @@ const DeleteMessageButton = ({ messageId }: { messageId: string } ) => {
     return (
         <form action={deleteMessageAction} className="inline-block">
             <button
-                className='btn btn-danger'
+                className="btn btn-danger"
                 type="submit"
             >
                 Delete

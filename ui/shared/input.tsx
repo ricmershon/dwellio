@@ -1,8 +1,8 @@
-import { FormErrorsType } from "@/types/types";
+import { FormErrorsType } from "@/types";
 import FormErrors from "@/ui/shared/form-errors";
 
 interface InputProps {
-    inputType?: 'input' | 'textarea',
+    inputType?: "input" | "textarea",
     id: string;
     type?: string;
     name?: string;
@@ -12,7 +12,6 @@ interface InputProps {
     required?: boolean;
     isInGroup?: boolean | false;
     errors?: FormErrorsType;
-    labelSize?: string;
     noClasses?: boolean | false;
     [x: string]: unknown;
 }
@@ -28,13 +27,12 @@ const Input = ({
     required,
     isInGroup,
     errors,
-    labelSize,
     noClasses,
     ...restProps
 }: InputProps) => {
     const ariaDescribedBy = `${id}-error`;
 
-    const inputElement = inputType === 'input' ? (
+    const inputElement = inputType === "input" ? (
         <input
             className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
             type={type}
@@ -61,10 +59,10 @@ const Input = ({
     );
 
     return (
-        <div className={`${noClasses ? '' : isInGroup ? 'mb-2' : 'mb-4'}`}>
+        <div className={`${noClasses ? "" : isInGroup ? "mb-2" : "mb-4"}`}>
             {label && (
                 <label
-                    className={`mb-2 block font-medium ${labelSize} text-gray-700`}
+                    className={`mb-1 block text-sm text-gray-700`}
                     htmlFor={id}
                 >
                     {label}

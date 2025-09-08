@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`LoginButtons Snapshots should match snapshot in different states: default state 1`] = `
+<button
+  class="relative btn btn-login-logout flex items-center w-full content"
+>
+  <img
+    alt="Google logo"
+    class="absolute left-[12px]"
+    data-nimg="1"
+    decoding="async"
+    height="20"
+    loading="lazy"
+    src="/test-image.svg"
+    style="color: transparent;"
+    width="20"
+  />
+  <div
+    class="mx-auto"
+  >
+    Continue with Google
+  </div>
+</button>
+`;
+
+exports[`LoginButtons Snapshots should match snapshot in different states: null providers 1`] = `null`;

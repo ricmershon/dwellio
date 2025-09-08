@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsc:*)",
+      "Bash(npm test:*)",
+      "Bash(npm run test:coverage:*)",
+      "Bash(npx eslint:*)",
+      "Bash(grep:*)",
+      "Bash(npm run lint:*)",
+      "Bash(chmod:*)",
+      "Bash(./__tests__/detect-duplicate-mocks.sh:*)",
+      "Bash(__tests__/detect-duplicate-mocks.sh:*)",
+      "Bash(./detect-duplicate-mocks.sh:*)",
+      "Bash(find:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx jest:*)",
+      "Bash(cd:*)",
+      "Read(//Users/ric/**)",
+      "Bash(ls:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

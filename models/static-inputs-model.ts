@@ -1,6 +1,6 @@
-import { Schema, model, models } from 'mongoose';
+import { Schema, model, models } from "mongoose";
 
-import { Amenity, OptionType } from '@/types/types';
+import { Amenity, OptionType } from "@/types";
 
 export interface StaticInputsDocument {
   amenities: Amenity[];
@@ -32,6 +32,6 @@ const StaticInputsSchema = new Schema<StaticInputsDocument>({
     }
 });
 
-const StaticInputs = models.StaticInputs || model<StaticInputsDocument>('StaticInputs', StaticInputsSchema);
+const StaticInputs = models.StaticInputs || model<StaticInputsDocument>("StaticInputs", StaticInputsSchema);
 
 export default StaticInputs;

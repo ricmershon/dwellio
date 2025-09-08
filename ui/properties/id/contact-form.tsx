@@ -1,11 +1,12 @@
-'use client';
+"use client";
 
 import { useActionState, useEffect } from "react";
 import { FaPaperPlane } from "react-icons/fa";
 import { LuRefreshCw } from "react-icons/lu";
+import clsx from "clsx";
 
 import { PropertyDocument } from "@/models";
-import { ActionState } from "@/types/types";
+import { ActionState } from "@/types";
 import { createMessage } from "@/lib/actions/message-actions";
 import { toast } from "react-toastify";
 import Input from "@/ui/shared/input";
@@ -49,23 +50,21 @@ const PropertyContactForm = ({ property, userName, userEmail }: PropertyContactF
                     
                     <Input
                         inputType="input"
-                        id='name'
+                        id="name"
                         name="name"
-                        type='text'
+                        type="text"
                         label="Name"
                         placeholder="Enter your name"
-                        labelSize="text-sm"
                         defaultValue={(userName! || actionState.formData?.get("name") || "") as string}
                         errors={actionState.formErrorMap?.name}
                     />
 
                     <Input
                         inputType="input"
-                        id='email'
+                        id="email"
                         name="email"
-                        type='tel'
+                        type="tel"
                         label="Email"
-                        labelSize="text-sm"
                         placeholder="Enter your email"
                         defaultValue={(userEmail! || actionState.formData?.get("email") || "") as string}
                         errors={actionState.formErrorMap?.email}
@@ -73,11 +72,10 @@ const PropertyContactForm = ({ property, userName, userEmail }: PropertyContactF
 
                     <Input
                         inputType="input"
-                        id='phone'
+                        id="phone"
                         name="phone"
-                        type='tel'
+                        type="tel"
                         label="Phone"
-                        labelSize="text-sm"
                         placeholder="Enter your phone number"
                         defaultValue={(actionState.formData?.get("phone") || "") as string}
                         errors={actionState.formErrorMap?.phone}
@@ -85,23 +83,28 @@ const PropertyContactForm = ({ property, userName, userEmail }: PropertyContactF
 
                     <Input
                         inputType="textarea"
-                        id='body'
+                        id="body"
                         name="body"
                         label="Message"
-                        labelSize="text-sm"
                         placeholder="Enter your message"
                         defaultValue={(actionState.formData?.get("body") || "") as string}
                         errors={actionState.formErrorMap?.body}
                     />
-                    <InputErrors numErrors={Object.keys(actionState).length} />
+                    {actionState.formErrorMap && Object.keys(actionState.formErrorMap).length > 0 && <InputErrors />}
                     <div>
                         <button
-                            className={`flex gap-1 btn btn-primary w-full justify-center ${isPending ? 'hover:cursor-not-allowed' : 'hover:cursor-pointer'}`}
+                        className={clsx(
+                            "flex gap-1 btn btn-primary w-full justify-center",
+                            {
+                                "hover:cursor-not-allowed": isPending,
+                                "hover:cursor-pointer": !isPending
+                            }
+                        )}
                             type="submit"
                             disabled={isPending}
                         >
                             {isPending ? (
-                                <LuRefreshCw className='btn-pending-icon icon-spin'/>
+                                <LuRefreshCw className="btn-pending-icon icon-spin"/>
                             ) : (
                                 <FaPaperPlane className="mr-2" />
                             )}

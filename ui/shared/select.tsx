@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import dynamic from 'next/dynamic';
-import { PropsValue, StylesConfig, Theme, GroupBase, SingleValue } from 'react-select';
-const Select = dynamic(() => import('react-select'), { ssr: false });
+import dynamic from "next/dynamic";
+import { PropsValue, StylesConfig, Theme, GroupBase, SingleValue } from "react-select";
+const Select = dynamic(() => import("react-select"), { ssr: false });
 
-import { OptionType } from '@/types/types';
+import { OptionType } from "@/types";
 
 const customStyles: StylesConfig<OptionType, false, GroupBase<OptionType>> = {
-    singleValue: (baseStyles) => ({ ...baseStyles, fontSize: '.875rem' }),
-    option: (baseStyles) => ({ ...baseStyles, fontSize: '.875rem' }),
-    control: (baseStyles) => ({ ...baseStyles, minHeight: '35px' }),
-    menu: (baseStyles) => ({ ...baseStyles, fontSize: '.875rem' }),
-    placeholder: (baseStyles) => ({ ...baseStyles, fontSize: '.875rem' }),
-    indicatorSeparator: (baseStyles) => ({ ...baseStyles, display: 'none' })
+    singleValue: (baseStyles) => ({ ...baseStyles, fontSize: ".875rem" }),
+    option: (baseStyles) => ({ ...baseStyles, fontSize: ".875rem" }),
+    control: (baseStyles) => ({ ...baseStyles, minHeight: "35px" }),
+    menu: (baseStyles) => ({ ...baseStyles, fontSize: ".875rem" }),
+    placeholder: (baseStyles) => ({ ...baseStyles, fontSize: ".875rem" }),
+    indicatorSeparator: (baseStyles) => ({ ...baseStyles, display: "none" })
 };
 
 const customTheme = (theme: Theme) => ({
@@ -20,8 +20,8 @@ const customTheme = (theme: Theme) => ({
     borderRadius: 6,
     colors: {
         ...theme.colors,
-        neutral20: '#d1d5dc',
-        primary: '#0058C2'
+        neutral20: "#d1d5dc",
+        primary: "#0058C2"
     }
 });
 

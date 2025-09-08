@@ -1,15 +1,18 @@
-'use client';
+"use client";
 
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
-import { VIEWPORT_WIDTH_COOKIE_NAME } from "@/types/types";
+import { VIEWPORT_WIDTH_COOKIE_NAME } from "@/types";
 
 const COOKIE_MAX_AGE_SECONDS = 60 * 60* 24 * 30;    // 30 days
 
+// Corresponds to Tailwind breakpoints
+const BREAKPOINTS = [0, 640, 768, 1024, 1280, 1536];
+
 const getCookie = (name: string) => {
     const match = document.cookie.match(
-        new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
+        new RegExp("(?:^|; )" + name.replace(/([.$?*|{}()\[\]\\\/\+^])/g, "\\$1") + "=([^;]*)")
     );
     
     return match ? decodeURIComponent(match[1]) : null;
@@ -23,6 +26,18 @@ const getViewportWidth = () => (
     Math.max(window.innerWidth || 0, document.documentElement.clientWidth || 0)
 );
 
+const getBreakpointIndex = (width: number) => {
+    let index = 0;
+    for (let i = 0; i < BREAKPOINTS.length; i++) {
+        if (width >= BREAKPOINTS[i]) {
+            index = i;
+        } else {
+            break;
+        }
+    }
+    return index;
+}
+
 const ViewportCookieWriter = () => {
     const router = useRouter();
     const debounceTimer = useRef<number | null>(null);
@@ -32,7 +47,11 @@ const ViewportCookieWriter = () => {
             const current = getCookie(VIEWPORT_WIDTH_COOKIE_NAME);
             const currentNum = current ? Number(current) : NaN;
 
-            if (!Number.isFinite(currentNum) || currentNum !== newWidth) {
+            const prevIndex = Number.isFinite(currentNum) ? getBreakpointIndex(currentNum) : -1;
+            const nextIndex = getBreakpointIndex(newWidth);
+ 
+
+            if (prevIndex !== nextIndex) {
                 setCookie(VIEWPORT_WIDTH_COOKIE_NAME, String(newWidth));
 
                 /**
@@ -57,10 +76,10 @@ const ViewportCookieWriter = () => {
             }, 300)
         }
 
-        window.addEventListener('resize', onResize);
+        window.addEventListener("resize", onResize);
 
         return () => {
-            window.removeEventListener('resize', onResize);
+            window.removeEventListener("resize", onResize);
 
             if (debounceTimer.current) {
                 window.clearTimeout(debounceTimer.current)

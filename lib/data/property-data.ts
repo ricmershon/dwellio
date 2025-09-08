@@ -1,8 +1,8 @@
 import { HydratedDocument } from "mongoose";
 
-import dbConnect from "@/config/database-config"
+import dbConnect from "@/lib/db-connect"
 import { Property, PropertyDocument, User, UserDocument } from "@/models";
-import { PropertiesQuery } from "@/types/types";
+import { PropertiesQuery } from "@/types";
 
 /**
  * Returns a single property from the database.
@@ -15,7 +15,7 @@ export const fetchProperty = async (propertyId: string) => {
         await dbConnect();
         const property: HydratedDocument<PropertyDocument> | null = await Property.findById(propertyId);
         if (!property) {
-            console.error('>>> Property not found.');
+            console.error(">>> Property not found.");
             throw new Error(`Failed to fetch property data.`)
         }
         return property;
@@ -81,7 +81,7 @@ export const fetchFeaturedProperties = async (viewportWidth: number) => {
 export const fetchFavoritedProperties = async (userId: string) => {
     try {
         await dbConnect();
-        const user: UserDocument = await User.findById(userId).populate('favorites');
+        const user: UserDocument = await User.findById(userId).populate("favorites");
         const favorites: PropertyDocument[] = user.favorites;
         return favorites;
     } catch (error) {
@@ -156,9 +156,9 @@ export const fetchPaginatedProperties = async (
     query?: PropertiesQuery,
 ) => {
     // Artificial delay for testing loading components.
-    // console.log('Fetching data...')
+    // console.log("Fetching data...")
     // await new Promise((resolve) => setTimeout(resolve, 5000));
-    // console.log('Data received...')
+    // console.log("Data received...")
 
     let maxItemsPerPage: number;
 

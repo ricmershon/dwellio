@@ -19,7 +19,7 @@ const InfoBox = ({
     children
 }: InfoBoxProps) => (
     <div className={`${backgroundColor} p-6 rounded-lg shadow-md`}>
-        <h2 className="heading">{headingText}</h2>
+        <h1 className="heading">{headingText}</h1>
         <div className="mt-2 mb-4">
             {children}
         </div>

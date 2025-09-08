@@ -1,6 +1,6 @@
-import dbConnect from "@/config/database-config";
+import dbConnect from "@/lib/db-connect";
 import { Message, MessageDocument } from "@/models"
-import { toSerializedOjbect } from "@/utils/to-serialized-object";
+import { toSerializedObject } from "@/utils/to-serialized-object";
 
 /**
  * Returns all messages in the database for the currently logged in user,
@@ -17,19 +17,19 @@ export const fetchMessages = async (userId: string) => {
             read: false
         })
             .sort({ createdAt: -1 })
-            .populate('sender', 'username')
-            .populate('property', 'name')
+            .populate("sender", "username")
+            .populate("property", "name")
 
         const readMessages: MessageDocument[] | null = await Message.find({
             recipient: userId,
             read: true
         })
             .sort({ createdAt: -1 })
-            .populate('sender', 'username')
-            .populate('property', 'name')
+            .populate("sender", "username")
+            .populate("property", "name")
 
         const messages: MessageDocument[] = [...unreadMessages, ...readMessages].map((messageDoc) => (
-            toSerializedOjbect(messageDoc)
+            toSerializedObject(messageDoc)
         ));
         return messages;
     } catch (error) {

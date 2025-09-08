@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, {
     createContext,
@@ -7,12 +7,13 @@ import React, {
     Dispatch,
     SetStateAction,
     ReactNode,
-    useEffect
-} from 'react';
-import { useSession } from 'next-auth/react';
+    useEffect,
+    useMemo
+} from "react";
+import { useSession } from "next-auth/react";
 
-import { getUnreadMessageCount } from '@/lib/actions/message-actions';
-import { StaticInputsDocument } from '@/models';
+import { getUnreadMessageCount } from "@/lib/actions/message-actions";
+import { StaticInputsDocument } from "@/models";
 
 interface GlobalContextProps {
     isLoggedIn: boolean;
@@ -34,7 +35,6 @@ interface GlobalContextProviderProps {
 }
 
 export const GlobalContextProvider = ({ children, initialStaticInputs }: GlobalContextProviderProps) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [unreadCount, setUnreadCount] = useState(0);
 
     const { data: session } = useSession();
@@ -44,22 +44,25 @@ export const GlobalContextProvider = ({ children, initialStaticInputs }: GlobalC
      */
     useEffect(() => {
         if (session && session.user) {
-            setIsLoggedIn(true);
             getUnreadMessageCount().then((result) => {
                 if (result.unreadCount) {
                     setUnreadCount(result.unreadCount);
                 }
             })
         }
-    }, [session])
+    }, [session]);
+
+    const isLoggedIn = Boolean(session?.user);
+    
+    const value = useMemo(() => ({
+        isLoggedIn,
+        unreadCount,
+        setUnreadCount,
+        staticInputs: initialStaticInputs
+    }), [initialStaticInputs, isLoggedIn, unreadCount]);
 
     return (
-        <GlobalContext.Provider value={{
-            isLoggedIn,
-            unreadCount,
-            setUnreadCount,
-            staticInputs: initialStaticInputs
-        }}>
+        <GlobalContext.Provider value={value}>
             {children}
         </GlobalContext.Provider>
     );

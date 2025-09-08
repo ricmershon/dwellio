@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`InfoBox Snapshots should match snapshot 1`] = `
+<div
+  class="bg-gray-100 p-6 rounded-lg shadow-md"
+>
+  <h1
+    class="heading"
+  >
+    Test Heading
+  </h1>
+  <div
+    class="mt-2 mb-4"
+  >
+    <p>
+      Test content
+    </p>
+  </div>
+  <a
+    class="bg-blue-500 hover:bg-blue-600 text-white btn"
+    href="/test-link"
+  >
+    Test Button
+  </a>
+</div>
+`;
+
+exports[`InfoBox Snapshots should match snapshot with different props 1`] = `
+<div
+  class="bg-yellow-100 p-6 rounded-lg shadow-md"
+>
+  <h1
+    class="heading"
+  >
+    Different Heading
+  </h1>
+  <div
+    class="mt-2 mb-4"
+  >
+    <div>
+      <p>
+        Different content
+      </p>
+    </div>
+  </div>
+  <a
+    class="bg-yellow-500 hover:bg-yellow-600 text-white btn"
+    href="/different-link"
+  >
+    Different Button
+  </a>
+</div>
+`;

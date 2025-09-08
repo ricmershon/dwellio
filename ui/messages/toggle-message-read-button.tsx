@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import { toast } from "react-toastify";
 
 import { useGlobalContext } from "@/context/global-context";
 import { toggleMessageRead } from "@/lib/actions/message-actions";
-import { ActionStatus } from "@/types/types";
+import { ActionStatus } from "@/types";
 
 interface ToggleMessageReadButtonProps {
     messageId: string,
@@ -35,7 +35,7 @@ const ToggleMessageReadButton = ({ messageId, read }: ToggleMessageReadButtonPro
                 className="btn btn-primary mt-4 mr-2"
                 type="submit"
             >
-                {isRead ? 'Mark as Unread' : 'Mark as Read'}
+                {isRead ? "Mark as Unread" : "Mark as Read"}
             </button>
         </form>
     );

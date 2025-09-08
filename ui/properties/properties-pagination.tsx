@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
 import { usePathname, useSearchParams } from "next/navigation";
 
 import { generatePagination } from "@/utils/generate-pagination";
 import PaginationArrow from "@/ui/shared/pagination-arrow";
 import PaginationNumber from "@/ui/shared/pagination-number";
+import { useCallback, useMemo } from "react";
 
 interface PropertiesPaginationProps {
     currentPage: number;
@@ -15,13 +16,16 @@ const PropertiesPagination = ({ currentPage, totalPages }: PropertiesPaginationP
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    const pagination = generatePagination(currentPage, totalPages);
+    const pagination = useMemo(() => 
+        generatePagination(currentPage, totalPages),
+        [currentPage, totalPages]
+    )
 
-    const createPageURL = (pageNumber: number | string) => {
+    const createPageURL = useCallback((pageNumber: number | string) => {
         const params = new URLSearchParams(searchParams);
-        params.set('page', pageNumber.toString());
+        params.set("page", pageNumber.toString());
         return `${pathname}?${params.toString()}`
-    }
+    }, [pathname, searchParams])
     
     return (
         <div className="inline-flex">
@@ -33,22 +37,22 @@ const PropertiesPagination = ({ currentPage, totalPages }: PropertiesPaginationP
 
             <div className="flex -space-x-px">
                 {pagination.map((page, index) => {
-                    let position: 'first' | 'last' | 'single' | 'middle' | undefined;
+                    let position: "first" | "last" | "single" | "middle" | undefined;
 
                     if (index === 0) {
-                        position = 'first';
+                        position = "first";
                     }
 
                     if (index === pagination.length - 1) {
-                        position = 'last';
+                        position = "last";
                     }
 
                     if (pagination.length === 1) {
-                        position = 'single';
+                        position = "single";
                     }
 
-                    if (page === '...') {
-                        position = 'middle';
+                    if (page === "...") {
+                        position = "middle";
                     }
 
                     return (

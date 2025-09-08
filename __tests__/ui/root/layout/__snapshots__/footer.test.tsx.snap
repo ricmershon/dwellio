@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Footer Snapshots should match snapshot 1`] = `
+<footer
+  class="bg-gray-100 py-4 mt-24"
+>
+  <div
+    class="container mx-auto flex flex-col md:flex-row items-center justify-between px-4"
+  >
+    <div
+      class="mb-4 md:mb-0"
+    >
+      <div
+        class="h-8 w-auto text-gray-100 rounded-full p-[4px] bg-blue-800"
+        data-testid="home-icon"
+      >
+        Home Icon
+      </div>
+    </div>
+    <div
+      class="flex flex-wrap justify-center md:justify-start mb-4 md:mb-0"
+    >
+      <ul
+        class="flex space-x-4"
+      >
+        <li>
+          <a
+            href="/properties"
+          >
+            Properties
+          </a>
+        </li>
+        <li>
+          <a
+            href="/terms"
+          >
+            Terms of Service
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <p
+        class="text-sm text-gray-500 mt-2 md:mt-0"
+      >
+        © 
+        2024
+         Dwellio. All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>
+`;
+
+exports[`Footer Snapshots should match snapshot with different year 1`] = `
+<footer
+  class="bg-gray-100 py-4 mt-24"
+>
+  <div
+    class="container mx-auto flex flex-col md:flex-row items-center justify-between px-4"
+  >
+    <div
+      class="mb-4 md:mb-0"
+    >
+      <div
+        class="h-8 w-auto text-gray-100 rounded-full p-[4px] bg-blue-800"
+        data-testid="home-icon"
+      >
+        Home Icon
+      </div>
+    </div>
+    <div
+      class="flex flex-wrap justify-center md:justify-start mb-4 md:mb-0"
+    >
+      <ul
+        class="flex space-x-4"
+      >
+        <li>
+          <a
+            href="/properties"
+          >
+            Properties
+          </a>
+        </li>
+        <li>
+          <a
+            href="/terms"
+          >
+            Terms of Service
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <p
+        class="text-sm text-gray-500 mt-2 md:mt-0"
+      >
+        © 
+        2023
+         Dwellio. All rights reserved.
+      </p>
+    </div>
+  </div>
+</footer>
+`;
