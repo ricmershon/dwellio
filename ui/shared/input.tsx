@@ -1,4 +1,4 @@
-import { FormErrorsType } from "@/types/types";
+import { FormErrorsType } from "@/types";
 import FormErrors from "@/ui/shared/form-errors";
 
 interface InputProps {
@@ -12,7 +12,6 @@ interface InputProps {
     required?: boolean;
     isInGroup?: boolean | false;
     errors?: FormErrorsType;
-    labelSize?: string;
     noClasses?: boolean | false;
     [x: string]: unknown;
 }
@@ -28,7 +27,6 @@ const Input = ({
     required,
     isInGroup,
     errors,
-    labelSize,
     noClasses,
     ...restProps
 }: InputProps) => {
@@ -64,7 +62,7 @@ const Input = ({
         <div className={`${noClasses ? "" : isInGroup ? "mb-2" : "mb-4"}`}>
             {label && (
                 <label
-                    className={`block font-bold ${labelSize} text-gray-700`}
+                    className={`mb-1 block text-sm text-gray-700`}
                     htmlFor={id}
                 >
                     {label}

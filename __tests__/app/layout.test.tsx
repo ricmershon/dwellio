@@ -7,7 +7,7 @@ jest.mock('react-toastify/dist/ReactToastify.css', () => ({}));
 jest.mock('react-loading-skeleton/dist/skeleton.css', () => ({}));
 jest.mock('photoswipe/dist/photoswipe.css', () => ({}));
 
-import RootLayout, { metadata } from '@/app/layout';
+import RootLayout, { metadata } from '@/app/(root)/layout';
 
 // Mock all external dependencies
 jest.mock('@/lib/data/static-inputs-data', () => ({

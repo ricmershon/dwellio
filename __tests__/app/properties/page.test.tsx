@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@/__tests__/test-utils';
-import PropertiesPage from '@/app/properties/page';
-import { PropertiesQuery } from '@/types/types';
+import PropertiesPage from '@/app/(root)/properties/page';
+import { PropertiesQuery } from '@/types';
 
 // Mock all child components
 jest.mock('@/ui/properties/properties-list', () => ({
@@ -513,7 +513,7 @@ describe('PropertiesPage', () => {
     describe('Metadata', () => {
         it('should export correct metadata', async () => {
             // Import the metadata directly to test it
-            const propertiesModule = await import('@/app/properties/page');
+            const propertiesModule = await import('@/app/(root)/properties/page');
             
             expect(propertiesModule.metadata).toBeDefined();
             expect(propertiesModule.metadata.title).toBe('Properties');

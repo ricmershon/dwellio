@@ -1,5 +1,5 @@
 import { useStaticInputs } from "@/context/global-context";
-import { ActionState } from "@/types/types";
+import { ActionState } from "@/types";
 import FormErrors from "@/ui/shared/form-errors";
 
 interface AmenitiesProps {

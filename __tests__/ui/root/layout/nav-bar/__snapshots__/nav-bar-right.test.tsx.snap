@@ -9,7 +9,7 @@ exports[`NavBarRight Snapshots should match snapshot when authenticated with men
     href="/messages"
   >
     <div
-      class="size-8 rounded-full btn btn-login-logout p-1"
+      class="size-8 rounded-full btn btn-alert p-1"
       data-testid="bell-icon"
     >
       Bell Icon
@@ -55,7 +55,7 @@ exports[`NavBarRight Snapshots should match snapshot when authenticated with men
     href="/messages"
   >
     <div
-      class="size-8 rounded-full btn btn-login-logout p-1"
+      class="size-8 rounded-full btn btn-alert p-1"
       data-testid="bell-icon"
     >
       Bell Icon
@@ -168,18 +168,12 @@ exports[`NavBarRight Snapshots should match snapshot when unauthenticated with m
     <div
       class="flex items-center"
     >
-      <div
-        class="flex items-center btn btn-login-logout text-sm py-[6px] px-3"
-        data-testid="login-buttons"
+      <a
+        class="btn btn-login-logout py-[6px] px-3"
+        href="/login"
       >
-        <span
-          class="mr-2"
-          data-testid="google-icon"
-        >
-          G
-        </span>
-        Login
-      </div>
+        Log In or Sign Up
+      </a>
     </div>
   </div>
   <div
@@ -216,18 +210,12 @@ exports[`NavBarRight Snapshots should match snapshot when unauthenticated with m
     <div
       class="flex items-center"
     >
-      <div
-        class="flex items-center btn btn-login-logout text-sm py-[6px] px-3"
-        data-testid="login-buttons"
+      <a
+        class="btn btn-login-logout py-[6px] px-3"
+        href="/login"
       >
-        <span
-          class="mr-2"
-          data-testid="google-icon"
-        >
-          G
-        </span>
-        Login
-      </div>
+        Log In or Sign Up
+      </a>
     </div>
   </div>
   <div
@@ -290,7 +278,7 @@ exports[`NavBarRight Snapshots should match snapshot with different active paths
     href="/messages"
   >
     <div
-      class="size-8 rounded-full btn btn-login-logout p-1"
+      class="size-8 rounded-full btn btn-alert p-1"
       data-testid="bell-icon"
     >
       Bell Icon

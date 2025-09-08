@@ -18,7 +18,7 @@ jest.mock('next/cache', () => ({
 
 // Import after mocks
 import { toggleMessageRead, deleteMessage, getUnreadMessageCount } from '@/lib/actions/message-actions';
-import { ActionStatus } from '@/types/types';
+import { ActionStatus } from '@/types';
 
 const mockDbConnect = jest.requireMock('@/lib/db-connect');
 const mockMessage = jest.requireMock('@/models').Message;

@@ -1,4 +1,4 @@
-import { ActionState } from "@/types/types";
+import { ActionState } from "@/types";
 import FormErrors from "@/ui/shared/form-errors";
 import { PropertyDocument } from "@/models";
 import { withAuth, WithAuthProps } from "@/hocs/with-auth";

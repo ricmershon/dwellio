@@ -53,18 +53,11 @@ jest.mock('@/hooks/use-click-outside', () => ({
     useClickOutside: jest.fn(),
 }));
 
-jest.mock('@/ui/auth/login-buttons', () => ({
+jest.mock('@/ui/login/login-buttons', () => ({
     __esModule: true,
-    default: ({ buttonClassName, text, icon }: {
-        buttonClassName?: string;
-        text?: string;
-        icon?: React.ReactNode;
-    }) => (
+    default: () => (
         <div data-testid="login-buttons-component">
-            <button className={buttonClassName}>
-                {icon}
-                {text}
-            </button>
+            <button>Continue with Google</button>
         </div>
     ),
 }));

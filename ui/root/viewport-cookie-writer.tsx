@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
-import { VIEWPORT_WIDTH_COOKIE_NAME } from "@/types/types";
+import { VIEWPORT_WIDTH_COOKIE_NAME } from "@/types";
 
 const COOKIE_MAX_AGE_SECONDS = 60 * 60* 24 * 30;    // 30 days
 

@@ -1,6 +1,6 @@
 import { useRef, useState, MouseEvent } from "react";
 
-import { ActionState } from "@/types/types";
+import { ActionState } from "@/types";
 import FormErrors from "@/ui/shared/form-errors";
 
 const ImagePicker = ({ actionState }: { actionState: ActionState }) => {

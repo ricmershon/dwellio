@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { Types, startSession } from "mongoose";
 
 import dbConnect from "@/lib/db-connect";
-import { ActionStatus, type ActionState, type PropertyImageData } from "@/types/types";
+import { ActionStatus, type ActionState, type PropertyImageData } from "@/types";
 import { uploadImages, destroyImages } from "@/lib/data/images-data";
 import { toActionState } from "@/utils/to-action-state";
 import { buildFormErrorMap } from "@/utils/build-form-error-map";

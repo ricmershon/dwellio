@@ -6,6 +6,7 @@ export interface UserDocument extends Document {
     username: string;
     email: string;
     image: string;
+    passwordHash: string;
     favorites: Types.ObjectId[] & PropertyDocument[]
 }
 
@@ -16,6 +17,7 @@ const UserSchema = new Schema({
         unique: [true, "Email already exists"],
         required: [true, "Email is required"]
     },
+    passwordHash: { type: String, default: null },
     image: { type: String },
     favorites: [{ type: Schema.Types.ObjectId, ref: "Property" }]
 }, {

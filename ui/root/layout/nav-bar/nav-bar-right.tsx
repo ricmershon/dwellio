@@ -4,11 +4,9 @@ import { useCallback, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import clsx from "clsx";
-import { FaGoogle } from "react-icons/fa";
 import { HiOutlineBell } from "react-icons/hi2";
 
-import LoginButtons from "@/ui/auth/login-buttons";
-import { withAuth, WithAuthProps } from "@/hocs/with-auth";
+import { withAuth, WithAuthProps } from "@/hocs/with-auth"
 import LogoutButton from "@/ui/auth/logout-button";
 import { useClickOutside } from "@/hooks/use-click-outside";
 import { useGlobalContext } from "@/context/global-context";
@@ -24,7 +22,7 @@ const NavBarRight = ({ viewportWidth, session }: NavBarRightProps) => {
     const dropdownRef = useRef<HTMLDivElement>(null);
     const pathname = usePathname();
 
-        const { unreadCount } = useGlobalContext();
+    const { unreadCount } = useGlobalContext();
 
     const close = useCallback(() => setIsMenuOpen(false), []);
 
@@ -34,7 +32,7 @@ const NavBarRight = ({ viewportWidth, session }: NavBarRightProps) => {
         <div className="flex">
             {session ? (
                 <Link className="relative group" href="/messages">
-                    <HiOutlineBell className="size-8 rounded-full btn btn-login-logout p-1"/>
+                    <HiOutlineBell className="size-8 rounded-full btn btn-alert p-1"/>
                     {unreadCount > 0 && (
                         <UnreadMessageCount
                             unreadCount={unreadCount}
@@ -44,12 +42,14 @@ const NavBarRight = ({ viewportWidth, session }: NavBarRightProps) => {
                 </Link>
             ) : (
                 <div className="block">
+                    
                     <div className="flex items-center">
-                        <LoginButtons
-                            buttonClassName="flex items-center btn btn-login-logout text-sm py-[6px] px-3"
-                            text="Login"
-                            icon={<FaGoogle className="mr-2" />}
-                        />
+                        <Link
+                            href="/login"
+                            className="btn btn-login-logout py-[6px] px-3"
+                        >
+                            Log In or Sign Up
+                        </Link>
                     </div>
                 </div>
             )}

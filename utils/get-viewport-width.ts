@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 
-import { VIEWPORT_WIDTH_COOKIE_NAME } from "@/types/types";
+import { VIEWPORT_WIDTH_COOKIE_NAME } from "@/types";
 
 /**
  * Retrieves viewport width from browser cookies
