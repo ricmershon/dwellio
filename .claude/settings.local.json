@@ -16,7 +16,8 @@
       "Bash(npx jest:*)",
       "Bash(cd:*)",
       "Read(//Users/ric/**)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(npm run test:api:*)"
     ],
     "deny": [],
     "ask": []

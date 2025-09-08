@@ -20,9 +20,12 @@ const config: Config = {
 		'react-toastify/dist/ReactToastify.css': 'identity-obj-proxy',
 		'react-loading-skeleton/dist/skeleton.css': 'identity-obj-proxy',
 		'photoswipe/dist/photoswipe.css': 'identity-obj-proxy',
+		'^bson$': '<rootDir>/__tests__/__mocks__/bsonMock.js',
+		'^mongodb$': '<rootDir>/__tests__/__mocks__/mongodbMock.js',
+		'^mongoose$': '<rootDir>/__tests__/__mocks__/mongooseMock.js',
 	},
 	transformIgnorePatterns: [
-		'node_modules/(?!(jose|openid-client|next-auth)/).*'
+		'node_modules/(?!(jose|openid-client|next-auth|bson|mongodb|mongoose)/).*'
 	],
 	testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/', '<rootDir>/__tests__/coverage/'],
 	testMatch: ['**/__tests__/**/*.(test|spec).(ts|tsx|js)'],
@@ -30,6 +33,9 @@ const config: Config = {
 		'app/**/*.{ts,tsx}',
 		'ui/**/*.{ts,tsx}',
 		'lib/**/*.{ts,tsx}',
+		'config/**/*.{ts,tsx}',
+		'utils/**/*.{ts,tsx}',
+		'models/**/*.{ts,tsx}',
 		'!**/*.d.ts',
 		'!**/node_modules/**',
 	],
