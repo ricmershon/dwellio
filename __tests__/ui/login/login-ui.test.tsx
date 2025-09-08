@@ -25,7 +25,12 @@ jest.mock('@/ui/login/login-buttons', () => {
 });
 
 jest.mock('@/ui/login/register-form', () => {
-    const MockRegisterForm = ({ formAction, isLoading, isPending, handleClearInfo }: any) => (
+    const MockRegisterForm = ({ formAction, isLoading, isPending, handleClearInfo }: {
+        formAction: (data: FormData) => void;
+        isLoading: boolean;
+        isPending: boolean;
+        handleClearInfo: () => void;
+    }) => (
         <form data-testid="register-form" onSubmit={(e) => { e.preventDefault(); formAction(new FormData()); }}>
             <div>Register Form</div>
             <button 
@@ -42,7 +47,11 @@ jest.mock('@/ui/login/register-form', () => {
 });
 
 jest.mock('@/ui/login/signin-form', () => {
-    const MockSignInForm = ({ handleSignIn, isLoading, handleClearInfo }: any) => (
+    const MockSignInForm = ({ handleSignIn, isLoading, handleClearInfo }: {
+        handleSignIn: (event: React.FormEvent<HTMLFormElement>) => void;
+        isLoading: boolean;
+        handleClearInfo: () => void;
+    }) => (
         <form data-testid="signin-form" onSubmit={handleSignIn}>
             <div>Sign In Form</div>
             <button 
@@ -72,7 +81,7 @@ describe('LoginUI', () => {
 
     beforeEach(() => {
         // Reset useActionState mock
-        const mockUseActionState = require('react').useActionState;
+        const { useActionState: mockUseActionState } = jest.requireMock('react');
         mockUseActionState.mockReturnValue([
             { status: null }, // actionState
             jest.fn(), // formAction
@@ -80,7 +89,7 @@ describe('LoginUI', () => {
         ]);
 
         // Reset navigation mocks
-        const { useSearchParams } = require('next/navigation');
+        const { useSearchParams } = jest.requireMock('next/navigation');
         useSearchParams.mockReturnValue(new URLSearchParams());
     });
 
@@ -182,11 +191,11 @@ describe('LoginUI', () => {
 
     describe('Auto-login Flow', () => {
         it('should trigger auto-login after successful registration', async () => {
-            const { signIn } = require('next-auth/react');
-            const { useRouter } = require('next/navigation');
+            const { signIn } = jest.requireMock('next-auth/react');
+            const { useRouter } = jest.requireMock('next/navigation');
             const mockRouter = { push: jest.fn() };
             useRouter.mockReturnValue(mockRouter);
-            const mockUseActionState = require('react').useActionState;
+            const { useActionState: mockUseActionState } = jest.requireMock('react');
 
             mockUseActionState.mockReturnValue([
                 { 
@@ -218,11 +227,102 @@ describe('LoginUI', () => {
                 expect(mockRouter.push).toHaveBeenCalledWith('/');
             }, { timeout: 3000 });
         });
+
+        it('should handle auto-login failure gracefully', async () => {
+            const { signIn } = jest.requireMock('next-auth/react');
+            const { useActionState: mockUseActionState } = jest.requireMock('react');
+
+            mockUseActionState.mockReturnValue([
+                { 
+                    status: ActionStatus.SUCCESS,
+                    shouldAutoLogin: true,
+                    email: 'test@example.com',
+                    password: 'password123',
+                    message: 'Account created successfully'
+                },
+                jest.fn(),
+                false
+            ]);
+
+            signIn.mockResolvedValue({ error: 'Invalid credentials' });
+
+            render(<LoginUI />);
+
+            await waitFor(() => {
+                expect(screen.getByText('Invalid credentials')).toBeInTheDocument();
+            });
+        });
+
+        it('should handle auto-login exception gracefully', async () => {
+            const { signIn } = jest.requireMock('next-auth/react');
+            const { useActionState: mockUseActionState } = jest.requireMock('react');
+
+            mockUseActionState.mockReturnValue([
+                { 
+                    status: ActionStatus.SUCCESS,
+                    shouldAutoLogin: true,
+                    email: 'test@example.com',
+                    password: 'password123',
+                    message: 'Account created successfully'
+                },
+                jest.fn(),
+                false
+            ]);
+
+            signIn.mockRejectedValue(new Error('Network error'));
+
+            render(<LoginUI />);
+
+            await waitFor(() => {
+                expect(screen.getByText(/Login failed. Please try signing in manually: Error: Network error/)).toBeInTheDocument();
+            });
+        });
+
+        it('should not trigger auto-login when shouldAutoLogin is false', () => {
+            const { signIn } = jest.requireMock('next-auth/react');
+            const { useActionState: mockUseActionState } = jest.requireMock('react');
+
+            mockUseActionState.mockReturnValue([
+                { 
+                    status: ActionStatus.SUCCESS,
+                    shouldAutoLogin: false,
+                    email: 'test@example.com',
+                    password: 'password123',
+                    message: 'Account created successfully'
+                },
+                jest.fn(),
+                false
+            ]);
+
+            render(<LoginUI />);
+
+            expect(signIn).not.toHaveBeenCalled();
+        });
+
+        it('should not trigger auto-login when required fields are missing', () => {
+            const { signIn } = jest.requireMock('next-auth/react');
+            const { useActionState: mockUseActionState } = jest.requireMock('react');
+
+            mockUseActionState.mockReturnValue([
+                { 
+                    status: ActionStatus.SUCCESS,
+                    shouldAutoLogin: true,
+                    // Missing email and password
+                    message: 'Account created successfully'
+                },
+                jest.fn(),
+                false
+            ]);
+
+            render(<LoginUI />);
+
+            expect(signIn).not.toHaveBeenCalled();
+        });
     });
 
     describe('Callback URL Handling', () => {
         it('should use callback URL from search params', () => {
-            const { useSearchParams } = require('next/navigation');
+            const { useSearchParams } = jest.requireMock('next/navigation');
             const mockSearchParams = new URLSearchParams('callbackUrl=/dashboard');
             useSearchParams.mockReturnValue(mockSearchParams);
 
@@ -233,7 +333,7 @@ describe('LoginUI', () => {
         });
 
         it('should default to home page when no callback URL', () => {
-            const { useSearchParams } = require('next/navigation');
+            const { useSearchParams } = jest.requireMock('next/navigation');
             const mockSearchParams = new URLSearchParams();
             useSearchParams.mockReturnValue(mockSearchParams);
 
@@ -285,16 +385,141 @@ describe('LoginUI', () => {
         });
     });
 
-    describe('Error Handling', () => {
-        it('should handle signin errors', async () => {
-            const { signIn } = require('next-auth/react');
-            signIn.mockResolvedValue({ error: 'Invalid credentials' });
+    describe('Sign-in Form Handling', () => {
+        it('should handle successful sign-in', async () => {
+            const { signIn } = jest.requireMock('next-auth/react');
+            const { useRouter } = jest.requireMock('next/navigation');
+            const mockRouter = { push: jest.fn() };
+            useRouter.mockReturnValue(mockRouter);
 
-            // This would be tested with actual form submission
-            // For now, we test that error states are handled
+            signIn.mockResolvedValue({ error: null });
+
             render(<LoginUI />);
 
-            expect(screen.getByTestId('signin-form')).toBeInTheDocument();
+            const formData = new FormData();
+            formData.append('email', 'test@example.com');
+            formData.append('password', 'password123');
+
+            // Override FormData constructor to return our mock data
+            const originalFormData = global.FormData;
+            global.FormData = jest.fn(() => formData) as typeof FormData;
+
+            // Find the form component and simulate submission
+            const signInForm = screen.getByTestId('signin-form');
+            fireEvent.submit(signInForm);
+
+            await waitFor(() => {
+                expect(signIn).toHaveBeenCalledWith('credentials', {
+                    email: 'test@example.com',
+                    password: 'password123',
+                    action: 'signin',
+                    redirect: false
+                });
+            });
+
+            await waitFor(() => {
+                expect(mockRouter.push).toHaveBeenCalledWith('/');
+            });
+
+            // Restore FormData
+            global.FormData = originalFormData;
+        });
+
+        it('should handle sign-in error', async () => {
+            const { signIn } = jest.requireMock('next-auth/react');
+            signIn.mockResolvedValue({ error: 'Invalid credentials' });
+
+            render(<LoginUI />);
+
+            const formData = new FormData();
+            formData.append('email', 'test@example.com');
+            formData.append('password', 'wrongpassword');
+
+            const originalFormData = global.FormData;
+            global.FormData = jest.fn(() => formData) as typeof FormData;
+
+            const signInForm = screen.getByTestId('signin-form');
+            fireEvent.submit(signInForm);
+
+            await waitFor(() => {
+                expect(screen.getByText('Invalid credentials')).toBeInTheDocument();
+            });
+
+            global.FormData = originalFormData;
+        });
+
+        it('should handle sign-in exception', async () => {
+            const { signIn } = jest.requireMock('next-auth/react');
+            signIn.mockRejectedValue(new Error('Network error'));
+
+            render(<LoginUI />);
+
+            const formData = new FormData();
+            formData.append('email', 'test@example.com');
+            formData.append('password', 'password123');
+
+            const originalFormData = global.FormData;
+            global.FormData = jest.fn(() => formData) as typeof FormData;
+
+            const signInForm = screen.getByTestId('signin-form');
+            fireEvent.submit(signInForm);
+
+            await waitFor(() => {
+                expect(screen.getByText('Network error')).toBeInTheDocument();
+            });
+
+            global.FormData = originalFormData;
+        });
+
+        it('should handle non-Error exception in sign-in', async () => {
+            const { signIn } = jest.requireMock('next-auth/react');
+            signIn.mockRejectedValue('String error');
+
+            render(<LoginUI />);
+
+            const formData = new FormData();
+            formData.append('email', 'test@example.com');
+            formData.append('password', 'password123');
+
+            const originalFormData = global.FormData;
+            global.FormData = jest.fn(() => formData) as typeof FormData;
+
+            const signInForm = screen.getByTestId('signin-form');
+            fireEvent.submit(signInForm);
+
+            await waitFor(() => {
+                expect(screen.getByText('An unexpected error occurred.')).toBeInTheDocument();
+            });
+
+            global.FormData = originalFormData;
+        });
+
+        it('should normalize email to lowercase and trim whitespace', async () => {
+            const { signIn } = jest.requireMock('next-auth/react');
+            signIn.mockResolvedValue({ error: null });
+
+            render(<LoginUI />);
+
+            const formData = new FormData();
+            formData.append('email', '  TEST@EXAMPLE.COM  ');
+            formData.append('password', 'password123');
+
+            const originalFormData = global.FormData;
+            global.FormData = jest.fn(() => formData) as typeof FormData;
+
+            const signInForm = screen.getByTestId('signin-form');
+            fireEvent.submit(signInForm);
+
+            await waitFor(() => {
+                expect(signIn).toHaveBeenCalledWith('credentials', {
+                    email: 'test@example.com',
+                    password: 'password123',
+                    action: 'signin',
+                    redirect: false
+                });
+            });
+
+            global.FormData = originalFormData;
         });
     });
 
@@ -328,6 +553,151 @@ describe('LoginUI', () => {
 
             const { container } = render(<LoginUI />);
             expect(container.firstChild).toMatchSnapshot();
+        });
+    });
+
+    describe('Mode Switching', () => {
+        it('should switch from signin to register mode', () => {
+            render(<LoginUI />);
+
+            expect(screen.getByRole('heading', { name: 'Sign In' })).toBeInTheDocument();
+            expect(screen.getByTestId('signin-form')).toBeInTheDocument();
+
+            const switchButton = screen.getByText(`Don't have an account? Create one.`);
+            fireEvent.click(switchButton);
+
+            expect(screen.getByRole('heading', { name: 'Create Account' })).toBeInTheDocument();
+            expect(screen.getByTestId('register-form')).toBeInTheDocument();
+        });
+
+        it('should switch from register to signin mode', () => {
+            render(<LoginUI />);
+
+            const switchButton = screen.getByText(`Don't have an account? Create one.`);
+            fireEvent.click(switchButton);
+
+            expect(screen.getByRole('heading', { name: 'Create Account' })).toBeInTheDocument();
+
+            const backToSigninButton = screen.getByText('Already have an account? Sign in.');
+            fireEvent.click(backToSigninButton);
+
+            expect(screen.getByRole('heading', { name: 'Sign In' })).toBeInTheDocument();
+            expect(screen.getByTestId('signin-form')).toBeInTheDocument();
+        });
+
+        it('should clear error messages when switching modes', async () => {
+            const { signIn } = jest.requireMock('next-auth/react');
+            signIn.mockResolvedValue({ error: 'Test error' });
+
+            render(<LoginUI />);
+
+            const formData = new FormData();
+            formData.append('email', 'test@example.com');
+            formData.append('password', 'password');
+
+            const originalFormData = global.FormData;
+            global.FormData = jest.fn(() => formData) as typeof FormData;
+
+            const signInForm = screen.getByTestId('signin-form');
+            fireEvent.submit(signInForm);
+
+            await waitFor(() => {
+                expect(screen.getByText('Test error')).toBeInTheDocument();
+            });
+
+            const switchButton = screen.getByText(`Don't have an account? Create one.`);
+            fireEvent.click(switchButton);
+
+            expect(screen.queryByText('Test error')).not.toBeInTheDocument();
+
+            global.FormData = originalFormData;
+        });
+
+        it('should disable switch button during loading states', async () => {
+            const { signIn } = jest.requireMock('next-auth/react');
+            let resolveSignIn: ((value: unknown) => void) | undefined;
+            signIn.mockImplementation(() => new Promise((resolve) => {
+                resolveSignIn = resolve;
+            }));
+
+            render(<LoginUI />);
+
+            const formData = new FormData();
+            formData.append('email', 'test@example.com');
+            formData.append('password', 'password123');
+            const originalFormData = global.FormData;
+            global.FormData = jest.fn(() => formData) as typeof FormData;
+
+            const signInForm = screen.getByTestId('signin-form');
+            fireEvent.submit(signInForm);
+
+            // Wait for the loading state to be set
+            await waitFor(() => {
+                const switchButton = screen.getByText(`Don't have an account? Create one.`);
+                expect(switchButton).toBeDisabled();
+            });
+
+            // Clean up
+            if (resolveSignIn) {
+                resolveSignIn({ error: null });
+            }
+            global.FormData = originalFormData;
+        });
+    });
+
+    describe('Error Handling and Edge Cases', () => {
+        it('should handle callback URL from search params', () => {
+            const { useSearchParams } = jest.requireMock('next/navigation');
+            const mockGet = jest.fn();
+            mockGet.mockReturnValue('/dashboard');
+            useSearchParams.mockReturnValue({ get: mockGet });
+
+            render(<LoginUI />);
+
+            expect(mockGet).toHaveBeenCalledWith('callbackUrl');
+        });
+
+        it('should use default callback URL when none provided', () => {
+            const { useSearchParams } = jest.requireMock('next/navigation');
+            const mockGet = jest.fn();
+            mockGet.mockReturnValue(null);
+            useSearchParams.mockReturnValue({ get: mockGet });
+
+            render(<LoginUI />);
+
+            expect(mockGet).toHaveBeenCalledWith('callbackUrl');
+        });
+
+        it('should handle auto-login with missing credentials gracefully', () => {
+            const { useActionState: mockUseActionState } = jest.requireMock('react');
+            const { signIn } = jest.requireMock('next-auth/react');
+
+            mockUseActionState.mockReturnValue([
+                { 
+                    status: ActionStatus.SUCCESS,
+                    shouldAutoLogin: true,
+                    email: undefined,
+                    password: undefined,
+                    message: 'Account created'
+                },
+                jest.fn(),
+                false
+            ]);
+
+            render(<LoginUI />);
+
+            // Should not trigger auto-login when credentials are missing
+            expect(signIn).not.toHaveBeenCalled();
+        });
+
+        it('should handle registration form interaction', () => {
+            render(<LoginUI />);
+
+            const switchButton = screen.getByText(`Don't have an account? Create one.`);
+            fireEvent.click(switchButton);
+
+            const registerButton = screen.getByRole('button', { name: 'Create Account' });
+            fireEvent.click(registerButton);
         });
     });
 });
