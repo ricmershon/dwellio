@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@/__tests__/test-utils';
+import { render, screen, waitFor, act } from '@/__tests__/test-utils';
 import PropertyMap from '@/ui/properties/id/map';
 import { PropertyDocument } from '@/models';
 import { mockPropertyData } from '@/__tests__/property-detail-test-utils';
@@ -173,8 +173,12 @@ describe('PropertyMap', () => {
         process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY = 'mock-google-api-key';
         process.env.NEXT_PUBLIC_MAPBOX_TOKEN = 'mock-mapbox-token';
         
-        // Default successful geocoding response
-        mockFromAddress.mockResolvedValue(mockGeocodeSuccess);
+        // Default successful geocoding response with slight delay
+        mockFromAddress.mockImplementation(() => 
+            new Promise(resolve => 
+                setTimeout(() => resolve(mockGeocodeSuccess), 0)
+            )
+        );
     });
 
     afterEach(() => {

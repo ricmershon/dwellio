@@ -31,7 +31,7 @@ const ImagePicker = ({ actionState }: { actionState: ActionState }) => {
                     type="file"
                     id="images"
                     name="images"
-                    className=" w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white text-white"
+                    className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white text-white"
                     accept="image/*"
                     multiple
                     aria-describedby="images-error"
