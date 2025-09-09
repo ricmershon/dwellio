@@ -9,18 +9,18 @@ interface HostInfoProps extends WithAuthProps {
 }
 const HostInfo = ({ actionState, property, session }: HostInfoProps) => (
     <div className="mb-4">
-        <h2 className="block text-gray-700 font-bold mb-1">
+        <h2 className="form-section-label mb-1">
             Host Information
         </h2>
         <div className="mb-2">
             <label
                 htmlFor="seller_name"
-                className="block text-sm text-gray-500 medium"
+                className="sub-input-label"
             >
                 Name
             </label>
             <input
-                className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500"
                 type="text"
                 id="seller_name"
                 name="sellerInfo.name"
@@ -43,12 +43,12 @@ const HostInfo = ({ actionState, property, session }: HostInfoProps) => (
             <div className="w-full sm:w-1/2 mb-2 sm:mb-0 sm:pr-2">
                 <label
                     htmlFor="seller_email"
-                    className="block text-sm text-gray-500 medium"
+                    className="sub-input-label"
                 >
                     Email
                 </label>
                 <input
-                    className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                    className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500"
                     type="email"
                     id="seller_email"
                     name="sellerInfo.email"
@@ -70,12 +70,12 @@ const HostInfo = ({ actionState, property, session }: HostInfoProps) => (
             <div className="w-full sm:w-1/2 sm:pl-2">
                 <label
                     htmlFor="seller_phone"
-                    className="block text-sm text-gray-500 medium"
+                    className="sub-input-label"
                 >
                     Phone
                 </label>
                 <input
-                    className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                    className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500"
                     type="tel"
                     id="seller_phone"
                     name="sellerInfo.phone"

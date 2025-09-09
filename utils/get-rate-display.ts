@@ -1,7 +1,8 @@
 import { Rates } from "@/types";
 
 /**
- * Formats rate display string with priority: monthly > weekly > nightly
+ * Formats rate display string with priority: monthly > weekly > nightly.
+ * 
  * @param rates - Rates object containing rate values
  * @returns Formatted rate string or undefined if no valid rates
  */

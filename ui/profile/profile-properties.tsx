@@ -26,7 +26,7 @@ const ProfileProperties = (
                     <div className="p-4">
                         <div className="">
                             <p>{property.name}</p>
-                            <p className="text-gray-800 text-sm">{street} {city} {state}</p>
+                            <p className="text-sm">{street} {city} {state}</p>
                         </div>
                         <div className="mt-2 flex">
                             <Link

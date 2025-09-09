@@ -11,7 +11,7 @@ const Amenities = ({ actionState, selectedAmenities = [] }: AmenitiesProps) => {
 
     return (
         <div className="mb-4">
-            <label className="block text-gray-700 font-bold">
+            <label className="form-section-label">
                 Amenities
             </label>
             <div
@@ -32,7 +32,7 @@ const Amenities = ({ actionState, selectedAmenities = [] }: AmenitiesProps) => {
                         />
                         <label
                             htmlFor={`amenity_${amenity.id}`}
-                            className="text-sm font-medium text-gray-700"
+                            className="text-sm font-medium"
                         >
                             {amenity.value}
                         </label>

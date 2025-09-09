@@ -10,11 +10,11 @@ const Hero = () => {
             >
                 <div className="text-center">
                     <h1
-                        className="text-4xl font-extrabold text-gray-700 sm:text-5xl md:text-6xl"
+                        className="text-4xl font-extrabold sm:text-5xl md:text-6xl"
                     >
                         Find The Perfect Rental
                     </h1>
-                    <p className="mt-4 text-xl text-gray-700">
+                    <p className="mt-4 text-xl">
                         Discover the perfect property.
                     </p>
                 </div>

@@ -34,7 +34,7 @@ const Input = ({
 
     const inputElement = inputType === "input" ? (
         <input
-            className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+            className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500"
             type={type}
             id={id}
             name={name}
@@ -46,7 +46,7 @@ const Input = ({
         />
     ) : (
         <textarea
-            className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+            className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500"
             id={id}
             name={name}
             placeholder={placeholder}

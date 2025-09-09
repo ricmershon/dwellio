@@ -3,7 +3,7 @@ import ToggleMessageReadButton from "@/ui/messages/toggle-message-read-button";
 import DeleteMessageButton from "@/ui/messages/delete-message-button";
 
 const MessageCard = ({ message }: { message: MessageDocument }) => (
-    <div className="relative bg-white p-4 rounded-md text-sm shadow-md border border-gray-100 text-gray-700">
+    <div className="relative p-4 rounded-md text-sm shadow-md border border-gray-100">
         {!message.read && (
             <div className="absolute top-3 right-3 bg-yellow-500 text-white px-2 py-1 text-sm rounded-md">New</div>
         )}

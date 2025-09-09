@@ -2,7 +2,7 @@ export default function NotFound() {
     return (
         <section className="h-screen text-center flex flex-col jusitfy-center items-center">
             <div>
-                <h1 className="inline-block mt-10 mr-5 pr-5 font-medium align-top leading-12 border-r border-gray-800 text-2xl text-gray-800">
+                <h1 className="inline-block mt-10 mr-5 pr-5 font-medium align-top leading-12 border-r border-gray-800 text-2xl">
                     404
                 </h1>
                 <div className="inline-block">

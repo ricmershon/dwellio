@@ -9,14 +9,14 @@ interface SpecsProps {
 
 const Specs = ({ actionState, property }: SpecsProps) => (
     <div className="mb-4">
-        <h2 className="block text-gray-700 font-bold mb-1">
+        <h2 className="form-section-label mb-1">
             Specs
         </h2>
         <div className="flex flex-wrap">
             <div className="w-full sm:w-1/3 sm:pr-2 mb-2 sm:mb-0">
                 <label
                     htmlFor="beds"
-                    className="block text-sm text-gray-500 medium"
+                    className="sub-input-label"
                 >
                     Beds
                 </label>
@@ -24,7 +24,7 @@ const Specs = ({ actionState, property }: SpecsProps) => (
                     type="number"
                     id="beds"
                     name="beds"
-                    className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                    className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500"
                     defaultValue={
                         (actionState.formData?.get("beds") || (
                             property ? property.beds : ""
@@ -42,7 +42,7 @@ const Specs = ({ actionState, property }: SpecsProps) => (
             <div className="w-full sm:w-1/3 sm:px-2 mb-2 sm:mb-0">
                 <label
                     htmlFor="baths" 
-                    className="block text-sm text-gray-500 medium"
+                    className="sub-input-label"
                 >
                     Baths
                 </label>
@@ -50,7 +50,7 @@ const Specs = ({ actionState, property }: SpecsProps) => (
                     type="number"
                     id="baths"
                     name="baths"
-                    className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                    className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500"
                     defaultValue={
                         (actionState.formData?.get("baths") || (
                             property ? property.baths : ""
@@ -68,7 +68,7 @@ const Specs = ({ actionState, property }: SpecsProps) => (
             <div className="w-full sm:w-1/3 sm:pl-2">
                 <label
                     htmlFor="squareFeet"
-                    className="block text-sm text-gray-500 medium"
+                    className="sub-input-label"
                 >
                     Square Feet
                 </label>
@@ -76,7 +76,7 @@ const Specs = ({ actionState, property }: SpecsProps) => (
                     type="number"
                     id="squareFeet"
                     name="squareFeet"
-                    className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                    className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500"
                     defaultValue={
                         (actionState.formData?.get("squareFeet") || (
                             property ? property.squareFeet : ""
