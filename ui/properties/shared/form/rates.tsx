@@ -6,6 +6,7 @@ interface RatesProps {
     actionState: ActionState;
     property?: PropertyDocument
 }
+
 const Rates = ({ actionState, property }: RatesProps) => (
     <div className="mb-4">
         <h2 className="block text-gray-700 font-bold mb-1">
@@ -39,7 +40,9 @@ const Rates = ({ actionState, property }: RatesProps) => (
                 }
             </div>
             <div className="w-full sm:w-1/3 mb-2 sm:mb-0 sm:px-2">
-                <label htmlFor="weekly_rate" className="block text-sm text-gray-500 font-medium">Weekly</label>
+                <label htmlFor="weekly_rate" className="block text-sm text-gray-500 font-medium">
+                    Weekly
+                </label>
                 <input
                     type="number"
                     id="weekly_rate"
@@ -60,7 +63,9 @@ const Rates = ({ actionState, property }: RatesProps) => (
                 }
             </div>
             <div className="w-full sm:w-1/3 sm:pl-2">
-                <label htmlFor="monthly_rate" className="block text-sm text-gray-500 font-medium">Monthly</label>
+                <label htmlFor="monthly_rate" className="block text-sm text-gray-500 font-medium">
+                    Monthly
+                </label>
                 <input
                     type="number"
                     id="monthly_rate"

@@ -36,8 +36,7 @@ const PropertyMap = ({ property, viewportWidth }: PropertyMapProps) => {
         height = 800;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [viewport, setViewport] = useState({
+    const [, setViewport] = useState({
         latitude: 0,
         longitude: 0,
         zoom: 12,

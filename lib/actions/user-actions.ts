@@ -79,7 +79,7 @@ export const createCredentialsUser =  async (_prevState: ActionState, formData: 
 
                 return toActionState({
                     status: ActionStatus.SUCCESS,
-                    userId: (existingUser._id as string).toString(),
+                    userId: String(existingUser._id),
                     message: "Password successfully added to your existing Google account. You can now sign in with either method.",
                     isAccountLinked: true,
                     canSignInWith: ["google", "credentials"],

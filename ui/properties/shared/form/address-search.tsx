@@ -15,7 +15,7 @@ interface AddressSearchProps {
     setZipcode: Dispatch<SetStateAction<string>>;
 }
 
-// FIXME: can"t edit street when editing a property.
+// FIXME: can't edit street when editing a property.
 const AddressSearch = ({ actionState, street = null, setCity, setState, setZipcode }: AddressSearchProps) => {
     const [placeQuery, setPlaceQuery] = useState("");
     const [isPlaceSelected, setIsPlaceSelected] = useState(false);
@@ -69,8 +69,8 @@ const AddressSearch = ({ actionState, street = null, setCity, setState, setZipco
                 </div>
                 {actionState.formErrorMap?.location?.street &&
                     <FormErrors
-                    errors={actionState.formErrorMap?.location?.street}
-                    id="street"
+                        errors={actionState.formErrorMap?.location?.street}
+                        id="street"
                     />
                 }
             </div>

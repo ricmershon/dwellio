@@ -1,4 +1,4 @@
-import { useRef, useState, MouseEvent } from "react";
+import { useRef, useState, MouseEvent, useCallback } from "react";
 
 import { ActionState } from "@/types";
 import FormErrors from "@/ui/shared/form-errors";
@@ -7,20 +7,19 @@ const ImagePicker = ({ actionState }: { actionState: ActionState }) => {
     const [numImagesSelected, setNumImagesSelected] = useState(0);
     const imagePickerRef = useRef<HTMLInputElement>(null);
 
-    const handleOpenImagePicker = (event: MouseEvent<HTMLButtonElement>) => {
+    const handleOpenImagePicker = useCallback((event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
         if (imagePickerRef.current) {
             imagePickerRef.current.click();
         }
-    }
+    }, []);
 
-    const handlePickImages = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handlePickImages = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         const imageFiles = event.target.files;
         if (imageFiles && imageFiles.length > 0) {
             setNumImagesSelected(imageFiles.length);
         }
-    }
-
+    }, []);
 
     return (
         <div>
@@ -46,7 +45,7 @@ const ImagePicker = ({ actionState }: { actionState: ActionState }) => {
                 >
                     Select Images
                 </button>
-                <span className="text-sm absolute left-37  top-1/2 -translate-y-1/2">
+                <span className="text-sm absolute left-37 top-1/2 -translate-y-1/2">
                     {numImagesSelected > 0 ? `${numImagesSelected} images selected` : "First image selected is main photo"}
                 </span>
             </div>
