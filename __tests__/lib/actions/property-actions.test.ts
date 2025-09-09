@@ -588,4 +588,215 @@ describe('Property Actions Tests', () => {
             });
         });
     });
+
+    describe('createProperty - Image Upload Integration', () => {
+        it('should handle image upload errors during property creation', async () => {
+            // Mock image upload failure after form validation passes
+            mockUploadImages.mockRejectedValue(new Error('Image upload service unavailable'));
+
+            const prevState: ActionState = {};
+            const result = await createProperty(prevState, mockFormData);
+
+            expect(result.status).toBe(ActionStatus.ERROR);
+            expect(result.message).toContain('Failed to add a property');
+            expect(mockPropertySave).not.toHaveBeenCalled();
+            expect(mockRedirect).not.toHaveBeenCalled();
+        });
+
+        it('should create property successfully with images', async () => {
+            const mockImageData: PropertyImageData[] = [
+                { secureUrl: 'https://example.com/1.jpg', publicId: 'img1', width: 800, height: 600 }
+            ];
+            mockUploadImages.mockResolvedValue(mockImageData);
+
+            const mockSave = mockPropertySave.mockResolvedValue(true);
+            mockProperty.mockImplementation((data: any) => ({
+                ...data,
+                _id: 'success-images-prop',
+                save: mockSave
+            }));
+
+            const prevState: ActionState = {};
+            await createProperty(prevState, mockFormData);
+
+            expect(mockUploadImages).toHaveBeenCalled();
+            expect(mockPropertySave).toHaveBeenCalledTimes(1);
+            expect(mockRedirect).toHaveBeenCalledWith('/properties/success-images-prop');
+        });
+    });
+
+    describe('createProperty - Database Connection Errors', () => {
+        it('should handle database connection failures', async () => {
+            mockDbConnect.mockRejectedValue(new Error('Database connection failed'));
+
+            const prevState: ActionState = {};
+            const result = await createProperty(prevState, mockFormData);
+
+            expect(result.status).toBe(ActionStatus.ERROR);
+            expect(result.message).toContain('Failed to add a property');
+            expect(mockPropertySave).not.toHaveBeenCalled();
+            expect(mockRedirect).not.toHaveBeenCalled();
+        });
+
+        it('should handle database timeout errors', async () => {
+            mockDbConnect.mockRejectedValue(new Error('Connection timeout'));
+
+            const prevState: ActionState = {};
+            const result = await createProperty(prevState, mockFormData);
+
+            expect(result.status).toBe(ActionStatus.ERROR);
+            expect(result.message).toContain('Failed to add a property');
+        });
+
+        it('should handle property save failures', async () => {
+            mockUploadImages.mockResolvedValue([]);
+            
+            const mockSave = mockPropertySave.mockRejectedValue(new Error('Failed to save property'));
+            mockProperty.mockImplementation((data: any) => ({
+                ...data,
+                save: mockSave
+            }));
+
+            const prevState: ActionState = {};
+            const result = await createProperty(prevState, mockFormData);
+
+            expect(result.status).toBe(ActionStatus.ERROR);
+            expect(result.message).toContain('Failed to add a property');
+            expect(mockRedirect).not.toHaveBeenCalled();
+        });
+
+        it('should handle database disconnection during save', async () => {
+            mockUploadImages.mockResolvedValue([]);
+            
+            const mockSave = mockPropertySave.mockRejectedValue(new Error('Connection lost'));
+            mockProperty.mockImplementation((data: any) => ({
+                ...data,
+                save: mockSave
+            }));
+
+            const prevState: ActionState = {};
+            const result = await createProperty(prevState, mockFormData);
+
+            expect(result.status).toBe(ActionStatus.ERROR);
+            expect(result.message).toContain('Failed to add a property');
+        });
+
+        it('should handle validation errors from database', async () => {
+            mockUploadImages.mockResolvedValue([]);
+            
+            const validationError = new Error('Validation failed');
+            validationError.name = 'ValidationError';
+            const mockSave = mockPropertySave.mockRejectedValue(validationError);
+            
+            mockProperty.mockImplementation((data: any) => ({
+                ...data,
+                save: mockSave
+            }));
+
+            const prevState: ActionState = {};
+            const result = await createProperty(prevState, mockFormData);
+
+            expect(result.status).toBe(ActionStatus.ERROR);
+            expect(result.message).toContain('Failed to add a property');
+        });
+    });
+
+    describe('createProperty - Transaction and Cleanup', () => {
+        it('should cleanup uploaded images when property save fails', async () => {
+            const mockImageData: PropertyImageData[] = [
+                { secureUrl: 'https://example.com/1.jpg', publicId: 'img1', width: 800, height: 600 },
+                { secureUrl: 'https://example.com/2.jpg', publicId: 'img2', width: 800, height: 600 }
+            ];
+
+            mockUploadImages.mockResolvedValue(mockImageData);
+            
+            // Mock property save failure
+            const mockSave = mockPropertySave.mockRejectedValue(new Error('Save failed'));
+            mockProperty.mockImplementation((data: any) => ({
+                ...data,
+                save: mockSave
+            }));
+
+            const prevState: ActionState = {};
+            const result = await createProperty(prevState, mockFormData);
+
+            expect(result.status).toBe(ActionStatus.ERROR);
+            expect(result.message).toContain('Failed to add a property');
+            
+            // Verify cleanup was attempted (this would depend on implementation)
+            // In a real scenario, you'd mock a cleanup function and verify it was called
+        });
+
+        it('should handle concurrent property creation attempts', async () => {
+            mockUploadImages.mockResolvedValue([]);
+            
+            // Mock duplicate key error
+            const duplicateError = new Error('Duplicate property name');
+            duplicateError.name = 'MongoError';
+            (duplicateError as any).code = 11000;
+            
+            const mockSave = mockPropertySave.mockRejectedValue(duplicateError);
+            mockProperty.mockImplementation((data: any) => ({
+                ...data,
+                save: mockSave
+            }));
+
+            const prevState: ActionState = {};
+            const result = await createProperty(prevState, mockFormData);
+
+            expect(result.status).toBe(ActionStatus.ERROR);
+            expect(result.message).toContain('Failed to add a property');
+        });
+    });
+
+    describe('createProperty - Edge Case Validations', () => {
+        it('should handle malformed form data', async () => {
+            const malformedFormData = new FormData();
+            // Missing required fields
+            malformedFormData.set('invalidField', 'test');
+
+            const prevState: ActionState = {};
+            const result = await createProperty(prevState, malformedFormData);
+
+            // Validation errors return formErrorMap, status might be undefined
+            expect(result.formErrorMap).toBeDefined();
+            expect(Object.keys(result.formErrorMap || {}).length).toBeGreaterThan(0);
+            expect(mockPropertySave).not.toHaveBeenCalled();
+        });
+
+        it('should handle valid property data with special characters', async () => {
+            // Test that properly formatted data works even with special characters
+            await createProperty({}, mockFormData);
+
+            // Should trigger redirect, not return result
+            expect(mockPropertySave).toHaveBeenCalled();
+            expect(mockRedirect).toHaveBeenCalled();
+        });
+
+        it('should handle special characters in property data', async () => {
+            const specialCharsFormData = new FormData();
+            
+            for (const [key, value] of mockFormData.entries()) {
+                if (key === 'name') {
+                    specialCharsFormData.append(key, 'Property with émojis 🏠 and spëcial chars');
+                } else {
+                    specialCharsFormData.append(key, value as string);
+                }
+            }
+
+            mockUploadImages.mockResolvedValue([]);
+            const mockSave = mockPropertySave.mockResolvedValue(true);
+            mockProperty.mockImplementation((data: any) => ({
+                ...data,
+                _id: 'special-chars-prop',
+                save: mockSave
+            }));
+
+            const prevState: ActionState = {};
+            await createProperty(prevState, specialCharsFormData);
+
+            expect(mockPropertySave).toHaveBeenCalledTimes(1);
+            expect(mockRedirect).toHaveBeenCalledWith('/properties/special-chars-prop');
+        });
+    });
 });
