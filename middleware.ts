@@ -11,7 +11,6 @@ import { getToken } from "next-auth/jwt";
  */
 export async function middleware(req: NextRequest) {
     const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-    console.log(req);
     if (!token) {
         const url = req.nextUrl.clone();
         url.pathname = "/";
