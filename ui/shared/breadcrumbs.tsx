@@ -13,7 +13,7 @@ const Breadcrumbs = ({ breadcrumbs }: { breadcrumbs: Array<Breadcrumb> }) => (
                 <li
                     key={breadcrumb.href}
                     aria-current={breadcrumb.active}
-                    className={`${breadcrumb.active ? "text-gray-900 pointer-events-none" : "text-gray-500"}`}
+                    className={`${breadcrumb.active ? "pointer-events-none" : "text-gray-400"}`}
                 >
                     <Link href={breadcrumb.href}>{breadcrumb.label}</Link>
                     {index < breadcrumbs.length - 1 ? (

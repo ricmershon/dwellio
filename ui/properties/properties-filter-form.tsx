@@ -33,7 +33,7 @@ const PropertyFilterForm = () => {
                 placeholder="Search by name, description, location or amenity"
                 onChange={(event: ChangeEvent<HTMLInputElement>) => handleSearch(event.target.value)}
                 defaultValue={searchParams.get("query")?.toString()}
-                className="w-full rounded-md border border-gray-300 py-2 pl-10 px-3 text-sm placeholder:text-gray-500 bg-white"
+                className="w-full rounded-md border border-gray-300 py-2 pl-10 px-3 text-sm"
             />
             <MagnifyingGlassIcon className="absolute left-3 top-1/2 size-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
         </div>

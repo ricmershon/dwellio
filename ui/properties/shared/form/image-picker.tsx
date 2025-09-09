@@ -23,7 +23,7 @@ const ImagePicker = ({ actionState }: { actionState: ActionState }) => {
 
     return (
         <div>
-            <label htmlFor="images" className="mb-2 block font-medium text-gray-700">
+            <label htmlFor="images" className="form-section-label mb-2">
                 Images (minimum 3)
             </label>
             <div className="relative flex flex-1 flex-shrink-0">
@@ -31,7 +31,7 @@ const ImagePicker = ({ actionState }: { actionState: ActionState }) => {
                     type="file"
                     id="images"
                     name="images"
-                    className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white text-white"
+                    className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 text-white"
                     accept="image/*"
                     multiple
                     aria-describedby="images-error"

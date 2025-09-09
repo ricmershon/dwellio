@@ -28,6 +28,14 @@
 		0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
 }
 
+@layer base {
+	input[type="number"]::-webkit-outer-spin-button,
+	input[type="number"]::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+}
+
 @layer components {
 	.form-label {
 		@apply mb-2 block text-sm font-medium text-gray-700;
@@ -78,6 +86,12 @@
 	.mobile-menu-middle,
 	.mobile-menu-bottom {
 		@apply absolute w-6 h-0.5 top-0 left-0 bg-gray-500 rotate-0 transition-all duration-300;
+	}
+	.sub-input-label {
+		@apply block text-sm text-gray-500 font-medium;
+	}
+	.form-section-label {
+		@apply block text-gray-700 font-bold;
 	}
 }
 

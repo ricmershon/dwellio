@@ -49,7 +49,7 @@ const PropertyMap = ({ property, viewportWidth }: PropertyMapProps) => {
     const { street, city, state, zipcode } = property.location;
 
     const locationInfo = (
-        <p className="mb-2 text-gray-800">
+        <p className="mb-2">
             {street} {city}, {state} {zipcode}
         </p>
     );

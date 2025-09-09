@@ -25,7 +25,7 @@ const Location = ({ actionState, property }: LocationProps) => {
     
     return (
         <div className="mb-4">
-            <h2 className="block text-gray-700 font-bold mb-1">
+            <h2 className="form-section-label mb-1">
                 Location
             </h2>
             <AddressSearch
@@ -39,7 +39,7 @@ const Location = ({ actionState, property }: LocationProps) => {
                 <div className="w-full sm:w-1/3 mb-2 sm:mb-0 sm:pr-2">
                     <label
                         htmlFor="city" 
-                        className="block text-sm text-gray-500 font-medium"
+                        className="sub-input-label"
                     >
                         City
                     </label>
@@ -47,7 +47,7 @@ const Location = ({ actionState, property }: LocationProps) => {
                         type="text"
                         id="city"
                         name="location.city"
-                        className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                        className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500"
                         value={(actionState.formData?.get("location.city") || city || "") as string}
                         onChange={(event) => setCity(event.target.value)}
                         aria-describedby="city-error"
@@ -62,7 +62,7 @@ const Location = ({ actionState, property }: LocationProps) => {
                 <div className="w-full sm:w-1/3 mb-2 sm:mb-0 sm:px-2">
                     <label
                         htmlFor="state" 
-                        className="block text-sm text-gray-500 font-medium"
+                        className="sub-input-label"
                     >
                         State
                     </label>
@@ -70,7 +70,7 @@ const Location = ({ actionState, property }: LocationProps) => {
                         type="text"
                         id="state"
                         name="location.state"
-                        className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                        className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500"
                         value={(actionState.formData?.get("location.state") || state || "") as string}
                         onChange={(event) => setState(event.target.value)}
                         aria-describedby="state-error"
@@ -85,7 +85,7 @@ const Location = ({ actionState, property }: LocationProps) => {
                 <div className="w-full sm:w-1/3 sm:pl-2">
                     <label
                         htmlFor="zipcode"
-                        className="block text-sm text-gray-500 font-medium"
+                        className="sub-input-label"
                     >
                         Zip Code
                     </label>
@@ -93,7 +93,7 @@ const Location = ({ actionState, property }: LocationProps) => {
                         type="text"
                         id="zipcode"
                         name="location.zipcode"
-                        className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
+                        className="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500"
                         value={(actionState.formData?.get("location.zipcode") || zipcode || "") as string}
                         onChange={(event) => setZipcode(event.target.value)}
                         aria-describedby="zipcode-error"
