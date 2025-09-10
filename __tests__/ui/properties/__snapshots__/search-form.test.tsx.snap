@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`PropertySearchForm Snapshots should match snapshot for initial render 1`] = `
+<form
+  class="w-full mt-4 flex items-center justify-between gap-2 md:mt-8"
+>
+  <div
+    class="w-full md:mb-0"
+  >
+    <div
+      data-no-classes="true"
+      data-testid="mock-input-wrapper"
+    >
+      <input
+        data-input-type="input"
+        data-testid="search-input"
+        id="location"
+        placeholder="Name, description, location or amenity"
+      />
+    </div>
+  </div>
+  <button
+    class="flex items-center md:mt-0 md:w-auto px-4 h-[37px] btn btn-primary"
+    type="submit"
+  >
+    <span
+      class="hidden md:block"
+    >
+      Search
+    </span>
+     
+    <div
+      class="h-5 md:ml-4"
+      data-testid="magnifying-glass-icon"
+    >
+      🔍
+    </div>
+  </button>
+</form>
+`;
+
+exports[`PropertySearchForm Snapshots should match snapshot with existing search params 1`] = `
+<form
+  class="w-full mt-4 flex items-center justify-between gap-2 md:mt-8"
+>
+  <div
+    class="w-full md:mb-0"
+  >
+    <div
+      data-no-classes="true"
+      data-testid="mock-input-wrapper"
+    >
+      <input
+        data-input-type="input"
+        data-testid="search-input"
+        id="location"
+        placeholder="Name, description, location or amenity"
+      />
+    </div>
+  </div>
+  <button
+    class="flex items-center md:mt-0 md:w-auto px-4 h-[37px] btn btn-primary"
+    type="submit"
+  >
+    <span
+      class="hidden md:block"
+    >
+      Search
+    </span>
+     
+    <div
+      class="h-5 md:ml-4"
+      data-testid="magnifying-glass-icon"
+    >
+      🔍
+    </div>
+  </button>
+</form>
+`;
+
+exports[`PropertySearchForm Snapshots should match snapshot with input value 1`] = `
+<form
+  class="w-full mt-4 flex items-center justify-between gap-2 md:mt-8"
+>
+  <div
+    class="w-full md:mb-0"
+  >
+    <div
+      data-no-classes="true"
+      data-testid="mock-input-wrapper"
+    >
+      <input
+        data-input-type="input"
+        data-testid="search-input"
+        id="location"
+        placeholder="Name, description, location or amenity"
+      />
+    </div>
+  </div>
+  <button
+    class="flex items-center md:mt-0 md:w-auto px-4 h-[37px] btn btn-primary"
+    type="submit"
+  >
+    <span
+      class="hidden md:block"
+    >
+      Search
+    </span>
+     
+    <div
+      class="h-5 md:ml-4"
+      data-testid="magnifying-glass-icon"
+    >
+      🔍
+    </div>
+  </button>
+</form>
+`;
