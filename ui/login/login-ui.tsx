@@ -7,7 +7,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { createCredentialsUser } from "@/lib/actions/user-actions";
 import { ActionState, ActionStatus } from "@/types";
-import LoginButtons from "@/ui/login/login-buttons";
+import OAuthLoginButtons from "@/ui/login/oauth-login-buttons";
 import RegisterForm from "@/ui/login/register-form";
 import SignInForm from "@/ui/login/signin-form";
 
@@ -54,7 +54,7 @@ export default function LoginUI() {
                         return;
                     }
 
-                    setSuccessMessage(prev => prev + " Loggin in...");
+                    setSuccessMessage((prev) => prev + " Logging in...");
 
                     /**
                      * Short delay before logging in.
@@ -205,7 +205,7 @@ export default function LoginUI() {
                 
                 {/* OAuth Providers (Google, etc.) */}
                 <div className="mt-6">
-                    <LoginButtons />
+                    <OAuthLoginButtons callbackUrl={callbackUrl} />
                 </div>
             </div>
         </div>

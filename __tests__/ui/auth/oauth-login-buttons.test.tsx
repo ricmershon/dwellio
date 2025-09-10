@@ -42,7 +42,7 @@ import { signIn, ClientSafeProvider, LiteralUnion } from 'next-auth/react';
 import { BuiltInProviderType } from 'next-auth/providers/index';
 import { useSearchParams } from 'next/navigation';
 
-import LoginButtons from '@/ui/login/login-buttons';
+import OAuthLoginButtons from '@/ui/login/oauth-login-buttons';
 import { useAuthProviders } from '@/hooks/use-auth-providers';
 import { render, createMockSearchParams } from '@/__tests__/test-utils';
 
@@ -51,7 +51,7 @@ jest.mock('@/hooks/use-auth-providers', () => ({
 	useAuthProviders: jest.fn(),
 }));
 
-describe('LoginButtons', () => {
+describe('OAuthLoginButtons', () => {
 	const mockSignIn = signIn as jest.MockedFunction<typeof signIn>;
 	const mockUseSearchParams = useSearchParams as jest.MockedFunction<typeof useSearchParams>;
 	const mockUseAuthProviders = useAuthProviders as jest.MockedFunction<typeof useAuthProviders>;
@@ -85,7 +85,7 @@ describe('LoginButtons', () => {
 
 	describe('Rendering', () => {
 		it('should render login buttons for all available providers', () => {
-			render(<LoginButtons />);
+			render(<OAuthLoginButtons />);
 
 			const buttons = screen.getAllByRole('button');
 			expect(buttons).toHaveLength(2);
@@ -95,18 +95,18 @@ describe('LoginButtons', () => {
 		it('should render nothing when providers are not loaded', () => {
 			mockUseAuthProviders.mockReturnValue(null);
 			
-			const { container } = render(<LoginButtons />);
+			const { container } = render(<OAuthLoginButtons />);
 			expect(container.firstChild).toBeNull();
 		});
 
 		it('should render with default text', () => {
-			render(<LoginButtons />);
+			render(<OAuthLoginButtons />);
 
 			expect(screen.getByText('Continue with Google')).toBeInTheDocument();
 		});
 
 		it('should apply default className', () => {
-			render(<LoginButtons />);
+			render(<OAuthLoginButtons />);
 
 			const buttons = screen.getAllByRole('button');
 			buttons.forEach(button => {
@@ -115,7 +115,7 @@ describe('LoginButtons', () => {
 		});
 
 		it('should render default Google logo', () => {
-			render(<LoginButtons />);
+			render(<OAuthLoginButtons />);
 
 			const googleLogo = screen.getByAltText('Google logo');
 			expect(googleLogo).toBeInTheDocument();
@@ -124,7 +124,7 @@ describe('LoginButtons', () => {
 
 	describe('User Interactions', () => {
 		it('should call signIn with Google provider when Google button is clicked', () => {
-			render(<LoginButtons />);
+			render(<OAuthLoginButtons />);
 
 			const buttons = screen.getAllByRole('button');
 			fireEvent.click(buttons[0]); // First button (Google)
@@ -133,7 +133,7 @@ describe('LoginButtons', () => {
 		});
 
 		it('should call signIn with GitHub provider when GitHub button is clicked', () => {
-			render(<LoginButtons />);
+			render(<OAuthLoginButtons />);
 
 			const buttons = screen.getAllByRole('button');
 			fireEvent.click(buttons[1]); // Second button (GitHub)
@@ -144,7 +144,7 @@ describe('LoginButtons', () => {
 		it('should use returnTo parameter from URL when present', () => {
 			(mockSearchParams.get as jest.Mock).mockReturnValue('/profile');
 			
-			render(<LoginButtons />);
+			render(<OAuthLoginButtons />);
 
 			const buttons = screen.getAllByRole('button');
 			fireEvent.click(buttons[0]);
@@ -155,7 +155,7 @@ describe('LoginButtons', () => {
 		it('should default to "/" when no returnTo parameter', () => {
 			(mockSearchParams.get as jest.Mock).mockReturnValue(null);
 			
-			render(<LoginButtons />);
+			render(<OAuthLoginButtons />);
 
 			const buttons = screen.getAllByRole('button');
 			fireEvent.click(buttons[0]);
@@ -166,7 +166,7 @@ describe('LoginButtons', () => {
 
 	describe('URL Parameters', () => {
 		it('should check for returnTo search parameter', () => {
-			render(<LoginButtons />);
+			render(<OAuthLoginButtons />);
 
 			expect(mockSearchParams.get).toHaveBeenCalledWith('returnTo');
 		});
@@ -174,7 +174,7 @@ describe('LoginButtons', () => {
 		it('should handle empty returnTo parameter', () => {
 			(mockSearchParams.get as jest.Mock).mockReturnValue('');
 			
-			render(<LoginButtons />);
+			render(<OAuthLoginButtons />);
 
 			const buttons = screen.getAllByRole('button');
 			fireEvent.click(buttons[0]);
@@ -191,7 +191,7 @@ describe('LoginButtons', () => {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			mockUseAuthProviders.mockReturnValue(singleProvider as any);
 
-			render(<LoginButtons />);
+			render(<OAuthLoginButtons />);
 
 			const buttons = screen.getAllByRole('button');
 			expect(buttons).toHaveLength(1);
@@ -212,7 +212,7 @@ describe('LoginButtons', () => {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			mockUseAuthProviders.mockReturnValue(extendedProviders as any);
 
-			render(<LoginButtons />);
+			render(<OAuthLoginButtons />);
 
 			const buttons = screen.getAllByRole('button');
 			expect(buttons).toHaveLength(3);
@@ -222,12 +222,12 @@ describe('LoginButtons', () => {
 	describe('Snapshots', () => {
 		it('should match snapshot in different states', () => {
 			// Default state
-			const { container } = render(<LoginButtons />);
+			const { container } = render(<OAuthLoginButtons />);
 			expect(container.firstChild).toMatchSnapshot('default state');
 			
 			// Null providers state
 			mockUseAuthProviders.mockReturnValue(null);
-			const { container: nullContainer } = render(<LoginButtons />);
+			const { container: nullContainer } = render(<OAuthLoginButtons />);
 			expect(nullContainer.firstChild).toMatchSnapshot('null providers');
 		});
 	});
