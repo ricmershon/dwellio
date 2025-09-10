@@ -19,7 +19,9 @@
       "Bash(ls:*)",
       "Bash(npm run test:api:*)",
       "Bash(sed:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(node:*)",
+      "Bash(/dev/null)"
     ],
     "deny": [],
     "ask": []
