@@ -137,7 +137,7 @@ export const toActionState = (actionState: ActionState): ActionState => {
             if (Array.isArray(canSignInWith)) {
                 result.canSignInWith = [...canSignInWith];
             } else {
-                console.warn('toActionState: canSignInWith property is not a boolean');
+                console.warn('toActionState: canSignInWith property is not an array');
             }
         }
 

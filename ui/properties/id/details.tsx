@@ -91,7 +91,7 @@ const PropertyDetails = async ({ property }: { property: PropertyDocument }) => 
             </div>
 
             {/* Map */}
-            <div className="bg-white p-4 rounded-md shadow-md">
+            <div className="p-4 rounded-md shadow-md">
                 <PropertyMap
                     property={property}
                     viewportWidth={viewportWidth}

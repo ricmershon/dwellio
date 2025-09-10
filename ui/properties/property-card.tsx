@@ -33,7 +33,7 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
                 </div>
                 {/* Recently created or added */}
                 {(isCreatedWithinLastWeek || isUpdatedWithinLastWeek) && (
-                    <p className='absolute top-[6px] left-[6px] bg-white px-3 py-1 rounded-md text-gray-800 text-xs text-center'>
+                    <p className='absolute top-[6px] left-[6px] bg-white text-gray-600 px-3 py-1 rounded-md text-xs text-center'>
                         {isCreatedWithinLastWeek ? 'Recently Added' : 'Recently Updated'}
                     </p>
                 )}
@@ -42,7 +42,7 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
             <div className='text-xs md:text-sm p-[10px]'>
                 <div className="flex justify-between items-start mb-2">
                     <Link href={`/properties/${property._id}`}>
-                        <p className='text-gray-700 mr-3'>{property.name}</p>
+                        <p className='mr-3'>{property.name}</p>
                     </Link>
 
                     {/* Display favorite button if logged in and not owned by user */}
@@ -52,7 +52,7 @@ const PropertyCard = async ({ property }: { property: PropertyDocument }) => {
                 </div>
                 <Link href={`/properties/${property._id}`}>
                 <div className="flex justify-between items-center mb-2">
-                    <div className='text-gray-700 text-base'>
+                    <div className='text-base'>
                         {getRateDisplay(property.rates)}
                     </div>
                     {/* <div>Rating</div> */}

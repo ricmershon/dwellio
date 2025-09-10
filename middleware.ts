@@ -4,7 +4,7 @@ import { getToken } from "next-auth/jwt";
 
 /**
  * Intercepts provider flow to make sure user is not trying to access a
- * protected page.
+ * protected page (see `config` below).
  * 
  * @param {NextRequest} req 
  * @returns Promise<NextResponse<unknown>>
@@ -22,5 +22,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/properties/add", "/properties/edit", "/profile", "/properties/favorites", "/messages"],
+    matcher: ["/properties/add", "/properties/:id/edit", "/profile", "/properties/favorites", "/messages"],
 };

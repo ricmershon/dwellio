@@ -139,7 +139,7 @@ export default function LoginUI() {
 
     return (
         <div className="max-w-md mx-auto">
-            <h1 className="text-2xl text-center text-gray-800">
+            <h1 className="text-2xl text-center">
                 {isRegister ? "Create Account" : "Sign In"}
             </h1>
 
@@ -198,7 +198,7 @@ export default function LoginUI() {
                             <div className="w-full border-t border-gray-300" />
                         </div>
                         <div className="relative flex justify-center text-sm">
-                            <span className="px-3 bg-white text-gray-500">or</span>
+                            <span className="px-3 bg-white">or</span>
                         </div>
                     </div>
                 </div>

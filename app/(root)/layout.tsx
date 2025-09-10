@@ -37,16 +37,18 @@ const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>)
             <GlobalContextProvider initialStaticInputs={initialStaticInputs}>
                 <html lang="en">
                     <body>
-                        <ViewportCookieWriter />
-                        <NavBar />
-                        <div className="flex-grow md:overflow-y-auto px-4 md:px-6 lg:px-8 py-6 lg:py-8">{children}</div>
-                        <Footer />
-                        <ToastContainer
-                            position="top-right"
-                            transition={Slide}
-                            hideProgressBar={true}
-                            theme="colored"
-                        />
+                        <div className="bg-white text-gray-800 placeholder:text-gray-400">
+                            <ViewportCookieWriter />
+                            <NavBar />
+                            <div className="flex flex-col min-h-screen md:overflow-y-auto px-4 md:px-6 lg:px-8 py-6 lg:py-8">{children}</div>
+                            <Footer />
+                            <ToastContainer
+                                position="top-right"
+                                transition={Slide}
+                                hideProgressBar={true}
+                                theme="colored"
+                            />
+                        </div>
                     </body>
                 </html>
             </GlobalContextProvider>

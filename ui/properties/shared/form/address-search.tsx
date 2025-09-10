@@ -15,7 +15,7 @@ interface AddressSearchProps {
     setZipcode: Dispatch<SetStateAction<string>>;
 }
 
-// FIXME: can"t edit street when editing a property.
+// FIXME: can't edit street when editing a property.
 const AddressSearch = ({ actionState, street = null, setCity, setState, setZipcode }: AddressSearchProps) => {
     const [placeQuery, setPlaceQuery] = useState("");
     const [isPlaceSelected, setIsPlaceSelected] = useState(false);
@@ -48,7 +48,7 @@ const AddressSearch = ({ actionState, street = null, setCity, setState, setZipco
         <div className="relative mb-2">
             <label
                 htmlFor="street"
-                className="block text-sm text-gray-500 font-medium"
+                className="sub-input-label"
             >
                 Address
             </label>
@@ -61,7 +61,7 @@ const AddressSearch = ({ actionState, street = null, setCity, setState, setZipco
                         value={(actionState.formData?.get("location.street") || (street ? street : placeQuery) || "") as string}
                         onChange={(event) => handlePlaceQueryChange(event.target.value)}
                         onClick={() => setIsPlaceSelected(false)}
-                        className="w-full rounded-md border border-gray-300 py-2 pl-10 px-3 text-sm placeholder:text-gray-500 bg-white"
+                        className="w-full rounded-md border border-gray-300 py-2 pl-10 px-3 text-sm"
                         placeholder="Search address"
                         aria-describedby="street-error"
                         />
@@ -69,8 +69,8 @@ const AddressSearch = ({ actionState, street = null, setCity, setState, setZipco
                 </div>
                 {actionState.formErrorMap?.location?.street &&
                     <FormErrors
-                    errors={actionState.formErrorMap?.location?.street}
-                    id="street"
+                        errors={actionState.formErrorMap?.location?.street}
+                        id="street"
                     />
                 }
             </div>

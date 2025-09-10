@@ -50,14 +50,16 @@ export const fetchPropertiesByUserId = async (userId: string) => {
 export const fetchFeaturedProperties = async (viewportWidth: number) => {
     let numProperties;
 
-    if (viewportWidth < 768) {
-        numProperties = 4;
-    } else if (viewportWidth < 1024) {
+    if (viewportWidth < 640) {
         numProperties = 8;
-    } else if (viewportWidth < 1280) {
+    } else if (viewportWidth < 768) {
         numProperties = 10;
-    } else {
+    } else if (viewportWidth < 1024) {
         numProperties = 12;
+    } else if (viewportWidth < 1280) {
+        numProperties = 15;
+    } else {
+        numProperties = 18;
     }
 
     try {

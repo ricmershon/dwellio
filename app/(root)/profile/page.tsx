@@ -35,7 +35,7 @@ const ProfilePage = async () => {
                         </div>
                         <div className="md:w-1/4 md:mr-5">
                             <h1 className="md:ml-4 heading">About me</h1>
-                            <div className="rounded-3xl bg-white p-6 shadow-xl mb-4 flex flex-col items-center md:ml-4">
+                            <div className="rounded-3xl p-6 shadow-xl mb-4 flex flex-col items-center md:ml-4">
                                 <Image
                                     className="size-14 md:size-20 rounded-full mx-auto md:mx-0 mb-2"
                                     src={sessionUser.image || profileDefaultImage}
