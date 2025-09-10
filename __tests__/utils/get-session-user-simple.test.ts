@@ -5,16 +5,6 @@
  * Tests session retrieval and validation - simplified to avoid NextAuth import issues
  */
 
-// Skip NextAuth integration tests due to module resolution issues in test environment
-describe.skip("getSessionUser (NextAuth Integration)", () => {
-    it("should be tested when NextAuth integration is properly configured", () => {
-        // This test suite is skipped due to NextAuth/jose module compatibility issues
-        // in the Jest test environment. The utility function works correctly in the
-        // actual application environment.
-        expect(true).toBe(true);
-    });
-});
-
 // Test the core validation logic that doesn't require NextAuth
 describe("Session Validation Logic", () => {
     describe("Input Validation", () => {

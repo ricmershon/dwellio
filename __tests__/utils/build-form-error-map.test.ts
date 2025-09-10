@@ -7,11 +7,8 @@
 
 // @ts-nocheck - Test file with mock Zod issues that don't match exact interface
 
-import { buildFormErrorMap, StructuredFormErrorMap } from "@/utils/build-form-error-map";
-import { ZodError, ZodIssue } from "zod";
-
-// Mock FormErrorsType from types
-type MockFormErrorsType = string[] | Record<string, string[]> | undefined;
+import { buildFormErrorMap } from "@/utils/build-form-error-map";
+import { ZodIssue } from "zod";
 
 describe("buildFormErrorMap", () => {
     const originalConsoleWarn = console.warn;
@@ -646,5 +643,6 @@ describe("buildFormErrorMap", () => {
             // Restore split
             String.prototype.split = originalSplit;
         });
+
     });
 });
