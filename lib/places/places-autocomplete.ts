@@ -126,7 +126,7 @@ const fetchPlaceDetails = async (
  * @param {AddressComponent[] }addressComponents 
  * @returns object containing extracted address parts.
  */
-function extractAddressParts(addressComponents?: AddressComponent[]) {
+const extractAddressParts = (addressComponents?: AddressComponent[]) => {
     const getComponent = (type: string) =>
         addressComponents?.find((addressComponent) => addressComponent.types?.includes(type));
 
