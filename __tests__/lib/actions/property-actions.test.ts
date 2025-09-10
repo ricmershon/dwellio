@@ -799,4 +799,159 @@ describe('Property Actions Tests', () => {
             expect(mockRedirect).toHaveBeenCalledWith('/properties/special-chars-prop');
         });
     });
+
+    describe('deleteProperty - Additional Error Coverage', () => {
+        it('should handle property not found during deletion', async () => {
+            const mockSession = {
+                startTransaction: jest.fn(),
+                commitTransaction: jest.fn(),
+                abortTransaction: jest.fn(),
+                endSession: jest.fn()
+            };
+
+            const mockPropertyDoc = {
+                ...mockPropertyData,
+                imagesData: [
+                    { secureUrl: 'https://example.com/1.jpg', publicId: 'img1', width: 800, height: 600 }
+                ]
+            } as unknown as PropertyDocument;
+
+            // First call returns property (for initial check), second call returns property, but findByIdAndDelete returns null
+            mockPropertyFindById.mockResolvedValue(mockPropertyDoc);
+            mockPropertyFindByIdAndDelete.mockResolvedValue(null);
+            mockStartSession.mockResolvedValue(mockSession as any);
+
+            const result = await deleteProperty('property123');
+
+            expect(result.status).toBe(ActionStatus.ERROR);
+            expect(result.message).toContain('Failed to delete property');
+            expect(mockSession.abortTransaction).toHaveBeenCalledTimes(1);
+            expect(mockSession.endSession).toHaveBeenCalledTimes(1);
+        });
+
+        it('should handle transaction commit failures', async () => {
+            const mockSession = {
+                startTransaction: jest.fn(),
+                commitTransaction: jest.fn().mockRejectedValue(new Error('Commit failed')),
+                abortTransaction: jest.fn(),
+                endSession: jest.fn()
+            };
+
+            const mockPropertyDoc = {
+                ...mockPropertyData,
+                imagesData: []
+            } as unknown as PropertyDocument;
+
+            mockStartSession.mockResolvedValue(mockSession as any);
+            mockPropertyFindById.mockResolvedValue(mockPropertyDoc);
+            mockPropertyFindByIdAndDelete.mockResolvedValue(mockPropertyDoc);
+            mockUserUpdateMany.mockResolvedValue({ modifiedCount: 1 } as any);
+
+            const result = await deleteProperty('property123');
+
+            expect(result.status).toBe(ActionStatus.ERROR);
+            expect(result.message).toContain('Failed to delete property');
+            expect(mockSession.abortTransaction).toHaveBeenCalledTimes(1);
+            expect(mockSession.endSession).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe('updateProperty - Additional Error Coverage', () => {
+        it('should handle form validation errors', async () => {
+            const mockPropertyDoc = {
+                ...mockPropertyData,
+                owner: { toString: () => mockSessionUser.id }
+            } as unknown as PropertyDocument;
+
+            mockPropertyFindById.mockResolvedValue(mockPropertyDoc);
+
+            // Create form data with validation errors
+            const invalidFormData = new FormData();
+            invalidFormData.set('name', 'Short'); // Too short name
+            invalidFormData.set('type', ''); // Empty type
+
+            const prevState: ActionState = {};
+            const result = await updateProperty('property123', prevState, invalidFormData);
+
+            expect(result.formData).toBe(invalidFormData);
+            expect(result.formErrorMap).toBeDefined();
+            expect(mockPropertyFindByIdAndUpdate).not.toHaveBeenCalled();
+        });
+
+        it('should handle database update errors', async () => {
+            const mockPropertyDoc = {
+                ...mockPropertyData,
+                owner: { toString: () => mockSessionUser.id }
+            } as unknown as PropertyDocument;
+
+            mockPropertyFindById.mockResolvedValue(mockPropertyDoc);
+            mockPropertyFindByIdAndUpdate.mockRejectedValue(new Error('Database update failed'));
+
+            const prevState: ActionState = {};
+            const result = await updateProperty('property123', prevState, mockFormData);
+
+            expect(result.status).toBe(ActionStatus.ERROR);
+            expect(result.message).toContain('Failed to add a property');
+            expect(result.formData).toBe(mockFormData);
+            expect(mockRedirect).not.toHaveBeenCalled();
+        });
+    });
+
+    describe('favoriteProperty - Additional Error Coverage', () => {
+        it('should handle database errors when finding user', async () => {
+            mockUserFindById.mockRejectedValue(new Error('Database connection failed'));
+
+            const result = await favoriteProperty('property456');
+
+            expect(result.status).toBe(ActionStatus.ERROR);
+            expect(result.message).toBe('Error finding user: Error: Database connection failed');
+            expect(mockConsoleError).toHaveBeenCalledWith('>>> Database error finding user: Error: Database connection failed');
+        });
+
+        it('should handle update operation failures', async () => {
+            const mockUserDoc = {
+                _id: 'user123',
+                favorites: []
+            } as unknown as UserDocument;
+
+            mockUserFindById.mockResolvedValue(mockUserDoc);
+            mockUserUpdateOne.mockRejectedValue(new Error('Update failed'));
+
+            const result = await favoriteProperty('property456');
+
+            expect(result.status).toBe(ActionStatus.ERROR);
+            expect(result.message).toBe('Error favoriting property');
+            expect(mockConsoleError).toHaveBeenCalledWith('>>> Database error favoriting property: Error: Update failed');
+        });
+
+        it('should handle failed update with modifiedCount !== 1', async () => {
+            const mockUserDoc = {
+                _id: 'user123',
+                favorites: []
+            } as unknown as UserDocument;
+
+            mockUserFindById.mockResolvedValue(mockUserDoc);
+            mockUserUpdateOne.mockResolvedValue({ modifiedCount: 0 } as any);
+
+            const result = await favoriteProperty('property456');
+
+            expect(result.status).toBe(ActionStatus.ERROR);
+            expect(result.message).toBe('Error favoriting property');
+            expect(mockConsoleError).toHaveBeenCalledWith('>>> Database error favoriting property');
+        });
+    });
+
+    describe('getFavoriteStatus - Additional Error Coverage', () => {
+        it('should handle database errors when finding user', async () => {
+            mockUserFindById.mockRejectedValue(new Error('Database error'));
+
+            const result = await getFavoriteStatus('property456');
+
+            expect(result.status).toBe(ActionStatus.ERROR);
+            expect(result.message).toBe('Error finding user: Error: Database error');
+            expect(mockConsoleError).toHaveBeenCalledWith('>>> Database error finding user: Error: Database error');
+        });
+    });
+
+    // Note: createMessage tests are now in message-actions.test.ts
 });

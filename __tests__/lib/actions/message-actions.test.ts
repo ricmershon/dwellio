@@ -1,10 +1,13 @@
 // Mock all external dependencies first to avoid module import issues
 jest.mock('@/lib/db-connect', () => jest.fn());
 jest.mock('@/models', () => ({
-    Message: {
+    Message: Object.assign(jest.fn().mockImplementation((data) => ({
+        ...data,
+        save: jest.fn()
+    })), {
         findById: jest.fn(),
         countDocuments: jest.fn()
-    }
+    })
 }));
 jest.mock('@/utils/require-session-user', () => ({
     requireSessionUser: jest.fn()
@@ -15,9 +18,17 @@ jest.mock('@/utils/to-action-state', () => ({
 jest.mock('next/cache', () => ({
     revalidatePath: jest.fn()
 }));
+jest.mock('@/schemas/message-schema', () => ({
+    MessageInput: {
+        safeParse: jest.fn()
+    }
+}));
+jest.mock('@/utils/build-form-error-map', () => ({
+    buildFormErrorMap: jest.fn()
+}));
 
 // Import after mocks
-import { toggleMessageRead, deleteMessage, getUnreadMessageCount } from '@/lib/actions/message-actions';
+import { createMessage, toggleMessageRead, deleteMessage, getUnreadMessageCount } from '@/lib/actions/message-actions';
 import { ActionStatus } from '@/types';
 
 const mockDbConnect = jest.requireMock('@/lib/db-connect');
@@ -25,6 +36,8 @@ const mockMessage = jest.requireMock('@/models').Message;
 const mockRequireSessionUser = jest.requireMock('@/utils/require-session-user').requireSessionUser;
 const mockToActionState = jest.requireMock('@/utils/to-action-state').toActionState;
 const mockRevalidatePath = jest.requireMock('next/cache').revalidatePath;
+const mockMessageInput = jest.requireMock('@/schemas/message-schema').MessageInput;
+const mockBuildFormErrorMap = jest.requireMock('@/utils/build-form-error-map').buildFormErrorMap;
 
 describe('Message Actions', () => {
     const mockSessionUser = { id: 'user-123', email: 'user@test.com' };
@@ -624,6 +637,150 @@ describe('Message Actions', () => {
                 
                 consoleSpy.mockRestore();
             });
+        });
+    });
+
+    describe('createMessage', () => {
+        const mockMessageSave = jest.fn();
+
+        beforeEach(() => {
+            // Reset the Message constructor mock
+            mockMessage.mockImplementation((data: any) => ({
+                ...data,
+                save: mockMessageSave
+            }));
+            mockMessageSave.mockClear();
+            
+            // Mock validation to succeed by default
+            mockMessageInput.safeParse.mockReturnValue({
+                success: true,
+                data: {
+                    name: 'John Doe',
+                    email: 'john@example.com',
+                    phone: '555-1234',
+                    body: 'Test message'
+                }
+            });
+        });
+
+        describe('Successful Message Creation', () => {
+            it('should create message with valid data', async () => {
+                const formData = new FormData();
+                formData.set('name', 'John Doe');
+                formData.set('email', 'john@example.com');
+                formData.set('phone', '555-1234');
+                formData.set('body', 'This is a test message with sufficient length to pass validation.');
+                formData.set('recipient', 'recipient-id');
+                formData.set('property', 'property-id');
+
+                mockMessageSave.mockResolvedValue(true);
+
+                const prevState: any = {};
+                const result = await createMessage(prevState, formData);
+
+                expect(mockRequireSessionUser).toHaveBeenCalledTimes(1);
+                expect(mockDbConnect).toHaveBeenCalledTimes(1);
+                expect(mockMessageSave).toHaveBeenCalledTimes(1);
+                expect(result.status).toBe(ActionStatus.SUCCESS);
+                expect(result.message).toBe('Message sent.');
+            });
+        });
+
+        describe('Validation Errors', () => {
+            it('should handle form validation errors', async () => {
+                // Mock validation to fail
+                mockMessageInput.safeParse.mockReturnValue({
+                    success: false,
+                    error: {
+                        issues: [
+                            { path: ['name'], message: 'Name is required' },
+                            { path: ['email'], message: 'Invalid email' }
+                        ]
+                    }
+                });
+                mockBuildFormErrorMap.mockReturnValue({
+                    name: ['Name is required'],
+                    email: ['Invalid email']
+                });
+
+                const invalidFormData = new FormData();
+                invalidFormData.set('name', ''); // Empty name
+                invalidFormData.set('email', 'invalid-email'); // Invalid email
+                invalidFormData.set('phone', ''); // Empty phone
+                invalidFormData.set('body', ''); // Empty body
+
+                const prevState: any = {};
+                const result = await createMessage(prevState, invalidFormData);
+
+                expect(result.formData).toBe(invalidFormData);
+                expect(result.formErrorMap).toBeDefined();
+                expect(mockMessageSave).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('Database Errors', () => {
+            it('should handle message save failures', async () => {
+                const formData = new FormData();
+                formData.set('name', 'John Doe');
+                formData.set('email', 'john@example.com');
+                formData.set('phone', '555-1234');
+                formData.set('body', 'This is a test message with sufficient length to pass validation.');
+                formData.set('recipient', 'recipient-id');
+                formData.set('property', 'property-id');
+
+                const saveError = new Error('Database save failed');
+                mockMessageSave.mockRejectedValue(saveError);
+
+                const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+
+                const prevState: any = {};
+                const result = await createMessage(prevState, formData);
+
+                expect(result.status).toBe(ActionStatus.ERROR);
+                expect(result.message).toContain('Failed to send message');
+                expect(result.formData).toBe(formData);
+                expect(consoleSpy).toHaveBeenCalledWith('>>> Database error sending a message: Error: Database save failed');
+                
+                consoleSpy.mockRestore();
+            });
+        });
+    });
+
+    describe('toggleMessageRead - Missing Error Coverage', () => {
+        it('should handle database errors when finding message', async () => {
+            const dbError = new Error('Database connection failed');
+            mockMessage.findById.mockRejectedValue(dbError);
+
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+
+            const result = await toggleMessageRead('message-id');
+
+            expect(mockToActionState).toHaveBeenCalledWith({
+                status: ActionStatus.ERROR,
+                message: 'Error finding message: Error: Database connection failed'
+            });
+            expect(consoleSpy).toHaveBeenCalledWith('>>> Database error finding message: Error: Database connection failed');
+            
+            consoleSpy.mockRestore();
+        });
+    });
+
+    describe('deleteMessage - Missing Error Coverage', () => {
+        it('should handle database errors when finding message', async () => {
+            const dbError = new Error('Database find failed');
+            mockMessage.findById.mockRejectedValue(dbError);
+
+            const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+
+            const result = await deleteMessage('message-id');
+
+            expect(mockToActionState).toHaveBeenCalledWith({
+                status: ActionStatus.ERROR,
+                message: 'Error finding message: Error: Database find failed'
+            });
+            expect(consoleSpy).toHaveBeenCalledWith('>>> Database error finding message: Error: Database find failed');
+            
+            consoleSpy.mockRestore();
         });
     });
 });
