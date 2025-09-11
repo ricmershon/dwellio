@@ -7,6 +7,7 @@ interface HostInfoProps extends WithAuthProps {
     actionState: ActionState;
     property?: PropertyDocument;
 }
+
 const HostInfo = ({ actionState, property, session }: HostInfoProps) => (
     <div className="mb-4">
         <h2 className="block text-gray-700 font-bold mb-1">
