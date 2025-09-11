@@ -49,7 +49,7 @@ const PropertyImagesGallery = ({ imagesData }: { imagesData: PropertyImageData[]
                             height={imageData.height}
                             width={imageData.width}
                         >
-                            {({ref, open: openItem}) => (
+                            {({ ref, open: openItem }) => (
                                 <div className="relative h-full w-full">
                                     <Image
                                         ref={ref}

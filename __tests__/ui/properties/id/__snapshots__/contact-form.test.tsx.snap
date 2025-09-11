@@ -25,7 +25,7 @@ exports[`PropertyContactForm Snapshots should match snapshot in loading state 1`
       value="owner-456"
     />
     <div
-      data-testid="input-name"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -34,7 +34,8 @@ exports[`PropertyContactForm Snapshots should match snapshot in loading state 1`
         Name
       </label>
       <input
-        data-has-errors="false"
+        aria-describedby="name-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="name"
         name="name"
         placeholder="Enter your name"
@@ -43,7 +44,7 @@ exports[`PropertyContactForm Snapshots should match snapshot in loading state 1`
       />
     </div>
     <div
-      data-testid="input-email"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -52,7 +53,8 @@ exports[`PropertyContactForm Snapshots should match snapshot in loading state 1`
         Email
       </label>
       <input
-        data-has-errors="false"
+        aria-describedby="email-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="email"
         name="email"
         placeholder="Enter your email"
@@ -61,7 +63,7 @@ exports[`PropertyContactForm Snapshots should match snapshot in loading state 1`
       />
     </div>
     <div
-      data-testid="input-phone"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -70,7 +72,8 @@ exports[`PropertyContactForm Snapshots should match snapshot in loading state 1`
         Phone
       </label>
       <input
-        data-has-errors="false"
+        aria-describedby="phone-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="phone"
         name="phone"
         placeholder="Enter your phone number"
@@ -79,7 +82,7 @@ exports[`PropertyContactForm Snapshots should match snapshot in loading state 1`
       />
     </div>
     <div
-      data-testid="input-body"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -88,10 +91,12 @@ exports[`PropertyContactForm Snapshots should match snapshot in loading state 1`
         Message
       </label>
       <textarea
-        data-has-errors="false"
+        aria-describedby="body-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="body"
         name="body"
         placeholder="Enter your message"
+        rows="4"
       />
     </div>
     <div>
@@ -136,7 +141,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with default props 
       value="owner-456"
     />
     <div
-      data-testid="input-name"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -145,7 +150,8 @@ exports[`PropertyContactForm Snapshots should match snapshot with default props 
         Name
       </label>
       <input
-        data-has-errors="false"
+        aria-describedby="name-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="name"
         name="name"
         placeholder="Enter your name"
@@ -154,7 +160,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with default props 
       />
     </div>
     <div
-      data-testid="input-email"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -163,7 +169,8 @@ exports[`PropertyContactForm Snapshots should match snapshot with default props 
         Email
       </label>
       <input
-        data-has-errors="false"
+        aria-describedby="email-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="email"
         name="email"
         placeholder="Enter your email"
@@ -172,7 +179,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with default props 
       />
     </div>
     <div
-      data-testid="input-phone"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -181,7 +188,8 @@ exports[`PropertyContactForm Snapshots should match snapshot with default props 
         Phone
       </label>
       <input
-        data-has-errors="false"
+        aria-describedby="phone-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="phone"
         name="phone"
         placeholder="Enter your phone number"
@@ -190,7 +198,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with default props 
       />
     </div>
     <div
-      data-testid="input-body"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -199,10 +207,12 @@ exports[`PropertyContactForm Snapshots should match snapshot with default props 
         Message
       </label>
       <textarea
-        data-has-errors="false"
+        aria-describedby="body-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="body"
         name="body"
         placeholder="Enter your message"
+        rows="4"
       />
     </div>
     <div>
@@ -246,7 +256,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with different prop
       value="custom-owner-456"
     />
     <div
-      data-testid="input-name"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -255,7 +265,8 @@ exports[`PropertyContactForm Snapshots should match snapshot with different prop
         Name
       </label>
       <input
-        data-has-errors="false"
+        aria-describedby="name-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="name"
         name="name"
         placeholder="Enter your name"
@@ -264,7 +275,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with different prop
       />
     </div>
     <div
-      data-testid="input-email"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -273,7 +284,8 @@ exports[`PropertyContactForm Snapshots should match snapshot with different prop
         Email
       </label>
       <input
-        data-has-errors="false"
+        aria-describedby="email-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="email"
         name="email"
         placeholder="Enter your email"
@@ -282,7 +294,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with different prop
       />
     </div>
     <div
-      data-testid="input-phone"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -291,7 +303,8 @@ exports[`PropertyContactForm Snapshots should match snapshot with different prop
         Phone
       </label>
       <input
-        data-has-errors="false"
+        aria-describedby="phone-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="phone"
         name="phone"
         placeholder="Enter your phone number"
@@ -300,7 +313,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with different prop
       />
     </div>
     <div
-      data-testid="input-body"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -309,10 +322,12 @@ exports[`PropertyContactForm Snapshots should match snapshot with different prop
         Message
       </label>
       <textarea
-        data-has-errors="false"
+        aria-describedby="body-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="body"
         name="body"
         placeholder="Enter your message"
+        rows="4"
       />
     </div>
     <div>
@@ -356,7 +371,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with form errors 1`
       value="owner-456"
     />
     <div
-      data-testid="input-name"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -365,16 +380,28 @@ exports[`PropertyContactForm Snapshots should match snapshot with form errors 1`
         Name
       </label>
       <input
-        data-has-errors="true"
+        aria-describedby="name-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="name"
         name="name"
         placeholder="Enter your name"
         type="text"
         value="John Doe"
       />
+      <div
+        aria-atomic="true"
+        aria-live="polite"
+        id="name-error"
+      >
+        <p
+          class="mt-1 text-sm text-red-500"
+        >
+          Name is required
+        </p>
+      </div>
     </div>
     <div
-      data-testid="input-email"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -383,16 +410,28 @@ exports[`PropertyContactForm Snapshots should match snapshot with form errors 1`
         Email
       </label>
       <input
-        data-has-errors="true"
+        aria-describedby="email-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="email"
         name="email"
         placeholder="Enter your email"
         type="tel"
         value="john@example.com"
       />
+      <div
+        aria-atomic="true"
+        aria-live="polite"
+        id="email-error"
+      >
+        <p
+          class="mt-1 text-sm text-red-500"
+        >
+          Invalid email format
+        </p>
+      </div>
     </div>
     <div
-      data-testid="input-phone"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -401,7 +440,8 @@ exports[`PropertyContactForm Snapshots should match snapshot with form errors 1`
         Phone
       </label>
       <input
-        data-has-errors="false"
+        aria-describedby="phone-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="phone"
         name="phone"
         placeholder="Enter your phone number"
@@ -410,7 +450,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with form errors 1`
       />
     </div>
     <div
-      data-testid="input-body"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -419,17 +459,17 @@ exports[`PropertyContactForm Snapshots should match snapshot with form errors 1`
         Message
       </label>
       <textarea
-        data-has-errors="false"
+        aria-describedby="body-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="body"
         name="body"
         placeholder="Enter your message"
+        rows="4"
       />
     </div>
     <div
-      data-testid="input-errors"
-    >
-      Form has errors
-    </div>
+      data-testid="input-errors-undefined"
+    />
     <div>
       <button
         class="flex gap-1 btn btn-primary w-full justify-center hover:cursor-pointer"
@@ -471,7 +511,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with minimal user d
       value="owner-456"
     />
     <div
-      data-testid="input-name"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -480,7 +520,8 @@ exports[`PropertyContactForm Snapshots should match snapshot with minimal user d
         Name
       </label>
       <input
-        data-has-errors="false"
+        aria-describedby="name-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="name"
         name="name"
         placeholder="Enter your name"
@@ -489,7 +530,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with minimal user d
       />
     </div>
     <div
-      data-testid="input-email"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -498,7 +539,8 @@ exports[`PropertyContactForm Snapshots should match snapshot with minimal user d
         Email
       </label>
       <input
-        data-has-errors="false"
+        aria-describedby="email-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="email"
         name="email"
         placeholder="Enter your email"
@@ -507,7 +549,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with minimal user d
       />
     </div>
     <div
-      data-testid="input-phone"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -516,7 +558,8 @@ exports[`PropertyContactForm Snapshots should match snapshot with minimal user d
         Phone
       </label>
       <input
-        data-has-errors="false"
+        aria-describedby="phone-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="phone"
         name="phone"
         placeholder="Enter your phone number"
@@ -525,7 +568,7 @@ exports[`PropertyContactForm Snapshots should match snapshot with minimal user d
       />
     </div>
     <div
-      data-testid="input-body"
+      class="mb-4"
     >
       <label
         class="mb-1 block text-sm text-gray-700"
@@ -534,10 +577,12 @@ exports[`PropertyContactForm Snapshots should match snapshot with minimal user d
         Message
       </label>
       <textarea
-        data-has-errors="false"
+        aria-describedby="body-error"
+        class="w-full rounded-md border border-gray-300 py-2 px-3 text-sm placeholder:text-gray-500 bg-white"
         id="body"
         name="body"
         placeholder="Enter your message"
+        rows="4"
       />
     </div>
     <div>

@@ -10,11 +10,23 @@ exports[`LoginPage Snapshots should match snapshot for unauthenticated user 1`] 
     <div
       class="text-center"
     >
-      <div
-        data-testid="dwellio-logo"
+      <a
+        class="flex flex-shrink-0 items-center justify-center"
+        data-testid="logo-link"
+        href="/"
       >
-        Dwellio Logo
-      </div>
+        <div
+          class="h-10 w-auto text-blue-800 p-[4px] bg-white"
+          data-testid="home-icon"
+        >
+          🏠
+        </div>
+        <span
+          class="block text-xl md:text-lg text-blue-800 ml-1"
+        >
+          Dwellio
+        </span>
+      </a>
     </div>
     <div
       data-testid="login-ui"

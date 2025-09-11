@@ -22,13 +22,22 @@ jest.mock('@/ui/login/login-ui', () => {
     return MockLoginUI;
 });
 
-jest.mock('@/ui/shared/logo', () => {
-    const MockLogo = () => (
-        <div data-testid="dwellio-logo">Dwellio Logo</div>
-    );
-    MockLogo.displayName = 'MockLogo';
-    return MockLogo;
-});
+// Mock heroicons for DwellioLogo component
+jest.mock('@heroicons/react/24/solid', () => ({
+    HomeIcon: ({ className }: { className?: string }) => (
+        <div data-testid="home-icon" className={className}>🏠</div>
+    ),
+}));
+
+// Mock Next.js Link for DwellioLogo component
+jest.mock('next/link', () => ({
+    __esModule: true,
+    default: ({ children, href, className }: { children: React.ReactNode; href: string; className?: string }) => (
+        <a href={href} className={className} data-testid="logo-link">
+            {children}
+        </a>
+    ),
+}));
 
 describe('LoginPage', () => {
     const mockRedirect = redirect as jest.MockedFunction<typeof redirect>;
@@ -58,7 +67,10 @@ describe('LoginPage', () => {
             // Render the result to test its content
             render(result);
 
-            expect(screen.getByTestId('dwellio-logo')).toBeInTheDocument();
+            // Check for logo components
+            expect(screen.getByTestId('logo-link')).toBeInTheDocument();
+            expect(screen.getByTestId('home-icon')).toBeInTheDocument();
+            expect(screen.getByText('Dwellio')).toBeInTheDocument();
             expect(screen.getByTestId('login-ui')).toBeInTheDocument();
         });
     });
@@ -71,12 +83,25 @@ describe('LoginPage', () => {
             render(result);
 
             // Check main container structure
-            const container = screen.getByTestId('dwellio-logo').closest('.max-w-md');
+            const container = screen.getByTestId('logo-link').closest('.max-w-md');
             expect(container).toBeInTheDocument();
             expect(container).toHaveClass('max-w-md', 'w-full', 'space-y-6');
 
-            // Check logo section
-            expect(screen.getByTestId('dwellio-logo')).toBeInTheDocument();
+            // Check logo section and components
+            const logoLink = screen.getByTestId('logo-link');
+            expect(logoLink).toBeInTheDocument();
+            expect(logoLink).toHaveAttribute('href', '/');
+            expect(logoLink).toHaveClass('flex', 'flex-shrink-0', 'items-center', 'justify-center');
+            
+            // Check home icon
+            const homeIcon = screen.getByTestId('home-icon');
+            expect(homeIcon).toBeInTheDocument();
+            expect(homeIcon).toHaveClass('h-10', 'w-auto', 'text-blue-800', 'p-[4px]', 'bg-white');
+            
+            // Check logo text
+            const logoText = screen.getByText('Dwellio');
+            expect(logoText).toBeInTheDocument();
+            expect(logoText).toHaveClass('block', 'text-xl', 'md:text-lg', 'text-blue-800', 'ml-1');
             
             // Check login UI
             expect(screen.getByTestId('login-ui')).toBeInTheDocument();
@@ -99,9 +124,10 @@ describe('LoginPage', () => {
             const result = await LoginPage();
             render(result);
 
-            // Main container
-            const mainContainer = screen.getByTestId('dwellio-logo').closest('.flex');
-            expect(mainContainer).toHaveClass(
+            // Main container - look for the outer page container with padding classes
+            const logoContainer = screen.getByTestId('logo-link');
+            const pageContainer = logoContainer.closest('div[class*="py-6"]');
+            expect(pageContainer).toHaveClass(
                 'flex',
                 'items-center',
                 'justify-center',
@@ -112,11 +138,11 @@ describe('LoginPage', () => {
             );
 
             // Content area
-            const contentArea = screen.getByTestId('dwellio-logo').closest('.max-w-md');
+            const contentArea = screen.getByTestId('logo-link').closest('.max-w-md');
             expect(contentArea).toHaveClass('max-w-md', 'w-full', 'space-y-6');
 
             // Logo section
-            const logoSection = screen.getByTestId('dwellio-logo').closest('.text-center');
+            const logoSection = screen.getByTestId('logo-link').closest('.text-center');
             expect(logoSection).toHaveClass('text-center');
         });
 
@@ -139,6 +165,55 @@ describe('LoginPage', () => {
 
             const description = screen.getByText(/If you have an existing Google account/);
             expect(description.closest('.text-sm')).toHaveClass('text-sm');
+        });
+    });
+
+    describe('DwellioLogo Integration', () => {
+        it('should render logo with proper navigation link', async () => {
+            mockGetSessionUser.mockResolvedValue(null);
+
+            const result = await LoginPage();
+            render(result);
+
+            const logoLink = screen.getByTestId('logo-link');
+            expect(logoLink).toHaveAttribute('href', '/');
+            expect(logoLink).toHaveClass('flex', 'flex-shrink-0', 'items-center', 'justify-center');
+        });
+
+        it('should render home icon with correct styling', async () => {
+            mockGetSessionUser.mockResolvedValue(null);
+
+            const result = await LoginPage();
+            render(result);
+
+            const homeIcon = screen.getByTestId('home-icon');
+            expect(homeIcon).toBeInTheDocument();
+            expect(homeIcon).toHaveClass('h-10', 'w-auto', 'text-blue-800', 'p-[4px]', 'bg-white');
+            expect(homeIcon).toHaveTextContent('🏠');
+        });
+
+        it('should render logo text with responsive typography', async () => {
+            mockGetSessionUser.mockResolvedValue(null);
+
+            const result = await LoginPage();
+            render(result);
+
+            const logoText = screen.getByText('Dwellio');
+            expect(logoText).toBeInTheDocument();
+            expect(logoText).toHaveClass('block', 'text-xl', 'md:text-lg', 'text-blue-800', 'ml-1');
+        });
+
+        it('should be keyboard accessible', async () => {
+            mockGetSessionUser.mockResolvedValue(null);
+
+            const result = await LoginPage();
+            render(result);
+
+            const logoLink = screen.getByTestId('logo-link');
+            
+            // Should be focusable
+            logoLink.focus();
+            expect(logoLink).toHaveFocus();
         });
     });
 
@@ -187,8 +262,11 @@ describe('LoginPage', () => {
             const result = await LoginPage();
             render(result);
 
-            const container = screen.getByTestId('dwellio-logo').closest('.flex');
-            expect(container).toHaveClass('px-4', 'sm:px-6', 'lg:px-8');
+            // Look for the page container with padding classes
+            const logoContainer = screen.getByTestId('logo-link');
+            const pageContainer = logoContainer.closest('div[class*="px-4"]') || 
+                                logoContainer.closest('.flex.items-center.justify-center');
+            expect(pageContainer).toHaveClass('px-4', 'sm:px-6', 'lg:px-8');
         });
 
         it('should use responsive spacing', async () => {
@@ -197,7 +275,7 @@ describe('LoginPage', () => {
             const result = await LoginPage();
             render(result);
 
-            const contentArea = screen.getByTestId('dwellio-logo').closest('.space-y-6');
+            const contentArea = screen.getByTestId('logo-link').closest('.space-y-6');
             expect(contentArea).toHaveClass('space-y-6');
         });
     });
@@ -210,8 +288,13 @@ describe('LoginPage', () => {
             render(result);
 
             // Main container should be semantically appropriate
-            const container = screen.getByTestId('dwellio-logo').closest('.flex');
+            const container = screen.getByTestId('logo-link').closest('.flex');
             expect(container).toBeInTheDocument();
+            
+            // Logo should be accessible as a link
+            const logoLink = screen.getByTestId('logo-link');
+            expect(logoLink).toHaveAttribute('href', '/');
+            expect(logoLink).toBeVisible();
         });
 
         it('should provide informative content for screen readers', async () => {

@@ -5,68 +5,62 @@ exports[`PropertiesPagination Snapshots should match snapshot for first page 1`]
   class="inline-flex"
 >
   <div
-    aria-disabled="true"
-    data-disabled="true"
-    data-href="/properties?page=0"
-    data-testid="pagination-arrow-left"
+    class="flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 pointer-events-none text-gray-300 mr-2 md:mr-4"
   >
-    ←
+    <div
+      class="w-4"
+      data-testid="arrow-left-icon"
+    >
+      ←
+    </div>
   </div>
   <div
     class="flex -space-x-px"
   >
     <div
-      data-active="true"
-      data-href="/properties?page=1"
-      data-page="1"
-      data-position="first"
-      data-testid="pagination-number"
+      class="flex h-10 w-10 items-center justify-center text-sm border border-gray-300 rounded-l-md z-10 bg-blue-700 text-white"
     >
       1
     </div>
-    <div
-      data-active="false"
-      data-href="/properties?page=2"
-      data-page="2"
-      data-testid="pagination-number"
+    <a
+      class="flex h-10 w-10 items-center justify-center text-sm border border-gray-300 hover:bg-gray-100"
+      data-testid="pagination-link"
+      href="/properties?page=2"
     >
       2
-    </div>
-    <div
-      data-active="false"
-      data-href="/properties?page=3"
-      data-page="3"
-      data-testid="pagination-number"
+    </a>
+    <a
+      class="flex h-10 w-10 items-center justify-center text-sm border border-gray-300 hover:bg-gray-100"
+      data-testid="pagination-link"
+      href="/properties?page=3"
     >
       3
-    </div>
+    </a>
     <div
-      data-active="false"
-      data-href="/properties?page=..."
-      data-page="..."
-      data-position="middle"
-      data-testid="pagination-number"
+      class="flex h-10 w-10 items-center justify-center text-sm border border-gray-300 text-gray-300"
     >
       ...
     </div>
-    <div
-      data-active="false"
-      data-href="/properties?page=10"
-      data-page="10"
-      data-position="last"
-      data-testid="pagination-number"
+    <a
+      class="flex h-10 w-10 items-center justify-center text-sm border border-gray-300 rounded-r-md hover:bg-gray-100"
+      data-testid="pagination-link"
+      href="/properties?page=10"
     >
       10
-    </div>
+    </a>
   </div>
-  <div
-    aria-disabled="false"
-    data-disabled="false"
-    data-href="/properties?page=2"
-    data-testid="pagination-arrow-right"
+  <a
+    class="flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 hover:bg-gray-100 ml-2 md:ml-4"
+    data-testid="pagination-link"
+    href="/properties?page=2"
   >
-    →
-  </div>
+    <div
+      class="w-4"
+      data-testid="arrow-right-icon"
+    >
+      →
+    </div>
+  </a>
 </div>
 `;
 
@@ -74,76 +68,69 @@ exports[`PropertiesPagination Snapshots should match snapshot for last page 1`] 
 <div
   class="inline-flex"
 >
-  <div
-    aria-disabled="false"
-    data-disabled="false"
-    data-href="/properties?page=9"
-    data-testid="pagination-arrow-left"
+  <a
+    class="flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 hover:bg-gray-100 mr-2 md:mr-4"
+    data-testid="pagination-link"
+    href="/properties?page=9"
   >
-    ←
-  </div>
+    <div
+      class="w-4"
+      data-testid="arrow-left-icon"
+    >
+      ←
+    </div>
+  </a>
   <div
     class="flex -space-x-px"
   >
-    <div
-      data-active="false"
-      data-href="/properties?page=1"
-      data-page="1"
-      data-position="first"
-      data-testid="pagination-number"
+    <a
+      class="flex h-10 w-10 items-center justify-center text-sm border border-gray-300 rounded-l-md hover:bg-gray-100"
+      data-testid="pagination-link"
+      href="/properties?page=1"
     >
       1
-    </div>
-    <div
-      data-active="false"
-      data-href="/properties?page=2"
-      data-page="2"
-      data-testid="pagination-number"
+    </a>
+    <a
+      class="flex h-10 w-10 items-center justify-center text-sm border border-gray-300 hover:bg-gray-100"
+      data-testid="pagination-link"
+      href="/properties?page=2"
     >
       2
-    </div>
+    </a>
     <div
-      data-active="false"
-      data-href="/properties?page=..."
-      data-page="..."
-      data-position="middle"
-      data-testid="pagination-number"
+      class="flex h-10 w-10 items-center justify-center text-sm border border-gray-300 text-gray-300"
     >
       ...
     </div>
-    <div
-      data-active="false"
-      data-href="/properties?page=8"
-      data-page="8"
-      data-testid="pagination-number"
+    <a
+      class="flex h-10 w-10 items-center justify-center text-sm border border-gray-300 hover:bg-gray-100"
+      data-testid="pagination-link"
+      href="/properties?page=8"
     >
       8
-    </div>
-    <div
-      data-active="false"
-      data-href="/properties?page=9"
-      data-page="9"
-      data-testid="pagination-number"
+    </a>
+    <a
+      class="flex h-10 w-10 items-center justify-center text-sm border border-gray-300 hover:bg-gray-100"
+      data-testid="pagination-link"
+      href="/properties?page=9"
     >
       9
-    </div>
+    </a>
     <div
-      data-active="true"
-      data-href="/properties?page=10"
-      data-page="10"
-      data-position="last"
-      data-testid="pagination-number"
+      class="flex h-10 w-10 items-center justify-center text-sm border border-gray-300 rounded-r-md z-10 bg-blue-700 text-white"
     >
       10
     </div>
   </div>
   <div
-    aria-disabled="true"
-    data-disabled="true"
-    data-href="/properties?page=11"
-    data-testid="pagination-arrow-right"
+    class="flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 pointer-events-none text-gray-300 ml-2 md:ml-4"
   >
-    →
+    <div
+      class="w-4"
+      data-testid="arrow-right-icon"
+    >
+      →
+    </div>
   </div>
 </div>
 `;
@@ -152,86 +139,77 @@ exports[`PropertiesPagination Snapshots should match snapshot for middle page 1`
 <div
   class="inline-flex"
 >
-  <div
-    aria-disabled="false"
-    data-disabled="false"
-    data-href="/properties?page=4"
-    data-testid="pagination-arrow-left"
+  <a
+    class="flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 hover:bg-gray-100 mr-2 md:mr-4"
+    data-testid="pagination-link"
+    href="/properties?page=4"
   >
-    ←
-  </div>
+    <div
+      class="w-4"
+      data-testid="arrow-left-icon"
+    >
+      ←
+    </div>
+  </a>
   <div
     class="flex -space-x-px"
   >
-    <div
-      data-active="false"
-      data-href="/properties?page=1"
-      data-page="1"
-      data-position="first"
-      data-testid="pagination-number"
+    <a
+      class="flex h-10 w-10 items-center justify-center text-sm border border-gray-300 rounded-l-md hover:bg-gray-100"
+      data-testid="pagination-link"
+      href="/properties?page=1"
     >
       1
-    </div>
+    </a>
     <div
-      data-active="false"
-      data-href="/properties?page=..."
-      data-page="..."
-      data-position="middle"
-      data-testid="pagination-number"
+      class="flex h-10 w-10 items-center justify-center text-sm border border-gray-300 text-gray-300"
     >
       ...
     </div>
-    <div
-      data-active="false"
-      data-href="/properties?page=4"
-      data-page="4"
-      data-testid="pagination-number"
+    <a
+      class="flex h-10 w-10 items-center justify-center text-sm border border-gray-300 hover:bg-gray-100"
+      data-testid="pagination-link"
+      href="/properties?page=4"
     >
       4
-    </div>
+    </a>
     <div
-      data-active="true"
-      data-href="/properties?page=5"
-      data-page="5"
-      data-testid="pagination-number"
+      class="flex h-10 w-10 items-center justify-center text-sm border border-gray-300 z-10 bg-blue-700 text-white"
     >
       5
     </div>
-    <div
-      data-active="false"
-      data-href="/properties?page=6"
-      data-page="6"
-      data-testid="pagination-number"
+    <a
+      class="flex h-10 w-10 items-center justify-center text-sm border border-gray-300 hover:bg-gray-100"
+      data-testid="pagination-link"
+      href="/properties?page=6"
     >
       6
-    </div>
+    </a>
     <div
-      data-active="false"
-      data-href="/properties?page=..."
-      data-page="..."
-      data-position="middle"
-      data-testid="pagination-number"
+      class="flex h-10 w-10 items-center justify-center text-sm border border-gray-300 text-gray-300"
     >
       ...
     </div>
-    <div
-      data-active="false"
-      data-href="/properties?page=10"
-      data-page="10"
-      data-position="last"
-      data-testid="pagination-number"
+    <a
+      class="flex h-10 w-10 items-center justify-center text-sm border border-gray-300 rounded-r-md hover:bg-gray-100"
+      data-testid="pagination-link"
+      href="/properties?page=10"
     >
       10
-    </div>
+    </a>
   </div>
-  <div
-    aria-disabled="false"
-    data-disabled="false"
-    data-href="/properties?page=6"
-    data-testid="pagination-arrow-right"
+  <a
+    class="flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 hover:bg-gray-100 ml-2 md:ml-4"
+    data-testid="pagination-link"
+    href="/properties?page=6"
   >
-    →
-  </div>
+    <div
+      class="w-4"
+      data-testid="arrow-right-icon"
+    >
+      →
+    </div>
+  </a>
 </div>
 `;
 
@@ -240,33 +218,33 @@ exports[`PropertiesPagination Snapshots should match snapshot for single page 1`
   class="inline-flex"
 >
   <div
-    aria-disabled="true"
-    data-disabled="true"
-    data-href="/properties?page=0"
-    data-testid="pagination-arrow-left"
+    class="flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 pointer-events-none text-gray-300 mr-2 md:mr-4"
   >
-    ←
+    <div
+      class="w-4"
+      data-testid="arrow-left-icon"
+    >
+      ←
+    </div>
   </div>
   <div
     class="flex -space-x-px"
   >
     <div
-      data-active="true"
-      data-href="/properties?page=1"
-      data-page="1"
-      data-position="single"
-      data-testid="pagination-number"
+      class="flex h-10 w-10 items-center justify-center text-sm border border-gray-300 rounded-l-md rounded-r-md z-10 bg-blue-700 text-white"
     >
       1
     </div>
   </div>
   <div
-    aria-disabled="true"
-    data-disabled="true"
-    data-href="/properties?page=2"
-    data-testid="pagination-arrow-right"
+    class="flex h-10 w-10 items-center justify-center rounded-md border border-gray-300 pointer-events-none text-gray-300 ml-2 md:ml-4"
   >
-    →
+    <div
+      class="w-4"
+      data-testid="arrow-right-icon"
+    >
+      →
+    </div>
   </div>
 </div>
 `;

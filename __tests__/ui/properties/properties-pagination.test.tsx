@@ -9,10 +9,26 @@ jest.mock('next/navigation', () => ({
     usePathname: jest.fn(() => '/properties'),
 }));
 
-// Mock clsx to return joined class names
-jest.mock('clsx', () => ((...args: unknown[]) => 
-    args.filter(Boolean).join(' ')
-));
+// Mock clsx to handle class objects properly
+jest.mock('clsx', () => {
+    return (...args: unknown[]) => {
+        return args
+            .flat()
+            .filter(Boolean)
+            .map(arg => {
+                if (typeof arg === 'string') return arg;
+                if (typeof arg === 'object' && arg !== null) {
+                    return Object.entries(arg)
+                        .filter(([, value]) => Boolean(value))
+                        .map(([key]) => key)
+                        .join(' ');
+                }
+                return '';
+            })
+            .filter(Boolean)
+            .join(' ');
+    };
+});
 
 // Mock Link component
 jest.mock('next/link', () => ({
@@ -24,39 +40,13 @@ jest.mock('next/link', () => ({
     ),
 }));
 
-// Mock PaginationArrow subcomponent
-jest.mock('@/ui/shared/pagination-arrow', () => ({
-    __esModule: true,
-    default: ({ direction, href, isDisabled }: { direction: string; href: string; isDisabled?: boolean }) => (
-        <div 
-            data-testid={`pagination-arrow-${direction}`}
-            data-href={href}
-            data-disabled={isDisabled}
-            aria-disabled={isDisabled}
-        >
-            {direction === 'left' ? '←' : '→'}
-        </div>
+// Mock heroicons for PaginationArrow component
+jest.mock('@heroicons/react/24/outline', () => ({
+    ArrowLeftIcon: ({ className }: { className?: string }) => (
+        <div data-testid="arrow-left-icon" className={className}>←</div>
     ),
-}));
-
-// Mock PaginationNumber subcomponent
-jest.mock('@/ui/shared/pagination-number', () => ({
-    __esModule: true,
-    default: ({ page, href, isActive, position }: { 
-        page: number | string; 
-        href: string; 
-        isActive: boolean; 
-        position?: string;
-    }) => (
-        <div 
-            data-testid="pagination-number"
-            data-page={page}
-            data-href={href}
-            data-active={isActive}
-            data-position={position}
-        >
-            {page}
-        </div>
+    ArrowRightIcon: ({ className }: { className?: string }) => (
+        <div data-testid="arrow-right-icon" className={className}>→</div>
     ),
 }));
 
@@ -96,11 +86,23 @@ describe('PropertiesPagination', () => {
         });
 
         it('should render left arrow, pagination numbers, and right arrow', () => {
-            render(<PropertiesPagination {...defaultProps} />);
+            const { container } = render(<PropertiesPagination {...defaultProps} />);
             
-            expect(screen.getByTestId('pagination-arrow-left')).toBeInTheDocument();
-            expect(screen.getByTestId('pagination-arrow-right')).toBeInTheDocument();
-            expect(screen.getAllByTestId('pagination-number')).toHaveLength(6); // [1, 2, 3, '...', 9, 10]
+            // Check for arrow icons instead of mock data-testids
+            expect(screen.getByTestId('arrow-left-icon')).toBeInTheDocument();
+            expect(screen.getByTestId('arrow-right-icon')).toBeInTheDocument();
+            
+            // Check for pagination numbers container
+            const numbersContainer = container.querySelector('.flex.-space-x-px');
+            expect(numbersContainer).toBeInTheDocument();
+            
+            // Verify we have the expected pagination elements (1, 2, 3, ..., 9, 10)
+            expect(screen.getByText('1')).toBeInTheDocument(); // Active page
+            expect(screen.getByText('2')).toBeInTheDocument(); 
+            expect(screen.getByText('3')).toBeInTheDocument();
+            expect(screen.getByText('...')).toBeInTheDocument();
+            expect(screen.getByText('9')).toBeInTheDocument();
+            expect(screen.getByText('10')).toBeInTheDocument();
         });
 
         it('should render pagination numbers container with correct classes', () => {
@@ -115,11 +117,12 @@ describe('PropertiesPagination', () => {
         it('should create URLs with page parameter', () => {
             render(<PropertiesPagination currentPage={2} totalPages={5} />);
             
-            const leftArrow = screen.getByTestId('pagination-arrow-left');
-            const rightArrow = screen.getByTestId('pagination-arrow-right');
+            // Check link hrefs for arrows - arrows render as Links when not disabled
+            const leftArrowLink = screen.getByTestId('arrow-left-icon').parentElement;
+            const rightArrowLink = screen.getByTestId('arrow-right-icon').parentElement;
             
-            expect(leftArrow).toHaveAttribute('data-href', '/properties?page=1');
-            expect(rightArrow).toHaveAttribute('data-href', '/properties?page=3');
+            expect(leftArrowLink).toHaveAttribute('href', '/properties?page=1');
+            expect(rightArrowLink).toHaveAttribute('href', '/properties?page=3');
         });
 
         it('should preserve existing search parameters', () => {
@@ -128,16 +131,19 @@ describe('PropertiesPagination', () => {
             
             render(<PropertiesPagination currentPage={3} totalPages={8} />);
             
-            const leftArrow = screen.getByTestId('pagination-arrow-left');
-            const rightArrow = screen.getByTestId('pagination-arrow-right');
+            const leftArrowLink = screen.getByTestId('arrow-left-icon').parentElement;
+            const rightArrowLink = screen.getByTestId('arrow-right-icon').parentElement;
             
-            expect(leftArrow.getAttribute('data-href')).toContain('search=villa');
-            expect(leftArrow.getAttribute('data-href')).toContain('location=miami');
-            expect(leftArrow.getAttribute('data-href')).toContain('page=2');
+            const leftHref = leftArrowLink?.getAttribute('href') || '';
+            const rightHref = rightArrowLink?.getAttribute('href') || '';
             
-            expect(rightArrow.getAttribute('data-href')).toContain('search=villa');
-            expect(rightArrow.getAttribute('data-href')).toContain('location=miami');
-            expect(rightArrow.getAttribute('data-href')).toContain('page=4');
+            expect(leftHref).toContain('search=villa');
+            expect(leftHref).toContain('location=miami');
+            expect(leftHref).toContain('page=2');
+            
+            expect(rightHref).toContain('search=villa');
+            expect(rightHref).toContain('location=miami');
+            expect(rightHref).toContain('page=4');
         });
 
         it('should handle different pathname', () => {
@@ -146,8 +152,8 @@ describe('PropertiesPagination', () => {
             
             render(<PropertiesPagination currentPage={1} totalPages={5} />);
             
-            const rightArrow = screen.getByTestId('pagination-arrow-right');
-            expect(rightArrow).toHaveAttribute('data-href', '/properties/featured?page=2');
+            const rightArrowLink = screen.getByTestId('arrow-right-icon').parentElement;
+            expect(rightArrowLink).toHaveAttribute('href', '/properties/featured?page=2');
         });
     });
 
@@ -155,35 +161,53 @@ describe('PropertiesPagination', () => {
         it('should disable left arrow on first page', () => {
             render(<PropertiesPagination currentPage={1} totalPages={5} />);
             
-            const leftArrow = screen.getByTestId('pagination-arrow-left');
-            expect(leftArrow).toHaveAttribute('data-disabled', 'true');
+            const leftArrowIcon = screen.getByTestId('arrow-left-icon');
+            const leftArrowContainer = leftArrowIcon.parentElement;
+            
+            // When disabled, PaginationArrow renders as a div instead of a Link
+            expect(leftArrowContainer?.tagName.toLowerCase()).toBe('div');
+            expect(leftArrowContainer).toHaveClass('pointer-events-none', 'text-gray-300');
         });
 
         it('should disable right arrow on last page', () => {
             render(<PropertiesPagination currentPage={5} totalPages={5} />);
             
-            const rightArrow = screen.getByTestId('pagination-arrow-right');
-            expect(rightArrow).toHaveAttribute('data-disabled', 'true');
+            const rightArrowIcon = screen.getByTestId('arrow-right-icon');
+            const rightArrowContainer = rightArrowIcon.parentElement;
+            
+            // When disabled, PaginationArrow renders as a div instead of a Link
+            expect(rightArrowContainer?.tagName.toLowerCase()).toBe('div');
+            expect(rightArrowContainer).toHaveClass('pointer-events-none', 'text-gray-300');
         });
 
         it('should enable both arrows on middle pages', () => {
             render(<PropertiesPagination currentPage={3} totalPages={5} />);
             
-            const leftArrow = screen.getByTestId('pagination-arrow-left');
-            const rightArrow = screen.getByTestId('pagination-arrow-right');
+            const leftArrowIcon = screen.getByTestId('arrow-left-icon');
+            const rightArrowIcon = screen.getByTestId('arrow-right-icon');
+            const leftArrowContainer = leftArrowIcon.parentElement;
+            const rightArrowContainer = rightArrowIcon.parentElement;
             
-            expect(leftArrow).toHaveAttribute('data-disabled', 'false');
-            expect(rightArrow).toHaveAttribute('data-disabled', 'false');
+            // When enabled, PaginationArrow renders as a Link
+            expect(leftArrowContainer?.tagName.toLowerCase()).toBe('a');
+            expect(rightArrowContainer?.tagName.toLowerCase()).toBe('a');
+            expect(leftArrowContainer).toHaveClass('hover:bg-gray-100');
+            expect(rightArrowContainer).toHaveClass('hover:bg-gray-100');
         });
 
         it('should handle single page correctly', () => {
             render(<PropertiesPagination currentPage={1} totalPages={1} />);
             
-            const leftArrow = screen.getByTestId('pagination-arrow-left');
-            const rightArrow = screen.getByTestId('pagination-arrow-right');
+            const leftArrowIcon = screen.getByTestId('arrow-left-icon');
+            const rightArrowIcon = screen.getByTestId('arrow-right-icon');
+            const leftArrowContainer = leftArrowIcon.parentElement;
+            const rightArrowContainer = rightArrowIcon.parentElement;
             
-            expect(leftArrow).toHaveAttribute('data-disabled', 'true');
-            expect(rightArrow).toHaveAttribute('data-disabled', 'true');
+            // Both arrows should be disabled (rendered as divs)
+            expect(leftArrowContainer?.tagName.toLowerCase()).toBe('div');
+            expect(rightArrowContainer?.tagName.toLowerCase()).toBe('div');
+            expect(leftArrowContainer).toHaveClass('pointer-events-none', 'text-gray-300');
+            expect(rightArrowContainer).toHaveClass('pointer-events-none', 'text-gray-300');
         });
     });
 
@@ -194,30 +218,37 @@ describe('PropertiesPagination', () => {
             expect(mockGeneratePagination).toHaveBeenCalledWith(5, 12);
         });
 
-        it('should render pagination numbers with correct props', () => {
+        it('should render pagination numbers with correct behavior', () => {
             mockGeneratePagination.mockReturnValue([1, '...', 4, 5, 6, '...', 10]);
             
             render(<PropertiesPagination currentPage={5} totalPages={10} />);
             
-            const numbers = screen.getAllByTestId('pagination-number');
-            expect(numbers).toHaveLength(7);
+            // Check that page 1 is a link (inactive) with first position styling
+            const page1Link = screen.getByText('1').closest('a');
+            expect(page1Link).toBeInTheDocument();
+            expect(page1Link).toHaveAttribute('href', '/properties?page=1');
+            expect(page1Link).toHaveClass('rounded-l-md'); // first position
             
-            // Check first number
-            expect(numbers[0]).toHaveAttribute('data-page', '1');
-            expect(numbers[0]).toHaveAttribute('data-active', 'false');
-            expect(numbers[0]).toHaveAttribute('data-position', 'first');
+            // Check that ellipsis is rendered as div (middle position)
+            const ellipsisElements = screen.getAllByText('...');
+            expect(ellipsisElements).toHaveLength(2);
+            ellipsisElements.forEach(ellipsis => {
+                const ellipsisDiv = ellipsis.closest('div');
+                expect(ellipsisDiv?.tagName.toLowerCase()).toBe('div');
+                expect(ellipsisDiv).toHaveClass('text-gray-300');
+            });
             
-            // Check ellipsis (middle position)
-            expect(numbers[1]).toHaveAttribute('data-page', '...');
-            expect(numbers[1]).toHaveAttribute('data-position', 'middle');
+            // Check that page 5 is active (current page, rendered as div)
+            const page5Div = screen.getByText('5').closest('div');
+            expect(page5Div).toBeInTheDocument();
+            expect(page5Div?.tagName.toLowerCase()).toBe('div');
+            expect(page5Div).toHaveClass('z-10', 'bg-blue-700', 'text-white');
             
-            // Check active page
-            expect(numbers[3]).toHaveAttribute('data-page', '5');
-            expect(numbers[3]).toHaveAttribute('data-active', 'true');
-            
-            // Check last number
-            expect(numbers[6]).toHaveAttribute('data-page', '10');
-            expect(numbers[6]).toHaveAttribute('data-position', 'last');
+            // Check that page 10 is a link with last position styling
+            const page10Link = screen.getByText('10').closest('a');
+            expect(page10Link).toBeInTheDocument();
+            expect(page10Link).toHaveAttribute('href', '/properties?page=10');
+            expect(page10Link).toHaveClass('rounded-r-md'); // last position
         });
 
         it('should handle single page pagination', () => {
@@ -225,19 +256,28 @@ describe('PropertiesPagination', () => {
             
             render(<PropertiesPagination currentPage={1} totalPages={1} />);
             
-            const numbers = screen.getAllByTestId('pagination-number');
-            expect(numbers).toHaveLength(1);
-            expect(numbers[0]).toHaveAttribute('data-position', 'single');
+            // For single page, only one page number should be rendered
+            expect(screen.getByText('1')).toBeInTheDocument();
+            
+            // Should have single page styling (both rounded corners)
+            const pageElement = screen.getByText('1').closest('div');
+            expect(pageElement).toHaveClass('rounded-l-md', 'rounded-r-md');
         });
 
         it('should generate unique keys for pagination numbers', () => {
             mockGeneratePagination.mockReturnValue([1, '...', 3, '...', 5]);
             
-            const { container } = render(<PropertiesPagination currentPage={3} totalPages={5} />);
+            render(<PropertiesPagination currentPage={3} totalPages={5} />);
             
-            // Each pagination number should have a unique key (page-index format)
-            const numbers = container.querySelectorAll('[data-testid="pagination-number"]');
-            expect(numbers).toHaveLength(5);
+            // Verify all expected page elements are rendered
+            expect(screen.getByText('1')).toBeInTheDocument();
+            expect(screen.getAllByText('...')).toHaveLength(2);
+            expect(screen.getByText('3')).toBeInTheDocument();
+            expect(screen.getByText('5')).toBeInTheDocument();
+            
+            // Check that the active page is styled correctly
+            const activePage = screen.getByText('3').closest('div');
+            expect(activePage).toHaveClass('z-10', 'bg-blue-700', 'text-white');
         });
     });
 
@@ -247,13 +287,18 @@ describe('PropertiesPagination', () => {
             
             render(<PropertiesPagination currentPage={3} totalPages={5} />);
             
-            const numbers = screen.getAllByTestId('pagination-number');
+            // Check that first page link has left rounded corners
+            const firstPageLink = screen.getByText('1').closest('a');
+            expect(firstPageLink).toHaveClass('rounded-l-md');
             
-            expect(numbers[0]).toHaveAttribute('data-position', 'first');
-            expect(numbers[1]).not.toHaveAttribute('data-position'); // middle pages have no position
-            expect(numbers[2]).not.toHaveAttribute('data-position');
-            expect(numbers[3]).not.toHaveAttribute('data-position');
-            expect(numbers[4]).toHaveAttribute('data-position', 'last');
+            // Check that last page link has right rounded corners
+            const lastPageLink = screen.getByText('5').closest('a');
+            expect(lastPageLink).toHaveClass('rounded-r-md');
+            
+            // Check that middle pages don't have rounded corners
+            const middlePageLink = screen.getByText('2').closest('a');
+            expect(middlePageLink).not.toHaveClass('rounded-l-md');
+            expect(middlePageLink).not.toHaveClass('rounded-r-md');
         });
 
         it('should handle ellipsis positions correctly', () => {
@@ -261,12 +306,22 @@ describe('PropertiesPagination', () => {
             
             render(<PropertiesPagination currentPage={6} totalPages={12} />);
             
-            const numbers = screen.getAllByTestId('pagination-number');
+            // Check that ellipsis elements are rendered as divs (not links)
+            const ellipsisElements = screen.getAllByText('...');
+            expect(ellipsisElements).toHaveLength(2);
             
-            expect(numbers[0]).toHaveAttribute('data-position', 'first'); // 1
-            expect(numbers[1]).toHaveAttribute('data-position', 'middle'); // '...'
-            expect(numbers[5]).toHaveAttribute('data-position', 'middle'); // '...'
-            expect(numbers[6]).toHaveAttribute('data-position', 'last'); // 12
+            ellipsisElements.forEach(ellipsis => {
+                const ellipsisContainer = ellipsis.closest('div');
+                expect(ellipsisContainer?.tagName.toLowerCase()).toBe('div');
+                expect(ellipsisContainer).toHaveClass('text-gray-300');
+            });
+            
+            // Check first and last pages have proper rounded corners
+            const firstPageLink = screen.getByText('1').closest('a');
+            expect(firstPageLink).toHaveClass('rounded-l-md');
+            
+            const lastPageLink = screen.getByText('12').closest('a');
+            expect(lastPageLink).toHaveClass('rounded-r-md');
         });
     });
 
@@ -277,7 +332,8 @@ describe('PropertiesPagination', () => {
             render(<PropertiesPagination currentPage={1} totalPages={0} />);
             
             expect(mockGeneratePagination).toHaveBeenCalledWith(1, 0);
-            expect(screen.queryAllByTestId('pagination-number')).toHaveLength(0);
+            // With zero pages, no pagination numbers should be rendered
+            expect(screen.queryByText('1')).not.toBeInTheDocument();
         });
 
         it('should handle negative currentPage', () => {
@@ -293,8 +349,11 @@ describe('PropertiesPagination', () => {
             
             render(<PropertiesPagination currentPage={5} totalPages={3} />);
             
-            const rightArrow = screen.getByTestId('pagination-arrow-right');
-            expect(rightArrow).toHaveAttribute('data-disabled', 'true');
+            // Right arrow should be disabled when currentPage > totalPages
+            const rightArrowIcon = screen.getByTestId('arrow-right-icon');
+            const rightArrowContainer = rightArrowIcon.parentElement;
+            expect(rightArrowContainer?.tagName.toLowerCase()).toBe('div'); // Disabled = div, not link
+            expect(rightArrowContainer).toHaveClass('pointer-events-none', 'text-gray-300');
         });
 
         it('should handle large page numbers', () => {
@@ -304,8 +363,16 @@ describe('PropertiesPagination', () => {
             
             expect(mockGeneratePagination).toHaveBeenCalledWith(999, 1000);
             
-            const numbers = screen.getAllByTestId('pagination-number');
-            expect(numbers[4]).toHaveAttribute('data-page', '1000');
+            // Check that large page numbers are rendered correctly
+            expect(screen.getByText('1')).toBeInTheDocument();
+            expect(screen.getByText('...')).toBeInTheDocument();
+            expect(screen.getByText('998')).toBeInTheDocument();
+            expect(screen.getByText('999')).toBeInTheDocument(); // Active page
+            expect(screen.getByText('1000')).toBeInTheDocument();
+            
+            // Check that page 999 is active
+            const activePage = screen.getByText('999').closest('div');
+            expect(activePage).toHaveClass('z-10', 'bg-blue-700', 'text-white');
         });
     });
 
@@ -335,14 +402,17 @@ describe('PropertiesPagination', () => {
         it('should memoize createPageURL callback', () => {
             const { rerender } = render(<PropertiesPagination currentPage={2} totalPages={5} />);
             
-            const initialLeftArrow = screen.getByTestId('pagination-arrow-left');
-            const initialHref = initialLeftArrow.getAttribute('data-href');
+            // Get the left arrow link's href
+            const initialLeftArrowIcon = screen.getByTestId('arrow-left-icon');
+            const initialLeftArrowLink = initialLeftArrowIcon.parentElement;
+            const initialHref = initialLeftArrowLink?.getAttribute('href');
             
             // Re-render with same search params - URL should be memoized
             rerender(<PropertiesPagination currentPage={2} totalPages={5} />);
             
-            const rerenderedLeftArrow = screen.getByTestId('pagination-arrow-left');
-            expect(rerenderedLeftArrow.getAttribute('data-href')).toBe(initialHref);
+            const rerenderedLeftArrowIcon = screen.getByTestId('arrow-left-icon');
+            const rerenderedLeftArrowLink = rerenderedLeftArrowIcon.parentElement;
+            expect(rerenderedLeftArrowLink?.getAttribute('href')).toBe(initialHref);
         });
     });
 
@@ -350,14 +420,19 @@ describe('PropertiesPagination', () => {
         it('should pass correct props to PaginationArrow components', () => {
             render(<PropertiesPagination currentPage={3} totalPages={8} />);
             
-            const leftArrow = screen.getByTestId('pagination-arrow-left');
-            const rightArrow = screen.getByTestId('pagination-arrow-right');
+            // Get arrow containers through the icons
+            const leftArrowIcon = screen.getByTestId('arrow-left-icon');
+            const rightArrowIcon = screen.getByTestId('arrow-right-icon');
+            const leftArrowContainer = leftArrowIcon.parentElement;
+            const rightArrowContainer = rightArrowIcon.parentElement;
             
-            expect(leftArrow).toHaveAttribute('data-href', '/properties?page=2');
-            expect(leftArrow).toHaveAttribute('data-disabled', 'false');
+            // Both arrows should be enabled (rendered as links)
+            expect(leftArrowContainer?.tagName.toLowerCase()).toBe('a');
+            expect(rightArrowContainer?.tagName.toLowerCase()).toBe('a');
             
-            expect(rightArrow).toHaveAttribute('data-href', '/properties?page=4');
-            expect(rightArrow).toHaveAttribute('data-disabled', 'false');
+            // Check hrefs
+            expect(leftArrowContainer).toHaveAttribute('href', '/properties?page=2');
+            expect(rightArrowContainer).toHaveAttribute('href', '/properties?page=4');
         });
 
         it('should pass correct props to PaginationNumber components', () => {
@@ -365,19 +440,22 @@ describe('PropertiesPagination', () => {
             
             render(<PropertiesPagination currentPage={2} totalPages={3} />);
             
-            const numbers = screen.getAllByTestId('pagination-number');
+            // Check first page (inactive - should be a link)
+            const page1Link = screen.getByText('1').closest('a');
+            expect(page1Link).toBeInTheDocument();
+            expect(page1Link).toHaveAttribute('href', '/properties?page=1');
+            expect(page1Link).toHaveClass('hover:bg-gray-100');
             
-            expect(numbers[0]).toHaveAttribute('data-page', '1');
-            expect(numbers[0]).toHaveAttribute('data-href', '/properties?page=1');
-            expect(numbers[0]).toHaveAttribute('data-active', 'false');
+            // Check current page (active - should be a div)
+            const page2Div = screen.getByText('2').closest('div');
+            expect(page2Div?.tagName.toLowerCase()).toBe('div');
+            expect(page2Div).toHaveClass('z-10', 'bg-blue-700', 'text-white');
             
-            expect(numbers[1]).toHaveAttribute('data-page', '2');
-            expect(numbers[1]).toHaveAttribute('data-href', '/properties?page=2');
-            expect(numbers[1]).toHaveAttribute('data-active', 'true');
-            
-            expect(numbers[2]).toHaveAttribute('data-page', '3');
-            expect(numbers[2]).toHaveAttribute('data-href', '/properties?page=3');
-            expect(numbers[2]).toHaveAttribute('data-active', 'false');
+            // Check last page (inactive - should be a link)
+            const page3Link = screen.getByText('3').closest('a');
+            expect(page3Link).toBeInTheDocument();
+            expect(page3Link).toHaveAttribute('href', '/properties?page=3');
+            expect(page3Link).toHaveClass('hover:bg-gray-100');
         });
     });
 
@@ -385,18 +463,24 @@ describe('PropertiesPagination', () => {
         it('should have accessible structure', () => {
             render(<PropertiesPagination currentPage={2} totalPages={5} />);
             
-            const leftArrow = screen.getByTestId('pagination-arrow-left');
-            const rightArrow = screen.getByTestId('pagination-arrow-right');
+            // Check that enabled arrows are rendered as links (accessible)
+            const leftArrowIcon = screen.getByTestId('arrow-left-icon');
+            const rightArrowIcon = screen.getByTestId('arrow-right-icon');
+            const leftArrowContainer = leftArrowIcon.parentElement;
+            const rightArrowContainer = rightArrowIcon.parentElement;
             
-            expect(leftArrow).toHaveAttribute('aria-disabled', 'false');
-            expect(rightArrow).toHaveAttribute('aria-disabled', 'false');
+            expect(leftArrowContainer?.tagName.toLowerCase()).toBe('a');
+            expect(rightArrowContainer?.tagName.toLowerCase()).toBe('a');
         });
 
         it('should properly mark disabled arrows', () => {
             render(<PropertiesPagination currentPage={1} totalPages={3} />);
             
-            const leftArrow = screen.getByTestId('pagination-arrow-left');
-            expect(leftArrow).toHaveAttribute('aria-disabled', 'true');
+            // Left arrow should be disabled (rendered as div) on first page
+            const leftArrowIcon = screen.getByTestId('arrow-left-icon');
+            const leftArrowContainer = leftArrowIcon.parentElement;
+            expect(leftArrowContainer?.tagName.toLowerCase()).toBe('div');
+            expect(leftArrowContainer).toHaveClass('pointer-events-none', 'text-gray-300');
         });
     });
 

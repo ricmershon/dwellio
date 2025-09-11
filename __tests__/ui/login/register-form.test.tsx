@@ -2,27 +2,17 @@ import React from 'react';
 import { render, screen, fireEvent, setupCommonMocks } from '@/__tests__/test-utils';
 import RegisterForm from '@/ui/login/register-form';
 
-// Mock the Input component
-jest.mock('@/ui/shared/input', () => {
-    const MockInput = ({ id, name, type, label, placeholder, disabled, onClick, required }: any) => (
-        <div data-testid={`input-${id}`}>
-            <label htmlFor={id} className="mb-1 block text-sm text-gray-700">
-                {label}
-            </label>
-            <input
-                id={id}
-                name={name}
-                type={type}
-                placeholder={placeholder}
-                disabled={disabled}
-                onClick={onClick}
-                required={required}
-                data-testid={`input-field-${id}`}
-            />
+// Mock FormErrors component used by Input
+jest.mock('@/ui/shared/form-errors', () => {
+    const MockFormErrors = ({ errors, id }: { errors: any; id: string }) => (
+        <div data-testid={`form-errors-${id}`} className="text-red-600 text-sm mt-1">
+            {errors && errors[id] && (
+                <div>{errors[id].join(', ')}</div>
+            )}
         </div>
     );
-    MockInput.displayName = 'MockInput';
-    return MockInput;
+    MockFormErrors.displayName = 'MockFormErrors';
+    return MockFormErrors;
 });
 
 describe('RegisterForm', () => {
@@ -42,9 +32,10 @@ describe('RegisterForm', () => {
         it('should render all form fields correctly', () => {
             render(<RegisterForm {...defaultProps} />);
 
-            expect(screen.getByTestId('input-username')).toBeInTheDocument();
-            expect(screen.getByTestId('input-email')).toBeInTheDocument();
-            expect(screen.getByTestId('input-password')).toBeInTheDocument();
+            // Check form inputs by their ids
+            expect(screen.getByRole('textbox', { name: /username/i })).toBeInTheDocument();
+            expect(screen.getByRole('textbox', { name: /email/i })).toBeInTheDocument();
+            expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
 
             // Check labels
             expect(screen.getByText('Username (optional)')).toBeInTheDocument();
@@ -85,9 +76,9 @@ describe('RegisterForm', () => {
         it('should call handleClearInfo when fields are clicked', () => {
             render(<RegisterForm {...defaultProps} />);
 
-            const usernameField = screen.getByTestId('input-field-username');
-            const emailField = screen.getByTestId('input-field-email');
-            const passwordField = screen.getByTestId('input-field-password');
+            const usernameField = screen.getByRole('textbox', { name: /username/i });
+            const emailField = screen.getByRole('textbox', { name: /email/i });
+            const passwordField = screen.getByLabelText(/password/i);
 
             fireEvent.click(usernameField);
             fireEvent.click(emailField);
@@ -97,13 +88,146 @@ describe('RegisterForm', () => {
         });
     });
 
+    describe('Input Component Integration', () => {
+        it('should render Input components with correct props', () => {
+            render(<RegisterForm {...defaultProps} />);
+
+            // Username input (optional)
+            const usernameInput = screen.getByRole('textbox', { name: /username/i });
+            expect(usernameInput).toHaveAttribute('id', 'username');
+            expect(usernameInput).toHaveAttribute('name', 'username');
+            expect(usernameInput).toHaveAttribute('type', 'text');
+            expect(usernameInput).not.toHaveAttribute('required');
+
+            // Email input (required)
+            const emailInput = screen.getByRole('textbox', { name: /email/i });
+            expect(emailInput).toHaveAttribute('id', 'email');
+            expect(emailInput).toHaveAttribute('name', 'email');
+            expect(emailInput).toHaveAttribute('type', 'email');
+            expect(emailInput).toHaveAttribute('required');
+
+            // Password input (required)
+            const passwordInput = screen.getByLabelText(/password/i);
+            expect(passwordInput).toHaveAttribute('id', 'password');
+            expect(passwordInput).toHaveAttribute('name', 'password');
+            expect(passwordInput).toHaveAttribute('type', 'password');
+            expect(passwordInput).toHaveAttribute('required');
+        });
+
+        it('should have proper Input component styling', () => {
+            render(<RegisterForm {...defaultProps} />);
+
+            const inputs = [
+                screen.getByRole('textbox', { name: /username/i }),
+                screen.getByRole('textbox', { name: /email/i }),
+                screen.getByLabelText(/password/i)
+            ];
+
+            inputs.forEach(input => {
+                expect(input).toHaveClass(
+                    'w-full',
+                    'rounded-md',
+                    'border',
+                    'border-gray-300',
+                    'py-2',
+                    'px-3',
+                    'text-sm',
+                    'placeholder:text-gray-500',
+                    'bg-white'
+                );
+            });
+        });
+
+        it('should have proper Input component label associations', () => {
+            render(<RegisterForm {...defaultProps} />);
+
+            // Check label-input associations via aria-describedby
+            const usernameInput = screen.getByRole('textbox', { name: /username/i });
+            const emailInput = screen.getByRole('textbox', { name: /email/i });
+            const passwordInput = screen.getByLabelText(/password/i);
+
+            expect(usernameInput).toHaveAttribute('aria-describedby', 'username-error');
+            expect(emailInput).toHaveAttribute('aria-describedby', 'email-error');
+            expect(passwordInput).toHaveAttribute('aria-describedby', 'password-error');
+        });
+
+        it('should render Input component containers with proper structure', () => {
+            render(<RegisterForm {...defaultProps} />);
+
+            // Check that each input is wrapped in Input component container
+            const usernameInput = screen.getByRole('textbox', { name: /username/i });
+            const emailInput = screen.getByRole('textbox', { name: /email/i });
+            const passwordInput = screen.getByLabelText(/password/i);
+
+            // Each input should be in a div container with mb-4 class (default Input spacing)
+            [usernameInput, emailInput, passwordInput].forEach(input => {
+                const container = input.closest('div');
+                expect(container).toHaveClass('mb-4');
+            });
+        });
+
+        it('should render Input components without errors by default', () => {
+            render(<RegisterForm {...defaultProps} />);
+
+            // RegisterForm doesn't accept errors prop, so Input components should not have errors
+            // Check that no FormErrors components are rendered
+            expect(screen.queryByTestId('form-errors-username')).not.toBeInTheDocument();
+            expect(screen.queryByTestId('form-errors-email')).not.toBeInTheDocument();
+            expect(screen.queryByTestId('form-errors-password')).not.toBeInTheDocument();
+
+            // Verify Input components are rendered in clean state
+            const usernameInput = screen.getByRole('textbox', { name: /username/i });
+            const emailInput = screen.getByRole('textbox', { name: /email/i });
+            const passwordInput = screen.getByLabelText(/password/i);
+
+            expect(usernameInput).toBeInTheDocument();
+            expect(emailInput).toBeInTheDocument();
+            expect(passwordInput).toBeInTheDocument();
+        });
+
+        it('should support Input component accessibility features', () => {
+            render(<RegisterForm {...defaultProps} />);
+
+            // Check that inputs are focusable
+            const usernameInput = screen.getByRole('textbox', { name: /username/i });
+            const emailInput = screen.getByRole('textbox', { name: /email/i });
+            const passwordInput = screen.getByLabelText(/password/i);
+
+            usernameInput.focus();
+            expect(usernameInput).toHaveFocus();
+
+            emailInput.focus();
+            expect(emailInput).toHaveFocus();
+
+            passwordInput.focus();
+            expect(passwordInput).toHaveFocus();
+        });
+
+        it('should handle Input component user input correctly', () => {
+            render(<RegisterForm {...defaultProps} />);
+
+            const usernameInput = screen.getByRole('textbox', { name: /username/i });
+            const emailInput = screen.getByRole('textbox', { name: /email/i });
+            const passwordInput = screen.getByLabelText(/password/i);
+
+            // Test that inputs accept user input
+            fireEvent.change(usernameInput, { target: { value: 'testuser' } });
+            fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+            fireEvent.change(passwordInput, { target: { value: 'SecurePass123!' } });
+
+            expect(usernameInput).toHaveValue('testuser');
+            expect(emailInput).toHaveValue('test@example.com');
+            expect(passwordInput).toHaveValue('SecurePass123!');
+        });
+    });
+
     describe('Loading States', () => {
         it('should disable fields and button when isLoading is true', () => {
             render(<RegisterForm {...defaultProps} isLoading={true} />);
 
-            const usernameField = screen.getByTestId('input-field-username');
-            const emailField = screen.getByTestId('input-field-email');
-            const passwordField = screen.getByTestId('input-field-password');
+            const usernameField = screen.getByRole('textbox', { name: /username/i });
+            const emailField = screen.getByRole('textbox', { name: /email/i });
+            const passwordField = screen.getByLabelText(/password/i);
             const submitButton = screen.getByRole('button');
 
             expect(usernameField).toBeDisabled();
@@ -115,9 +239,9 @@ describe('RegisterForm', () => {
         it('should disable fields and button when isPending is true', () => {
             render(<RegisterForm {...defaultProps} isPending={true} />);
 
-            const usernameField = screen.getByTestId('input-field-username');
-            const emailField = screen.getByTestId('input-field-email');
-            const passwordField = screen.getByTestId('input-field-password');
+            const usernameField = screen.getByRole('textbox', { name: /username/i });
+            const emailField = screen.getByRole('textbox', { name: /email/i });
+            const passwordField = screen.getByLabelText(/password/i);
             const submitButton = screen.getByRole('button');
 
             expect(usernameField).toBeDisabled();
@@ -145,7 +269,7 @@ describe('RegisterForm', () => {
         it('should configure username field correctly', () => {
             render(<RegisterForm {...defaultProps} />);
 
-            const usernameField = screen.getByTestId('input-field-username');
+            const usernameField = screen.getByRole('textbox', { name: /username/i });
             
             expect(usernameField).toHaveAttribute('type', 'text');
             expect(usernameField).toHaveAttribute('name', 'username');
@@ -156,7 +280,7 @@ describe('RegisterForm', () => {
         it('should configure email field correctly', () => {
             render(<RegisterForm {...defaultProps} />);
 
-            const emailField = screen.getByTestId('input-field-email');
+            const emailField = screen.getByRole('textbox', { name: /email/i });
             
             expect(emailField).toHaveAttribute('type', 'email');
             expect(emailField).toHaveAttribute('name', 'email');
@@ -167,7 +291,7 @@ describe('RegisterForm', () => {
         it('should configure password field correctly', () => {
             render(<RegisterForm {...defaultProps} />);
 
-            const passwordField = screen.getByTestId('input-field-password');
+            const passwordField = screen.getByLabelText(/password/i);
             
             expect(passwordField).toHaveAttribute('type', 'password');
             expect(passwordField).toHaveAttribute('name', 'password');

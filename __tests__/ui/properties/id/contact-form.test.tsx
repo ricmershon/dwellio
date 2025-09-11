@@ -32,37 +32,16 @@ jest.mock('react-icons/lu', () => ({
     LuRefreshCw: (props: any) => <span data-testid="refresh-icon" {...props} />,
 }));
 
-// Mock child components
-jest.mock('@/ui/shared/input', () => ({
-    __esModule: true,
-    default: ({ id, name, type, label, placeholder, defaultValue, errors, inputType }: any) => (
-        <div data-testid={`input-${id}`}>
-            <label htmlFor={id} className="mb-1 block text-sm text-gray-700">{label}</label>
-            {inputType === 'textarea' ? (
-                <textarea
-                    id={id}
-                    name={name}
-                    placeholder={placeholder}
-                    defaultValue={defaultValue}
-                    data-has-errors={!!errors}
-                />
-            ) : (
-                <input
-                    id={id}
-                    name={name}
-                    type={type}
-                    placeholder={placeholder}
-                    defaultValue={defaultValue}
-                    data-has-errors={!!errors}
-                />
-            )}
-        </div>
-    ),
-}));
+// Don't mock FormErrors - let the real component render
 
+// Mock InputErrors (legacy component that might still be referenced)
 jest.mock('@/ui/shared/input-errors', () => ({
     __esModule: true,
-    default: () => <div data-testid="input-errors">Form has errors</div>,
+    default: ({ errors, id }: { errors: any; id: string }) => (
+        <div data-testid={`input-errors-${id}`}>
+            {errors && errors[id] && errors[id].join(', ')}
+        </div>
+    ),
 }));
 
 // Helper to create mock property data
@@ -140,10 +119,11 @@ describe('PropertyContactForm', () => {
         it('should render all required form fields', () => {
             render(<PropertyContactForm {...defaultProps} />);
 
-            expect(screen.getByTestId('input-name')).toBeInTheDocument();
-            expect(screen.getByTestId('input-email')).toBeInTheDocument();
-            expect(screen.getByTestId('input-phone')).toBeInTheDocument();
-            expect(screen.getByTestId('input-body')).toBeInTheDocument();
+            // Check for form inputs by their exact labels
+            expect(screen.getByLabelText('Name')).toBeInTheDocument();
+            expect(screen.getByLabelText('Email')).toBeInTheDocument();
+            expect(screen.getByLabelText('Phone')).toBeInTheDocument();
+            expect(screen.getByLabelText('Message')).toBeInTheDocument();
         });
 
         it('should render hidden fields for property and recipient', () => {
@@ -203,28 +183,28 @@ describe('PropertyContactForm', () => {
         it('should pre-fill name field with userName prop', () => {
             render(<PropertyContactForm {...defaultProps} />);
 
-            const nameInput = screen.getByTestId('input-name').querySelector('input');
+            const nameInput = screen.getByLabelText('Name');
             expect(nameInput).toHaveValue('John Doe');
         });
 
         it('should pre-fill email field with userEmail prop', () => {
             render(<PropertyContactForm {...defaultProps} />);
 
-            const emailInput = screen.getByTestId('input-email').querySelector('input');
+            const emailInput = screen.getByLabelText('Email');
             expect(emailInput).toHaveValue('john@example.com');
         });
 
         it('should handle null userName gracefully', () => {
             render(<PropertyContactForm {...defaultProps} userName={null} />);
 
-            const nameInput = screen.getByTestId('input-name').querySelector('input');
+            const nameInput = screen.getByLabelText('Name');
             expect(nameInput).toHaveValue('');
         });
 
         it('should handle undefined userEmail gracefully', () => {
             render(<PropertyContactForm {...defaultProps} userEmail={undefined} />);
 
-            const emailInput = screen.getByTestId('input-email').querySelector('input');
+            const emailInput = screen.getByLabelText('Email');
             expect(emailInput).toHaveValue('');
         });
 
@@ -241,8 +221,8 @@ describe('PropertyContactForm', () => {
 
             render(<PropertyContactForm {...defaultProps} />);
 
-            const nameInput = screen.getByTestId('input-name').querySelector('input');
-            const emailInput = screen.getByTestId('input-email').querySelector('input');
+            const nameInput = screen.getByLabelText('Name');
+            const emailInput = screen.getByLabelText('Email');
             
             // Component prioritizes user props over form data
             expect(nameInput).toHaveValue('John Doe'); // userName prop
@@ -262,8 +242,8 @@ describe('PropertyContactForm', () => {
 
             render(<PropertyContactForm {...defaultProps} userName={null} userEmail={undefined} />);
 
-            const nameInput = screen.getByTestId('input-name').querySelector('input');
-            const emailInput = screen.getByTestId('input-email').querySelector('input');
+            const nameInput = screen.getByLabelText('Name');
+            const emailInput = screen.getByLabelText('Email');
             
             // Should use form data when user props are null/undefined
             expect(nameInput).toHaveValue('Fallback Name');
@@ -284,13 +264,21 @@ describe('PropertyContactForm', () => {
 
             render(<PropertyContactForm {...defaultProps} />);
 
-            expect(screen.getByTestId('input-errors')).toBeInTheDocument();
+            // Check error messages are displayed by the real FormErrors components
+            expect(screen.getByText('Name is required')).toBeInTheDocument();
+            expect(screen.getByText('Invalid email format')).toBeInTheDocument();
+            
+            // Check that FormErrors containers exist with correct IDs
+            expect(document.getElementById('name-error')).toBeInTheDocument();
+            expect(document.getElementById('email-error')).toBeInTheDocument();
         });
 
         it('should not display InputErrors when no form errors', () => {
             render(<PropertyContactForm {...defaultProps} />);
 
-            expect(screen.queryByTestId('input-errors')).not.toBeInTheDocument();
+            // Check that no error messages are rendered
+            expect(screen.queryByText('Name is required')).not.toBeInTheDocument();
+            expect(screen.queryByText('Invalid email')).not.toBeInTheDocument();
         });
 
         it('should pass errors to individual Input components', () => {
@@ -305,11 +293,9 @@ describe('PropertyContactForm', () => {
 
             render(<PropertyContactForm {...defaultProps} />);
 
-            const nameInput = screen.getByTestId('input-name').querySelector('input');
-            const emailInput = screen.getByTestId('input-email').querySelector('input');
-            
-            expect(nameInput).toHaveAttribute('data-has-errors', 'true');
-            expect(emailInput).toHaveAttribute('data-has-errors', 'true');
+            // Check error messages are displayed
+            expect(screen.getByText('Name is required')).toBeInTheDocument();
+            expect(screen.getByText('Invalid email')).toBeInTheDocument();
         });
 
         it('should handle empty form error map', () => {
@@ -321,7 +307,170 @@ describe('PropertyContactForm', () => {
 
             render(<PropertyContactForm {...defaultProps} />);
 
-            expect(screen.queryByTestId('input-errors')).not.toBeInTheDocument();
+            // No errors should be displayed
+            expect(screen.queryByText('Name is required')).not.toBeInTheDocument();
+            expect(screen.queryByText('Invalid email')).not.toBeInTheDocument();
+        });
+    });
+
+    describe('Input Component Integration', () => {
+        it('should render Input components with correct props and types', () => {
+            render(<PropertyContactForm {...defaultProps} />);
+
+            // Name input (text type)
+            const nameInput = screen.getByLabelText('Name');
+            expect(nameInput).toHaveAttribute('id', 'name');
+            expect(nameInput).toHaveAttribute('name', 'name');
+            expect(nameInput).toHaveAttribute('type', 'text');
+
+            // Email input (note: component uses tel type, which is what it actually is)
+            const emailInput = screen.getByLabelText('Email');
+            expect(emailInput).toHaveAttribute('id', 'email');
+            expect(emailInput).toHaveAttribute('name', 'email');
+            expect(emailInput).toHaveAttribute('type', 'tel'); // This is what the component actually uses
+
+            // Phone input (tel type)
+            const phoneInput = screen.getByLabelText('Phone');
+            expect(phoneInput).toHaveAttribute('id', 'phone');
+            expect(phoneInput).toHaveAttribute('name', 'phone');
+            expect(phoneInput).toHaveAttribute('type', 'tel');
+
+            // Message textarea
+            const messageInput = screen.getByLabelText('Message');
+            expect(messageInput).toHaveAttribute('id', 'body');
+            expect(messageInput).toHaveAttribute('name', 'body');
+            expect(messageInput.tagName.toLowerCase()).toBe('textarea');
+        });
+
+        it('should have proper Input component styling', () => {
+            render(<PropertyContactForm {...defaultProps} />);
+
+            const inputs = [
+                screen.getByLabelText('Name'),
+                screen.getByLabelText('Email'),
+                screen.getByLabelText('Phone'),
+                screen.getByLabelText('Message')
+            ];
+
+            inputs.forEach(input => {
+                expect(input).toHaveClass(
+                    'w-full',
+                    'rounded-md',
+                    'border',
+                    'border-gray-300',
+                    'py-2',
+                    'px-3',
+                    'text-sm',
+                    'placeholder:text-gray-500',
+                    'bg-white'
+                );
+            });
+        });
+
+        it('should have proper Input component label associations', () => {
+            render(<PropertyContactForm {...defaultProps} />);
+
+            // Check label-input associations via aria-describedby
+            const nameInput = screen.getByLabelText('Name');
+            const emailInput = screen.getByLabelText('Email');
+            const phoneInput = screen.getByLabelText('Phone');
+            const messageInput = screen.getByLabelText('Message');
+
+            expect(nameInput).toHaveAttribute('aria-describedby', 'name-error');
+            expect(emailInput).toHaveAttribute('aria-describedby', 'email-error');
+            expect(phoneInput).toHaveAttribute('aria-describedby', 'phone-error');
+            expect(messageInput).toHaveAttribute('aria-describedby', 'body-error');
+        });
+
+        it('should render Input component containers with proper structure', () => {
+            render(<PropertyContactForm {...defaultProps} />);
+
+            // Check that each input is wrapped in Input component container
+            const nameInput = screen.getByLabelText('Name');
+            const emailInput = screen.getByLabelText('Email');
+            const phoneInput = screen.getByLabelText('Phone');
+            const messageInput = screen.getByLabelText('Message');
+
+            // Each input should be in a div container with mb-4 class (default Input spacing)
+            [nameInput, emailInput, phoneInput, messageInput].forEach(input => {
+                const container = input.closest('div');
+                expect(container).toHaveClass('mb-4');
+            });
+        });
+
+        it('should handle Input component user input correctly', () => {
+            render(<PropertyContactForm {...defaultProps} />);
+
+            const nameInput = screen.getByLabelText('Name');
+            const emailInput = screen.getByLabelText('Email');
+            const phoneInput = screen.getByLabelText('Phone');
+            const messageInput = screen.getByLabelText('Message');
+
+            // Test that inputs accept user input
+            fireEvent.change(nameInput, { target: { value: 'New Test User' } });
+            fireEvent.change(emailInput, { target: { value: 'newtest@example.com' } });
+            fireEvent.change(phoneInput, { target: { value: '555-0123' } });
+            fireEvent.change(messageInput, { target: { value: 'Test message content' } });
+
+            expect(nameInput).toHaveValue('New Test User');
+            expect(emailInput).toHaveValue('newtest@example.com');
+            expect(phoneInput).toHaveValue('555-0123');
+            expect(messageInput).toHaveValue('Test message content');
+        });
+
+        it('should support Input component accessibility features', () => {
+            render(<PropertyContactForm {...defaultProps} />);
+
+            // Check that inputs are focusable
+            const nameInput = screen.getByLabelText('Name');
+            const emailInput = screen.getByLabelText('Email');
+            const phoneInput = screen.getByLabelText('Phone');
+            const messageInput = screen.getByLabelText('Message');
+
+            nameInput.focus();
+            expect(nameInput).toHaveFocus();
+
+            emailInput.focus();
+            expect(emailInput).toHaveFocus();
+
+            phoneInput.focus();
+            expect(phoneInput).toHaveFocus();
+
+            messageInput.focus();
+            expect(messageInput).toHaveFocus();
+        });
+
+        it('should render textarea Input variant for message field', () => {
+            render(<PropertyContactForm {...defaultProps} />);
+
+            const messageInput = screen.getByLabelText('Message');
+            
+            // Should be a textarea, not input
+            expect(messageInput.tagName.toLowerCase()).toBe('textarea');
+            expect(messageInput).toHaveAttribute('rows', '4');
+            expect(messageInput).toHaveAttribute('id', 'body');
+            expect(messageInput).toHaveAttribute('name', 'body');
+        });
+
+        it('should handle Input component error states correctly', () => {
+            const actionState = createMockActionState({
+                formErrorMap: {
+                    name: ['Name is required'],
+                    email: ['Invalid email format'],
+                    phone: ['Invalid phone number'],
+                    body: ['Message is too short']
+                }
+            });
+            
+            mockUseActionState.mockReturnValue([actionState, mockFormAction, false]);
+
+            render(<PropertyContactForm {...defaultProps} />);
+
+            // Check specific error messages
+            expect(screen.getByText('Name is required')).toBeInTheDocument();
+            expect(screen.getByText('Invalid email format')).toBeInTheDocument();
+            expect(screen.getByText('Invalid phone number')).toBeInTheDocument();
+            expect(screen.getByText('Message is too short')).toBeInTheDocument();
         });
     });
 
@@ -459,50 +608,45 @@ describe('PropertyContactForm', () => {
         it('should configure name field correctly', () => {
             render(<PropertyContactForm {...defaultProps} />);
 
-            const nameInput = screen.getByTestId('input-name');
-            const input = nameInput.querySelector('input');
-            const label = nameInput.querySelector('label');
+            const nameInput = screen.getByLabelText('Name');
 
-            expect(input).toHaveAttribute('type', 'text');
-            expect(input).toHaveAttribute('placeholder', 'Enter your name');
-            expect(label).toHaveTextContent('Name');
-            expect(label).toHaveClass('text-sm');
+            expect(nameInput).toHaveAttribute('type', 'text');
+            expect(nameInput).toHaveAttribute('placeholder', 'Enter your name');
+            expect(nameInput).toHaveAttribute('id', 'name');
+            expect(nameInput).toHaveAttribute('name', 'name');
         });
 
         it('should configure email field correctly', () => {
             render(<PropertyContactForm {...defaultProps} />);
 
-            const emailInput = screen.getByTestId('input-email');
-            const input = emailInput.querySelector('input');
-            const label = emailInput.querySelector('label');
+            const emailInput = screen.getByLabelText('Email');
 
-            expect(input).toHaveAttribute('type', 'tel');
-            expect(input).toHaveAttribute('placeholder', 'Enter your email');
-            expect(label).toHaveTextContent('Email');
+            expect(emailInput).toHaveAttribute('type', 'tel');
+            expect(emailInput).toHaveAttribute('placeholder', 'Enter your email');
+            expect(emailInput).toHaveAttribute('id', 'email');
+            expect(emailInput).toHaveAttribute('name', 'email');
         });
 
         it('should configure phone field correctly', () => {
             render(<PropertyContactForm {...defaultProps} />);
 
-            const phoneInput = screen.getByTestId('input-phone');
-            const input = phoneInput.querySelector('input');
-            const label = phoneInput.querySelector('label');
+            const phoneInput = screen.getByLabelText('Phone');
 
-            expect(input).toHaveAttribute('type', 'tel');
-            expect(input).toHaveAttribute('placeholder', 'Enter your phone number');
-            expect(label).toHaveTextContent('Phone');
+            expect(phoneInput).toHaveAttribute('type', 'tel');
+            expect(phoneInput).toHaveAttribute('placeholder', 'Enter your phone number');
+            expect(phoneInput).toHaveAttribute('id', 'phone');
+            expect(phoneInput).toHaveAttribute('name', 'phone');
         });
 
         it('should configure message field as textarea', () => {
             render(<PropertyContactForm {...defaultProps} />);
 
-            const bodyInput = screen.getByTestId('input-body');
-            const textarea = bodyInput.querySelector('textarea');
-            const label = bodyInput.querySelector('label');
+            const bodyInput = screen.getByLabelText('Message');
 
-            expect(textarea).toBeInTheDocument();
-            expect(textarea).toHaveAttribute('placeholder', 'Enter your message');
-            expect(label).toHaveTextContent('Message');
+            expect(bodyInput.tagName.toLowerCase()).toBe('textarea');
+            expect(bodyInput).toHaveAttribute('placeholder', 'Enter your message');
+            expect(bodyInput).toHaveAttribute('id', 'body');
+            expect(bodyInput).toHaveAttribute('name', 'body');
         });
     });
 
