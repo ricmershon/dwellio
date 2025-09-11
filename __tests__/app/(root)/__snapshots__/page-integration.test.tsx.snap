@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`HomePage Integration Tests Snapshots with CheckAuthStatus Integration should match snapshot with auth alert 1`] = `
+<main>
+  <div
+    class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 mb-6 rounded"
+  >
+    Please login to access the test-page page.
+  </div>
+  <div
+    data-testid="hero"
+  >
+    Hero Component
+  </div>
+  <div
+    data-testid="featured-properties"
+  >
+    FeaturedProperties Component
+  </div>
+  <div
+    data-testid="info-boxes"
+  >
+    InfoBoxes Component
+  </div>
+</main>
+`;
+
+exports[`HomePage Integration Tests Snapshots with CheckAuthStatus Integration should match snapshot with no auth alert 1`] = `
+<main>
+  <div
+    data-testid="hero"
+  >
+    Hero Component
+  </div>
+  <div
+    data-testid="featured-properties"
+  >
+    FeaturedProperties Component
+  </div>
+  <div
+    data-testid="info-boxes"
+  >
+    InfoBoxes Component
+  </div>
+</main>
+`;
