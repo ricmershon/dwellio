@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import LoginLayout from '@/app/(login)/login/layout';
+import LoginLayout from '@/app/(login)/layout';
 
 // Mock global CSS import
 jest.mock('@/app/globals.css', () => ({}));
