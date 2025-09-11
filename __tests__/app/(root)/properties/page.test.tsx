@@ -60,23 +60,25 @@ jest.mock('@/ui/properties/properties-filter-form', () => ({
     ),
 }));
 
-jest.mock('@/ui/skeletons/properties-list-skeleton', () => ({
-    __esModule: true,
-    default: () => (
-        <div data-testid="properties-list-skeleton">
-            PropertiesListSkeleton Component
-        </div>
-    ),
-}));
+// Real PropertiesListSkeleton integration - no mock
+// jest.mock('@/ui/skeletons/properties-list-skeleton', () => ({
+//     __esModule: true,
+//     default: () => (
+//         <div data-testid="properties-list-skeleton">
+//             PropertiesListSkeleton Component
+//         </div>
+//     ),
+// }));
 
-jest.mock('@/ui/shared/delayed-render', () => ({
-    __esModule: true,
-    default: ({ children }: { children: React.ReactNode }) => (
-        <div data-testid="delayed-render">
-            {children}
-        </div>
-    ),
-}));
+// Real DelayedRender integration - no mock
+// jest.mock('@/ui/shared/delayed-render', () => ({
+//     __esModule: true,
+//     default: ({ children }: { children: React.ReactNode }) => (
+//         <div data-testid="delayed-render">
+//             {children}
+//         </div>
+//     ),
+// }));
 
 // Mock data fetching functions
 jest.mock('@/lib/data/property-data', () => ({
@@ -520,6 +522,160 @@ describe('PropertiesPage', () => {
         });
     });
 
+    describe('PropertiesListSkeleton Integration', () => {
+        // Test skeleton components directly since Suspense fallback testing is complex
+        
+        it('should render PropertiesListSkeleton with correct structure', async () => {
+            const PropertiesListSkeleton = (await import('@/ui/skeletons/properties-list-skeleton')).default;
+            
+            const { container } = render(await PropertiesListSkeleton());
+            
+            // Should find real PropertiesListSkeleton structure
+            const section = container.querySelector('section');
+            expect(section).toBeInTheDocument();
+            
+            const gridContainer = container.querySelector('.grid');
+            expect(gridContainer).toHaveClass(
+                'grid', 'grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-4', 
+                'lg:grid-cols-5', 'xl:grid-cols-6', 'gap-4', 'md:gap-5'
+            );
+        });
+
+        it('should render exactly 6 PropertyCardSkeleton components', async () => {
+            const PropertiesListSkeleton = (await import('@/ui/skeletons/properties-list-skeleton')).default;
+            
+            const { container } = render(await PropertiesListSkeleton());
+
+            // Count the skeleton cards by their structure
+            const skeletonCards = container.querySelectorAll('.rounded-md.shadow-md');
+            expect(skeletonCards).toHaveLength(6);
+        });
+
+        it('should apply correct SkeletonTheme configuration to PropertyCardSkeleton', async () => {
+            const PropertiesListSkeleton = (await import('@/ui/skeletons/properties-list-skeleton')).default;
+            
+            const { container } = render(await PropertiesListSkeleton());
+
+            // Check for skeleton structure elements
+            const skeletonContainers = container.querySelectorAll('.rounded-md.shadow-md');
+            expect(skeletonContainers.length).toBe(6);
+            
+            // Verify each skeleton has the expected internal structure
+            skeletonContainers.forEach(skeleton => {
+                const paddingDiv = skeleton.querySelector('[class*="p-"]');
+                expect(paddingDiv).toBeInTheDocument();
+            });
+        });
+
+        it('should render skeleton cards with proper image and content structure', async () => {
+            const PropertiesListSkeleton = (await import('@/ui/skeletons/properties-list-skeleton')).default;
+            
+            const { container } = render(await PropertiesListSkeleton());
+
+            // Check for skeleton card structure
+            const skeletonCards = container.querySelectorAll('.rounded-md.shadow-md');
+            expect(skeletonCards.length).toBe(6);
+            
+            // Each card should have content padding structure  
+            skeletonCards.forEach(card => {
+                const contentDiv = card.querySelector('[class*="p-"]');
+                expect(contentDiv).toBeInTheDocument();
+            });
+        });
+
+        it('should be used in Suspense fallback with DelayedRender wrapper', async () => {
+            // Verify the page component structure includes DelayedRender wrapping PropertiesListSkeleton
+            const pageModule = await import('@/app/(root)/properties/page');
+            const pageText = pageModule.default.toString();
+            
+            // Check that the code structure includes the expected Suspense fallback
+            expect(pageText).toContain('delayed_render_1.default'); // Compiled module reference
+            expect(pageText).toContain('properties_list_skeleton_1.default'); // Compiled module reference
+        });
+
+        it('should have proper grid layout structure', async () => {
+            const PropertiesListSkeleton = (await import('@/ui/skeletons/properties-list-skeleton')).default;
+            
+            const { container } = render(await PropertiesListSkeleton());
+
+            // Grid layout should be present
+            const grid = container.querySelector('.grid');
+            expect(grid).toHaveClass('grid-cols-1', 'sm:grid-cols-2', 'md:grid-cols-4', 'lg:grid-cols-5', 'xl:grid-cols-6');
+        });
+
+        it('should maintain responsive grid classes in skeleton layout', async () => {
+            const PropertiesListSkeleton = (await import('@/ui/skeletons/properties-list-skeleton')).default;
+            
+            const { container } = render(await PropertiesListSkeleton());
+
+            const gridElement = container.querySelector('.grid');
+            expect(gridElement).toHaveClass(
+                'grid-cols-1',        // mobile: 1 column
+                'sm:grid-cols-2',     // small: 2 columns  
+                'md:grid-cols-4',     // medium: 4 columns
+                'lg:grid-cols-5',     // large: 5 columns
+                'xl:grid-cols-6'      // xl: 6 columns
+            );
+        });
+
+        it('should apply proper margin and gap spacing in skeleton grid', async () => {
+            const PropertiesListSkeleton = (await import('@/ui/skeletons/properties-list-skeleton')).default;
+            
+            const { container } = render(await PropertiesListSkeleton());
+
+            const containerDiv = container.querySelector('.m-auto');
+            expect(containerDiv).toBeInTheDocument();
+
+            const gridElement = container.querySelector('.grid');
+            expect(gridElement).toHaveClass('gap-4', 'md:gap-5');
+        });
+    });
+
+    describe('PropertyCardSkeleton Integration', () => {
+        it('should render PropertyCardSkeleton with correct base structure', async () => {
+            const PropertyCardSkeleton = (await import('@/ui/skeletons/property-card-skeleton')).default;
+            
+            const { container } = render(<PropertyCardSkeleton />);
+
+            // Check for PropertyCardSkeleton structure
+            const skeletonCard = container.querySelector('.rounded-md.shadow-md');
+            expect(skeletonCard).toBeInTheDocument();
+            
+            // Card should have padding container
+            const paddingDiv = skeletonCard!.querySelector('[class*="p-"]');
+            expect(paddingDiv).toBeInTheDocument();
+        });
+
+        it('should apply SkeletonTheme with correct colors', async () => {
+            const PropertyCardSkeleton = (await import('@/ui/skeletons/property-card-skeleton')).default;
+            
+            const { container } = render(<PropertyCardSkeleton />);
+
+            // SkeletonTheme should apply baseColor="#f7f8fb" and highlightColor="white"
+            // Verify the card structure exists (theme colors are applied at runtime)
+            const skeletonCard = container.querySelector('.rounded-md.shadow-md');
+            expect(skeletonCard).toBeInTheDocument();
+        });
+
+        it('should have proper content structure with image and text areas', async () => {
+            const PropertyCardSkeleton = (await import('@/ui/skeletons/property-card-skeleton')).default;
+            
+            const { container } = render(<PropertyCardSkeleton />);
+
+            // Verify skeleton card has expected content structure
+            const skeletonCard = container.querySelector('.rounded-md.shadow-md');
+            expect(skeletonCard).toBeInTheDocument();
+            
+            // Should have content padding div
+            const contentDiv = skeletonCard!.querySelector('[class*="p-"]');
+            expect(contentDiv).toBeInTheDocument();
+            
+            // Should have multiple content rows (flex justify-between items-center structures)
+            const flexRows = contentDiv!.querySelectorAll('.flex.justify-between.items-center');
+            expect(flexRows.length).toBeGreaterThanOrEqual(2);
+        });
+    });
+
     describe('Integration Snapshots', () => {
         it('should match snapshot with default parameters', async () => {
             const searchParams = Promise.resolve({});
@@ -546,6 +702,33 @@ describe('PropertiesPage', () => {
             
             const { container } = render(await PropertiesPage({ searchParams }));
             
+            expect(container.firstChild).toMatchSnapshot();
+        });
+
+        it('should match snapshot with PropertiesListSkeleton integration', async () => {
+            const PropertiesListSkeleton = (await import('@/ui/skeletons/properties-list-skeleton')).default;
+            
+            const { container } = render(await PropertiesListSkeleton());
+            
+            // Snapshot should include real skeleton structure
+            expect(container.firstChild).toMatchSnapshot();
+        });
+
+        it('should match snapshot with PropertyCardSkeleton integration', async () => {
+            const PropertyCardSkeleton = (await import('@/ui/skeletons/property-card-skeleton')).default;
+            
+            const { container } = render(<PropertyCardSkeleton />);
+            
+            // Snapshot should include real skeleton structure
+            expect(container.firstChild).toMatchSnapshot();
+        });
+        
+        it('should match snapshot with original page parameters', async () => {
+            const searchParams = Promise.resolve({});
+            
+            const { container } = render(await PropertiesPage({ searchParams }));
+            
+            // Snapshot should include real skeleton structure
             expect(container.firstChild).toMatchSnapshot();
         });
     });

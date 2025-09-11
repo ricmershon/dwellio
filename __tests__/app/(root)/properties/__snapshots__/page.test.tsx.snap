@@ -1,5 +1,749 @@
 // Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
+exports[`PropertiesPage Integration Snapshots should match snapshot with PropertiesListSkeleton integration 1`] = `
+<section>
+  <div
+    class="m-auto"
+  >
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-5"
+    >
+      <div
+        class="rounded-md shadow-md"
+      >
+        <span
+          aria-busy="true"
+          aria-live="polite"
+        >
+          <span
+            class="react-loading-skeleton w-full h-auto rounded-t-md"
+            style="width: 100%; height: 200px; --base-color: #f7f8fb; --highlight-color: white;"
+          >
+            ‌
+          </span>
+          <br />
+        </span>
+        <div
+          class="p-[10px]"
+        >
+          <div
+            class="flex justify-between items-center mb-2"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 150px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </div>
+          <div
+            class="flex justify-between items-center mb-2"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 150px; height: 16px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </div>
+          <div
+            class="flex justify-between items-center"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 150px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="rounded-md shadow-md"
+      >
+        <span
+          aria-busy="true"
+          aria-live="polite"
+        >
+          <span
+            class="react-loading-skeleton w-full h-auto rounded-t-md"
+            style="width: 100%; height: 200px; --base-color: #f7f8fb; --highlight-color: white;"
+          >
+            ‌
+          </span>
+          <br />
+        </span>
+        <div
+          class="p-[10px]"
+        >
+          <div
+            class="flex justify-between items-center mb-2"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 150px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </div>
+          <div
+            class="flex justify-between items-center mb-2"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 150px; height: 16px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </div>
+          <div
+            class="flex justify-between items-center"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 150px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="rounded-md shadow-md"
+      >
+        <span
+          aria-busy="true"
+          aria-live="polite"
+        >
+          <span
+            class="react-loading-skeleton w-full h-auto rounded-t-md"
+            style="width: 100%; height: 200px; --base-color: #f7f8fb; --highlight-color: white;"
+          >
+            ‌
+          </span>
+          <br />
+        </span>
+        <div
+          class="p-[10px]"
+        >
+          <div
+            class="flex justify-between items-center mb-2"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 150px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </div>
+          <div
+            class="flex justify-between items-center mb-2"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 150px; height: 16px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </div>
+          <div
+            class="flex justify-between items-center"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 150px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="rounded-md shadow-md"
+      >
+        <span
+          aria-busy="true"
+          aria-live="polite"
+        >
+          <span
+            class="react-loading-skeleton w-full h-auto rounded-t-md"
+            style="width: 100%; height: 200px; --base-color: #f7f8fb; --highlight-color: white;"
+          >
+            ‌
+          </span>
+          <br />
+        </span>
+        <div
+          class="p-[10px]"
+        >
+          <div
+            class="flex justify-between items-center mb-2"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 150px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </div>
+          <div
+            class="flex justify-between items-center mb-2"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 150px; height: 16px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </div>
+          <div
+            class="flex justify-between items-center"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 150px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="rounded-md shadow-md"
+      >
+        <span
+          aria-busy="true"
+          aria-live="polite"
+        >
+          <span
+            class="react-loading-skeleton w-full h-auto rounded-t-md"
+            style="width: 100%; height: 200px; --base-color: #f7f8fb; --highlight-color: white;"
+          >
+            ‌
+          </span>
+          <br />
+        </span>
+        <div
+          class="p-[10px]"
+        >
+          <div
+            class="flex justify-between items-center mb-2"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 150px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </div>
+          <div
+            class="flex justify-between items-center mb-2"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 150px; height: 16px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </div>
+          <div
+            class="flex justify-between items-center"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 150px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="rounded-md shadow-md"
+      >
+        <span
+          aria-busy="true"
+          aria-live="polite"
+        >
+          <span
+            class="react-loading-skeleton w-full h-auto rounded-t-md"
+            style="width: 100%; height: 200px; --base-color: #f7f8fb; --highlight-color: white;"
+          >
+            ‌
+          </span>
+          <br />
+        </span>
+        <div
+          class="p-[10px]"
+        >
+          <div
+            class="flex justify-between items-center mb-2"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 150px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </div>
+          <div
+            class="flex justify-between items-center mb-2"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 150px; height: 16px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </div>
+          <div
+            class="flex justify-between items-center"
+          >
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 150px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+            <span
+              aria-busy="true"
+              aria-live="polite"
+            >
+              <span
+                class="react-loading-skeleton"
+                style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+              >
+                ‌
+              </span>
+              <br />
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+`;
+
+exports[`PropertiesPage Integration Snapshots should match snapshot with PropertyCardSkeleton integration 1`] = `
+<div
+  class="rounded-md shadow-md"
+>
+  <span
+    aria-busy="true"
+    aria-live="polite"
+  >
+    <span
+      class="react-loading-skeleton w-full h-auto rounded-t-md"
+      style="width: 100%; height: 200px; --base-color: #f7f8fb; --highlight-color: white;"
+    >
+      ‌
+    </span>
+    <br />
+  </span>
+  <div
+    class="p-[10px]"
+  >
+    <div
+      class="flex justify-between items-center mb-2"
+    >
+      <span
+        aria-busy="true"
+        aria-live="polite"
+      >
+        <span
+          class="react-loading-skeleton"
+          style="width: 150px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+        >
+          ‌
+        </span>
+        <br />
+      </span>
+      <span
+        aria-busy="true"
+        aria-live="polite"
+      >
+        <span
+          class="react-loading-skeleton"
+          style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+        >
+          ‌
+        </span>
+        <br />
+      </span>
+    </div>
+    <div
+      class="flex justify-between items-center mb-2"
+    >
+      <span
+        aria-busy="true"
+        aria-live="polite"
+      >
+        <span
+          class="react-loading-skeleton"
+          style="width: 150px; height: 16px; --base-color: #f7f8fb; --highlight-color: white;"
+        >
+          ‌
+        </span>
+        <br />
+      </span>
+      <span
+        aria-busy="true"
+        aria-live="polite"
+      >
+        <span
+          class="react-loading-skeleton"
+          style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+        >
+          ‌
+        </span>
+        <br />
+      </span>
+    </div>
+    <div
+      class="flex justify-between items-center"
+    >
+      <span
+        aria-busy="true"
+        aria-live="polite"
+      >
+        <span
+          class="react-loading-skeleton"
+          style="width: 150px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+        >
+          ‌
+        </span>
+        <br />
+      </span>
+      <span
+        aria-busy="true"
+        aria-live="polite"
+      >
+        <span
+          class="react-loading-skeleton"
+          style="width: 40px; height: 12px; --base-color: #f7f8fb; --highlight-color: white;"
+        >
+          ‌
+        </span>
+        <br />
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`PropertiesPage Integration Snapshots should match snapshot with default parameters 1`] = `
 <main>
   <nav
@@ -69,6 +813,48 @@ exports[`PropertiesPage Integration Snapshots should match snapshot with no pagi
     data-viewport-width="1200"
   >
     PropertiesList Component
+  </div>
+</main>
+`;
+
+exports[`PropertiesPage Integration Snapshots should match snapshot with original page parameters 1`] = `
+<main>
+  <nav
+    data-breadcrumb-count="2"
+    data-testid="breadcrumbs"
+  >
+    <span>
+      Home
+    </span>
+    <span
+      data-active="true"
+    >
+      Properties
+    </span>
+  </nav>
+  <div
+    data-testid="properties-filter-form"
+  >
+    PropertiesFilterForm Component
+  </div>
+  <div
+    data-current-page="1"
+    data-query-term="(?:)"
+    data-testid="properties-list"
+    data-viewport-width="1200"
+  >
+    PropertiesList Component
+  </div>
+  <div
+    class="mt-5 flex w-full justify-center"
+  >
+    <div
+      data-current-page="1"
+      data-testid="properties-pagination"
+      data-total-pages="5"
+    >
+      PropertiesPagination Component
+    </div>
   </div>
 </main>
 `;

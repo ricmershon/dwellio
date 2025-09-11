@@ -14,7 +14,35 @@ exports[`PropertyMap Snapshots should match snapshot in error state 1`] = `
 </p>
 `;
 
-exports[`PropertyMap Snapshots should match snapshot in loading state 1`] = `
+exports[`PropertyMap Snapshots should match snapshot with MapSkeleton at different viewport sizes 1`] = `
+<p
+  class="mb-2 text-gray-800"
+>
+  123 Main St
+   
+  Downtown
+  , 
+  CA
+   
+  90210
+</p>
+`;
+
+exports[`PropertyMap Snapshots should match snapshot with MapSkeleton at different viewport sizes 2`] = `
+<p
+  class="mb-2 text-gray-800"
+>
+  123 Main St
+   
+  Downtown
+  , 
+  CA
+   
+  90210
+</p>
+`;
+
+exports[`PropertyMap Snapshots should match snapshot with MapSkeleton at different viewport sizes 3`] = `
 <p
   class="mb-2 text-gray-800"
 >
@@ -96,6 +124,87 @@ exports[`PropertyMap Snapshots should match snapshot with mobile responsive heig
    
   90210
 </p>
+`;
+
+exports[`PropertyMap Snapshots should match snapshot with real MapSkeleton in loading state 1`] = `
+<p
+  class="mb-2 text-gray-800"
+>
+  123 Main St
+   
+  Downtown
+  , 
+  CA
+   
+  90210
+</p>
+`;
+
+exports[`PropertyMap Snapshots should match snapshot with standalone MapSkeleton component 1`] = `
+<div
+  class="relative w-full h-[600px] overflow-hidden bg-gray-100"
+>
+  <span
+    aria-busy="true"
+    aria-live="polite"
+  >
+    <span
+      class="react-loading-skeleton"
+      style="width: 100%; height: 100%; --base-color: #f7f8fb; --highlight-color: white;"
+    >
+      ‌
+    </span>
+    <br />
+  </span>
+  <div
+    class="absolute top-[20%] left-[30%]"
+  >
+    <span
+      aria-busy="true"
+      aria-live="polite"
+    >
+      <span
+        class="react-loading-skeleton"
+        style="width: 14px; height: 14px; border-radius: 50%; --base-color: #f7f8fb; --highlight-color: white;"
+      >
+        ‌
+      </span>
+      <br />
+    </span>
+  </div>
+  <div
+    class="absolute top-[60%] left-[40%]"
+  >
+    <span
+      aria-busy="true"
+      aria-live="polite"
+    >
+      <span
+        class="react-loading-skeleton"
+        style="width: 10px; height: 10px; border-radius: 50%; --base-color: #f7f8fb; --highlight-color: white;"
+      >
+        ‌
+      </span>
+      <br />
+    </span>
+  </div>
+  <div
+    class="absolute top-[50%] left-[70%]"
+  >
+    <span
+      aria-busy="true"
+      aria-live="polite"
+    >
+      <span
+        class="react-loading-skeleton"
+        style="width: 12px; height: 12px; border-radius: 50%; --base-color: #f7f8fb; --highlight-color: white;"
+      >
+        ‌
+      </span>
+      <br />
+    </span>
+  </div>
+</div>
 `;
 
 exports[`PropertyMap Snapshots should match snapshot with tablet responsive height 1`] = `
