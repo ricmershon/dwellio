@@ -35,7 +35,6 @@ const config: Config = {
 		'lib/**/*.{ts,tsx}',
 		'config/**/*.{ts,tsx}',
 		'utils/**/*.{ts,tsx}',
-		'models/**/*.{ts,tsx}',
 		'!**/*.d.ts',
 		'!**/node_modules/**',
 	],
