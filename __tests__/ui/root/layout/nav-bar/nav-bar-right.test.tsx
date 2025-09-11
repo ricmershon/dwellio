@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, createNextNavigationMock } from '@/__tests__/test-utils';
 import { usePathname } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 
 import NavBarRight from '@/ui/root/layout/nav-bar/nav-bar-right';
 
@@ -70,23 +70,13 @@ jest.mock('@/ui/messages/unread-message-count', () => {
     return MockUnreadMessageCount;
 });
 
-// Mock LogoutButton component  
-jest.mock('@/ui/auth/logout-button', () => {
-    const MockLogoutButton = ({ setIsMenuOpen, id }: {
-        setIsMenuOpen?: (value: boolean) => void;
-        id?: string;
-    }) => (
-        <button 
-            data-testid="logout-button" 
-            id={id}
-            onClick={() => setIsMenuOpen?.(false)}
-        >
-            Logout
-        </button>
-    );
-    MockLogoutButton.displayName = 'MockLogoutButton';
-    return MockLogoutButton;
-});
+// Mock NextAuth signOut for LogoutButton integration tests
+jest.mock('next-auth/react', () => ({
+    useSession: jest.fn(),
+    signOut: jest.fn(),
+}));
+
+// Don't mock LogoutButton - test the real component for integration coverage
 
 // Mock useClickOutside hook
 jest.mock('@/hooks/use-click-outside', () => ({
@@ -96,6 +86,7 @@ jest.mock('@/hooks/use-click-outside', () => ({
 describe('NavBarRight', () => {
     const mockUsePathname = usePathname as jest.MockedFunction<typeof usePathname>;
     const mockUseSession = useSession as jest.MockedFunction<typeof useSession>;
+    const mockSignOut = signOut as jest.MockedFunction<typeof signOut>;
     const { useGlobalContext: mockUseGlobalContext } = jest.requireMock('@/context/global-context');
     
     const mockUser = {
@@ -118,6 +109,7 @@ describe('NavBarRight', () => {
             status: 'unauthenticated',
             update: jest.fn() 
         });
+        mockSignOut.mockClear();
         
         // Mock useGlobalContext
         mockUseGlobalContext.mockReturnValue({
@@ -229,7 +221,7 @@ describe('NavBarRight', () => {
         it('should not render authenticated menu items', () => {
             expect(screen.queryByText('My Listings')).not.toBeInTheDocument();
             expect(screen.queryByText('Favorite Properties')).not.toBeInTheDocument();
-            expect(screen.queryByTestId('logout-button')).not.toBeInTheDocument();
+            expect(screen.queryByText('Sign Out')).not.toBeInTheDocument();
         });
 
         it('should have correct href attributes for navigation links', () => {
@@ -278,7 +270,7 @@ describe('NavBarRight', () => {
         });
 
         it('should render logout button when authenticated', () => {
-            expect(screen.getByTestId('logout-button')).toBeInTheDocument();
+            expect(screen.getByText('Sign Out')).toBeInTheDocument();
         });
 
         it('should have correct href attributes for authenticated links', () => {
@@ -453,7 +445,7 @@ describe('NavBarRight', () => {
             expect(screen.getByRole('menu')).toBeInTheDocument();
             
             // Click logout button
-            const logoutButton = screen.getByTestId('logout-button');
+            const logoutButton = screen.getByText('Sign Out');
             fireEvent.click(logoutButton);
             
             expect(screen.queryByRole('menu')).not.toBeInTheDocument();
@@ -501,7 +493,7 @@ describe('NavBarRight', () => {
             expect(screen.getByText('Add Property')).toBeInTheDocument();
             expect(screen.getByText('My Listings')).toBeInTheDocument();
             expect(screen.getByText('Favorite Properties')).toBeInTheDocument();
-            expect(screen.getByTestId('logout-button')).toBeInTheDocument();
+            expect(screen.getByText('Sign Out')).toBeInTheDocument();
         });
 
         it('should handle component remount properly', () => {
@@ -528,7 +520,7 @@ describe('NavBarRight', () => {
             
             // Should show authenticated menu items
             expect(screen.getByText('Add Property')).toBeInTheDocument();
-            expect(screen.getByTestId('logout-button')).toBeInTheDocument();
+            expect(screen.getByText('Sign Out')).toBeInTheDocument();
         });
     });
 
@@ -554,7 +546,7 @@ describe('NavBarRight', () => {
             fireEvent.click(screen.getByRole('button'));
             
             expect(screen.getByText('Add Property')).toBeInTheDocument();
-            expect(screen.getByTestId('logout-button')).toBeInTheDocument();
+            expect(screen.getByText('Sign Out')).toBeInTheDocument();
         });
     });
 
@@ -651,6 +643,105 @@ describe('NavBarRight', () => {
             expectedIds.forEach(id => {
                 expect(document.getElementById(id)).toBeInTheDocument();
             });
+        });
+    });
+
+    describe('LogoutButton Integration', () => {
+        beforeEach(() => {
+            mockUseSession.mockReturnValue({
+                data: mockSession,
+                status: 'authenticated',
+                update: jest.fn()
+            });
+        });
+
+        it('should render LogoutButton with correct attributes', () => {
+            render(<NavBarRight viewportWidth={1024} />);
+            fireEvent.click(screen.getByRole('button')); // Open menu
+            
+            const logoutButton = screen.getByText('Sign Out');
+            expect(logoutButton).toBeInTheDocument();
+            expect(logoutButton.tagName.toLowerCase()).toBe('button');
+            expect(logoutButton).toHaveAttribute('role', 'menuitem');
+            expect(logoutButton).toHaveAttribute('id', 'user-menu-item-2');
+            expect(logoutButton).toHaveAttribute('tabIndex', '-1');
+        });
+
+        it('should have correct CSS classes on LogoutButton', () => {
+            render(<NavBarRight viewportWidth={1024} />);
+            fireEvent.click(screen.getByRole('button')); // Open menu
+            
+            const logoutButton = screen.getByText('Sign Out');
+            expect(logoutButton).toHaveClass('btn', 'btn-login-logout', 'w-full');
+        });
+
+        it('should call signOut with correct callback URL when LogoutButton is clicked', () => {
+            render(<NavBarRight viewportWidth={1024} />);
+            fireEvent.click(screen.getByRole('button')); // Open menu
+            
+            const logoutButton = screen.getByText('Sign Out');
+            fireEvent.click(logoutButton);
+            
+            expect(mockSignOut).toHaveBeenCalledWith({ callbackUrl: '/?loggedOut' });
+        });
+
+        it('should close menu when LogoutButton is clicked', () => {
+            render(<NavBarRight viewportWidth={1024} />);
+            const menuButton = screen.getByRole('button');
+            
+            // Open menu
+            fireEvent.click(menuButton);
+            expect(screen.getByRole('menu')).toBeInTheDocument();
+            
+            // Click logout button
+            const logoutButton = screen.getByText('Sign Out');
+            fireEvent.click(logoutButton);
+            
+            // Menu should close
+            expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+        });
+
+        it('should handle LogoutButton click events properly', () => {
+            render(<NavBarRight viewportWidth={1024} />);
+            fireEvent.click(screen.getByRole('button')); // Open menu
+            
+            const logoutButton = screen.getByText('Sign Out');
+            
+            // Should not throw when clicked
+            expect(() => {
+                fireEvent.click(logoutButton);
+            }).not.toThrow();
+            
+            expect(mockSignOut).toHaveBeenCalledTimes(1);
+            expect(mockSignOut).toHaveBeenCalledWith({ callbackUrl: '/?loggedOut' });
+        });
+
+        it('should render LogoutButton only when authenticated', () => {
+            // Test unauthenticated state separately
+            mockUseSession.mockReturnValue({
+                data: null,
+                status: 'unauthenticated',
+                update: jest.fn()
+            });
+            
+            const { unmount } = render(<NavBarRight viewportWidth={1024} />);
+            fireEvent.click(screen.getByRole('button')); // Open menu
+            
+            expect(screen.queryByText('Sign Out')).not.toBeInTheDocument();
+            
+            unmount();
+            
+            // Test authenticated state separately  
+            mockUseSession.mockReturnValue({
+                data: mockSession,
+                status: 'authenticated',
+                update: jest.fn()
+            });
+            
+            render(<NavBarRight viewportWidth={1024} />);
+            fireEvent.click(screen.getByRole('button')); // Open menu
+            
+            expect(screen.getByText('Sign Out')).toBeInTheDocument();
         });
     });
 

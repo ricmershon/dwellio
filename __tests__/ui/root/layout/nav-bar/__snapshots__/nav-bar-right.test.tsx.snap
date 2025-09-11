@@ -149,10 +149,12 @@ exports[`NavBarRight Snapshots should match snapshot when authenticated with men
       class="w-full border-t border-gray-200"
     />
     <button
-      data-testid="logout-button"
+      class="btn btn-login-logout w-full"
       id="user-menu-item-2"
+      role="menuitem"
+      tabindex="-1"
     >
-      Logout
+      Sign Out
     </button>
   </div>
 </div>
@@ -372,10 +374,12 @@ exports[`NavBarRight Snapshots should match snapshot with different active paths
       class="w-full border-t border-gray-200"
     />
     <button
-      data-testid="logout-button"
+      class="btn btn-login-logout w-full"
       id="user-menu-item-2"
+      role="menuitem"
+      tabindex="-1"
     >
-      Logout
+      Sign Out
     </button>
   </div>
 </div>
