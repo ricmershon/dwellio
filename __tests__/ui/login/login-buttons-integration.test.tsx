@@ -242,4 +242,121 @@ describe('LoginButtons Integration Tests', () => {
             expect(textDiv).toHaveTextContent('Continue with Google');
         });
     });
+
+    describe('useAuthProviders Hook Integration', () => {
+        it('should handle providers loading sequence', async () => {
+            // Start with null providers (loading state)
+            mockUseAuthProviders.mockReturnValue(null);
+            const { rerender } = render(<LoginButtons />);
+
+            // Should not show buttons during loading
+            expect(screen.queryByRole('button', { name: /continue with/i })).not.toBeInTheDocument();
+
+            // Simulate providers loading
+            mockUseAuthProviders.mockReturnValue({
+                google: {
+                    id: 'google',
+                    name: 'Google',
+                    type: 'oauth',
+                },
+            });
+
+            rerender(<LoginButtons />);
+
+            // Should show button after loading
+            expect(screen.getByRole('button', { name: /continue with google/i })).toBeInTheDocument();
+        });
+
+        it('should handle provider fetch errors gracefully', () => {
+            // Simulate getProviders() failing
+            mockUseAuthProviders.mockReturnValue(null);
+
+            render(<LoginButtons />);
+
+            // Should not crash and should handle null gracefully
+            expect(screen.queryByRole('button')).not.toBeInTheDocument();
+        });
+
+        it('should handle multiple OAuth providers', () => {
+            mockUseAuthProviders.mockReturnValue({
+                google: {
+                    id: 'google',
+                    name: 'Google',
+                    type: 'oauth',
+                },
+                github: {
+                    id: 'github', 
+                    name: 'GitHub',
+                    type: 'oauth',
+                },
+                credentials: {
+                    id: 'credentials',
+                    name: 'Credentials',
+                    type: 'credentials',
+                }
+            });
+
+            render(<LoginButtons />);
+
+            // Should show OAuth buttons but not credentials
+            expect(screen.getByRole('button', { name: /continue with google/i })).toBeInTheDocument();
+            // GitHub provider might not have a logo configured, so just check for multiple buttons
+            const buttons = screen.getAllByRole('button');
+            expect(buttons).toHaveLength(2); // Google + GitHub
+            expect(screen.queryByRole('button', { name: /continue with credentials/i })).not.toBeInTheDocument();
+        });
+
+        it('should handle provider state changes during component lifecycle', () => {
+            // Start with empty providers
+            mockUseAuthProviders.mockReturnValue({});
+            const { rerender } = render(<LoginButtons />);
+
+            expect(screen.queryByRole('button')).not.toBeInTheDocument();
+
+            // Add a provider
+            mockUseAuthProviders.mockReturnValue({
+                google: {
+                    id: 'google',
+                    name: 'Google',
+                    type: 'oauth',
+                }
+            });
+
+            rerender(<LoginButtons />);
+            expect(screen.getByRole('button', { name: /continue with google/i })).toBeInTheDocument();
+
+            // Remove provider
+            mockUseAuthProviders.mockReturnValue({});
+            rerender(<LoginButtons />);
+
+            expect(screen.queryByRole('button')).not.toBeInTheDocument();
+        });
+
+        it('should filter out non-OAuth provider types', () => {
+            mockUseAuthProviders.mockReturnValue({
+                google: {
+                    id: 'google',
+                    name: 'Google',
+                    type: 'oauth',
+                },
+                email: {
+                    id: 'email',
+                    name: 'Email',
+                    type: 'email',
+                },
+                credentials: {
+                    id: 'credentials',
+                    name: 'Credentials', 
+                    type: 'credentials',
+                }
+            });
+
+            render(<LoginButtons />);
+
+            // Should only show OAuth providers
+            expect(screen.getByRole('button', { name: /continue with google/i })).toBeInTheDocument();
+            expect(screen.queryByRole('button', { name: /continue with email/i })).not.toBeInTheDocument();
+            expect(screen.queryByRole('button', { name: /continue with credentials/i })).not.toBeInTheDocument();
+        });
+    });
 });

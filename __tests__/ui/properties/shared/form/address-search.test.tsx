@@ -747,4 +747,117 @@ describe("AddressSearch Component", () => {
             }).not.toThrow();
         });
     });
+
+    describe("usePlacesAutocomplete Hook Integration", () => {
+        it("should call usePlacesAutocomplete with debounced search query", () => {
+            render(
+                <AddressSearch
+                    actionState={defaultActionState}
+                    setCity={mockSetCity}
+                    setState={mockSetState}
+                    setZipcode={mockSetZipcode}
+                />
+            );
+
+            // Initially called with empty string
+            expect(mockUsePlacesAutocomplete).toHaveBeenCalledWith("");
+
+            // Type in the input
+            const input = screen.getByRole("textbox", { name: /address/i });
+            fireEvent.change(input, { target: { value: "123 Main" } });
+
+            // Should be called with the debounced value (which is immediate in our mock)
+            expect(mockUsePlacesAutocomplete).toHaveBeenCalledWith("123 Main");
+        });
+
+        it("should handle predictions from usePlacesAutocomplete hook", () => {
+            mockUsePlacesAutocomplete.mockReturnValue({
+                predictions: mockPredictions,
+            });
+
+            render(
+                <AddressSearch
+                    actionState={defaultActionState}
+                    setCity={mockSetCity}
+                    setState={mockSetState}
+                    setZipcode={mockSetZipcode}
+                />
+            );
+
+            // Type to trigger predictions
+            const input = screen.getByRole("textbox", { name: /address/i });
+            fireEvent.change(input, { target: { value: "123 Main" } });
+
+            // Should display predictions from hook
+            expect(screen.getByText("123 Main St")).toBeInTheDocument();
+            expect(screen.getByText("456 Oak Ave")).toBeInTheDocument();
+        });
+
+        it("should handle empty predictions from hook", () => {
+            mockUsePlacesAutocomplete.mockReturnValue({
+                predictions: [],
+            });
+
+            render(
+                <AddressSearch
+                    actionState={defaultActionState}
+                    setCity={mockSetCity}
+                    setState={mockSetState}
+                    setZipcode={mockSetZipcode}
+                />
+            );
+
+            // Type in the input
+            const input = screen.getByRole("textbox", { name: /address/i });
+            fireEvent.change(input, { target: { value: "nonexistent address" } });
+
+            // No predictions should be displayed
+            expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+        });
+
+        it("should call hook with updated query on input changes", () => {
+            render(
+                <AddressSearch
+                    actionState={defaultActionState}
+                    setCity={mockSetCity}
+                    setState={mockSetState}
+                    setZipcode={mockSetZipcode}
+                />
+            );
+
+            const input = screen.getByRole("textbox", { name: /address/i });
+
+            // Type different queries
+            fireEvent.change(input, { target: { value: "123" } });
+            expect(mockUsePlacesAutocomplete).toHaveBeenCalledWith("123");
+
+            fireEvent.change(input, { target: { value: "123 Main" } });
+            expect(mockUsePlacesAutocomplete).toHaveBeenCalledWith("123 Main");
+
+            fireEvent.change(input, { target: { value: "456 Oak" } });
+            expect(mockUsePlacesAutocomplete).toHaveBeenCalledWith("456 Oak");
+        });
+
+        it("should handle hook integration smoothly", () => {
+            mockUsePlacesAutocomplete.mockReturnValue({
+                predictions: mockPredictions,
+            });
+
+            render(
+                <AddressSearch
+                    actionState={defaultActionState}
+                    setCity={mockSetCity}
+                    setState={mockSetState}
+                    setZipcode={mockSetZipcode}
+                />
+            );
+
+            const input = screen.getByRole("textbox", { name: /address/i });
+            fireEvent.change(input, { target: { value: "123 Main" } });
+
+            // Hook should be called and component should not crash
+            expect(mockUsePlacesAutocomplete).toHaveBeenCalledWith("123 Main");
+            expect(input).toBeInTheDocument();
+        });
+    });
 });

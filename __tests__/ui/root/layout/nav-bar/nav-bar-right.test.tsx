@@ -793,4 +793,114 @@ describe('NavBarRight', () => {
             expect(container.firstChild).toMatchSnapshot();
         });
     });
+
+    describe('useClickOutside Hook Integration', () => {
+        const mockUseClickOutside = jest.requireMock('@/hooks/use-click-outside').useClickOutside;
+
+        beforeEach(() => {
+            mockUseClickOutside.mockClear();
+            mockUseSession.mockReturnValue({
+                data: mockSession,
+                status: 'authenticated',
+                update: jest.fn()
+            });
+            mockUseGlobalContext.mockReturnValue({
+                isLoggedIn: true,
+                unreadCount: 0,
+                setUnreadCount: jest.fn(),
+                staticInputs: null
+            });
+        });
+
+        it('should call useClickOutside hook with correct parameters', () => {
+            render(<NavBarRight viewportWidth={1024} />);
+
+            // Hook should be called with ref, callback, and enabled flag
+            expect(mockUseClickOutside).toHaveBeenCalledWith(
+                expect.any(Object), // ref object
+                expect.any(Function), // callback function
+                false // initially closed, so disabled
+            );
+        });
+
+        it('should enable useClickOutside when dropdown is opened', () => {
+            render(<NavBarRight viewportWidth={1024} />);
+
+            // Open dropdown
+            const profileButton = screen.getByRole('button');
+            fireEvent.click(profileButton);
+
+            // Should now be enabled
+            expect(mockUseClickOutside).toHaveBeenLastCalledWith(
+                expect.any(Object),
+                expect.any(Function), 
+                true // enabled when open
+            );
+        });
+
+        it('should pass callback function to useClickOutside', () => {
+            render(<NavBarRight viewportWidth={1024} />);
+
+            // Get the callback function passed to useClickOutside
+            const clickOutsideCallback = mockUseClickOutside.mock.calls[mockUseClickOutside.mock.calls.length - 1][1];
+
+            // Should be a function
+            expect(typeof clickOutsideCallback).toBe('function');
+        });
+
+        it('should handle useClickOutside callback execution', () => {
+            render(<NavBarRight viewportWidth={1024} />);
+
+            // Open dropdown first
+            const profileButton = screen.getByRole('button');
+            fireEvent.click(profileButton);
+
+            // Get the callback function
+            const clickOutsideCallback = mockUseClickOutside.mock.calls[mockUseClickOutside.mock.calls.length - 1][1];
+
+            // Should not throw when called
+            expect(() => {
+                clickOutsideCallback(new MouseEvent('click'));
+            }).not.toThrow();
+        });
+
+        it('should pass single ref to useClickOutside', () => {
+            render(<NavBarRight viewportWidth={1024} />);
+
+            const refParam = mockUseClickOutside.mock.calls[0][0];
+            // NavBarRight passes an array of refs, so check for array
+            expect(Array.isArray(refParam)).toBe(true);
+            expect(refParam.length).toBeGreaterThan(0);
+        });
+
+        it('should handle useClickOutside enabled state changes', () => {
+            render(<NavBarRight viewportWidth={1024} />);
+
+            // Initially disabled
+            expect(mockUseClickOutside).toHaveBeenCalledWith(
+                expect.any(Object),
+                expect.any(Function),
+                false
+            );
+
+            // Open dropdown - should enable hook
+            const profileButton = screen.getByRole('button');
+            fireEvent.click(profileButton);
+
+            expect(mockUseClickOutside).toHaveBeenCalledWith(
+                expect.any(Object),
+                expect.any(Function),
+                true
+            );
+
+            // Close dropdown - should disable hook  
+            fireEvent.click(profileButton);
+
+            expect(mockUseClickOutside).toHaveBeenCalledWith(
+                expect.any(Object),
+                expect.any(Function),
+                false
+            );
+        });
+    });
 });

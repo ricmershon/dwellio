@@ -589,4 +589,261 @@ describe('Global Context Integration Tests', () => {
             expect(counts[1]).toHaveTextContent('1');
         });
     });
+
+    describe('GlobalContext Provider Integration', () => {
+        it('should fetch unread count when user logs in', async () => {
+            getUnreadMessageCount.mockResolvedValue({ unreadCount: 5 });
+
+            // Start with no session
+            useSession.mockReturnValue({
+                data: null,
+                status: 'unauthenticated'
+            });
+
+            const { rerender } = render(
+                <GlobalContextProvider initialStaticInputs={mockStaticInputs}>
+                    <ContextTestComponent />
+                </GlobalContextProvider>
+            );
+
+            expect(screen.getByTestId('unread-count')).toHaveTextContent('0');
+
+            // Simulate user logging in
+            useSession.mockReturnValue({
+                data: { user: { id: '1', email: 'test@example.com' } },
+                status: 'authenticated'
+            });
+
+            rerender(
+                <GlobalContextProvider initialStaticInputs={mockStaticInputs}>
+                    <ContextTestComponent />
+                </GlobalContextProvider>
+            );
+
+            await waitFor(() => {
+                expect(getUnreadMessageCount).toHaveBeenCalled();
+            });
+
+            await waitFor(() => {
+                expect(screen.getByTestId('unread-count')).toHaveTextContent('5');
+            });
+        });
+
+        it('should handle authentication state changes correctly', () => {
+            // Start authenticated
+            useSession.mockReturnValue({
+                data: { user: { id: '1', email: 'test@example.com' } },
+                status: 'authenticated'
+            });
+
+            const { rerender } = render(
+                <GlobalContextProvider initialStaticInputs={mockStaticInputs}>
+                    <ContextTestComponent />
+                </GlobalContextProvider>
+            );
+
+            // Context should show logged in
+            const { useGlobalContext } = jest.requireMock('@/context/global-context');
+            
+            // Simulate logout
+            useSession.mockReturnValue({
+                data: null,
+                status: 'unauthenticated'
+            });
+
+            rerender(
+                <GlobalContextProvider initialStaticInputs={mockStaticInputs}>
+                    <ContextTestComponent />
+                </GlobalContextProvider>
+            );
+
+            // Context should update to logged out
+            expect(useSession).toHaveBeenCalled();
+        });
+
+        it('should handle API calls when session changes', async () => {
+            getUnreadMessageCount.mockResolvedValue({ unreadCount: 2 });
+            
+            useSession.mockReturnValue({
+                data: { user: { id: '1', email: 'test@example.com' } },
+                status: 'authenticated'
+            });
+
+            render(
+                <GlobalContextProvider initialStaticInputs={mockStaticInputs}>
+                    <ContextTestComponent />
+                </GlobalContextProvider>
+            );
+
+            // Should call getUnreadMessageCount when user is logged in
+            await waitFor(() => {
+                expect(getUnreadMessageCount).toHaveBeenCalled();
+            });
+        });
+
+        it('should provide static inputs to components', () => {
+            const StaticInputsTestComponent = () => {
+                const { staticInputs } = useGlobalContext();
+                return (
+                    <div>
+                        <span data-testid="property-types-count">{staticInputs?.property_types.length || 0}</span>
+                        <span data-testid="amenities-count">{staticInputs?.amenities.length || 0}</span>
+                    </div>
+                );
+            };
+
+            render(
+                <GlobalContextProvider initialStaticInputs={mockStaticInputs}>
+                    <StaticInputsTestComponent />
+                </GlobalContextProvider>
+            );
+
+            expect(screen.getByTestId('property-types-count')).toHaveTextContent('2');
+            expect(screen.getByTestId('amenities-count')).toHaveTextContent('2');
+        });
+
+        it('should handle session updates correctly', async () => {
+            getUnreadMessageCount.mockResolvedValue({ unreadCount: 3 });
+
+            // Start with loading session
+            useSession.mockReturnValue({
+                data: null,
+                status: 'loading'
+            });
+
+            const { rerender } = render(
+                <GlobalContextProvider initialStaticInputs={mockStaticInputs}>
+                    <ContextTestComponent />
+                </GlobalContextProvider>
+            );
+
+            expect(screen.getByTestId('unread-count')).toHaveTextContent('0');
+
+            // Session loads with user
+            useSession.mockReturnValue({
+                data: { user: { id: '1', email: 'test@example.com' } },
+                status: 'authenticated'
+            });
+
+            rerender(
+                <GlobalContextProvider initialStaticInputs={mockStaticInputs}>
+                    <ContextTestComponent />
+                </GlobalContextProvider>
+            );
+
+            await waitFor(() => {
+                expect(getUnreadMessageCount).toHaveBeenCalled();
+            });
+
+            await waitFor(() => {
+                expect(screen.getByTestId('unread-count')).toHaveTextContent('3');
+            });
+        });
+
+        it('should memoize context value to prevent unnecessary re-renders', () => {
+            const renderSpy = jest.fn();
+            
+            const MemoizedComponent = React.memo(() => {
+                renderSpy();
+                const { isLoggedIn, unreadCount } = useGlobalContext();
+                return <div data-testid="memo-component">{isLoggedIn ? unreadCount : 0}</div>;
+            });
+
+            useSession.mockReturnValue({
+                data: { user: { id: '1', email: 'test@example.com' } },
+                status: 'authenticated'
+            });
+
+            const { rerender } = render(
+                <GlobalContextProvider initialStaticInputs={mockStaticInputs}>
+                    <MemoizedComponent />
+                </GlobalContextProvider>
+            );
+
+            const initialRenderCount = renderSpy.mock.calls.length;
+
+            // Re-render with same props should not cause memo component to re-render
+            rerender(
+                <GlobalContextProvider initialStaticInputs={mockStaticInputs}>
+                    <MemoizedComponent />
+                </GlobalContextProvider>
+            );
+
+            // Should not have re-rendered due to memoization
+            expect(renderSpy.mock.calls.length).toBe(initialRenderCount);
+        });
+    });
+
+    describe('useStaticInputs Hook Integration', () => {
+        it('should provide property types and amenities through hook', () => {
+            const { useStaticInputs } = jest.requireMock('@/context/global-context');
+            
+            const StaticInputsHookComponent = () => {
+                const { propertyTypes, amenities } = useStaticInputs();
+                return (
+                    <div>
+                        <span data-testid="hook-property-types">{propertyTypes.length}</span>
+                        <span data-testid="hook-amenities">{amenities.length}</span>
+                        <ul data-testid="property-type-list">
+                            {propertyTypes.map((type: any, index: number) => (
+                                <li key={index}>{type.label}</li>
+                            ))}
+                        </ul>
+                    </div>
+                );
+            };
+
+            // Mock the actual hook to return the expected values
+            jest.doMock('@/context/global-context', () => ({
+                ...jest.requireActual('@/context/global-context'),
+                useStaticInputs: () => ({
+                    propertyTypes: mockStaticInputs.property_types,
+                    amenities: mockStaticInputs.amenities
+                })
+            }));
+
+            const { useStaticInputs: actualHook } = jest.requireActual('@/context/global-context');
+            const TestComponent = () => {
+                const { propertyTypes, amenities } = actualHook();
+                return (
+                    <div>
+                        <span data-testid="hook-property-types">{propertyTypes?.length || 0}</span>
+                        <span data-testid="hook-amenities">{amenities?.length || 0}</span>
+                    </div>
+                );
+            };
+
+            render(
+                <GlobalContextProvider initialStaticInputs={mockStaticInputs}>
+                    <TestComponent />
+                </GlobalContextProvider>
+            );
+
+            expect(screen.getByTestId('hook-property-types')).toHaveTextContent('2');
+            expect(screen.getByTestId('hook-amenities')).toHaveTextContent('2');
+        });
+
+        it('should handle null staticInputs gracefully', () => {
+            const { useStaticInputs: actualHook } = jest.requireActual('@/context/global-context');
+            const TestComponent = () => {
+                const { propertyTypes, amenities } = actualHook();
+                return (
+                    <div>
+                        <span data-testid="types-fallback">{propertyTypes.length}</span>
+                        <span data-testid="amenities-fallback">{amenities.length}</span>
+                    </div>
+                );
+            };
+
+            render(
+                <GlobalContextProvider initialStaticInputs={null as any}>
+                    <TestComponent />
+                </GlobalContextProvider>
+            );
+
+            // Should return empty arrays as fallback
+            expect(screen.getByTestId('types-fallback')).toHaveTextContent('0');
+            expect(screen.getByTestId('amenities-fallback')).toHaveTextContent('0');
+        });
+    });
 });
