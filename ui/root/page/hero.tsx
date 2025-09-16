@@ -12,7 +12,7 @@ const Hero = () => {
                     <h1
                         className="text-4xl font-extrabold sm:text-5xl md:text-6xl"
                     >
-                        Find The Perfect Rental
+                        The Best Vacation Rentals
                     </h1>
                     <p className="mt-4 text-xl">
                         Discover the perfect property.
