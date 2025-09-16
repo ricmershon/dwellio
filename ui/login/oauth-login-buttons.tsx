@@ -8,10 +8,7 @@ import Google__G__logo from "@/assets/images/Google__G__logo.svg";
 import Image from "next/image";
 
 
-const LoginButtons = () => {
-    const searchParams = useSearchParams();
-    const returnTo = searchParams.get("returnTo") || "/"
-
+const OAuthLoginButtons = ({ callbackUrl }: { callbackUrl: string }) => {
     const providers = useAuthProviders();
     
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -38,7 +35,7 @@ const LoginButtons = () => {
                     <button
                         key={provider.id}
                         className="relative btn btn-login-logout flex items-center w-full content"
-                        onClick={() => signIn(provider.id, { callbackUrl: returnTo })}
+                        onClick={() => signIn(provider.id, { callbackUrl: callbackUrl })}
                     >
                         <Image
                             src={logo}
@@ -55,4 +52,4 @@ const LoginButtons = () => {
     );
 }
 
-export default LoginButtons;
+export default OAuthLoginButtons;

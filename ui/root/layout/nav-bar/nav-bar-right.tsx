@@ -11,6 +11,7 @@ import LogoutButton from "@/ui/auth/logout-button";
 import { useClickOutside } from "@/hooks/use-click-outside";
 import { useGlobalContext } from "@/context/global-context";
 import UnreadMessageCount from "@/ui/messages/unread-message-count";
+import LoginOrSignupButton from "./login-or-signup-button";
 
 interface NavBarRightProps extends WithAuthProps {
     viewportWidth: number;
@@ -41,18 +42,9 @@ const NavBarRight = ({ viewportWidth, session }: NavBarRightProps) => {
                     )}
                 </Link>
             ) : (
-                <div className="block">
-                    
-                    <div className="flex items-center">
-                        <Link
-                            href="/login"
-                            className="btn btn-login-logout py-[6px] px-3"
-                        >
-                            Log In or Sign Up
-                        </Link>
-                    </div>
-                </div>
+                <LoginOrSignupButton />
             )}
+            
             {/* Mobile menu button */}
             <div className="md:hidden flex items-center ml-2">
                 <button
