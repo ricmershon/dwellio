@@ -1,187 +1,82 @@
-import React from 'react';
-import { render, RenderOptions } from '@testing-library/react';
+import React, { ReactElement } from 'react'
+import { render, RenderOptions } from '@testing-library/react'
+import { SessionProvider } from 'next-auth/react'
 
-// =============================================================================
-// SHARED MOCKS
-// =============================================================================
+interface MockSession {
+    user?: {
+        id?: string
+        email?: string | null
+        name?: string | null
+        image?: string | null
+    }
+    expires: string
+}
 
-// Mock all CSS imports - used across multiple test files
-export const mockAllCssImports = () => {
-    jest.mock('@/app/globals.css', () => ({}));
-    jest.mock('react-toastify/dist/ReactToastify.css', () => ({}));
-    jest.mock('react-loading-skeleton/dist/skeleton.css', () => ({}));
-    jest.mock('photoswipe/dist/photoswipe.css', () => ({}));
-};
+interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
+    session?: MockSession | null
+}
 
-// Next.js Navigation mocks - used in login-buttons and viewport-cookie-writer tests
-export const createMockSearchParams = () => ({
-    get: jest.fn(),
-    getAll: jest.fn(),
-    has: jest.fn(),
-    keys: jest.fn(),
-    values: jest.fn(),
-    entries: jest.fn(),
-    forEach: jest.fn(),
-    toString: jest.fn(),
-    append: jest.fn(),
-    delete: jest.fn(),
-    set: jest.fn(),
-    sort: jest.fn(),
-    size: 0,
-    [Symbol.iterator]: jest.fn(),
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-}) as any;
+const AllProviders = ({ children, session }: { children: React.ReactNode; session?: MockSession | null }) => {
+    return (
+        <SessionProvider session={session as any}>
+            {children}
+        </SessionProvider>
+    )
+}
 
-export const createMockRouter = () => ({
-    back: jest.fn(),
-    forward: jest.fn(),
-    refresh: jest.fn(),
-    push: jest.fn(),
-    replace: jest.fn(),
-    prefetch: jest.fn(),
-});
+export const customRender = (
+    ui: ReactElement,
+    { session = null, ...renderOptions }: CustomRenderOptions = {}
+) => {
+    return render(ui, {
+        wrapper: ({ children }) => <AllProviders session={session}>{children}</AllProviders>,
+        ...renderOptions,
+    })
+}
 
-// NextAuth mocks - used in login-buttons tests
-export const mockNextAuth = () => {
-    jest.mock('next-auth/react', () => ({
-        signIn: jest.fn(),
-        signOut: jest.fn(),
-        useSession: jest.fn(),
-        getSession: jest.fn(),
-        SessionProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-    }));
-};
+export const createMockUser = (overrides = {}) => ({
+    id: 'mock-user-id',
+    email: 'test@example.com',
+    name: 'Test User',
+    ...overrides
+})
 
-// =============================================================================
-// SHARED MOCK COMPONENTS
-// =============================================================================
+export const createMockSession = (userOverrides = {}) => ({
+    user: createMockUser(userOverrides),
+    expires: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
+})
 
-export const MockViewportCookieWriter = () => (
-    <div data-testid="viewport-cookie-writer" />
-);
-
-export const MockAuthProvider = ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="auth-provider">{children}</div>
-);
-
-export const MockGlobalContextProvider = ({ 
-    children, 
-    initialStaticInputs 
-}: { 
-    children: React.ReactNode;
-    initialStaticInputs: Record<string, unknown>;
-}) => (
-    <div 
-        data-testid="global-context-provider"
-        data-initial-inputs={JSON.stringify(initialStaticInputs)}
-    >
-        {children}
-    </div>
-);
-
-export const MockNavBar = () => (
-    <nav data-testid="navbar">Navigation</nav>
-);
-
-export const MockFooter = () => (
-    <footer data-testid="footer">Footer</footer>
-);
-
-export const MockToastContainer = (props: { position?: string; theme?: string }) => (
-    <div 
-        data-testid="toast-container"
-        data-position={props.position}
-        data-theme={props.theme}
-    />
-);
-
-// Unified react-toastify mock that includes both ToastContainer and toast methods
-export const createReactToastifyMock = () => ({
-    ToastContainer: MockToastContainer,
-    Slide: 'slide',
-    toast: {
-        error: jest.fn(),
-        success: jest.fn(),
-        info: jest.fn(),
-        warning: jest.fn(),
+export const createMockProperty = (overrides = {}) => ({
+    _id: 'mock-property-id',
+    title: 'Test Property',
+    type: 'Apartment',
+    description: 'A beautiful test property',
+    location: {
+        street: '123 Test St',
+        city: 'Test City',
+        state: 'TS',
+        zipcode: '12345'
     },
-});
+    beds: 2,
+    baths: 1,
+    square_feet: 1000,
+    amenities: ['WiFi', 'Parking'],
+    rates: {
+        nightly: 100,
+        weekly: 600,
+        monthly: 2000
+    },
+    seller_info: {
+        name: 'Test Seller',
+        email: 'seller@example.com',
+        phone: '555-0123'
+    },
+    owner: 'mock-owner-id',
+    images: ['image1.jpg', 'image2.jpg'],
+    is_featured: false,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    ...overrides
+})
 
-// =============================================================================
-// SHARED TEST UTILITIES
-// =============================================================================
-
-// Custom render function that can include common providers
-const customRender = (
-    ui: React.ReactElement,
-    options?: Omit<RenderOptions, 'wrapper'>
-) => render(ui, { ...options });
-
-// DOM Utilities for viewport and cookie testing
-export const createMockViewportUtils = () => {
-    const cookieStore = { current: {} as Record<string, string> };
-    
-    const setViewportSize = (width: number) => {
-        global.window.innerWidth = width;
-        Object.defineProperty(global.document.documentElement, 'clientWidth', {
-            value: width,
-            configurable: true,
-            writable: true,
-        });
-    };
-    
-    const setupMockDocument = () => {
-        Object.defineProperty(global.document, 'cookie', {
-            get: () => {
-                return Object.entries(cookieStore.current)
-                    .map(([key, value]) => `${key}=${value}`)
-                    .join('; ');
-            },
-            set: (cookieString: string) => {
-                const [keyValue] = cookieString.split(';');
-                const [key, value] = keyValue.split('=');
-                if (key && value) {
-                    cookieStore.current[key.trim()] = value.trim();
-                }
-            },
-            configurable: true,
-        });
-    };
-    
-    const clearCookies = () => {
-        cookieStore.current = {};
-    };
-    
-    return {
-        cookieStore,
-        setViewportSize,
-        setupMockDocument,
-        clearCookies,
-    };
-};
-
-// Timer utilities for debounce testing
-export const setupFakeTimers = () => {
-    beforeEach(() => {
-        jest.useFakeTimers();
-    });
-    
-    afterEach(() => {
-        jest.runOnlyPendingTimers();
-        jest.useRealTimers();
-    });
-};
-
-// Common beforeEach/afterEach patterns
-export const setupCommonMocks = () => {
-    beforeEach(() => {
-        jest.clearAllMocks();
-    });
-};
-
-// Export everything from testing library plus our custom render
-export * from '@testing-library/react';
-export { customRender as render };
-
-// Export shared mocks
-export { createNextNavigationMock } from './shared-mocks';
+export const waitForNextTick = () => new Promise(resolve => setTimeout(resolve, 0))

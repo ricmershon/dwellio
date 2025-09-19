@@ -14,15 +14,12 @@ const config: Config = {
 	},
 	moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
 	moduleNameMapper: {
-		'\\.(svg|png|jpg|jpeg|gif)$': '<rootDir>/__tests__/__mocks__/fileMock.js',
+		'\\.(svg|png|jpg|jpeg|gif)$': '<rootDir>/__mocks__/fileMock.js',
 		'^@/(.*)$': '<rootDir>/$1',
 		'\\.(css|less|scss|sass)$': 'identity-obj-proxy',
 		'react-toastify/dist/ReactToastify.css': 'identity-obj-proxy',
 		'react-loading-skeleton/dist/skeleton.css': 'identity-obj-proxy',
 		'photoswipe/dist/photoswipe.css': 'identity-obj-proxy',
-		'^bson$': '<rootDir>/__tests__/__mocks__/bsonMock.js',
-		'^mongodb$': '<rootDir>/__tests__/__mocks__/mongodbMock.js',
-		'^mongoose$': '<rootDir>/__tests__/__mocks__/mongooseMock.js',
 	},
 	transformIgnorePatterns: [
 		'node_modules/(?!(jose|openid-client|next-auth|bson|mongodb|mongoose)/).*'
