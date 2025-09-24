@@ -1,12 +1,13 @@
-import React from 'react'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import { signIn } from 'next-auth/react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import React from 'react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { signIn } from 'next-auth/react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useAuthProviders } from '@/hooks/use-auth-providers';
 
-import OAuthLoginButtons from '@/ui/login/oauth-login-buttons'
-import CheckAuthStatus from '@/ui/auth/check-auth-status'
-import { customRender, createMockSession } from '../test-utils'
+import OAuthLoginButtons from '@/ui/login/oauth-login-buttons';
+import CheckAuthStatus from '@/ui/auth/check-auth-status';
+import { createMockSession, createMockUser } from '../test-utils';
 
 jest.mock('next-auth/react')
 jest.mock('next/navigation')
@@ -34,8 +35,7 @@ describe('Authentication Flow Integration', () => {
 
     describe('OAuth Login Flow', () => {
         beforeEach(() => {
-            const { useAuthProviders } = require('@/hooks/use-auth-providers')
-            useAuthProviders.mockReturnValue({
+            (useAuthProviders as jest.Mock).mockReturnValue({
                 google: {
                     id: 'google',
                     name: 'Google',
@@ -65,12 +65,11 @@ describe('Authentication Flow Integration', () => {
         })
 
         it('should not render login buttons when providers are not available', () => {
-            const { useAuthProviders } = require('@/hooks/use-auth-providers')
-            useAuthProviders.mockReturnValue(null)
+            (useAuthProviders as jest.Mock).mockReturnValue(null)
 
             render(<OAuthLoginButtons callbackUrl={mockCallbackUrl} />)
 
-            expect(screen.queryByRole('button')).not.toBeInTheDocument()
+            expect(screen.queryByRole('button')).toBeFalsy()
         })
     })
 
@@ -90,7 +89,7 @@ describe('Authentication Flow Integration', () => {
 
             render(<CheckAuthStatus />)
 
-            expect(screen.queryByText(/please login/i)).not.toBeInTheDocument()
+            expect(screen.queryByText(/please login/i)).toBeFalsy()
         })
 
         it('should not show alert when authRequired is false', () => {
@@ -99,7 +98,7 @@ describe('Authentication Flow Integration', () => {
 
             render(<CheckAuthStatus />)
 
-            expect(screen.queryByText(/please login/i)).not.toBeInTheDocument()
+            expect(screen.queryByText(/please login/i)).toBeFalsy()
         })
 
         it('should handle missing returnTo parameter gracefully', () => {
@@ -121,11 +120,11 @@ describe('Authentication Flow Integration', () => {
             mockUseSearchParams.mockReturnValue(authRequiredParams as any)
 
             const { rerender } = render(<CheckAuthStatus />)
-            expect(screen.getByText(/please login to access the messages page/i)).toBeInTheDocument()
+            const loginMessage = screen.getByText(/please login to access the messages page/i);
+            expect(loginMessage).toBeInTheDocument();
 
             // Step 2: User sees OAuth login options
-            const { useAuthProviders } = require('@/hooks/use-auth-providers')
-            useAuthProviders.mockReturnValue({
+            (useAuthProviders as jest.Mock).mockReturnValue({
                 google: { id: 'google', name: 'Google', type: 'oauth' }
             })
 
@@ -143,7 +142,7 @@ describe('Authentication Flow Integration', () => {
             mockUseSearchParams.mockReturnValue(noAuthParams as any)
 
             rerender(<CheckAuthStatus />)
-            expect(screen.queryByText(/please login/i)).not.toBeInTheDocument()
+            expect(screen.queryByText(/please login/i)).toBeFalsy()
         })
     })
 
@@ -157,7 +156,7 @@ describe('Authentication Flow Integration', () => {
         })
 
         it('should create mock user correctly', () => {
-            const mockUser = require('../test-utils').createMockUser({ name: 'Test User' })
+            const mockUser = createMockUser({ name: 'Test User' })
 
             expect(mockUser).toHaveProperty('id')
             expect(mockUser).toHaveProperty('email')

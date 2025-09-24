@@ -3,7 +3,28 @@ import dbConnect from '@/lib/db-connect'
 import { StaticInputs } from '@/models'
 
 jest.mock('@/lib/db-connect')
-jest.mock('@/models')
+jest.mock('@/models', () => ({
+    StaticInputs: {
+        findOne: jest.fn(),
+        create: jest.fn(),
+        findByIdAndUpdate: jest.fn(),
+    },
+    Property: {
+        create: jest.fn(),
+        findById: jest.fn(),
+        find: jest.fn(),
+    },
+    User: {
+        create: jest.fn(),
+        findById: jest.fn(),
+        find: jest.fn(),
+    },
+    Message: {
+        create: jest.fn(),
+        findById: jest.fn(),
+        find: jest.fn(),
+    },
+}))
 
 const mockDbConnect = dbConnect as jest.MockedFunction<typeof dbConnect>
 const mockStaticInputs = StaticInputs as jest.Mocked<typeof StaticInputs>
