@@ -7,7 +7,7 @@ import { useAuthProviders } from '@/hooks/use-auth-providers';
 
 import OAuthLoginButtons from '@/ui/login/oauth-login-buttons';
 import CheckAuthStatus from '@/ui/auth/check-auth-status';
-import { createMockSession, createMockUser } from '../test-utils';
+import { createMockSession, createMockUser } from '@/__tests__/test-utils';
 
 jest.mock('next-auth/react')
 jest.mock('next/navigation')

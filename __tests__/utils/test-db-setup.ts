@@ -194,6 +194,57 @@ export const testDbSetup = {
             (f) => f.user.toString() === userId && f.property.toString() === propertyId
         );
     },
+
+    // Message operations
+    addMessage: (message: any) => {
+        const newMessage = {
+            _id: new Types.ObjectId(),
+            ...message,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        };
+        mockDatabaseState.messages.push(newMessage);
+        return newMessage;
+    },
+
+    removeMessage: (messageId: string) => {
+        mockDatabaseState.messages = mockDatabaseState.messages.filter(
+            (m) => m._id.toString() !== messageId
+        );
+    },
+
+    updateMessage: (messageId: string, updates: any) => {
+        const index = mockDatabaseState.messages.findIndex(
+            (m) => m._id.toString() === messageId
+        );
+        if (index !== -1) {
+            mockDatabaseState.messages[index] = {
+                ...mockDatabaseState.messages[index],
+                ...updates,
+                updatedAt: new Date(),
+            };
+            return mockDatabaseState.messages[index];
+        }
+        return null;
+    },
+
+    findMessageById: (messageId: string) => {
+        return mockDatabaseState.messages.find(
+            (m) => m._id.toString() === messageId
+        );
+    },
+
+    findMessagesByUser: (userId: string) => {
+        return mockDatabaseState.messages.filter(
+            (m) => m.sender.toString() === userId || m.recipient.toString() === userId
+        );
+    },
+
+    getUnreadMessageCount: (userId: string) => {
+        return mockDatabaseState.messages.filter(
+            (m) => m.recipient.toString() === userId && !m.read
+        ).length;
+    },
 };
 
 // Mock database operations to use the test database state
