@@ -12,6 +12,7 @@ export const User = {
     create: jest.fn(),
     findById: jest.fn(),
     find: jest.fn(),
+    findOne: jest.fn(),
     findByIdAndUpdate: jest.fn(),
     findByIdAndDelete: jest.fn(),
 };

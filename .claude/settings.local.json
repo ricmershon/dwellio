@@ -23,7 +23,8 @@
       "Bash(node:*)",
       "Bash(tree:*)",
       "Bash(touch:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(npm run lint:tests:*)"
     ],
     "deny": [],
     "ask": []

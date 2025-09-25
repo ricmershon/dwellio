@@ -37,3 +37,11 @@ export const getServerSession = jest.fn().mockResolvedValue({
     },
     expires: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
 });
+
+// Mock the default export (NextAuth constructor function)
+const mockNextAuth = jest.fn().mockReturnValue({
+    GET: jest.fn(),
+    POST: jest.fn()
+});
+
+export default mockNextAuth;
