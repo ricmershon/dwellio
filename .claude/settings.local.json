@@ -24,7 +24,8 @@
       "Bash(tree:*)",
       "Bash(touch:*)",
       "Bash(mkdir:*)",
-      "Bash(npm run lint:tests:*)"
+      "Bash(npm run lint:tests:*)",
+      "mcp__ide__getDiagnostics"
     ],
     "deny": [],
     "ask": []
