@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
-
-exports[`ProfilePage Integration Tests Snapshots should match snapshot with complete profile page 1`] = `null`;
-
-exports[`ProfilePage Integration Tests Snapshots should match snapshot with empty properties state 1`] = `null`;
-
-exports[`ProfilePage Integration Tests Snapshots should match snapshot with long user information 1`] = `null`;
-
-exports[`ProfilePage Integration Tests Snapshots should match snapshot with user with default profile image 1`] = `null`;
