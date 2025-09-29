@@ -36,12 +36,12 @@ export const fetchPlacesAutocomplete = async (
         method: "POST",
         signal,
         headers: {
-        "Content-Type": "application/json",
-        "X-Goog-Api-Key": apiKey,
-        "X-Goog-FieldMask":
-            "suggestions.placePrediction.placeId," +
-            "suggestions.placePrediction.text," +
-            "suggestions.placePrediction.structuredFormat",
+            "Content-Type": "application/json",
+            "X-Goog-Api-Key": apiKey,
+            "X-Goog-FieldMask":
+                "suggestions.placePrediction.placeId," +
+                "suggestions.placePrediction.text," +
+                "suggestions.placePrediction.structuredFormat",
         } as Record<string, string>,
         body: JSON.stringify({
             input: query,
@@ -107,8 +107,8 @@ const fetchPlaceDetails = async (
         method: "GET",
         signal,
         headers: {
-        "X-Goog-Api-Key": apiKey,
-        "X-Goog-FieldMask": "addressComponents",
+            "X-Goog-Api-Key": apiKey,
+            "X-Goog-FieldMask": "addressComponents",
         } as Record<string, string>,
     });
 

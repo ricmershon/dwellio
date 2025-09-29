@@ -37,7 +37,7 @@ const dbConnect = async () => {
             serverSelectionTimeoutMS: 15000,  // give Atlas more time on cold start
             appName: "dwellio",
         })
-        .then(() => mongoose);
+            .then(() => mongoose);
     }
 
     global._mongoose!.conn = await global._mongoose!.promise;

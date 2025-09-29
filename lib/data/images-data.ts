@@ -27,7 +27,7 @@ export const uploadImages = async (images: File[]) => {
         try {
             const result = await cloudinary.uploader.upload(
                 `data:image/png;base64,${imageBase64}`,
-               { folder: "dwellio" }
+                { folder: "dwellio" }
             );
             imagesData.push({
                 secureUrl: result.secure_url,

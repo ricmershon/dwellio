@@ -20,7 +20,10 @@
       "Bash(npm run test:api:*)",
       "Bash(sed:*)",
       "Bash(python3:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(mkdir:*)",
+      "Bash(touch:*)",
+      "Bash(npx next lint:*)"
     ],
     "deny": [],
     "ask": []
