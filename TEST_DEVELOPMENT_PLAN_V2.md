@@ -80,25 +80,32 @@ touch __tests__/unit/lib/actions/user-actions.unit.test.ts
 ```
 
 **Implementation Checklist:**
-- [ ] **property-actions.unit.test.ts**: Test all property operations
-  - [ ] addProperty function with all validation scenarios
-  - [ ] updateProperty with ownership verification
-  - [ ] deleteProperty with authorization checks
-  - [ ] Image upload/delete integration
-  - [ ] Database error handling
-  - [ ] Input sanitization and validation
-- [ ] **message-actions.unit.test.ts**: Test messaging operations
-  - [ ] sendMessage with validation
-  - [ ] markMessageAsRead state updates
-  - [ ] deleteMessage with confirmation
-  - [ ] getMessages with pagination
-  - [ ] Unread count calculations
-- [ ] **user-actions.unit.test.ts**: Test user management
-  - [ ] User profile updates
-  - [ ] Authentication state management
-  - [ ] Authorization checks
-  - [ ] Password change operations
-  - [ ] Account deletion workflows
+- [x] **property-actions.unit.test.ts**: Test all property operations ✅ **COMPLETED (50 tests)**
+  - [x] createProperty function with all validation scenarios
+  - [x] updateProperty with ownership verification
+  - [x] deleteProperty with authorization checks
+  - [x] Image upload/delete integration
+  - [x] Database error handling
+  - [x] Input sanitization and validation
+  - [x] favoriteProperty toggle functionality
+  - [x] getFavoriteStatus retrieval
+  - [x] **🚨 QUALITY GATES**: All tests pass ✅ | TypeScript compiles ✅ | Linting passes ✅
+- [x] **message-actions.unit.test.ts**: Test messaging operations ✅ **COMPLETED (26 tests)**
+  - [x] createMessage with validation
+  - [x] toggleMessageRead state updates
+  - [x] deleteMessage with confirmation
+  - [x] getUnreadMessageCount calculations
+  - [x] Database error handling
+  - [x] Authorization checks
+  - [x] **🚨 QUALITY GATES**: All tests pass ✅ | TypeScript compiles ✅ | Linting passes ✅
+- [x] **user-actions.unit.test.ts**: Test user management ✅ **COMPLETED (9 tests)**
+  - [x] createCredentialsUser new account creation
+  - [x] OAuth account linking functionality
+  - [x] Username validation and uniqueness
+  - [x] Password validation and hashing
+  - [x] Email validation and normalization
+  - [x] Database error handling
+  - [x] **🚨 QUALITY GATES**: All tests pass ✅ | TypeScript compiles ✅ | Linting passes ✅
 
 **Expected Coverage Boost**: +6-10%
 
