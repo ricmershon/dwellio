@@ -23,7 +23,8 @@
       "Bash(node:*)",
       "Bash(mkdir:*)",
       "Bash(touch:*)",
-      "Bash(npx next lint:*)"
+      "Bash(npx next lint:*)",
+      "Bash(mv:*)"
     ],
     "deny": [],
     "ask": []
