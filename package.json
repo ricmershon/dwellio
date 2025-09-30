@@ -13,7 +13,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "lint:tests": "eslint __tests__/ --ext .ts,.tsx"
+    "lint:tests": "eslint __tests__/ --ext .ts,.tsx --ignore-pattern '__tests__/coverage/**'"
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.10.0",

@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import type { Session } from "next-auth";
 import { requireSessionUser } from "@/utils/require-session-user";
 import { getSessionUser } from "@/utils/get-session-user";
 

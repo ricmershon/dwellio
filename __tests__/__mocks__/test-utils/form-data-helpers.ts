@@ -1,8 +1,8 @@
 // Helper utilities for creating FormData in tests
-export const createFormDataFromObject = (data) => {
+export const createFormDataFromObject = (data: Record<string, any>) => {
     const formData = new FormData();
 
-    const appendToFormData = (obj, prefix = '') => {
+    const appendToFormData = (obj: Record<string, any>, prefix = '') => {
         for (const [key, value] of Object.entries(obj)) {
             const formKey = prefix ? `${prefix}.${key}` : key;
 

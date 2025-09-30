@@ -21,6 +21,7 @@ const eslintConfig = [
       "dist/**",
       "node_modules/**",
       "coverage/**",
+      "__tests__/coverage/**",
       "*.config.js",
       "*.config.mjs"
     ],
@@ -61,10 +62,10 @@ const eslintConfig = [
     }
   },
   {
-    // Special rules for test files
-    files: ["**/__tests__/**/*.ts", "**/__tests__/**/*.tsx", "**/*.test.ts", "**/*.test.tsx"],
+    // Special rules for test files - allow 'any' types in mocks and test utilities
+    files: ["**/__tests__/**/*.ts", "**/__tests__/**/*.tsx", "**/*.test.ts", "**/*.test.tsx", "**/__mocks__/**/*.ts"],
     rules: {
-      "@typescript-eslint/no-explicit-any": "warn" // Downgrade from error to warning for test files
+      "@typescript-eslint/no-explicit-any": "off" // Allow 'any' in test files and mocks
     }
   }
 ];

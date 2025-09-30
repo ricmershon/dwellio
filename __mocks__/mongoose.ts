@@ -13,7 +13,7 @@ const mockTypes = {
     }))
 };
 
-const mockSchema = function(definition) {
+const mockSchema = function(this: any, definition: any) {
     this.definition = definition;
     this.add = jest.fn();
     this.pre = jest.fn();
@@ -30,8 +30,8 @@ mockSchema.Types = {
     Array: Array
 };
 
-const mockModel = function(name, schema) {
-    const model = jest.fn();
+const mockModel = function(name: any, schema: any) {
+    const model: any = jest.fn();
     model.findById = jest.fn();
     model.findOne = jest.fn();
     model.create = jest.fn();

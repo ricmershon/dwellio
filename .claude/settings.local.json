@@ -24,7 +24,8 @@
       "Bash(mkdir:*)",
       "Bash(touch:*)",
       "Bash(npx next lint:*)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(cat:*)"
     ],
     "deny": [],
     "ask": []
