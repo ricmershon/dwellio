@@ -22,7 +22,6 @@ const config: Config = {
 		'photoswipe/dist/photoswipe.css': 'identity-obj-proxy',
 		'^bson$': '<rootDir>/__tests__/__mocks__/bsonMock.js',
 		'^mongodb$': '<rootDir>/__tests__/__mocks__/mongodbMock.js',
-		'^mongoose$': '<rootDir>/__tests__/__mocks__/mongooseMock.js',
 	},
 	transformIgnorePatterns: [
 		'node_modules/(?!(jose|openid-client|next-auth|bson|mongodb|mongoose)/).*'

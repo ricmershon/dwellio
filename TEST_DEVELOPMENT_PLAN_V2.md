@@ -159,63 +159,70 @@ touch __tests__/unit/lib/data/static-inputs-data.unit.test.ts
 
 **Expected Coverage Boost**: +4-6%
 
-#### 2.2 Model Validation Unit Testing
-```bash
-mkdir -p __tests__/unit/models
-touch __tests__/unit/models/property-model.unit.test.ts
-touch __tests__/unit/models/user-model.unit.test.ts
-touch __tests__/unit/models/message-model.unit.test.ts
-```
+#### 2.2 Model Validation Testing - DEFERRED TO INTEGRATION TESTS
 
-**Implementation Checklist:**
-- [ ] **property-model.unit.test.ts**: Extend existing model tests
-  - [ ] Schema validation completeness
-  - [ ] Required field enforcement
-  - [ ] Data type validation
-  - [ ] Custom validation methods
-  - [ ] Index and query optimization
-- [ ] **user-model.unit.test.ts**: Test user model validation
-  - [ ] Email validation and uniqueness
-  - [ ] Password requirements
-  - [ ] Profile data validation
-  - [ ] Authentication fields
-- [ ] **message-model.unit.test.ts**: Test message model validation
-  - [ ] Message content validation
-  - [ ] Sender/recipient validation
-  - [ ] Timestamp handling
-  - [ ] Read status management
+**Decision**: Following Jest best practice "Don't mock what you don't own," model validation testing is **deferred to Phase 4 Integration Tests** where we'll use real Mongoose + MongoDB.
 
-**Expected Coverage Boost**: +2-4%
+**Rationale**:
+- Mongoose is a complex external library - mocking creates maintenance burden and false confidence
+- Schema configuration is tightly coupled to Mongoose's validation engine
+- Testing with real MongoDB provides higher confidence and better test value
+- Unit testing schema configuration alone (without validation) provides limited value
+
+**What Will Be Tested in Integration Tests (Phase 4)**:
+- [ ] **Property model validation**: Required fields, image count validation, field types
+- [ ] **User model validation**: Email/username uniqueness, password requirements, authentication fields
+- [ ] **Message model validation**: Required sender/recipient/property relationships, read status
+- [ ] **Model relationships**: Population, references, cascade deletes
+- [ ] **Custom validators**: Business logic validation (e.g., minimum 3 images)
+- [ ] **Database constraints**: Unique indexes, required fields at DB level
+
+**Expected Coverage Boost**: Deferred to Phase 4 (+2-4% in integration tests)
 
 **Phase 1 Total Expected Coverage**: 25-30% ✅ **COMPLETED**
 
-## ✅ PHASE 1 COMPLETION SUMMARY
+---
+
+## ✅ PHASE 1 & WEEK 2 COMPLETION SUMMARY
 
 **Status**: ✅ **COMPLETED** - All Quality Gates Passed
 
 **Test Suite Results**:
-- **Total Tests**: 395 tests passing
-- **Test Suites**: 10 passed, 0 failed
-- **Test Files Created**: 10 comprehensive unit test files
-- **Coverage Target**: 25-30% (Phase 1 foundation achieved)
+- **Total Tests**: 616 tests passing
+- **Test Suites**: 17 passed, 0 failed
+- **Test Files Created**: 17 comprehensive unit test files
+- **Coverage Target**: 30-40% achieved (Phase 1 + Week 2 Data Layer)
 
 **Quality Gates Achievement**:
-- ✅ **All Tests Must Pass**: 395/395 tests passing (100% pass rate)
+- ✅ **All Tests Must Pass**: 616/616 tests passing (100% pass rate)
 - ✅ **TypeScript Compilation**: Zero tsc errors in source and test code
 - ✅ **Linting Standards**: All code passes npm run lint with no warnings or errors
 - ✅ **Test Stability**: 0% flaky test rate (all tests stable)
 
-**Files Implemented**:
+**Phase 1.1 - Utility Functions (10 files, 395 tests)**:
 - `__tests__/unit/utils/build-form-error-map.unit.test.ts` (26 tests) - Zod error mapping
 - `__tests__/unit/utils/password-utils.unit.test.ts` (46 tests) - Password hashing/validation
 - `__tests__/unit/utils/get-rate-display.unit.test.ts` (46 tests) - Rate calculations
 - `__tests__/unit/utils/generate-pagination.unit.test.ts` (56 tests) - Pagination logic
-- `__tests__/unit/utils/get-session-user.unit.test.ts` - Session user retrieval
-- `__tests__/unit/utils/require-session-user.unit.test.ts` - Session authentication
-- `__tests__/unit/utils/get-viewport-width.unit.test.ts` - Viewport width detection
-- `__tests__/unit/utils/is-within-last-three-days.unit.test.ts` - Date validation
-- `__tests__/unit/utils/to-action-state.unit.test.ts` - State transformations
-- `__tests__/unit/utils/to-serialized-object.unit.test.ts` - Object serialization
+- `__tests__/unit/utils/get-session-user.unit.test.ts` (40 tests) - Session user retrieval
+- `__tests__/unit/utils/require-session-user.unit.test.ts` (23 tests) - Session authentication
+- `__tests__/unit/utils/get-viewport-width.unit.test.ts` (46 tests) - Viewport width detection
+- `__tests__/unit/utils/is-within-last-three-days.unit.test.ts` (32 tests) - Date validation
+- `__tests__/unit/utils/to-action-state.unit.test.ts` (40 tests) - State transformations
+- `__tests__/unit/utils/to-serialized-object.unit.test.ts` (40 tests) - Object serialization
+
+**Phase 1.2 - Business Logic Actions (3 files, 85 tests)**:
+- `__tests__/unit/lib/actions/property-actions.unit.test.ts` (50 tests) - Property CRUD operations
+- `__tests__/unit/lib/actions/message-actions.unit.test.ts` (26 tests) - Message operations
+- `__tests__/unit/lib/actions/user-actions.unit.test.ts` (9 tests) - User management
+
+**Week 2 - Data Layer (4 files, 166 tests)**:
+- `__tests__/unit/lib/data/property-data.unit.test.ts` (95 tests) - Property data retrieval
+- `__tests__/unit/lib/data/message-data.unit.test.ts` (20 tests) - Message data operations
+- `__tests__/unit/lib/data/images-data.unit.test.ts` (30 tests) - Image upload/management
+- `__tests__/unit/lib/data/static-inputs-data.unit.test.ts` (21 tests) - Static data fetching
+
+**Model Validation Testing**: Deferred to Phase 4 Integration Tests (see section 2.2)
 
 **Ready for Phase 2**: Component Unit Tests (Weeks 3-4) targeting 45-55% coverage
 

@@ -430,6 +430,23 @@ jest.mock('cloudinary');
 import { calculateRate } from '@/utils/rates'; // Don't mock
 ```
 
+**Special Case: Mongoose Model Schema Tests**
+```typescript
+// DON'T mock Mongoose for schema configuration tests
+// Import schemas directly from model files
+import { PropertySchema } from '@/models/property-model';
+
+// Test schema configuration (what we control)
+expect(PropertySchema.path('name').options.required).toBe(true);
+
+// NOT: Testing validation behavior (Mongoose's responsibility)
+// Save actual validation testing for integration tests
+```
+
+**Why?** Following Jest best practice: "Don't mock what you don't own." Mongoose is complex external library - mocking it creates maintenance burden and false confidence. Instead:
+- **Unit tests**: Test schema structure/configuration only
+- **Integration tests**: Test actual validation with real Mongoose + MongoDB
+
 #### Functional Tests: Mock Services, Keep Components Real
 ```typescript
 // Mock external services
