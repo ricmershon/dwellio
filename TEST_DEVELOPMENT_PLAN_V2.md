@@ -122,29 +122,40 @@ touch __tests__/unit/lib/data/static-inputs-data.unit.test.ts
 ```
 
 **Implementation Checklist:**
-- [ ] **property-data.unit.test.ts**: Test property data operations
-  - [ ] getAllProperties with filtering and pagination
-  - [ ] getPropertyById with error handling
-  - [ ] getUserProperties with ownership validation
-  - [ ] searchProperties with query parsing
-  - [ ] Database query optimization testing
-  - [ ] Data transformation and sanitization
-- [ ] **message-data.unit.test.ts**: Test message data operations
-  - [ ] getUserMessages with pagination
-  - [ ] getUnreadCount calculations
-  - [ ] markAsRead state updates
-  - [ ] deleteMessage data consistency
-  - [ ] Message threading logic
-- [ ] **images-data.unit.test.ts**: Test image operations (extend existing)
-  - [ ] uploadImages with error scenarios
-  - [ ] destroyImages cleanup operations
-  - [ ] Image validation and processing
-  - [ ] Cloudinary integration error handling
-  - [ ] Batch operation testing
-- [ ] **static-inputs-data.unit.test.ts**: Test static data (extend existing)
-  - [ ] getPropertyTypes data consistency
-  - [ ] Data caching mechanisms
-  - [ ] Static data validation
+- [x] **property-data.unit.test.ts**: Test property data operations ✅ **COMPLETED (95 tests)**
+  - [x] fetchProperty with error handling
+  - [x] fetchPropertiesByUserId with ownership validation
+  - [x] fetchFeaturedProperties with viewport-responsive pagination
+  - [x] fetchFavoritedProperties with population
+  - [x] searchProperties with query parsing
+  - [x] fetchNumPropertiesPages with pagination calculations
+  - [x] fetchPaginatedProperties with offset/limit
+  - [x] Database query optimization testing
+  - [x] Data transformation and error handling
+  - [x] **🚨 QUALITY GATES**: All tests pass ✅ | TypeScript compiles ✅ | Linting passes ✅
+- [x] **message-data.unit.test.ts**: Test message data operations ✅ **COMPLETED (20 tests)**
+  - [x] fetchMessages with pagination and population
+  - [x] Unread/read message separation
+  - [x] Sort and populate chaining
+  - [x] Database error handling
+  - [x] Message serialization
+  - [x] Edge cases (null sender/property, empty results)
+  - [x] **🚨 QUALITY GATES**: All tests pass ✅ | TypeScript compiles ✅ | Linting passes ✅
+- [x] **images-data.unit.test.ts**: Test image operations ✅ **COMPLETED (30 tests)**
+  - [x] uploadImages with error scenarios
+  - [x] destroyImages cleanup operations
+  - [x] Image validation and processing
+  - [x] Cloudinary integration error handling
+  - [x] Batch operation testing
+  - [x] Base64 conversion and file handling
+  - [x] **🚨 QUALITY GATES**: All tests pass ✅ | TypeScript compiles ✅ | Linting passes ✅
+- [x] **static-inputs-data.unit.test.ts**: Test static data ✅ **COMPLETED (21 tests)**
+  - [x] fetchStaticInputs with lean queries
+  - [x] Default fallback handling
+  - [x] Property types and amenities data
+  - [x] Database error handling
+  - [x] Edge cases (empty arrays, missing fields)
+  - [x] **🚨 QUALITY GATES**: All tests pass ✅ | TypeScript compiles ✅ | Linting passes ✅
 
 **Expected Coverage Boost**: +4-6%
 
