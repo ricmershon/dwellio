@@ -159,26 +159,6 @@ touch __tests__/unit/lib/data/static-inputs-data.unit.test.ts
 
 **Expected Coverage Boost**: +4-6%
 
-#### 2.2 Model Validation Testing - DEFERRED TO INTEGRATION TESTS
-
-**Decision**: Following Jest best practice "Don't mock what you don't own," model validation testing is **deferred to Phase 4 Integration Tests** where we'll use real Mongoose + MongoDB.
-
-**Rationale**:
-- Mongoose is a complex external library - mocking creates maintenance burden and false confidence
-- Schema configuration is tightly coupled to Mongoose's validation engine
-- Testing with real MongoDB provides higher confidence and better test value
-- Unit testing schema configuration alone (without validation) provides limited value
-
-**What Will Be Tested in Integration Tests (Phase 4)**:
-- [ ] **Property model validation**: Required fields, image count validation, field types
-- [ ] **User model validation**: Email/username uniqueness, password requirements, authentication fields
-- [ ] **Message model validation**: Required sender/recipient/property relationships, read status
-- [ ] **Model relationships**: Population, references, cascade deletes
-- [ ] **Custom validators**: Business logic validation (e.g., minimum 3 images)
-- [ ] **Database constraints**: Unique indexes, required fields at DB level
-
-**Expected Coverage Boost**: Deferred to Phase 4 (+2-4% in integration tests)
-
 **Phase 1 Total Expected Coverage**: 25-30% ✅ **COMPLETED**
 
 ---
@@ -770,6 +750,41 @@ touch __tests__/integration/messaging/notification-system.integration.test.tsx
   - [ ] Cross-component state updates
 
 **Expected Coverage Boost**: +2-3%
+
+#### 7.5 Model Validation Integration
+```bash
+mkdir -p __tests__/integration/models
+touch __tests__/integration/models/property-model.integration.test.tsx
+touch __tests__/integration/models/user-model.integration.test.tsx
+touch __tests__/integration/models/message-model.integration.test.tsx
+```
+
+**Rationale**: Following Jest best practice "Don't mock what you don't own," model validation testing uses real Mongoose + MongoDB for higher confidence and better test value.
+
+**Implementation Checklist:**
+- [ ] **property-model.integration.test.tsx**: Test Property model with real database
+  - [ ] Required fields validation (name, type, location, etc.)
+  - [ ] Image count validation (minimum 3 images)
+  - [ ] Field type validation (strings, numbers, dates)
+  - [ ] Enum validation (property types)
+  - [ ] Database constraints and indexes
+  - [ ] Default values and timestamps
+- [ ] **user-model.integration.test.tsx**: Test User model with real database
+  - [ ] Email uniqueness constraint
+  - [ ] Username uniqueness constraint
+  - [ ] Password hashing on save
+  - [ ] Required authentication fields
+  - [ ] Email format validation
+  - [ ] OAuth provider field validation
+- [ ] **message-model.integration.test.tsx**: Test Message model with real database
+  - [ ] Required sender/recipient/property relationships
+  - [ ] Read status defaults and updates
+  - [ ] Message body validation
+  - [ ] Population of referenced documents
+  - [ ] Cascade delete behavior
+  - [ ] Timestamp tracking
+
+**Expected Coverage Boost**: +2-4%
 
 **Phase 4 Total Expected Coverage**: 80-85% ✅
 
