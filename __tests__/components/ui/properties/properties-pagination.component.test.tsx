@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { usePathname, useSearchParams } from 'next/navigation';
 
 import PropertiesPagination from '@/ui/properties/properties-pagination';
 import * as generatePagination from '@/utils/generate-pagination';
@@ -45,8 +46,6 @@ jest.spyOn(generatePagination, 'generatePagination');
 // ============================================================================
 // MOCK SETUP
 // ============================================================================
-const { usePathname, useSearchParams } = require('next/navigation');
-
 const mockUsePathname = usePathname as jest.Mock;
 const mockUseSearchParams = useSearchParams as jest.Mock;
 
