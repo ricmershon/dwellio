@@ -431,7 +431,9 @@ touch __tests__/components/ui/root/auth-provider.component.test.tsx
 ### Week 5: Page Component Testing
 **Priority: CRITICAL** - Largest coverage gap
 
-#### 5.1 Core Page Components
+**Note**: See TESTING_PLAN_V2.md section "Testing Next.js Special Files" for detailed testing patterns for `page.tsx`, `layout.tsx`, `error.tsx`, `not-found.tsx`, and `loading.tsx` files.
+
+#### 5.1 Core Page Components (`page.tsx` files)
 ```bash
 mkdir -p __tests__/functional/pages
 touch __tests__/functional/pages/home-page.functional.test.tsx
@@ -439,43 +441,111 @@ touch __tests__/functional/pages/properties-page.functional.test.tsx
 touch __tests__/functional/pages/property-detail-page.functional.test.tsx
 touch __tests__/functional/pages/add-property-page.functional.test.tsx
 touch __tests__/functional/pages/edit-property-page.functional.test.tsx
+touch __tests__/functional/pages/not-found.functional.test.tsx
 ```
 
 **Implementation Checklist:**
-- [ ] **home-page.functional.test.tsx**: Test landing page
+- [ ] **home-page.functional.test.tsx**: Test landing page (`app/(root)/page.tsx`)
   - [ ] Hero section rendering with real data
   - [ ] Featured properties display
   - [ ] Info boxes functionality
   - [ ] Search form integration
   - [ ] Navigation to property listings
-- [ ] **properties-page.functional.test.tsx**: Test property listings
-  - [ ] Property list rendering with search params
+  - [ ] Server component async rendering
+- [ ] **properties-page.functional.test.tsx**: Test property listings (`app/(root)/properties/page.tsx`)
+  - [ ] Property list rendering with searchParams
   - [ ] Filtering by type, location, price
   - [ ] Pagination via URL parameters
   - [ ] Search functionality integration
   - [ ] Empty state and error handling
   - [ ] Loading states and skeletons
-- [ ] **property-detail-page.functional.test.tsx**: Test property details
+  - [ ] Server-side data fetching
+- [ ] **property-detail-page.functional.test.tsx**: Test property details (`app/(root)/properties/[id]/page.tsx`)
   - [ ] Property information display
   - [ ] Image gallery functionality
   - [ ] Contact form integration
   - [ ] Map display and interaction
   - [ ] Share buttons functionality
-  - [ ] 404 handling for invalid IDs
-- [ ] **add-property-page.functional.test.tsx**: Test property creation
+  - [ ] Dynamic params handling
+  - [ ] notFound() triggering for invalid IDs
+- [ ] **add-property-page.functional.test.tsx**: Test property creation (`app/(root)/properties/add/page.tsx`)
   - [ ] Form rendering and navigation
   - [ ] Multi-step form progression
   - [ ] Validation and error display
   - [ ] Image upload workflow
   - [ ] Form submission and redirect
-- [ ] **edit-property-page.functional.test.tsx**: Test property editing
+  - [ ] Authentication requirement
+- [ ] **edit-property-page.functional.test.tsx**: Test property editing (`app/(root)/properties/[id]/edit/page.tsx`)
   - [ ] Form pre-population with existing data
   - [ ] Ownership verification
   - [ ] Update functionality
   - [ ] Image management (add/remove)
   - [ ] Authorization checks
+  - [ ] Dynamic params for property ID
+- [ ] **not-found.functional.test.tsx**: Test 404 page (`app/not-found.tsx`)
+  - [ ] 404 message display
+  - [ ] Navigation back to home
+  - [ ] Helpful content (search, popular links)
+  - [ ] Dynamic not-found triggering
 
 **Expected Coverage Boost**: +8-10%
+
+#### 5.1.1 Layout Components (`layout.tsx` files)
+```bash
+mkdir -p __tests__/components/ui/layouts
+touch __tests__/components/ui/layouts/root-layout.component.test.tsx
+touch __tests__/components/ui/layouts/authenticated-layout.component.test.tsx
+```
+
+**Implementation Checklist:**
+- [ ] **root-layout.component.test.tsx**: Test root layout (`app/layout.tsx`)
+  - [ ] Children rendering within layout structure
+  - [ ] Metadata exports (title, description, viewport)
+  - [ ] HTML lang attribute
+  - [ ] Body classes and styling
+  - [ ] Global providers wrapping
+- [ ] **authenticated-layout.component.test.tsx**: Test auth layout (`app/(auth)/layout.tsx`)
+  - [ ] Navigation bar for authenticated users
+  - [ ] Redirect for unauthenticated users
+  - [ ] Layout composition
+  - [ ] Session-based rendering
+
+**Expected Coverage Boost**: +2-3%
+
+#### 5.1.2 Error Boundaries (`error.tsx` files)
+```bash
+mkdir -p __tests__/components/ui/error
+mkdir -p __tests__/integration/error-handling
+touch __tests__/components/ui/error/error-page.component.test.tsx
+touch __tests__/integration/error-handling/error-boundary.integration.test.tsx
+```
+
+**Implementation Checklist:**
+- [ ] **error-page.component.test.tsx**: Test error page (`app/error.tsx`)
+  - [ ] Error message display
+  - [ ] Environment-specific behavior (dev vs prod)
+  - [ ] Reset functionality
+  - [ ] Navigation back to home
+- [ ] **error-boundary.integration.test.tsx**: Test error recovery
+  - [ ] Component error catching
+  - [ ] Error state display
+  - [ ] Reset and recovery workflow
+
+**Expected Coverage Boost**: +1-2%
+
+#### 5.1.3 Loading States (`loading.tsx` files)
+```bash
+mkdir -p __tests__/components/ui/loading
+touch __tests__/components/ui/loading/properties-loading.component.test.tsx
+```
+
+**Implementation Checklist:**
+- [ ] **properties-loading.component.test.tsx**: Test loading UI (`app/(root)/properties/loading.tsx`)
+  - [ ] Loading skeleton rendering
+  - [ ] Accessibility attributes (role="status")
+  - [ ] Loading message display
+
+**Expected Coverage Boost**: +0.5-1%
 
 #### 5.2 User Account Pages
 ```bash
@@ -588,7 +658,45 @@ touch __tests__/functional/workflows/user-profile.functional.test.tsx
 ### Week 7: Critical Integration Points
 **Priority: MEDIUM** - Cross-component workflows
 
-#### 7.1 Authentication Flow Integration
+**Note**: See TESTING_PLAN_V2.md section "Testing Next.js Special Files" for detailed API route testing patterns.
+
+#### 7.1 API Route Handlers (`route.ts` files)
+```bash
+mkdir -p __tests__/integration/api-routes
+touch __tests__/integration/api-routes/properties-api.integration.test.tsx
+touch __tests__/integration/api-routes/messages-api.integration.test.tsx
+touch __tests__/integration/api-routes/auth-api.integration.test.tsx
+touch __tests__/integration/api-routes/favorites-api.integration.test.tsx
+```
+
+**Implementation Checklist:**
+- [ ] **properties-api.integration.test.tsx**: Test property API routes
+  - [ ] GET /api/properties - Pagination and filtering
+  - [ ] POST /api/properties - Create with authentication
+  - [ ] PATCH /api/properties/[id] - Update with ownership check
+  - [ ] DELETE /api/properties/[id] - Delete with authorization
+  - [ ] Query parameter validation
+  - [ ] Request body validation
+  - [ ] Error responses (400, 401, 403, 404, 500)
+- [ ] **messages-api.integration.test.tsx**: Test messaging API routes
+  - [ ] GET /api/messages - Fetch user messages
+  - [ ] POST /api/messages - Send message
+  - [ ] PATCH /api/messages/[id] - Mark as read
+  - [ ] DELETE /api/messages/[id] - Delete message
+  - [ ] Authentication requirements
+- [ ] **auth-api.integration.test.tsx**: Test authentication API routes
+  - [ ] POST /api/auth/signup - User registration
+  - [ ] POST /api/auth/login - User login
+  - [ ] GET /api/auth/session - Session validation
+  - [ ] POST /api/auth/logout - Session cleanup
+- [ ] **favorites-api.integration.test.tsx**: Test favorites API routes
+  - [ ] POST /api/favorites - Toggle favorite
+  - [ ] GET /api/favorites - Fetch user favorites
+  - [ ] Authentication and authorization
+
+**Expected Coverage Boost**: +5-7%
+
+#### 7.2 Authentication Flow Integration
 ```bash
 mkdir -p __tests__/integration/auth-flow
 touch __tests__/integration/auth-flow/complete-auth-flow.integration.test.tsx
@@ -613,9 +721,9 @@ touch __tests__/integration/auth-flow/session-management.integration.test.tsx
   - [ ] Session refresh mechanisms
   - [ ] Security token management
 
-**Expected Coverage Boost**: +3-4%
+**Expected Coverage Boost**: +2-3%
 
-#### 7.2 Property Management Integration
+#### 7.3 Property Management Integration
 ```bash
 mkdir -p __tests__/integration/property-mgmt
 touch __tests__/integration/property-mgmt/crud-workflow.integration.test.tsx
@@ -642,7 +750,7 @@ touch __tests__/integration/property-mgmt/search-integration.integration.test.ts
 
 **Expected Coverage Boost**: +2-3%
 
-#### 7.3 Messaging System Integration
+#### 7.4 Messaging System Integration
 ```bash
 mkdir -p __tests__/integration/messaging
 touch __tests__/integration/messaging/message-flow.integration.test.tsx
@@ -664,6 +772,19 @@ touch __tests__/integration/messaging/notification-system.integration.test.tsx
 **Expected Coverage Boost**: +2-3%
 
 **Phase 4 Total Expected Coverage**: 80-85% ✅
+
+### Next.js Special Files Coverage Summary
+
+| File Type | Test Type | Phase | Location | Priority |
+|-----------|-----------|-------|----------|----------|
+| `page.tsx` | Functional | Week 5 | `__tests__/functional/pages/` | High |
+| `layout.tsx` | Component | Week 5 | `__tests__/components/ui/layouts/` | Medium |
+| `error.tsx` | Component + Integration | Week 5 | `__tests__/components/ui/error/` + `__tests__/integration/error-handling/` | Medium |
+| `not-found.tsx` | Functional | Week 5 | `__tests__/functional/pages/` | Low |
+| `route.ts` | Integration | Week 7 | `__tests__/integration/api-routes/` | High |
+| `loading.tsx` | Component | Week 5 | `__tests__/components/ui/loading/` | Low |
+
+**Reference**: See TESTING_PLAN_V2.md section "Testing Next.js Special Files" for complete testing patterns and examples.
 
 ---
 
@@ -839,4 +960,34 @@ npm run test:coverage -- --collectCoverageFrom="app/**/*.{ts,tsx}" --silent
 
 ---
 
+## Conclusion
+
 This v2.0 plan provides a systematic, coverage-driven approach to achieving comprehensive test coverage while maintaining the quality standards established in v1.0. The balanced test pyramid approach ensures efficient coverage growth with sustainable test maintenance.
+
+### Key Features of This Plan
+
+1. **Balanced Test Distribution**: Unit (30-35%), Functional (35-40%), Integration (25-30%), E2E (5%)
+2. **Next.js Framework Coverage**: Explicit testing strategies for `page.tsx`, `layout.tsx`, `error.tsx`, `not-found.tsx`, `route.ts`, and `loading.tsx` files
+3. **Quality-First Approach**: All tests must pass, TypeScript must compile, linting must pass before proceeding
+4. **Phased Implementation**: 7-week roadmap with clear milestones and coverage targets
+5. **Comprehensive Documentation**: Cross-referenced with TESTING_PLAN_V2.md for detailed patterns and examples
+
+### Coverage Strategy Highlights
+
+- **Week 1-2 (Phase 1)**: Foundation unit tests for utilities, actions, and data layer ✅ **COMPLETED**
+- **Week 3-4 (Phase 2)**: Component unit tests for UI and forms (Section 3.1 ✅ **COMPLETED**)
+- **Week 5 (Phase 3)**: Functional tests for pages, layouts, errors, and loading states
+- **Week 6 (Phase 3)**: User workflow and integration tests
+- **Week 7 (Phase 4)**: API routes, authentication flows, and strategic integration tests
+
+### Next.js Special Files
+
+All Next.js special file conventions are explicitly covered with detailed testing patterns:
+- Server components (`page.tsx`) tested with async rendering and searchParams
+- Layouts (`layout.tsx`) tested for composition and metadata
+- Error boundaries (`error.tsx`) tested for error catching and recovery
+- API routes (`route.ts`) tested for all HTTP methods and validation
+- Loading states (`loading.tsx`) tested for accessibility
+- Not found pages (`not-found.tsx`) tested for helpful UX
+
+For complete testing patterns and code examples, see **TESTING_PLAN_V2.md section "Testing Next.js Special Files"**.

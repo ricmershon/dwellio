@@ -936,6 +936,555 @@ npm run test -- --logHeapUsage
 2. **Add functional tests**: Create page-level and workflow tests
 3. **Optimize integration tests**: Keep only high-value cross-component tests
 
+## Testing Next.js Special Files
+
+Next.js uses special file conventions that require specific testing approaches. This section outlines how to achieve coverage for these framework-specific files.
+
+### 1. Page Components (`page.tsx`)
+
+**Test Type**: Functional Tests (Section 2 - 35-40% coverage)
+
+**Location**: `__tests__/functional/pages/`
+
+**Testing Approach**:
+```typescript
+// __tests__/functional/pages/properties-page.functional.test.tsx
+import PropertiesPage from '@/app/(root)/properties/page';
+
+describe('Properties Page', () => {
+  it('should render property listings based on search params', async () => {
+    // Arrange
+    const mockProps = {
+      searchParams: { page: '1', query: 'downtown' }
+    };
+
+    // Act
+    const jsx = await PropertiesPage(mockProps);
+    const { container } = render(jsx);
+
+    // Assert
+    expect(screen.getByText('Properties')).toBeInTheDocument();
+  });
+
+  it('should handle pagination via URL parameters', async () => {
+    const mockProps = { searchParams: { page: '2' } };
+    const jsx = await PropertiesPage(mockProps);
+    render(jsx);
+
+    expect(screen.getByText('Page 2')).toBeInTheDocument();
+  });
+
+  it('should fetch and display correct data for search params', async () => {
+    // Mock data layer
+    jest.spyOn(propertyData, 'fetchPaginatedProperties')
+      .mockResolvedValue({ properties: [...], total: 10 });
+
+    const jsx = await PropertiesPage({ searchParams: { type: 'apartment' } });
+    render(jsx);
+
+    await waitFor(() => {
+      expect(screen.getAllByTestId('property-card')).toHaveLength(10);
+    });
+  });
+});
+```
+
+**What to Test**:
+- ✅ SearchParams handling and parsing
+- ✅ Server-side data fetching
+- ✅ Conditional rendering based on props
+- ✅ Empty states and error states
+- ✅ Integration with child components
+
+**What NOT to Test**:
+- ❌ Next.js routing behavior (framework responsibility)
+- ❌ Server component streaming (framework responsibility)
+
+### 2. Layout Components (`layout.tsx`)
+
+**Test Type**: Component Tests (Section 1 - 30-35% coverage)
+
+**Location**: `__tests__/components/ui/layouts/`
+
+**Testing Approach**:
+```typescript
+// __tests__/components/ui/layouts/root-layout.component.test.tsx
+import RootLayout from '@/app/layout';
+
+describe('Root Layout', () => {
+  it('should render children within layout structure', () => {
+    const { container } = render(
+      <RootLayout>
+        <div data-testid="test-child">Test Content</div>
+      </RootLayout>
+    );
+
+    expect(screen.getByTestId('test-child')).toBeInTheDocument();
+    expect(container.querySelector('html')).toHaveAttribute('lang', 'en');
+  });
+
+  it('should include metadata and viewport configuration', () => {
+    // Test exported metadata object
+    const { metadata } = require('@/app/layout');
+
+    expect(metadata.title).toBe('Dwellio');
+    expect(metadata.description).toContain('property rental');
+  });
+
+  it('should apply correct body classes', () => {
+    const { container } = render(
+      <RootLayout><div>Content</div></RootLayout>
+    );
+
+    const body = container.querySelector('body');
+    expect(body).toHaveClass('min-h-screen');
+  });
+});
+
+// __tests__/components/ui/layouts/authenticated-layout.component.test.tsx
+describe('Authenticated Layout', () => {
+  it('should render navigation bar for authenticated users', async () => {
+    jest.spyOn(auth, 'getSessionUser').mockResolvedValue({
+      userId: '123',
+      user: mockUser
+    });
+
+    const jsx = await AuthenticatedLayout({ children: <div>Content</div> });
+    render(jsx);
+
+    expect(screen.getByTestId('nav-bar')).toBeInTheDocument();
+    expect(screen.getByText('Logout')).toBeInTheDocument();
+  });
+
+  it('should redirect unauthenticated users', async () => {
+    jest.spyOn(auth, 'getSessionUser').mockResolvedValue(null);
+
+    const jsx = await AuthenticatedLayout({ children: <div>Content</div> });
+    render(jsx);
+
+    expect(screen.queryByTestId('nav-bar')).not.toBeInTheDocument();
+  });
+});
+```
+
+**What to Test**:
+- ✅ Children rendering
+- ✅ Layout composition (header, footer, navigation)
+- ✅ Metadata exports (title, description)
+- ✅ Authentication-based layout variations
+- ✅ Responsive layout behavior
+
+**What NOT to Test**:
+- ❌ HTML document structure rendering (Next.js handles this)
+- ❌ Font loading optimization (framework responsibility)
+
+### 3. Error Boundaries (`error.tsx`)
+
+**Test Type**: Component Tests + Integration Tests
+
+**Location**: `__tests__/components/ui/error/` and `__tests__/integration/error-handling/`
+
+**Testing Approach**:
+
+**Component-level testing:**
+```typescript
+// __tests__/components/ui/error/error-page.component.test.tsx
+import ErrorPage from '@/app/error';
+
+describe('Error Page Component', () => {
+  const mockReset = jest.fn();
+  const mockError = new Error('Test error message');
+
+  it('should render error message', () => {
+    render(<ErrorPage error={mockError} reset={mockReset} />);
+
+    expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
+  });
+
+  it('should display error details in development', () => {
+    process.env.NODE_ENV = 'development';
+    render(<ErrorPage error={mockError} reset={mockReset} />);
+
+    expect(screen.getByText('Test error message')).toBeInTheDocument();
+  });
+
+  it('should hide error details in production', () => {
+    process.env.NODE_ENV = 'production';
+    render(<ErrorPage error={mockError} reset={mockReset} />);
+
+    expect(screen.queryByText('Test error message')).not.toBeInTheDocument();
+  });
+
+  it('should call reset function when retry button clicked', async () => {
+    const user = userEvent.setup();
+    render(<ErrorPage error={mockError} reset={mockReset} />);
+
+    const retryButton = screen.getByRole('button', { name: /try again/i });
+    await user.click(retryButton);
+
+    expect(mockReset).toHaveBeenCalledTimes(1);
+  });
+
+  it('should render navigation back to home', () => {
+    render(<ErrorPage error={mockError} reset={mockReset} />);
+
+    const homeLink = screen.getByRole('link', { name: /go home/i });
+    expect(homeLink).toHaveAttribute('href', '/');
+  });
+});
+```
+
+**Integration-level testing:**
+```typescript
+// __tests__/integration/error-handling/error-boundary.integration.test.tsx
+describe('Error Boundary Integration', () => {
+  it('should catch component errors and display error page', () => {
+    const ThrowError = () => {
+      throw new Error('Component crashed');
+    };
+
+    render(
+      <ErrorBoundary>
+        <ThrowError />
+      </ErrorBoundary>
+    );
+
+    expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
+  });
+
+  it('should recover from error state on reset', async () => {
+    const user = userEvent.setup();
+    let shouldThrow = true;
+
+    const MaybeThrow = () => {
+      if (shouldThrow) throw new Error('Error');
+      return <div>Success</div>;
+    };
+
+    const { rerender } = render(
+      <ErrorBoundary>
+        <MaybeThrow />
+      </ErrorBoundary>
+    );
+
+    // Error state
+    expect(screen.getByText(/something went wrong/i)).toBeInTheDocument();
+
+    // Fix the error
+    shouldThrow = false;
+
+    // Click reset
+    await user.click(screen.getByRole('button', { name: /try again/i }));
+
+    // Should recover
+    expect(screen.getByText('Success')).toBeInTheDocument();
+  });
+});
+```
+
+**What to Test**:
+- ✅ Error message display
+- ✅ Reset functionality
+- ✅ Environment-specific behavior (dev vs prod)
+- ✅ Navigation options from error state
+- ✅ Error recovery workflow
+
+### 4. Not Found Pages (`not-found.tsx`)
+
+**Test Type**: Functional Tests
+
+**Location**: `__tests__/functional/pages/`
+
+**Testing Approach**:
+```typescript
+// __tests__/functional/pages/not-found.functional.test.tsx
+import NotFound from '@/app/not-found';
+
+describe('Not Found Page', () => {
+  it('should render 404 page with appropriate message', () => {
+    render(<NotFound />);
+
+    expect(screen.getByText(/404/i)).toBeInTheDocument();
+    expect(screen.getByText(/page not found/i)).toBeInTheDocument();
+  });
+
+  it('should provide navigation back to home', () => {
+    render(<NotFound />);
+
+    const homeLink = screen.getByRole('link', { name: /go home/i });
+    expect(homeLink).toHaveAttribute('href', '/');
+  });
+
+  it('should display helpful message for users', () => {
+    render(<NotFound />);
+
+    expect(screen.getByText(/the page you're looking for/i)).toBeInTheDocument();
+  });
+
+  it('should include search functionality', () => {
+    render(<NotFound />);
+
+    expect(screen.getByPlaceholderText(/search/i)).toBeInTheDocument();
+  });
+
+  it('should suggest popular pages or resources', () => {
+    render(<NotFound />);
+
+    expect(screen.getByText(/popular pages/i)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /properties/i })).toBeInTheDocument();
+  });
+});
+
+// Test dynamic not-found behavior
+describe('Dynamic Not Found', () => {
+  it('should trigger not-found for invalid property ID', async () => {
+    jest.spyOn(propertyData, 'getPropertyById').mockResolvedValue(null);
+
+    const jsx = await PropertyPage({ params: { id: 'invalid-id' } });
+    render(jsx);
+
+    expect(screen.getByText(/property not found/i)).toBeInTheDocument();
+  });
+});
+```
+
+**What to Test**:
+- ✅ 404 message display
+- ✅ Navigation options
+- ✅ Helpful content (search, popular links)
+- ✅ Dynamic not-found triggering (via notFound() function)
+
+### 5. API Route Handlers (`route.ts`)
+
+**Test Type**: Integration Tests (Section 3 - 25-30% coverage)
+
+**Location**: `__tests__/integration/api-routes/`
+
+**Testing Approach**:
+```typescript
+// __tests__/integration/api-routes/properties-api.integration.test.tsx
+import { GET, POST, PATCH, DELETE } from '@/app/api/properties/route';
+import { NextRequest } from 'next/server';
+
+describe('GET /api/properties', () => {
+  it('should return paginated properties', async () => {
+    const request = new NextRequest('http://localhost:3000/api/properties?page=1');
+
+    const response = await GET(request);
+    const data = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(data.properties).toHaveLength(10);
+    expect(data.total).toBeGreaterThan(0);
+  });
+
+  it('should handle query parameters for filtering', async () => {
+    const request = new NextRequest(
+      'http://localhost:3000/api/properties?type=apartment&city=Miami'
+    );
+
+    const response = await GET(request);
+    const data = await response.json();
+
+    expect(response.status).toBe(200);
+    data.properties.forEach(property => {
+      expect(property.type).toBe('apartment');
+    });
+  });
+
+  it('should return 400 for invalid query parameters', async () => {
+    const request = new NextRequest(
+      'http://localhost:3000/api/properties?page=invalid'
+    );
+
+    const response = await GET(request);
+
+    expect(response.status).toBe(400);
+  });
+});
+
+describe('POST /api/properties', () => {
+  it('should create new property for authenticated user', async () => {
+    jest.spyOn(auth, 'getSessionUser').mockResolvedValue({ userId: '123' });
+
+    const request = new NextRequest('http://localhost:3000/api/properties', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: 'Test Property',
+        type: 'apartment',
+        // ... other fields
+      }),
+    });
+
+    const response = await POST(request);
+    const data = await response.json();
+
+    expect(response.status).toBe(201);
+    expect(data.property.name).toBe('Test Property');
+  });
+
+  it('should return 401 for unauthenticated requests', async () => {
+    jest.spyOn(auth, 'getSessionUser').mockResolvedValue(null);
+
+    const request = new NextRequest('http://localhost:3000/api/properties', {
+      method: 'POST',
+      body: JSON.stringify({ name: 'Test' }),
+    });
+
+    const response = await POST(request);
+
+    expect(response.status).toBe(401);
+  });
+
+  it('should validate required fields', async () => {
+    jest.spyOn(auth, 'getSessionUser').mockResolvedValue({ userId: '123' });
+
+    const request = new NextRequest('http://localhost:3000/api/properties', {
+      method: 'POST',
+      body: JSON.stringify({ name: '' }), // Missing required fields
+    });
+
+    const response = await POST(request);
+    const data = await response.json();
+
+    expect(response.status).toBe(400);
+    expect(data.errors).toBeDefined();
+  });
+});
+
+describe('PATCH /api/properties/[id]', () => {
+  it('should update property for owner', async () => {
+    const mockProperty = { _id: '123', owner: 'user-123', name: 'Old Name' };
+    jest.spyOn(auth, 'getSessionUser').mockResolvedValue({ userId: 'user-123' });
+    jest.spyOn(propertyData, 'getPropertyById').mockResolvedValue(mockProperty);
+
+    const request = new NextRequest('http://localhost:3000/api/properties/123', {
+      method: 'PATCH',
+      body: JSON.stringify({ name: 'New Name' }),
+    });
+
+    const response = await PATCH(request, { params: { id: '123' } });
+    const data = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(data.property.name).toBe('New Name');
+  });
+
+  it('should return 403 for non-owner', async () => {
+    const mockProperty = { _id: '123', owner: 'user-123' };
+    jest.spyOn(auth, 'getSessionUser').mockResolvedValue({ userId: 'user-456' });
+    jest.spyOn(propertyData, 'getPropertyById').mockResolvedValue(mockProperty);
+
+    const request = new NextRequest('http://localhost:3000/api/properties/123', {
+      method: 'PATCH',
+      body: JSON.stringify({ name: 'Hacked' }),
+    });
+
+    const response = await PATCH(request, { params: { id: '123' } });
+
+    expect(response.status).toBe(403);
+  });
+});
+
+describe('DELETE /api/properties/[id]', () => {
+  it('should delete property for owner', async () => {
+    const mockProperty = { _id: '123', owner: 'user-123' };
+    jest.spyOn(auth, 'getSessionUser').mockResolvedValue({ userId: 'user-123' });
+    jest.spyOn(propertyData, 'getPropertyById').mockResolvedValue(mockProperty);
+
+    const request = new NextRequest('http://localhost:3000/api/properties/123', {
+      method: 'DELETE',
+    });
+
+    const response = await DELETE(request, { params: { id: '123' } });
+
+    expect(response.status).toBe(204);
+  });
+
+  it('should return 404 for non-existent property', async () => {
+    jest.spyOn(propertyData, 'getPropertyById').mockResolvedValue(null);
+
+    const request = new NextRequest('http://localhost:3000/api/properties/999', {
+      method: 'DELETE',
+    });
+
+    const response = await DELETE(request, { params: { id: '999' } });
+
+    expect(response.status).toBe(404);
+  });
+});
+```
+
+**What to Test**:
+- ✅ Request/response handling for all HTTP methods (GET, POST, PATCH, DELETE)
+- ✅ Query parameter parsing and validation
+- ✅ Request body validation
+- ✅ Authentication and authorization
+- ✅ Error responses (400, 401, 403, 404, 500)
+- ✅ Success responses with correct status codes
+- ✅ Data transformation and serialization
+
+**What NOT to Test**:
+- ❌ Next.js routing behavior (framework responsibility)
+- ❌ HTTP protocol details (framework responsibility)
+
+### 6. Loading States (`loading.tsx`)
+
+**Test Type**: Component Tests
+
+**Location**: `__tests__/components/ui/loading/`
+
+**Testing Approach**:
+```typescript
+// __tests__/components/ui/loading/loading-page.component.test.tsx
+import Loading from '@/app/(root)/properties/loading';
+
+describe('Loading Page', () => {
+  it('should render loading skeleton', () => {
+    render(<Loading />);
+
+    expect(screen.getByTestId('loading-skeleton')).toBeInTheDocument();
+  });
+
+  it('should display loading message', () => {
+    render(<Loading />);
+
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
+  });
+
+  it('should render accessible loading indicator', () => {
+    render(<Loading />);
+
+    const loader = screen.getByRole('status');
+    expect(loader).toHaveAttribute('aria-live', 'polite');
+  });
+});
+```
+
+**What to Test**:
+- ✅ Loading UI renders correctly
+- ✅ Accessibility attributes
+- ✅ Skeleton matching actual page layout
+
+### Summary Table
+
+| File Type | Test Type | Location | Coverage Priority |
+|-----------|-----------|----------|-------------------|
+| `page.tsx` | Functional | `__tests__/functional/pages/` | High (35-40%) |
+| `layout.tsx` | Component | `__tests__/components/ui/layouts/` | Medium (30-35%) |
+| `error.tsx` | Component + Integration | `__tests__/components/ui/error/` + `__tests__/integration/error-handling/` | Medium (25-30%) |
+| `not-found.tsx` | Functional | `__tests__/functional/pages/` | Low (5-10%) |
+| `route.ts` | Integration | `__tests__/integration/api-routes/` | High (25-30%) |
+| `loading.tsx` | Component | `__tests__/components/ui/loading/` | Low (5-10%) |
+
+### Implementation Priority
+
+1. **Week 5**: Page components (`page.tsx`) - Functional tests
+2. **Week 6**: API routes (`route.ts`) - Integration tests
+3. **Week 4**: Layout components (`layout.tsx`) - Component tests
+4. **Week 7**: Error boundaries (`error.tsx`) - Integration tests
+5. **Week 3-4**: Not found and loading pages - Component tests
+
 ## Conclusion
 
 This v2.0 testing strategy addresses the coverage gaps identified in the v1.0 implementation by:
@@ -945,5 +1494,6 @@ This v2.0 testing strategy addresses the coverage gaps identified in the v1.0 im
 3. **Reducing over-mocking** to test real component behavior
 4. **Implementing coverage-driven development** with weekly tracking
 5. **Providing clear guidelines** for when to write each test type
+6. **Explicitly covering Next.js special files** (page.tsx, layout.tsx, error.tsx, not-found.tsx, route.ts)
 
 The result is a more efficient path to 80-85% coverage while maintaining high test quality and maintainability.
