@@ -1,4 +1,4 @@
-# Jest Unit and Integration Testing Plan v2.0
+# Testing Plan v2.0
 
 ## Overview
 
@@ -135,46 +135,188 @@ describe('Property Management Flow', () => {
 })
 ```
 
-### 4. E2E Tests (5% of coverage)
-**Purpose**: Test complete user journeys in browser-like environment
+### 4. E2E Tests (5% of coverage) - Cypress
+**Purpose**: Test complete user journeys in real browser environment
+
+**Framework**: Cypress (https://www.cypress.io/)
+- Modern E2E testing framework built for web applications
+- Real browser automation (Chrome, Firefox, Edge, Electron)
+- Time-travel debugging with automatic waiting
+- Network stubbing and request/response interception
+- Visual regression testing capabilities
 
 #### Scope
-- **Critical Paths**: User registration → property creation → booking
-- **Cross-Browser**: Ensure functionality works across browsers
-- **Performance**: Load times, responsiveness
-- **Accessibility**: Screen reader compatibility, keyboard navigation
+- **Critical User Journeys**: Complete flows from start to finish in real browser
+- **Authentication Flows**: Login, logout, session persistence
+- **Property Management**: Create → Edit → Delete property workflows
+- **Search & Filter**: Search execution, filter application, result display
+- **Messaging**: Send message, view messages, mark as read
+- **Favorites**: Add to favorites, view favorites, remove from favorites
+- **Cross-Browser Testing**: Chrome, Firefox, Edge compatibility
+- **Mobile Responsiveness**: Touch interactions, responsive layouts
+- **Performance Monitoring**: Page load times, API response times
+- **Accessibility**: Keyboard navigation, focus management, ARIA attributes
+
+#### When to Write E2E Tests (Cypress)
+- ✅ Critical user paths that generate revenue or conversions
+- ✅ Authentication and authorization workflows
+- ✅ Multi-step processes (property creation, user registration)
+- ✅ Features that require real browser APIs (file uploads, geolocation)
+- ✅ Visual regression testing for critical UI components
+- ⚠️ NOT for every feature - E2E tests are slow and expensive
+
+#### Cypress Test Structure
+```javascript
+// cypress/e2e/property-management/create-property.cy.js
+describe('Property Creation Flow', () => {
+  beforeEach(() => {
+    cy.login('testuser@example.com', 'password123')
+  })
+
+  it('should create a new property with all required fields', () => {
+    // Navigate to create property page
+    cy.visit('/properties/add')
+
+    // Fill in property details
+    cy.get('[data-cy=property-name]').type('Luxury Downtown Apartment')
+    cy.get('[data-cy=property-type]').select('Apartment')
+    cy.get('[data-cy=property-beds]').type('2')
+    cy.get('[data-cy=property-baths]').type('2')
+
+    // Upload images
+    cy.get('[data-cy=image-upload]').selectFile([
+      'cypress/fixtures/images/property1.jpg',
+      'cypress/fixtures/images/property2.jpg'
+    ])
+
+    // Submit form
+    cy.get('[data-cy=submit-property]').click()
+
+    // Verify success
+    cy.url().should('include', '/properties/')
+    cy.contains('Property created successfully').should('be.visible')
+  })
+
+  it('should display validation errors for missing required fields', () => {
+    cy.visit('/properties/add')
+    cy.get('[data-cy=submit-property]').click()
+
+    cy.get('[data-cy=error-property-name]').should('contain', 'Name is required')
+    cy.get('[data-cy=error-images]').should('contain', 'At least three images are required')
+  })
+})
+
+// cypress/e2e/search/property-search.cy.js
+describe('Property Search & Filter', () => {
+  it('should search properties and display results', () => {
+    cy.visit('/properties')
+
+    // Perform search
+    cy.get('[data-cy=search-input]').type('downtown apartment')
+    cy.get('[data-cy=search-button]').click()
+
+    // Wait for results
+    cy.get('[data-cy=property-card]').should('have.length.at.least', 1)
+    cy.get('[data-cy=property-card]').first()
+      .should('contain', 'downtown')
+  })
+
+  it('should filter properties by type and location', () => {
+    cy.visit('/properties')
+
+    // Apply filters
+    cy.get('[data-cy=filter-type]').select('Apartment')
+    cy.get('[data-cy=filter-city]').type('New York')
+
+    // Verify URL updated
+    cy.url().should('include', 'type=Apartment')
+    cy.url().should('include', 'city=New+York')
+
+    // Verify filtered results
+    cy.get('[data-cy=property-card]').each(($card) => {
+      cy.wrap($card).should('contain', 'Apartment')
+    })
+  })
+})
+```
+
+#### Cypress Best Practices
+1. **Use data-cy attributes** for test selectors instead of classes or IDs
+2. **Create custom commands** for common operations (login, create property)
+3. **Intercept network requests** to test loading states and error handling
+4. **Use fixtures** for consistent test data
+5. **Avoid hard waits** - use Cypress automatic waiting
+6. **Test one thing per test** - keep tests focused and isolated
+7. **Run headless in CI** - use `cy.run()` for automated pipelines
+
+#### Cypress Configuration
+```javascript
+// cypress.config.js
+const { defineConfig } = require('cypress')
+
+module.exports = defineConfig({
+  e2e: {
+    baseUrl: 'http://localhost:3000',
+    viewportWidth: 1280,
+    viewportHeight: 720,
+    video: true,
+    screenshotOnRunFailure: true,
+    chromeWebSecurity: false,
+    setupNodeEvents(on, config) {
+      // implement node event listeners here
+    },
+  },
+  env: {
+    apiUrl: 'http://localhost:3000/api',
+  },
+})
+```
 
 ## Project Structure & Organization v2.0
 
 ### Test Directory Structure
 ```
-__tests__/
-├── unit/                    # Pure unit tests
-│   ├── utils/              # Utility function tests
-│   ├── lib/                # Business logic tests
-│   └── models/             # Data model tests
-├── functional/             # Page and workflow tests
-│   ├── pages/              # Page component tests
-│   ├── workflows/          # User workflow tests
-│   └── forms/              # Form interaction tests
-├── integration/            # Cross-component tests
-│   ├── auth-flow/          # Authentication integration
-│   ├── property-mgmt/      # Property management integration
-│   └── messaging/          # Messaging system integration
-├── components/             # Individual component tests
-│   ├── ui/                 # UI component tests
-│   └── shared/             # Shared component tests
-└── e2e/                    # End-to-end tests
-    ├── critical-paths/     # Must-work user journeys
-    └── performance/        # Performance benchmarks
+__tests__/                  # Jest unit, component, functional, and integration tests
+├── unit/                   # Pure unit tests (Jest)
+│   ├── utils/             # Utility function tests
+│   ├── lib/               # Business logic tests
+│   └── models/            # Data model tests
+├── functional/            # Page and workflow tests (Jest)
+│   ├── pages/             # Page component tests
+│   ├── workflows/         # User workflow tests
+│   └── forms/             # Form interaction tests
+├── integration/           # Cross-component tests (Jest)
+│   ├── auth-flow/         # Authentication integration
+│   ├── property-mgmt/     # Property management integration
+│   └── messaging/         # Messaging system integration
+├── components/            # Individual component tests (Jest)
+│   ├── ui/                # UI component tests
+│   └── shared/            # Shared component tests
+└── __mocks__/             # Mock implementations for Jest
+
+cypress/                   # Cypress E2E tests (separate from Jest)
+├── e2e/                   # End-to-end test specs
+│   ├── auth/              # Authentication flows
+│   ├── property-management/ # Property CRUD workflows
+│   ├── search/            # Search and filter tests
+│   ├── messaging/         # Messaging system tests
+│   └── favorites/         # Favorites functionality
+├── fixtures/              # Test data and files
+│   ├── images/            # Test images for uploads
+│   ├── properties.json    # Property test data
+│   └── users.json         # User test data
+├── support/               # Custom commands and utilities
+│   ├── commands.js        # Cypress custom commands
+│   └── e2e.js            # Global test setup
+└── downloads/             # Downloaded files during tests
 ```
 
 ### Naming Conventions
-- **Unit Tests**: `[function-name].unit.test.ts`
-- **Functional Tests**: `[page-name].functional.test.tsx`
-- **Integration Tests**: `[workflow-name].integration.test.tsx`
-- **Component Tests**: `[component-name].component.test.tsx`
-- **E2E Tests**: `[journey-name].e2e.test.ts`
+- **Unit Tests (Jest)**: `[function-name].unit.test.ts`
+- **Functional Tests (Jest)**: `[page-name].functional.test.tsx`
+- **Integration Tests (Jest)**: `[workflow-name].integration.test.tsx`
+- **Component Tests (Jest)**: `[component-name].component.test.tsx`
+- **E2E Tests (Cypress)**: `[journey-name].cy.js`
 
 ## Implementation Strategy v2.0
 
@@ -536,17 +678,150 @@ module.exports = {
 
 ### Test Execution Strategy
 ```bash
-# Run tests by type
+# Jest Tests (Unit, Component, Functional, Integration)
 npm run test:unit          # Fast unit tests only
 npm run test:functional    # Page and workflow tests
 npm run test:integration   # Cross-component tests
-npm run test:all          # All tests
+npm run test:all          # All Jest tests
 
-# Development workflow
+# Development workflow (Jest)
 npm run test:watch         # Watch mode for active development
 npm run test:coverage      # Coverage analysis
 npm run test:changed       # Only test changed files
+
+# Cypress E2E Tests
+npm run cypress:open       # Open Cypress Test Runner (interactive)
+npm run cypress:run        # Run Cypress tests headless (CI)
+npm run cypress:run:chrome # Run in Chrome browser
+npm run cypress:run:firefox # Run in Firefox browser
+
+# Complete Test Suite (Jest + Cypress)
+npm run test:e2e          # Run all E2E tests headless
+npm run test:complete     # Run all Jest tests + Cypress E2E
 ```
+
+### Cypress Installation & Setup
+```bash
+# Install Cypress
+npm install --save-dev cypress @testing-library/cypress
+
+# Initialize Cypress (creates cypress/ directory structure)
+npx cypress open
+
+# Add to package.json scripts
+{
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "cypress:run:chrome": "cypress run --browser chrome",
+    "cypress:run:firefox": "cypress run --browser firefox",
+    "test:e2e": "cypress run --headless",
+    "test:complete": "npm test && npm run test:e2e"
+  }
+}
+```
+
+### Cypress Custom Commands
+Create reusable commands for common operations:
+
+```javascript
+// cypress/support/commands.js
+Cypress.Commands.add('login', (email, password) => {
+  cy.session([email, password], () => {
+    cy.visit('/login')
+    cy.get('[data-cy=email-input]').type(email)
+    cy.get('[data-cy=password-input]').type(password)
+    cy.get('[data-cy=login-button]').click()
+    cy.url().should('not.include', '/login')
+  })
+})
+
+Cypress.Commands.add('createProperty', (propertyData) => {
+  cy.request({
+    method: 'POST',
+    url: '/api/properties',
+    body: propertyData,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((response) => {
+    expect(response.status).to.eq(201)
+    return response.body
+  })
+})
+
+Cypress.Commands.add('seedDatabase', () => {
+  cy.exec('npm run db:seed:test')
+})
+
+Cypress.Commands.add('cleanDatabase', () => {
+  cy.exec('npm run db:clean:test')
+})
+```
+
+### Implementing data-cy Attributes for Cypress
+To make components testable with Cypress, add `data-cy` attributes to key interactive elements:
+
+```typescript
+// ✅ GOOD: Components with data-cy attributes
+export default function PropertyCard({ property }: PropertyCardProps) {
+  return (
+    <div data-cy="property-card" data-cy-id={property.id}>
+      <h2 data-cy="property-name">{property.name}</h2>
+      <p data-cy="property-price">{getRateDisplay(property.rates)}</p>
+      <button data-cy="favorite-button" onClick={handleFavorite}>
+        Add to Favorites
+      </button>
+      <Link href={`/properties/${property.id}`} data-cy="view-details-link">
+        View Details
+      </Link>
+    </div>
+  )
+}
+
+// ✅ GOOD: Form inputs with data-cy attributes
+export default function PropertySearchForm() {
+  return (
+    <form data-cy="search-form" onSubmit={handleSubmit}>
+      <input
+        data-cy="search-input"
+        type="text"
+        placeholder="Search properties..."
+      />
+      <button data-cy="search-button" type="submit">
+        Search
+      </button>
+    </form>
+  )
+}
+
+// ✅ GOOD: Error messages with data-cy attributes
+export default function FormErrors({ errors }: FormErrorsProps) {
+  return (
+    <div data-cy="form-errors">
+      {errors.map((error, index) => (
+        <p key={index} data-cy={`error-${error.field}`}>
+          {error.message}
+        </p>
+      ))}
+    </div>
+  )
+}
+```
+
+**When to Add data-cy Attributes:**
+- ✅ Interactive elements (buttons, links, inputs, selects)
+- ✅ Form fields and validation error messages
+- ✅ Dynamic content that changes based on user actions
+- ✅ Navigation elements and modals
+- ✅ Loading states and error states
+- ⚠️ NOT needed for static text or purely decorative elements
+
+**Naming Conventions for data-cy:**
+- Use kebab-case: `data-cy="property-name"`
+- Be descriptive: `data-cy="submit-property-button"` not `data-cy="btn1"`
+- Include context: `data-cy="error-email"` not just `data-cy="error"`
+- Use consistent patterns: all buttons end with `-button`, all inputs end with `-input`
 
 ## Quality Assurance
 
