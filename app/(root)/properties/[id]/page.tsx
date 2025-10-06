@@ -20,6 +20,8 @@ const PropertyPage = async ( { params }: { params: Promise<{ id: string }> }) =>
     const { id } = await params;
     const sessionUser = await getSessionUser();
 
+    console.log('^^^ PROPERTY ID ^^^', id);
+
     const propertyDoc = await fetchProperty(id);
     const property = toSerializedObject(propertyDoc);
 

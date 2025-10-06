@@ -18,7 +18,7 @@ const LoginOrSignupButton = () => {
             
             <div className="flex items-center">
                 <Link
-                    href={`login${loginParams ? `?${loginParams.toString()}` : ""}`}
+                    href={`/login${loginParams ? `?${loginParams.toString()}` : ""}`}
                     className="btn btn-login-logout py-[6px] px-3"
                 >
                     Log In or Sign Up
