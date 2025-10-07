@@ -31,7 +31,8 @@
       "Bash(for:*)",
       "Bash(do echo \"$file:\")",
       "Bash(done)",
-      "Bash(npm run type-check:*)"
+      "Bash(npm run type-check:*)",
+      "Bash(git checkout:*)"
     ],
     "deny": [],
     "ask": []
