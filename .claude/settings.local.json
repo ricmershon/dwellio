@@ -26,7 +26,12 @@
       "Bash(npx next lint:*)",
       "Bash(mv:*)",
       "Bash(cat:*)",
-      "Bash(npm run lint:tests:*)"
+      "Bash(npm run lint:tests:*)",
+      "mcp__ide__getDiagnostics",
+      "Bash(for:*)",
+      "Bash(do echo \"$file:\")",
+      "Bash(done)",
+      "Bash(npm run type-check:*)"
     ],
     "deny": [],
     "ask": []
