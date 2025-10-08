@@ -32,7 +32,9 @@
       "Bash(do echo \"$file:\")",
       "Bash(done)",
       "Bash(npm run type-check:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(do echo \"=== $dir tests ===\" find __tests__/$dir -name \"*.test.ts*\" -type f)",
+      "Bash(while read file)"
     ],
     "deny": [],
     "ask": []

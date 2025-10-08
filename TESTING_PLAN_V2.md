@@ -485,6 +485,48 @@ describe('calculateMonthlyRate', () => {
 });
 ```
 
+### Component Test Guidelines
+
+#### DO:
+- **Test Component Behavior**: User interactions, prop handling, state changes
+- **Mock Child Components**: Isolate the component under test
+- **Mock External Dependencies**: Next.js (Image, Link), icons, external libraries
+- **Spy on Internal Utilities**: Use `jest.spyOn()` for internal functions (don't mock)
+- **Test Accessibility**: ARIA attributes, keyboard navigation, screen reader text
+- **Test Visual States**: Loading, error, empty, success states
+
+#### DON'T:
+- **Test Implementation Details**: Internal state variables, private methods
+- **Mock Internal Business Logic**: Keep utility functions real (use spies)
+- **Test Deep Component Trees**: Mock children to prevent cascade failures
+- **Over-Mock**: Only mock what's necessary for isolation
+
+#### Example Component Test Pattern:
+```typescript
+// ✅ GOOD: Mock child components and external dependencies
+jest.mock('next/image', () => ({ /* mock */ }));
+jest.mock('next/link', () => ({ /* mock */ }));
+jest.mock('@/ui/properties/property-card', () => ({ /* mock child */ }));
+
+// ✅ GOOD: Spy on internal utilities (don't mock)
+jest.spyOn(getSessionUser, 'getSessionUser');
+jest.spyOn(getRateDisplay, 'getRateDisplay');
+
+describe('PropertiesList Component', () => {
+  it('should render property cards for each property', () => {
+    render(<PropertiesList properties={mockProperties} />);
+
+    expect(screen.getAllByTestId('property-card')).toHaveLength(3);
+  });
+
+  it('should call getSessionUser to check authentication', () => {
+    render(<PropertiesList properties={mockProperties} />);
+
+    expect(getSessionUser.getSessionUser).toHaveBeenCalled();
+  });
+});
+```
+
 ### Functional Test Guidelines
 
 #### DO:
@@ -589,6 +631,30 @@ expect(PropertySchema.path('name').options.required).toBe(true);
 - **Unit tests**: Test schema structure/configuration only
 - **Integration tests**: Test actual validation with real Mongoose + MongoDB
 
+#### Component Tests: Mock Child Components and External Dependencies
+```typescript
+// Mock child components for isolation
+jest.mock('@/ui/properties/property-card', () => ({
+    __esModule: true,
+    default: ({ property }: any) => (
+        <div data-testid="property-card">{property.name}</div>
+    ),
+}));
+
+// Mock external dependencies
+jest.mock('next/image', () => ({ /* mock */ }));
+jest.mock('next/link', () => ({ /* mock */ }));
+
+// Spy on internal utilities (don't mock)
+jest.spyOn(getSessionUser, 'getSessionUser');
+```
+
+**Why mock child components?**
+- Focus on testing one component in isolation
+- Prevent cascading test failures
+- Each component has its own comprehensive tests
+- Faster test execution (shallow rendering)
+
 #### Functional Tests: Mock Services, Keep Components Real
 ```typescript
 // Mock external services
@@ -598,6 +664,34 @@ jest.mock('@/lib/actions/property-actions');
 // Keep UI components real - don't mock
 import PropertyCard from '@/ui/properties/property-card'; // Real component
 ```
+
+**Exception for Next.js Server Components**:
+When testing pages with async server component children, a pragmatic approach is needed:
+
+```typescript
+// For Next.js server component pages (page.tsx files)
+// Mock child components to isolate page-level logic and structure
+
+jest.mock('@/ui/root/page/hero', () => {
+    return function MockHero() {
+        return <div data-testid="hero">Hero Component</div>;
+    };
+});
+
+jest.mock('@/lib/data/property-data'); // Still mock services
+```
+
+**Why this exception?**
+- Async server components with nested async children create complex testing scenarios
+- Mocking child components allows focus on page-level composition and logic
+- Child components have their own comprehensive unit/component tests
+- Full integration testing is better handled by E2E tests (Cypress)
+- This approach still provides value: page structure, routing, conditional rendering
+
+**When to use this approach:**
+- ✅ Testing `page.tsx` files with async child components
+- ✅ Testing complex server component composition
+- ⚠️ **NOT** for testing client components or simple synchronous pages
 
 #### Integration Tests: Mock External Services Only
 ```typescript
@@ -1073,6 +1167,99 @@ describe('Authenticated Layout', () => {
 - ✅ Metadata exports (title, description)
 - ✅ Authentication-based layout variations
 - ✅ Responsive layout behavior
+- ✅ Data fetching behavior (for async layouts)
+- ✅ Async server component behavior
+
+**What NOT to Test**:
+- ❌ HTML document structure rendering (Next.js handles this)
+- ❌ Font loading optimization (framework responsibility)
+
+**⚠️ jsdom Limitations with Layout Components**:
+
+Layout components that render `<html>` and `<body>` tags have fundamental limitations in jsdom testing environments:
+
+**The Issue**:
+```typescript
+// This will cause a hydration error in jsdom:
+render(<RootLayout><div>Test</div></RootLayout>);
+// Error: In HTML, <html> cannot be a child of <div>
+```
+
+jsdom's `render()` function wraps everything in a `<div>`, so when your layout component tries to render `<html>` and `<body>` tags, React throws a hydration error because these tags cannot be children of a `<div>`.
+
+**Recommended Testing Approach**:
+
+1. **Test Metadata Exports** (fully testable):
+```typescript
+import RootLayout, { metadata, dynamic } from '@/app/(root)/layout';
+
+describe('RootLayout Metadata', () => {
+  it('should export correct metadata', () => {
+    expect(metadata.title).toEqual({
+      template: '%s | Dwellio',
+      default: 'Dwellio'
+    });
+    expect(metadata.description).toBe('Find an awesome vacation property');
+  });
+
+  it('should use force-dynamic rendering', () => {
+    expect(dynamic).toBe('force-dynamic');
+  });
+});
+```
+
+2. **Test Data Fetching Behavior** (for async layouts):
+```typescript
+describe('RootLayout Data Fetching', () => {
+  it('should fetch static inputs before rendering', async () => {
+    const mockFetch = jest.spyOn(staticInputsData, 'fetchStaticInputs')
+      .mockResolvedValue(mockData);
+
+    await RootLayout({ children: <div>Test</div> });
+
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
+
+  it('should handle fetch errors', async () => {
+    jest.spyOn(staticInputsData, 'fetchStaticInputs')
+      .mockRejectedValue(new Error('Fetch failed'));
+
+    await expect(async () => {
+      await RootLayout({ children: <div>Test</div> });
+    }).rejects.toThrow('Fetch failed');
+  });
+});
+```
+
+3. **Test Async Component Behavior**:
+```typescript
+describe('RootLayout Async Behavior', () => {
+  it('should be an async function', () => {
+    const result = RootLayout({ children: <div>Test</div> });
+    expect(result).toBeInstanceOf(Promise);
+  });
+
+  it('should handle children prop correctly', async () => {
+    const result = await RootLayout({
+      children: <main>Page Content</main>
+    });
+    expect(result).toBeDefined();
+  });
+});
+```
+
+4. **Defer Full DOM Testing to E2E Tests**:
+Full layout rendering with `<html>`, `<body>`, navigation, providers, and complete component trees is better tested through:
+- **Cypress/Playwright E2E tests** (future implementation)
+- **Visual regression tests** (Chromatic, Percy, etc.)
+- **Manual browser testing** during development
+
+**Why This Approach Works**:
+- ✅ Tests the component's actual logic and data fetching
+- ✅ Validates metadata configuration
+- ✅ Confirms async behavior and error handling
+- ✅ Avoids fighting jsdom's structural limitations
+- ✅ Complements E2E tests that will validate full rendering
 
 **What NOT to Test**:
 - ❌ HTML document structure rendering (Next.js handles this)

@@ -507,27 +507,59 @@ touch __tests__/functional/pages/not-found.functional.test.tsx
 
 **Expected Coverage Boost**: +8-10% ✅ **ACHIEVED**
 
+**Mock Organization Note**: These functional tests follow the **Next.js Server Component Exception** pattern documented in TESTING_PLAN_V2.md (Section: Mock Organization v2.0 → Functional Tests). Child UI components are mocked to isolate page-level logic while external services are mocked following standard guidelines. This pragmatic approach is appropriate for:
+- `page.tsx` files with async server component children
+- Complex server component composition
+- Tests focusing on page structure, routing, and conditional rendering
+
+Full integration of real components is handled by:
+- Individual component unit tests (already implemented in Phase 2)
+- E2E tests with Cypress (future implementation)
+
 #### 5.1.1 Layout Components (`layout.tsx` files)
 ```bash
 mkdir -p __tests__/components/ui/layouts
 touch __tests__/components/ui/layouts/root-layout.component.test.tsx
-touch __tests__/components/ui/layouts/authenticated-layout.component.test.tsx
+touch __tests__/components/ui/layouts/login-layout.component.test.tsx
 ```
 
 **Implementation Checklist:**
-- [ ] **root-layout.component.test.tsx**: Test root layout (`app/layout.tsx`)
-  - [ ] Children rendering within layout structure
-  - [ ] Metadata exports (title, description, viewport)
-  - [ ] HTML lang attribute
-  - [ ] Body classes and styling
-  - [ ] Global providers wrapping
-- [ ] **authenticated-layout.component.test.tsx**: Test auth layout (`app/(auth)/layout.tsx`)
-  - [ ] Navigation bar for authenticated users
-  - [ ] Redirect for unauthenticated users
-  - [ ] Layout composition
-  - [ ] Session-based rendering
+- [x] **root-layout.component.test.tsx**: Test root layout (`app/(root)/layout.tsx`) - **24 tests**
+  - [x] Metadata exports (title template, description, keywords)
+  - [x] Dynamic rendering configuration
+  - [x] Data fetching behavior (fetchStaticInputs)
+  - [x] Async server component behavior
+  - [x] Children prop handling
+  - [x] Error handling for fetch failures
+  - [x] Performance (fetch timing, call count)
+  - [x] Type safety (Readonly children)
+  - [x] Edge cases (repeated calls, concurrent calls, nested children)
+- [x] **login-layout.component.test.tsx**: Test login layout (`app/(login)/login/layout.tsx`) - **27 tests**
+  - [x] Children rendering within minimal layout structure
+  - [x] Styling and responsive classes (bg-white, min-h-screen, flex, padding)
+  - [x] Minimal design (no nav, footer, toast, providers)
+  - [x] Accessibility (main tag, keyboard navigation)
+  - [x] Edge cases (multiple children, empty children, nested children)
+  - [x] Synchronous component behavior
+  - [x] Integration with login pages
+
+**Files Created:**
+- `__tests__/components/ui/layouts/root-layout.component.test.tsx` (277 lines, 24 tests)
+- `__tests__/components/ui/layouts/login-layout.component.test.tsx` (349 lines, 27 tests)
+- `__tests__/__mocks__/fileMock.js` (image asset mocking)
+
+**Testing Approach Note:**
+Due to jsdom limitations with `<html>` and `<body>` tags, layout tests focus on:
+- Metadata exports and configuration (fully testable)
+- Data fetching behavior for async layouts (fully testable)
+- Async component behavior (fully testable)
+- Children prop handling (fully testable)
+
+Full DOM rendering with html/body structure is deferred to future E2E tests (Cypress/Playwright).
+See TESTING_PLAN_V2.md Section "Testing Next.js Special Files - Layout Components" for detailed rationale.
 
 **Expected Coverage Boost**: +2-3%
+**Actual Results**: 51 tests passing, 0 failures
 
 #### 5.1.2 Error Boundaries (`error.tsx` files)
 ```bash
