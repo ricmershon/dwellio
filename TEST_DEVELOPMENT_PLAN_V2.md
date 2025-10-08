@@ -570,17 +570,32 @@ touch __tests__/integration/error-handling/error-boundary.integration.test.tsx
 ```
 
 **Implementation Checklist:**
-- [ ] **error-page.component.test.tsx**: Test error page (`app/error.tsx`)
-  - [ ] Error message display
-  - [ ] Environment-specific behavior (dev vs prod)
-  - [ ] Reset functionality
-  - [ ] Navigation back to home
-- [ ] **error-boundary.integration.test.tsx**: Test error recovery
-  - [ ] Component error catching
-  - [ ] Error state display
-  - [ ] Reset and recovery workflow
+- [x] **error-page.component.test.tsx**: Test error page (`app/(root)/error.tsx`) - **31 tests**
+  - [x] Error message display (toString() rendering)
+  - [x] Error type handling (TypeError, ReferenceError, generic Error)
+  - [x] Navigation back to home (link, href, styling)
+  - [x] Layout and styling (full-height, centering, responsive)
+  - [x] Icon rendering (FaExclamationCircle)
+  - [x] Accessibility (keyboard navigation, semantic elements)
+  - [x] Edge cases (long messages, special characters, empty messages)
+  - [x] Client component behavior
+- [x] **error-boundary.integration.test.tsx**: Test error recovery - **20 tests**
+  - [x] Component error catching (Error, TypeError, ReferenceError)
+  - [x] Error state display (icon, message, return home link)
+  - [x] Error isolation (boundary containment)
+  - [x] Nested error boundaries
+  - [x] Multiple components under boundary
+  - [x] Error message handling (long, special characters)
+  - [x] Prevention of error propagation to parent
+
+**Files Created:**
+- `__tests__/components/ui/error/error-page.component.test.tsx` (240 lines, 31 tests)
+- `__tests__/integration/error-handling/error-boundary.integration.test.tsx` (344 lines, 20 tests)
+
+**Note:** The error page component is a client component that displays errors caught by Next.js error boundaries. The integration tests use a custom ErrorBoundary class to simulate React error boundary behavior.
 
 **Expected Coverage Boost**: +1-2%
+**Actual Results**: 51 tests passing, 0 failures
 
 #### 5.1.3 Loading States (`loading.tsx` files)
 ```bash
@@ -594,7 +609,11 @@ touch __tests__/components/ui/loading/properties-loading.component.test.tsx
   - [ ] Accessibility attributes (role="status")
   - [ ] Loading message display
 
-**Expected Coverage Boost**: +0.5-1%
+**Status**: SKIPPED - No `loading.tsx` files exist in the application yet.
+
+**Note:** Loading states (Suspense boundaries with loading.tsx files) have not been implemented in the application. This section should be revisited after loading UI components are added to the codebase.
+
+**Expected Coverage Boost**: +0.5-1% (when implemented)
 
 #### 5.2 User Account Pages
 ```bash
