@@ -764,39 +764,109 @@ touch __tests__/functional/workflows/user-profile.functional.test.tsx
 
 **Note**: See TESTING_PLAN_V2.md section "Testing Next.js Special Files" for detailed API route testing patterns.
 
-#### 7.1 API Route Handlers (`route.ts` files)
+#### 7.1 Server Actions Integration (`"use server"` actions)
+
+**Note**: This application uses Next.js Server Actions instead of traditional REST API routes. Server Actions are the recommended App Router pattern for mutations and form handling. The application has only 2 API routes (NextAuth and health check), while all CRUD operations are implemented as Server Actions in `lib/actions/`.
+
 ```bash
-mkdir -p __tests__/integration/api-routes
-touch __tests__/integration/api-routes/properties-api.integration.test.tsx
-touch __tests__/integration/api-routes/messages-api.integration.test.tsx
-touch __tests__/integration/api-routes/auth-api.integration.test.tsx
-touch __tests__/integration/api-routes/favorites-api.integration.test.tsx
+mkdir -p __tests__/integration/server-actions
+touch __tests__/integration/server-actions/property-actions.integration.test.tsx
+touch __tests__/integration/server-actions/message-actions.integration.test.tsx
+touch __tests__/integration/server-actions/user-actions.integration.test.tsx
 ```
 
 **Implementation Checklist:**
-- [ ] **properties-api.integration.test.tsx**: Test property API routes
-  - [ ] GET /api/properties - Pagination and filtering
-  - [ ] POST /api/properties - Create with authentication
-  - [ ] PATCH /api/properties/[id] - Update with ownership check
-  - [ ] DELETE /api/properties/[id] - Delete with authorization
-  - [ ] Query parameter validation
-  - [ ] Request body validation
-  - [ ] Error responses (400, 401, 403, 404, 500)
-- [ ] **messages-api.integration.test.tsx**: Test messaging API routes
-  - [ ] GET /api/messages - Fetch user messages
-  - [ ] POST /api/messages - Send message
-  - [ ] PATCH /api/messages/[id] - Mark as read
-  - [ ] DELETE /api/messages/[id] - Delete message
-  - [ ] Authentication requirements
-- [ ] **auth-api.integration.test.tsx**: Test authentication API routes
-  - [ ] POST /api/auth/signup - User registration
-  - [ ] POST /api/auth/login - User login
-  - [ ] GET /api/auth/session - Session validation
-  - [ ] POST /api/auth/logout - Session cleanup
-- [ ] **favorites-api.integration.test.tsx**: Test favorites API routes
-  - [ ] POST /api/favorites - Toggle favorite
-  - [ ] GET /api/favorites - Fetch user favorites
-  - [ ] Authentication and authorization
+- [ ] **property-actions.integration.test.tsx**: Test property Server Actions (`lib/actions/property-actions.ts`)
+  - [ ] `createProperty` - Create with authentication and image upload
+    - [ ] FormData parsing and validation (PropertyInput schema)
+    - [ ] Image upload to Cloudinary (uploadImages)
+    - [ ] Database transaction with Mongoose
+    - [ ] Redirect to property detail page on success
+    - [ ] Image cleanup on failure (destroyImages)
+    - [ ] Form repopulation on validation errors
+    - [ ] Owner assignment from session user
+  - [ ] `updateProperty` - Update with ownership verification
+    - [ ] Property existence validation
+    - [ ] Ownership authorization check
+    - [ ] Schema validation (PropertyInput.omit({ imagesData }))
+    - [ ] Database update with findByIdAndUpdate
+    - [ ] Path revalidation and redirect
+    - [ ] Error handling with form preservation
+  - [ ] `deleteProperty` - Delete with transaction
+    - [ ] Property existence validation
+    - [ ] Ownership verification
+    - [ ] MongoDB transaction (startSession)
+    - [ ] Image deletion from Cloudinary
+    - [ ] Cascading delete from user favorites ($pull)
+    - [ ] Transaction rollback on errors
+    - [ ] Path revalidation (/profile)
+  - [ ] `favoriteProperty` - Toggle favorite status
+    - [ ] User authentication check
+    - [ ] User lookup and validation
+    - [ ] Toggle logic with $push/$pull
+    - [ ] Return isFavorite state
+    - [ ] Path revalidation (/properties/favorites)
+  - [ ] `getFavoriteStatus` - Check favorite status
+    - [ ] User authentication check
+    - [ ] Favorite status lookup with ObjectId comparison
+    - [ ] Return boolean isFavorite
+
+- [ ] **message-actions.integration.test.tsx**: Test messaging Server Actions (`lib/actions/message-actions.ts`)
+  - [ ] `createMessage` - Send message with validation
+    - [ ] FormData parsing (MessageInput schema)
+    - [ ] Authentication check (requireSessionUser)
+    - [ ] Sender/recipient/property assignment
+    - [ ] Database save with Message model
+    - [ ] Validation error handling with form preservation
+    - [ ] Success/error ActionState responses
+  - [ ] `toggleMessageRead` - Mark as read/unread
+    - [ ] Message existence validation
+    - [ ] Ownership verification (recipient check)
+    - [ ] Toggle read boolean state
+    - [ ] Path revalidation (/messages)
+    - [ ] Return isRead state in ActionState
+  - [ ] `deleteMessage` - Delete with authorization
+    - [ ] Message existence validation
+    - [ ] Ownership verification (recipient check)
+    - [ ] Message deletion (deleteOne)
+    - [ ] Path revalidation (/messages)
+    - [ ] Error handling and ActionState
+  - [ ] `getUnreadMessageCount` - Get unread count
+    - [ ] Authentication check
+    - [ ] countDocuments query with filters
+    - [ ] Return {unreadCount: number}
+    - [ ] Error handling and logging
+
+- [ ] **user-actions.integration.test.tsx**: Test user Server Actions (`lib/actions/user-actions.ts`)
+  - [ ] `createCredentialsUser` - User registration with account linking
+    - [ ] Email and password validation
+    - [ ] Email format validation (regex)
+    - [ ] Password strength validation (validatePassword)
+    - [ ] Existing user lookup (case-insensitive email)
+    - [ ] Account linking for OAuth users without password
+      - [ ] Add passwordHash to existing OAuth account
+      - [ ] Optional username update with uniqueness check
+      - [ ] Return shouldAutoLogin=true with credentials
+      - [ ] Return canSignInWith: ["google", "credentials"]
+    - [ ] New user creation flow
+      - [ ] Password hashing (hashPassword)
+      - [ ] Username uniqueness validation
+      - [ ] Default username from email if not provided
+      - [ ] User.create with email, username, passwordHash
+      - [ ] Return shouldAutoLogin=true with credentials
+    - [ ] Duplicate account error handling
+    - [ ] Database error handling
+    - [ ] ActionState response structure
+
+**Testing Strategy:**
+- Use real database interactions with MongoDB/Mongoose (following "Don't mock what you don't own")
+- Mock external services: Cloudinary (uploadImages/destroyImages), NextAuth (requireSessionUser)
+- Test FormData construction and parsing
+- Verify ActionState response structure (status, message, formData, formErrorMap)
+- Test revalidatePath and redirect behaviors
+- Verify transaction rollback on errors
+- Test authorization and ownership checks
+- Validate Zod schema integration
 
 **Expected Coverage Boost**: +5-7%
 
