@@ -4,7 +4,7 @@
 // Custom commands for Dwellio E2E testing
 // ***********************************************
 
-// eslint-disable-next-line @typescript-eslint/no-namespace
+ 
 declare global {
     // eslint-disable-next-line @typescript-eslint/no-namespace
     namespace Cypress {
@@ -37,7 +37,7 @@ declare global {
              * Custom command to create a property via API
              * @example cy.createProperty({ name: 'Test Property', ... })
              */
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+             
             createProperty(propertyData: Record<string, unknown>): Chainable<Record<string, unknown>>
         }
     }

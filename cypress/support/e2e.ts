@@ -32,7 +32,7 @@ afterEach(() => {
 
 // Prevent Cypress from failing tests on uncaught exceptions
 // This is useful for third-party scripts that may throw errors
-Cypress.on('uncaught:exception', (err, runnable) => {
+Cypress.on('uncaught:exception', (err) => {
     // Return false to prevent the test from failing
     // Adjust this logic based on your app's error handling
     if (err.message.includes('ResizeObserver loop')) {

@@ -16,7 +16,7 @@ describe('Cypress E2E Setup Smoke Test', () => {
     })
 
     it('should be able to access environment variables', () => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+         
         expect(Cypress.env('apiUrl')).to.equal('http://localhost:3000/api')
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         expect(Cypress.env('coverage')).to.be.true
