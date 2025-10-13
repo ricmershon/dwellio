@@ -979,6 +979,539 @@ touch __tests__/integration/auth-flow/session-management.integration.test.tsx
 
 ---
 
+## Phase 5: End-to-End Tests (Target: 5% additional validation)
+
+### Week 8: Cypress E2E Testing Setup & Critical User Journeys
+**Priority: HIGH** - Real browser validation of critical paths
+
+**Rationale**: E2E tests with Cypress validate complete user journeys in a real browser environment, catching integration issues that unit/functional tests miss. Following the test pyramid principle, E2E tests represent only 5% of test coverage but provide high-value validation of critical user paths.
+
+**Framework**: Cypress (https://www.cypress.io/)
+- Modern E2E testing framework built for web applications
+- Real browser automation (Chrome, Firefox, Edge, Electron)
+- Time-travel debugging with automatic waiting
+- Network stubbing and request/response interception
+- Visual regression testing capabilities
+
+#### 8.1 Cypress Installation & Configuration
+
+```bash
+# Install Cypress and dependencies
+npm install --save-dev cypress @testing-library/cypress
+
+# Initialize Cypress (creates cypress/ directory structure)
+npx cypress open
+
+# Install additional plugins
+npm install --save-dev @cypress/code-coverage cypress-axe
+```
+
+**Directory Structure:**
+```
+cypress/
+├── e2e/                      # E2E test specs
+│   ├── auth/                 # Authentication flows
+│   ├── property-management/  # Property CRUD workflows
+│   ├── search/               # Search and filter tests
+│   ├── messaging/            # Messaging system tests
+│   └── favorites/            # Favorites functionality
+├── fixtures/                 # Test data and images
+│   ├── users.json
+│   ├── properties.json
+│   └── images/
+├── support/                  # Custom commands and utilities
+│   ├── commands.ts           # Reusable Cypress commands
+│   ├── e2e.ts               # Global configuration
+│   └── component.ts          # Component testing support
+└── downloads/                # Downloaded files during tests
+
+cypress.config.ts             # Cypress configuration
+```
+
+**Package.json Scripts:**
+```json
+{
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "cypress:run:chrome": "cypress run --browser chrome",
+    "cypress:run:firefox": "cypress run --browser firefox",
+    "test:e2e": "cypress run --headless",
+    "test:e2e:headed": "cypress open",
+    "test:complete": "npm test && npm run test:e2e"
+  }
+}
+```
+
+**Cypress Configuration (cypress.config.ts):**
+```typescript
+import { defineConfig } from 'cypress'
+
+export default defineConfig({
+  e2e: {
+    baseUrl: 'http://localhost:3000',
+    specPattern: 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
+    supportFile: 'cypress/support/e2e.ts',
+    video: true,
+    screenshotOnRunFailure: true,
+    viewportWidth: 1280,
+    viewportHeight: 720,
+    experimentalStudio: true,
+    setupNodeEvents(on, config) {
+      // Code coverage plugin
+      require('@cypress/code-coverage/task')(on, config)
+      return config
+    },
+  },
+  env: {
+    // Test environment variables
+    apiUrl: 'http://localhost:3000/api',
+    coverage: true,
+  },
+  retries: {
+    runMode: 2,
+    openMode: 0,
+  },
+})
+```
+
+**Custom Commands (cypress/support/commands.ts):**
+```typescript
+// Authentication commands
+Cypress.Commands.add('login', (email: string, password: string) => {
+  cy.session([email, password], () => {
+    cy.visit('/login')
+    cy.get('[data-cy=email-input]').type(email)
+    cy.get('[data-cy=password-input]').type(password)
+    cy.get('[data-cy=login-button]').click()
+    cy.url().should('not.include', '/login')
+  })
+})
+
+Cypress.Commands.add('logout', () => {
+  cy.get('[data-cy=user-menu]').click()
+  cy.get('[data-cy=logout-button]').click()
+  cy.url().should('include', '/')
+})
+
+// Database seeding commands
+Cypress.Commands.add('seedDatabase', () => {
+  cy.exec('npm run db:seed:test')
+})
+
+Cypress.Commands.add('cleanDatabase', () => {
+  cy.exec('npm run db:clean:test')
+})
+
+// Property management commands
+Cypress.Commands.add('createProperty', (propertyData) => {
+  cy.request({
+    method: 'POST',
+    url: '/api/properties',
+    body: propertyData,
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((response) => {
+    expect(response.status).to.eq(201)
+    return response.body
+  })
+})
+```
+
+**Implementation Checklist:**
+- [ ] Install Cypress and required dependencies
+- [ ] Create cypress/ directory structure
+- [ ] Configure cypress.config.ts with base settings
+- [ ] Set up custom commands for common operations
+- [ ] Add npm scripts for E2E testing
+- [ ] Configure test environment variables
+- [ ] Set up database seeding/cleaning utilities
+
+**Expected Setup Time**: 2-3 hours
+
+#### 8.2 Authentication & Authorization E2E Tests
+
+```bash
+mkdir -p cypress/e2e/auth
+touch cypress/e2e/auth/login-flow.cy.ts
+touch cypress/e2e/auth/oauth-login.cy.ts
+touch cypress/e2e/auth/session-persistence.cy.ts
+touch cypress/e2e/auth/protected-routes.cy.ts
+```
+
+**Implementation Checklist:**
+
+- [ ] **login-flow.cy.ts**: Test credential authentication (15 tests)
+  - [ ] Successful login with valid credentials
+  - [ ] Login form validation errors
+  - [ ] Invalid credential error handling
+  - [ ] Redirect to home after successful login
+  - [ ] Remember me functionality (if implemented)
+  - [ ] Password visibility toggle
+  - [ ] Login button loading state
+  - [ ] Keyboard navigation (Tab, Enter)
+  - [ ] Error message display timing
+  - [ ] Form field auto-focus behavior
+
+- [ ] **oauth-login.cy.ts**: Test OAuth provider authentication (10 tests)
+  - [ ] Google OAuth login flow
+  - [ ] GitHub OAuth login flow
+  - [ ] OAuth account linking for existing users
+  - [ ] New user account creation via OAuth
+  - [ ] OAuth error handling (cancelled, failed)
+  - [ ] Provider button rendering and styling
+  - [ ] Redirect flow after OAuth success
+  - [ ] Session creation after OAuth
+
+- [ ] **session-persistence.cy.ts**: Test session management (8 tests)
+  - [ ] Session persists across page reloads
+  - [ ] Session expires after timeout (if implemented)
+  - [ ] Logout clears session completely
+  - [ ] Multiple tab session synchronization
+  - [ ] Session restoration after browser close
+  - [ ] Session validation on protected routes
+
+- [ ] **protected-routes.cy.ts**: Test route authorization (12 tests)
+  - [ ] Unauthenticated redirect to login from /profile
+  - [ ] Unauthenticated redirect from /messages
+  - [ ] Unauthenticated redirect from /properties/add
+  - [ ] Authenticated access to protected routes
+  - [ ] Redirect with return URL preservation
+  - [ ] Authorization check on page load
+  - [ ] Session validation timing
+  - [ ] Navigation between protected routes
+
+**Expected Coverage**: Authentication flows fully validated in real browser
+**Expected Test Count**: 45 E2E tests
+**Expected Execution Time**: 3-5 minutes (full suite)
+
+#### 8.3 Property Management E2E Tests
+
+```bash
+mkdir -p cypress/e2e/property-management
+touch cypress/e2e/property-management/create-property.cy.ts
+touch cypress/e2e/property-management/edit-property.cy.ts
+touch cypress/e2e/property-management/delete-property.cy.ts
+touch cypress/e2e/property-management/view-property.cy.ts
+```
+
+**Implementation Checklist:**
+
+- [ ] **create-property.cy.ts**: Test property creation workflow (18 tests)
+  - [ ] Complete multi-step form submission
+  - [ ] Step 1: Property info (name, type, description)
+  - [ ] Step 2: Location and specs (address, beds, baths, sqft)
+  - [ ] Step 3: Amenities and rates selection
+  - [ ] Step 4: Image upload (minimum 3 images)
+  - [ ] Form validation at each step
+  - [ ] Navigation between form steps
+  - [ ] Progress indicator updates
+  - [ ] Image preview display
+  - [ ] Error handling for failed uploads
+  - [ ] Success redirect to property detail page
+  - [ ] Property appears in user's profile
+  - [ ] Back button navigation behavior
+  - [ ] Form state preservation when navigating back
+  - [ ] Cancel button confirmation modal
+  - [ ] Accessibility (keyboard navigation, ARIA)
+
+- [ ] **edit-property.cy.ts**: Test property editing workflow (15 tests)
+  - [ ] Form pre-population with existing data
+  - [ ] Update property information
+  - [ ] Add/remove images
+  - [ ] Update location and specs
+  - [ ] Change amenities selection
+  - [ ] Update pricing rates
+  - [ ] Ownership verification (only owner can edit)
+  - [ ] Save changes and verify updates
+  - [ ] Cancel without saving changes
+  - [ ] Validation errors during edit
+  - [ ] Success redirect after save
+  - [ ] Updated data displays on detail page
+
+- [ ] **delete-property.cy.ts**: Test property deletion (10 tests)
+  - [ ] Delete button only visible to owner
+  - [ ] Confirmation modal appears on delete
+  - [ ] Cancel deletion confirmation
+  - [ ] Confirm deletion removes property
+  - [ ] Property removed from listings
+  - [ ] Property removed from user profile
+  - [ ] Redirect after deletion
+  - [ ] Error handling for failed deletion
+  - [ ] Associated images cleaned up
+
+- [ ] **view-property.cy.ts**: Test property detail page (12 tests)
+  - [ ] Property information display
+  - [ ] Image gallery functionality
+  - [ ] Image navigation (next, previous, thumbnails)
+  - [ ] Breadcrumb navigation
+  - [ ] Share buttons functionality
+  - [ ] Favorite button for non-owners
+  - [ ] Contact form for non-owners
+  - [ ] Edit button only for owner
+  - [ ] Map display with correct location
+  - [ ] Responsive layout (mobile, desktop)
+  - [ ] Back to listings navigation
+
+**Expected Coverage**: Complete property CRUD workflows validated
+**Expected Test Count**: 55 E2E tests
+**Expected Execution Time**: 4-6 minutes
+
+#### 8.4 Search & Filter E2E Tests
+
+```bash
+mkdir -p cypress/e2e/search
+touch cypress/e2e/search/property-search.cy.ts
+touch cypress/e2e/search/property-filters.cy.ts
+touch cypress/e2e/search/search-results.cy.ts
+```
+
+**Implementation Checklist:**
+
+- [ ] **property-search.cy.ts**: Test search functionality (14 tests)
+  - [ ] Search by property name
+  - [ ] Search by location (city, state, zip)
+  - [ ] Search by description keywords
+  - [ ] Search result relevance
+  - [ ] Empty search results handling
+  - [ ] Search input debouncing (500ms)
+  - [ ] Search result count display
+  - [ ] Clear search functionality
+  - [ ] Search persistence across navigation
+  - [ ] Special character handling in search
+  - [ ] Long query handling
+  - [ ] URL parameter synchronization
+
+- [ ] **property-filters.cy.ts**: Test filter functionality (16 tests)
+  - [ ] Filter by property type (House, Apartment, etc.)
+  - [ ] Filter by number of beds
+  - [ ] Filter by number of baths
+  - [ ] Filter by price range (nightly, weekly, monthly)
+  - [ ] Multiple filter combination
+  - [ ] Clear all filters
+  - [ ] Filter persistence across navigation
+  - [ ] Filter count indicator
+  - [ ] Apply filters button functionality
+  - [ ] Filter validation (min < max for ranges)
+  - [ ] URL parameter encoding
+  - [ ] Filter state restoration from URL
+
+- [ ] **search-results.cy.ts**: Test results display (10 tests)
+  - [ ] Property cards rendering in results
+  - [ ] Pagination functionality
+  - [ ] Results per page configuration
+  - [ ] Sort by relevance, price, date
+  - [ ] Empty state display
+  - [ ] Loading state during search
+  - [ ] Property card click navigation
+  - [ ] Favorite button in results
+  - [ ] Result count accuracy
+  - [ ] Infinite scroll (if implemented)
+
+**Expected Coverage**: Search and filter workflows fully validated
+**Expected Test Count**: 40 E2E tests
+**Expected Execution Time**: 3-4 minutes
+
+#### 8.5 Messaging System E2E Tests
+
+```bash
+mkdir -p cypress/e2e/messaging
+touch cypress/e2e/messaging/send-message.cy.ts
+touch cypress/e2e/messaging/view-messages.cy.ts
+touch cypress/e2e/messaging/message-actions.cy.ts
+```
+
+**Implementation Checklist:**
+
+- [ ] **send-message.cy.ts**: Test message sending (12 tests)
+  - [ ] Send message from property detail page
+  - [ ] Contact form validation
+  - [ ] Required fields (name, email, message)
+  - [ ] Email format validation
+  - [ ] Character limit for message body
+  - [ ] Success confirmation after send
+  - [ ] Message appears in sender's sent messages
+  - [ ] Message appears in recipient's inbox
+  - [ ] Property context included in message
+  - [ ] Sender information captured correctly
+  - [ ] Error handling for failed send
+
+- [ ] **view-messages.cy.ts**: Test message viewing (10 tests)
+  - [ ] Messages list display on /messages page
+  - [ ] Unread message count badge
+  - [ ] Message card rendering
+  - [ ] Message read/unread status indication
+  - [ ] Empty state when no messages
+  - [ ] Message sorting (newest first)
+  - [ ] Pagination for message list
+  - [ ] Click message to view details
+  - [ ] Property link in message context
+  - [ ] Sender information display
+
+- [ ] **message-actions.cy.ts**: Test message management (8 tests)
+  - [ ] Mark message as read
+  - [ ] Mark message as unread
+  - [ ] Delete message confirmation
+  - [ ] Message deletion removes from list
+  - [ ] Unread count updates after actions
+  - [ ] Bulk message actions (if implemented)
+  - [ ] Reply to message (if implemented)
+  - [ ] Archive message (if implemented)
+
+**Expected Coverage**: Messaging workflows fully validated
+**Expected Test Count**: 30 E2E tests
+**Expected Execution Time**: 2-3 minutes
+
+#### 8.6 Favorites Management E2E Tests
+
+```bash
+mkdir -p cypress/e2e/favorites
+touch cypress/e2e/favorites/add-to-favorites.cy.ts
+touch cypress/e2e/favorites/view-favorites.cy.ts
+touch cypress/e2e/favorites/remove-from-favorites.cy.ts
+```
+
+**Implementation Checklist:**
+
+- [ ] **add-to-favorites.cy.ts**: Test adding favorites (10 tests)
+  - [ ] Add to favorites from property detail page
+  - [ ] Add to favorites from property card in listings
+  - [ ] Favorite button state toggle (filled/outline)
+  - [ ] Favorite count increments
+  - [ ] Property appears in favorites page
+  - [ ] Optimistic UI update
+  - [ ] Error handling for failed add
+  - [ ] Authentication required for favorites
+  - [ ] Duplicate prevention
+  - [ ] Success toast notification
+
+- [ ] **view-favorites.cy.ts**: Test favorites page (8 tests)
+  - [ ] Favorites list display on /profile/favorites
+  - [ ] Empty state when no favorites
+  - [ ] Favorite properties rendering as cards
+  - [ ] Click favorite to view property details
+  - [ ] Favorite button shows filled state
+  - [ ] Favorites count display
+  - [ ] Pagination for favorites list
+  - [ ] Breadcrumb navigation
+
+- [ ] **remove-from-favorites.cy.ts**: Test removing favorites (7 tests)
+  - [ ] Remove from favorites page
+  - [ ] Remove from property detail page
+  - [ ] Remove from property listings
+  - [ ] Favorite button state updates
+  - [ ] Property removed from favorites list
+  - [ ] Favorites count decrements
+  - [ ] Confirmation before removal (if implemented)
+
+**Expected Coverage**: Favorites functionality fully validated
+**Expected Test Count**: 25 E2E tests
+**Expected Execution Time**: 2-3 minutes
+
+#### 8.7 Cross-Browser & Accessibility E2E Tests
+
+```bash
+mkdir -p cypress/e2e/cross-browser
+mkdir -p cypress/e2e/accessibility
+touch cypress/e2e/cross-browser/browser-compatibility.cy.ts
+touch cypress/e2e/accessibility/keyboard-navigation.cy.ts
+touch cypress/e2e/accessibility/screen-reader.cy.ts
+```
+
+**Implementation Checklist:**
+
+- [ ] **browser-compatibility.cy.ts**: Test cross-browser support (12 tests)
+  - [ ] Run all critical paths in Chrome
+  - [ ] Run all critical paths in Firefox
+  - [ ] Run all critical paths in Edge
+  - [ ] Test responsive design breakpoints
+  - [ ] Test mobile viewport (375x667, 414x896)
+  - [ ] Test tablet viewport (768x1024)
+  - [ ] Test desktop viewport (1920x1080)
+  - [ ] Test touch interactions on mobile
+  - [ ] Test browser-specific features
+  - [ ] Test performance across browsers
+
+- [ ] **keyboard-navigation.cy.ts**: Test keyboard accessibility (15 tests)
+  - [ ] Tab navigation through all interactive elements
+  - [ ] Enter key activates buttons and links
+  - [ ] Space key toggles checkboxes
+  - [ ] Escape key closes modals
+  - [ ] Arrow keys navigate dropdown menus
+  - [ ] Focus visible on all interactive elements
+  - [ ] Focus trap in modal dialogs
+  - [ ] Skip to main content link
+  - [ ] Form submission with Enter key
+  - [ ] Tab order logical and intuitive
+
+- [ ] **screen-reader.cy.ts**: Test screen reader support (10 tests)
+  - [ ] All images have alt text
+  - [ ] Form inputs have labels
+  - [ ] ARIA labels on icon buttons
+  - [ ] ARIA live regions for dynamic content
+  - [ ] Heading hierarchy (h1, h2, h3)
+  - [ ] Semantic HTML usage
+  - [ ] Error messages associated with inputs
+  - [ ] Loading states announced
+  - [ ] Success messages announced
+  - [ ] Navigation landmarks defined
+
+**Expected Coverage**: Accessibility and cross-browser compatibility validated
+**Expected Test Count**: 37 E2E tests
+**Expected Execution Time**: 4-5 minutes
+
+### Phase 5 Summary
+
+**Total E2E Test Files**: 17 test specs
+**Total E2E Tests**: ~230 tests
+**Total Execution Time**: 20-30 minutes (full suite)
+**Coverage Contribution**: +5% validation coverage
+**Browser Coverage**: Chrome, Firefox, Edge
+**Accessibility Coverage**: WCAG 2.1 AA compliance
+
+**Quality Gates for E2E Tests:**
+- ✅ All E2E tests pass in headless mode
+- ✅ Tests pass in Chrome, Firefox, and Edge
+- ✅ No flaky tests (< 2% flake rate)
+- ✅ Screenshots captured for all failures
+- ✅ Video recordings available for debugging
+- ✅ Accessibility violations: 0 critical, < 5 warnings
+
+**CI/CD Integration:**
+```yaml
+# .github/workflows/e2e-tests.yml
+name: E2E Tests
+on: [push, pull_request]
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        browser: [chrome, firefox, edge]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: cypress-io/github-action@v5
+        with:
+          browser: ${{ matrix.browser }}
+          start: npm run dev
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 120
+```
+
+**Maintenance Guidelines:**
+- Review and update E2E tests quarterly
+- Add E2E tests for new critical user journeys
+- Monitor test execution time and optimize as needed
+- Keep Cypress and dependencies updated
+- Review failure screenshots and videos regularly
+- Refactor flaky tests immediately
+
+**Phase 5 Total Expected Coverage**: 85-90% (80-85% Jest + 5% E2E validation)
+
+---
+
 ## Implementation Guidelines v2.0
 
 ### Daily Development Process
@@ -1084,6 +1617,11 @@ npm run test:coverage -- --collectCoverageFrom="app/**/*.{ts,tsx}" --silent
   - [ ] All tests pass ✅ | TypeScript compiles ✅ | Linting passes ✅
 - [ ] **Week 7**: 80-85% coverage (Strategic integration)
   - [ ] All tests pass ✅ | TypeScript compiles ✅ | Linting passes ✅
+- [ ] **Week 8**: 85-90% coverage (E2E validation with Cypress)
+  - [ ] All E2E tests pass in Chrome, Firefox, Edge ✅
+  - [ ] All Jest tests pass ✅ | TypeScript compiles ✅ | Linting passes ✅
+  - [ ] Accessibility violations: 0 critical, < 5 warnings ✅
+  - [ ] Test flakiness < 2% ✅
 
 #### Coverage Quality Metrics
 - **Statement Coverage**: 80-85%
@@ -1101,6 +1639,7 @@ npm run test:coverage -- --collectCoverageFrom="app/**/*.{ts,tsx}" --silent
 - [ ] **Week 5**: Page component tests complete (all page functionality)
 - [ ] **Week 6**: User workflow tests complete (critical user journeys)
 - [ ] **Week 7**: Strategic integration tests complete (cross-component workflows)
+- [ ] **Week 8**: E2E tests complete (Cypress critical user paths) - ~230 tests
 
 #### Final Success Indicators
 🚨 **MANDATORY QUALITY GATES** (Must achieve 100%):
@@ -1160,16 +1699,17 @@ This v2.0 plan provides a systematic, coverage-driven approach to achieving comp
 1. **Balanced Test Distribution**: Unit (30-35%), Functional (35-40%), Integration (25-30%), E2E (5%)
 2. **Next.js Framework Coverage**: Explicit testing strategies for `page.tsx`, `layout.tsx`, `error.tsx`, `not-found.tsx`, `route.ts`, and `loading.tsx` files
 3. **Quality-First Approach**: All tests must pass, TypeScript must compile, linting must pass before proceeding
-4. **Phased Implementation**: 7-week roadmap with clear milestones and coverage targets
+4. **Phased Implementation**: 8-week roadmap with clear milestones and coverage targets (Jest + Cypress)
 5. **Comprehensive Documentation**: Cross-referenced with TESTING_PLAN_V2.md for detailed patterns and examples
+6. **E2E Validation**: Cypress tests for critical user journeys in real browser environments
 
 ### Coverage Strategy Highlights
 
 - **Week 1-2 (Phase 1)**: Foundation unit tests for utilities, actions, and data layer ✅ **COMPLETED**
-- **Week 3-4 (Phase 2)**: Component unit tests for UI and forms (Section 3.1 ✅ **COMPLETED**)
-- **Week 5 (Phase 3)**: Functional tests for pages, layouts, errors, and loading states
-- **Week 6 (Phase 3)**: User workflow and integration tests
-- **Week 7 (Phase 4)**: API routes, authentication flows, and strategic integration tests
+- **Week 3-4 (Phase 2)**: Component unit tests for UI and forms ✅ **COMPLETED**
+- **Week 5-6 (Phase 3)**: Functional tests for pages, user workflows, and layouts ✅ **COMPLETED**
+- **Week 7 (Phase 4)**: Integration tests for auth flows and server actions ✅ **COMPLETED**
+- **Week 8 (Phase 5)**: E2E tests with Cypress for critical user journeys (~230 tests)
 
 ### Next.js Special Files
 
