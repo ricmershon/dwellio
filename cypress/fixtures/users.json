@@ -1,0 +1,20 @@
+{
+  "testUser": {
+    "email": "testuser@example.com",
+    "password": "TestPassword123!",
+    "username": "testuser",
+    "name": "Test User"
+  },
+  "propertyOwner": {
+    "email": "owner@example.com",
+    "password": "OwnerPassword123!",
+    "username": "propertyowner",
+    "name": "Property Owner"
+  },
+  "messageSender": {
+    "email": "sender@example.com",
+    "password": "SenderPassword123!",
+    "username": "messagesender",
+    "name": "Message Sender"
+  }
+}

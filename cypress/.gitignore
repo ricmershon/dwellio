@@ -1,0 +1,11 @@
+# Cypress gitignore
+videos/
+screenshots/
+downloads/
+
+# Test results
+results/
+reports/
+
+# Environment-specific files
+*.local.json
