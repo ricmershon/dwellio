@@ -9,7 +9,6 @@ export default defineConfig({
         screenshotOnRunFailure: true,
         viewportWidth: 1280,
         viewportHeight: 720,
-        experimentalStudio: true,
         setupNodeEvents(on, config) {
             // Code coverage plugin
             // eslint-disable-next-line @typescript-eslint/no-require-imports

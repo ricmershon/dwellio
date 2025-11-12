@@ -12,6 +12,7 @@ describe('Cypress E2E Setup Smoke Test', () => {
     })
 
     it('should have the correct base URL configured', () => {
+        cy.visit('/')
         cy.url().should('include', 'localhost:3000')
     })
 
