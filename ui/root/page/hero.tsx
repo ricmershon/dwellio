@@ -14,8 +14,30 @@ const Hero = () => {
                     >
                         The Best Vacation Rentals
                     </h1>
-                    <p className="mt-4 text-xl">
-                        Discover the perfect property.
+                    <h2 className="mt-4 text-2xl">
+                        Discover the perfect property.*
+                    </h2>
+                    <hr className="w-full border-t mt-2 border-gray-200"/>
+                    <p className="mt-2">
+                        *This web site is for a fictitious company. It&apos;s sole
+                    </p>
+                    <p>
+                        purpose is to demonstrate a full stack application 
+                    </p>
+                    <p>
+                        with Next, React, Tailwind and MongoDB skills.
+                    </p>
+                    <p className="mt-2">
+                        (<span>
+                            <a
+                                className="text-blue-800 mt-"
+                                href="https://github.com/ricmershon/dwellio"
+                                target="_blank"
+                            >
+                                Code can be found here
+                            </a>
+
+                        </span>.)
                     </p>
                 </div>
                 <Suspense>
