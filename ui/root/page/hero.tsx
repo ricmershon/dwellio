@@ -19,13 +19,23 @@ const Hero = () => {
                     </h2>
                     <hr className="w-full border-t mt-2 border-gray-200"/>
                     <p className="mt-2">
-                        *This web site is for a fictitious company. It&apos;s sole
+                        *This web site was developed by {""}
+                        <span>
+                            <a
+                                className="text-blue-800"
+                                href="https://github.com/ricmershon"
+                                target="_blank"
+                            >
+                                Ric Mershon
+                            </a>
+                        </span>
+                        , and is for a
                     </p>
                     <p>
-                        purpose is to demonstrate a full stack application 
+                        fictitious company. It&apos;s sole purpose is to demonstrate my full
                     </p>
                     <p>
-                        with Next, React, Tailwind and MongoDB skills.
+                        stack application skills with Next, React, Tailwind and MongoDB.
                     </p>
                     <p className="mt-2">
                         (<span>
