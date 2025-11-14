@@ -1,7 +1,7 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
 # Dwellio
 A web site for a fictitious Airbnb-like company. It's sole purpose is to demonstrate my full stack skills with Next.js, React.js, Tailwind CSS and MongoDB with Mongoose.
+
+A [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Intro
 During my job search in 2024-2025, I realized two things:
