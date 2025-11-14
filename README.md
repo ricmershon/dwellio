@@ -52,15 +52,15 @@ To bridge the gap, I built Dwellio--an Airbnb-like application for a fictional c
 ## Technologies Used
 
 * [React](https://react.dev/) - frontend user interface framework.
-* [Next](https://nextjs.org/) - React framework that facilitates React Server Components and Server Side Rendering and React Server Functions (Actions).
-* [MongoDB](https://www.mongodb.com/) - a general purpose, document-based, distributed database.
+* [Next](https://nextjs.org/) - React framework that facilitates React Server Components, Server Side Rendering and React Server Functions (Actions).
+* [MongoDB](https://www.mongodb.com/) - general purpose, document-based, distributed database.
 * [Mongoose](https://mongoosejs.com/) - MongoDB object modeling for Node.js.
-* [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database) - Hosting platform within Amazon Web Services for distributed MongoDB databases.
+* [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database) - hosting platform within Amazon Web Services for distributed MongoDB databases.
 * [Jest](https://jestjs.io/) - JavsScript testing framework.
-* [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) - Library for testing React applications with Jest.
-* [bcryptjs](https://github.com/dcodeIO/bcrypt.js#readme) - Library for hashing passwords, used for verifying users who use credentials (username and password) to login.
-* [Cloudinary](https://cloudinary.com/) - Image storage for property images.
-* [Mapbox](https://www.mapbox.com/) - For rendering location maps for properties.
-* [NextAuth](https://next-auth.js.org/) - Authentication library for Next applications.
+* [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) - library for testing React applications with Jest.
+* [bcryptjs](https://github.com/dcodeIO/bcrypt.js#readme) - library for hashing passwords, used for verifying users who use credentials (username and password) to login.
+* [Cloudinary](https://cloudinary.com/) - image storage for property images.
+* [Mapbox](https://www.mapbox.com/) - for rendering location maps for properties.
+* [NextAuth](https://next-auth.js.org/) - authentication library for Next applications.
 * [PhotoSwipe](https://photoswipe.com/) - JavaScript image library and lightbox for property images.
 * [Zod](https://zod.dev/) - TypeScript-first schema validation with static type inference for form validation.
